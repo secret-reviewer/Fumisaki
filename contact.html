@@ -3,23 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact | Secret Reviewer</title>
+  <title>Contact & Chat | Secret Reviewer</title>
+  
   <link rel="preconnect" href="https://googleapis.com">
   <link rel="preconnect" href="https://gstatic.com" crossorigin>
   <link href="https://googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  
   <style>
     :root { --primary: #ff0000; --bg: #0a0a0a; --card: #161616; --text: #ececec; }
     body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-    nav { display: flex; justify-content: center; gap: 30px; padding: 20px; background: rgba(0,0,0,0.9); border-bottom: 1px solid #222; }
-    nav a { color: #fff; text-decoration: none; font-weight: 600; font-size: 0.8rem; opacity: 0.6; text-transform: uppercase; }
+    
+    nav { display: flex; justify-content: center; gap: 30px; padding: 20px; background: rgba(0,0,0,0.9); position: sticky; top: 0; backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid #222; }
+    nav a { color: #fff; text-decoration: none; font-weight: 600; font-size: 0.8rem; transition: 0.3s; opacity: 0.6; text-transform: uppercase; }
     nav a:hover { opacity: 1; color: var(--primary); }
+
     .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+    
     .contact-section { background: var(--card); padding: 40px; border-radius: 12px; border: 1px solid #333; }
     .contact-form { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; }
     .contact-form input, .contact-form textarea { padding: 15px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; font-family: inherit; }
-    .contact-form button { background: var(--primary); color: #000; border: none; padding: 15px; font-weight: 900; text-transform: uppercase; cursor: pointer; border-radius: 6px; }
-    #disqus_thread { margin-top: 60px; padding: 20px; background: var(--card); border-radius: 12px; }
-    footer { text-align: center; padding: 60px; color: #444; font-size: 0.8rem; }
+    .contact-form button { background: var(--primary); color: #000; border: none; padding: 15px; font-weight: 900; text-transform: uppercase; cursor: pointer; border-radius: 6px; transition: 0.3s; }
+    .contact-form button:hover { background: #fff; color: #000; }
+
+    #disqus_thread { margin-top: 60px; padding: 20px; background: var(--card); border-radius: 12px; border: 1px solid #222; }
+
+    footer { text-align: center; padding: 60px; color: #444; font-size: 0.8rem; border-top: 1px solid #222; margin-top: 50px; }
   </style>
 </head>
 <body>
@@ -30,16 +38,21 @@
 </nav>
 
 <div class="container">
+
+  <!-- Contact Form -->
   <div class="contact-section">
     <span style="font-size: 0.7rem; font-weight: 900; color: var(--primary); border: 1px solid var(--primary); padding: 2px 8px; border-radius: 4px;">MESSAGE</span>
     <h2>Contact Me</h2>
+    <p>Send a private message to my custom domain email.</p>
+    
     <form class="contact-form" action="https://formspree.io" method="POST">
       <input type="email" name="email" placeholder="Your Email" required>
-      <textarea name="message" placeholder="Ask about gear or routes..." rows="4" required></textarea>
+      <textarea name="message" placeholder="What's on your mind?" rows="4" required></textarea>
       <button type="submit">Send Message</button>
     </form>
   </div>
 
+  <!-- Chatbot / Disqus Section -->
   <div id="disqus_thread"></div>
   <script>
     (function() { 
@@ -49,8 +62,13 @@
       (d.head || d.body).appendChild(s);
     })();
   </script>
+  <noscript>Please enable JavaScript to view comments.</noscript>
+
 </div>
 
-<footer>© 2026 Secret Reviewer | Ride Safe 🏍️</footer>
+<footer>
+  © 2026 Secret Reviewer | Ride Safe 🏍️
+</footer>
+
 </body>
 </html>
