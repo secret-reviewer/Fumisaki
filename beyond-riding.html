@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Story Details | Secret Reviewer</title>
+  <link rel="preconnect" href="https://googleapis.com">
+  <link href="https://googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root { --primary: #ff0000; --bg: #0a0a0a; --card: #161616; --text: #ececec; }
+    body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; }
+    
+    /* Simple Navigation */
+    nav { display: flex; justify-content: center; gap: 30px; padding: 20px; background: rgba(0,0,0,0.9); border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 100; }
+    nav a { color: #fff; text-decoration: none; font-weight: 600; font-size: 0.8rem; opacity: 0.6; text-transform: uppercase; }
+    nav a:hover { opacity: 1; color: var(--primary); }
+
+    /* Content Area */
+    .container { max-width: 800px; margin: 60px auto; padding: 0 20px; }
+    .tag { font-size: 0.7rem; font-weight: 900; color: var(--primary); text-transform: uppercase; border: 1px solid var(--primary); padding: 2px 8px; border-radius: 4px; }
+    
+    Beyond the Ride { font-size: 3rem; font-weight: 900; margin: 20px 0; color: #fff; line-height: 1.1; }
+    .lead { font-size: 1.2rem; color: #aaa; margin-bottom: 40px; border-left: 4px solid var(--primary); padding-left: 20px; }
+    
+    .story-content { font-size: 1.1rem; color: #ccc; }
+    .story-content h2 { color: var(--primary); margin-top: 40px; text-transform: uppercase; font-size: 1.2rem; letter-spacing: 1px; }
+    .story-content p { margin-bottom: 20px; }
+
+    /* Image Placeholder */
+    .featured-image { width: 100%; height: 400px; background: #222; border-radius: 12px; margin-bottom: 40px; object-fit: cover; border: 1px solid #333; }
+
+    footer { text-align: center; padding: 80px 20px; color: #444; font-size: 0.8rem; border-top: 1px solid #222; margin-top: 100px; }
+    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<div class="container">
+  <a href="index.html" class="back-btn">← BACK TO LOG</a><br>
+  
+  <span class="tag">Rider Log Entry</span>
+  
+  <!-- EDIT THESE THREE LINES FOR EACH PAGE -->
+  <Beyond the Ride>Story Title Goes Here</Beyond the Ride>
+  <p class="lead">A short summary or "hook" to get people interested in the ride or the gear review.</p>
+  
+  <div class="featured-image" style="background-image: url('https://unsplash.com'); background-size: cover; background-position: center;"></div>
+
+  <div class="story-content">
+    <h2>The Journey</h2>
+    <p>This is where you tell the main story. You can write about the road conditions, the weather, or the specific bike accessories you were testing. Keep it real and unfiltered.</p>
+    
+    <h2>Key Takeaways</h2>
+    <p>Share what you learned. Was the border crossing easy? Did the electrical mods hold up under heavy rain? This is the value your readers are looking for.</p>
+  </div>
+</div>
+
+<footer>
+  © 2026 Secret Reviewer | Ride Safe 🏍️
+</footer>
+
+</body>
+</html>
