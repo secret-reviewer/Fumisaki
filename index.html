@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Secret Reviewer | Motorcycle Blog</title>
+  <style>
+    body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000; color: #fff; line-height: 1.6; }
+    header { background: #111; padding: 40px 20px; text-align: center; border-bottom: 3px solid #ff0000; }
+    header h1 { margin: 0; color: #ff0000; letter-spacing: 2px; text-transform: uppercase; font-size: 2.5rem; }
+    header p { margin: 10px 0 0; color: #aaa; font-size: 16px; font-style: italic; }
+    nav { display: flex; justify-content: center; gap: 25px; padding: 15px; background: #0a0a0a; border-bottom: 1px solid #222; sticky; top: 0; z-index: 1000; }
+    nav a { color: #ff0000; text-decoration: none; font-weight: bold; transition: 0.3s; }
+    nav a:hover { color: white; }
+    .container { max-width: 800px; margin: auto; padding: 20px; }
+    .post { background: #111; padding: 20px; margin-bottom: 25px; border-left: 5px solid #ff0000; border-radius: 8px; transition: transform 0.2s; }
+    .post:hover { transform: scale(1.01); background: #161616; }
+    .post h2 { margin-top: 10px; color: #ff0000; }
+    .tag { display: inline-block; padding: 5px 12px; background: #ff0000; color: black; font-size: 11px; font-weight: bold; border-radius: 20px; text-transform: uppercase; }
+    footer { text-align: center; padding: 40px; color: #666; border-top: 1px solid #222; margin-top: 50px; font-size: 14px; }
+    @media (max-width: 600px) { nav { gap: 10px; font-size: 14px; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Secret Reviewer</h1>
+  <p>No Fluff. Just Rider Experience.</p>
+</header>
+
+<nav>
+  <a href="#">Home</a>
+  <a href="#">Reviews</a>
+  <a href="#">Accessories</a>
+  <a href="#">Trips</a>
+  <a href="#">Life</a>
+</nav>
+
+<div class="container">
+  <div class="post">
+    <span class="tag">Review</span>
+    <h2>Motorcycle Accessories Test</h2>
+    <p>Real-world review of bike accessories and electrical upgrades. No fluff — only rider experience.</p>
+  </div>
+
+  <div class="post">
+    <span class="tag">Trip</span>
+    <h2>Malaysia → Thailand Ride</h2>
+    <p>Border crossing experience, road conditions, and gear used for long-distance riding.</p>
+  </div>
+</div>
+
+<footer>
+  © 2026 Secret Reviewer | Ride Safe 🏍️
+</footer>
+
+</body>
+</html>
