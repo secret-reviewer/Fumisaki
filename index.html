@@ -12,42 +12,37 @@
     :root { --primary: #ff0000; --bg: #0a0a0a; --card: #161616; --text: #ececec; }
     body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
     
-    /* Hero Section */
     header { 
-      height: 60vh; 
-      display: flex; 
-      flex-direction: column; 
-      justify-content: center; 
-      align-items: center; 
+      height: 40vh; display: flex; flex-direction: column; justify-content: center; align-items: center; 
       background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://unsplash.com');
-      background-size: cover;
-      background-position: center;
-      text-align: center;
-      border-bottom: 4px solid var(--primary);
+      background-size: cover; background-position: center; text-align: center; border-bottom: 4px solid var(--primary);
     }
-    header h1 { font-size: 4rem; font-weight: 900; margin: 0; text-transform: uppercase; letter-spacing: -2px; color: #fff; }
-    header p { font-size: 1.2rem; color: var(--primary); font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+    header h1 { font-size: 3rem; font-weight: 900; margin: 0; text-transform: uppercase; color: #fff; }
+    header p { color: var(--primary); font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
 
-    nav { display: flex; justify-content: center; gap: 30px; padding: 20px; background: rgba(0,0,0,0.9); sticky; top: 0; backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid #333; }
+    nav { display: flex; justify-content: center; gap: 30px; padding: 20px; background: rgba(0,0,0,0.9); sticky; top: 0; z-index: 100; border-bottom: 1px solid #333; }
     nav a { color: #fff; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.3s; opacity: 0.7; }
     nav a:hover { opacity: 1; color: var(--primary); }
 
-    .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-
-    .post { 
-      background: var(--card); 
-      padding: 30px; 
-      border-radius: 12px; 
-      border: 1px solid #222; 
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-    .post:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(255,0,0,0.1); }
-    .post h2 { margin-top: 15px; font-size: 1.5rem; color: #fff; }
-    .tag { font-size: 0.7rem; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; border: 1px solid var(--primary); padding: 2px 8px; border-radius: 4px; }
+    .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
     
-    footer { text-align: center; padding: 60px; color: #444; font-size: 0.8rem; letter-spacing: 1px; }
+    /* Post Cards */
+    .post { background: var(--card); padding: 25px; margin-bottom: 20px; border-radius: 12px; border: 1px solid #222; }
+    .tag { font-size: 0.7rem; font-weight: 900; color: var(--primary); text-transform: uppercase; border: 1px solid var(--primary); padding: 2px 8px; border-radius: 4px; }
+    
+    /* Form Styling */
+    .contact-form { background: #111; padding: 30px; border-radius: 12px; border: 1px solid var(--primary); margin-top: 50px; }
+    .contact-form input, .contact-form textarea { 
+      width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; box-sizing: border-box; 
+    }
+    .contact-form button { 
+      background: var(--primary); color: #000; border: none; padding: 15px; width: 100%; font-weight: 900; cursor: pointer; text-transform: uppercase; border-radius: 6px; 
+    }
+
+    /* Comment Section Spacer */
+    #disqus_thread { margin-top: 50px; padding: 20px; background: #111; border-radius: 12px; }
+
+    footer { text-align: center; padding: 60px; color: #444; font-size: 0.8rem; }
   </style>
 </head>
 <body>
@@ -56,7 +51,7 @@
   <a href="#">HOME</a>
   <a href="#">REVIEWS</a>
   <a href="#">TRIPS</a>
-  <a href="#">ABOUT</a>
+  <a href="#contact">CONTACT</a>
 </nav>
 
 <header>
@@ -65,29 +60,37 @@
 </header>
 
 <div class="container">
-  <div class="grid">
-    <div class="post">
-      <span class="tag">Gear Review</span>
-      <h2>Top 5 Accessories for Long Rides</h2>
-      <p>Tested through rain, heat, and thousands of kilometers. Here is what actually survived.</p>
-    </div>
-
-    <div class="post">
-      <span class="tag">Travel</span>
-      <h2>The Thailand Loop</h2>
-      <p>Crossing borders on two wheels. A complete guide to documentation and road safety.</p>
-    </div>
-
-    <div class="post">
-      <span class="tag">Maintenance</span>
-      <h2>Electrical Mods</h2>
-      <p>Why most riders fail their wiring, and how to do it properly for safety.</p>
-    </div>
+  
+  <!-- Blog Posts -->
+  <div class="post">
+    <span class="tag">Travel</span>
+    <h2>Malaysia → Thailand Ride</h2>
+    <p>Border crossing experience and road conditions for long-distance riding.</p>
   </div>
+
+  <!-- Private Contact Form -->
+  <section id="contact" class="contact-form">
+    <h2>Contact Me</h2>
+    <p>Questions about gear or routes? Send me a private message.</p>
+    <form action="https://formspree.io/f/mojypvej" method="POST">
+      <input type="email" name="email" placeholder="Your Email Address" required>
+      <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <!-- Public Comment Section -->
+  <div id="disqus_thread">
+    <p style="text-align:center; color:#666;">Comment section loading...</p>
+  </div>
+  <script>
+    // PASTE YOUR DISQUS UNIVERSAL CODE HERE
+  </script>
+
 </div>
 
 <footer>
-  © 2026 SECRET REVIEWER | RIDE HARD, RIDE SAFE.
+  © 2026 SECRET REVIEWER | RIDE SAFE.
 </footer>
 
 </body>
