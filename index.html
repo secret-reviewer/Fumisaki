@@ -6,10 +6,28 @@
   <title>Secret Reviewer | Motorcycle Blog</title>
   <link rel="preconnect" href="https://googleapis.com">
   <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://googleapis.com" rel="stylesheet">
   <style>
     :root { --primary: #ff0000; --bg: #0a0a0a; --card: #161616; --text: #ececec; }
     body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    
+    /* NEW: Progress Bar Styling */
+    #progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1000;
+    }
+    #progress-bar {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.1s ease-out;
+    }
+
     header { height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url('https://unsplash.com'); background-size: cover; background-position: center; text-align: center; border-bottom: 4px solid var(--primary); }
     header h1 { font-size: 3.5rem; font-weight: 900; margin: 0; text-transform: uppercase; color: #fff; }
     header p { font-size: 1rem; color: var(--primary); font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
@@ -20,7 +38,6 @@
     .section-title { font-size: 0.8rem; color: var(--primary); text-transform: uppercase; letter-spacing: 4px; font-weight: 900; margin-bottom: 30px; text-align: center; display: block; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 60px; }
 
-    /* The "Alive" Post Link Styling */
     .post-link { text-decoration: none; color: inherit; display: block; }
     .post { background: var(--card); padding: 30px; border-radius: 12px; border: 1px solid #222; transition: 0.3s; height: 100%; box-sizing: border-box; }
     .post:hover { border-color: var(--primary); transform: translateY(-5px); background: #1a1a1a; }
@@ -37,6 +54,9 @@
 </head>
 <body>
 
+<!-- NEW: Progress Bar Element -->
+<div id="progress-container"><div id="progress-bar"></div></div>
+
 <nav>
   <a href="index.html">Home</a>
   <a href="gallery.html">Gallery</a>
@@ -52,7 +72,6 @@
   <span class="section-title">The Rider Log</span>
   
   <div class="grid">
-    <!-- Link 1: Accessories -->
     <a href="accessories.html" class="post-link">
       <div class="post">
         <span class="tag">Review</span>
@@ -62,7 +81,6 @@
       </div>
     </a>
 
-    <!-- Link 2: Thailand Trip -->
     <a href="thailand-trip.html" class="post-link">
       <div class="post">
         <span class="tag">Trip</span>
@@ -72,7 +90,6 @@
       </div>
     </a>
 
-    <!-- Link 3: Electrical Mods -->
     <a href="electrical-mods.html" class="post-link">
       <div class="post">
         <span class="tag">Mods</span>
@@ -82,7 +99,6 @@
       </div>
     </a>
 
-    <!-- Link 4: Life Stories -->
     <a href="beyond-riding.html" class="post-link">
       <div class="post">
         <span class="tag">Life</span>
@@ -102,5 +118,24 @@
 </div>
 
 <footer>© 2026 Secret Reviewer | Ride Safe 🏍️</footer>
+
+<!-- NEW: The Script Section -->
+<script>
+  // Function to update the reading progress bar
+  window.onscroll = function() {
+    updateProgressBar();
+  };
+
+  function updateProgressBar() {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById("progress-bar").style.width = scrolled + "%";
+  }
+
+  // Example of a simple console message to confirm it's working
+  console.log("Secret Reviewer Script Loaded Successfully!");
+</script>
+
 </body>
 </html>
