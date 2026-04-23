@@ -3,99 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="referrer" content="no-referrer-when-downgrade"> <!-- CRITICAL for YouTube on Cloudflare -->
   <title>Secret Reviewer | Motorcycle Blog</title>
   <style>
-    :root { --primary: #ff0000; --bg: #0a0a0a; --card: #161616; --text: #ececec; }
-    body { margin: 0; font-family: sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    :root { --primary: #ff0000; --bg: #0a0a0a; --text: #ececec; }
+    body { margin: 0; font-family: sans-serif; background: var(--bg); color: var(--text); }
     
-    /* NAV FIX: Ensuring nav doesn't cover the screen */
+    /* Simplified Nav to avoid 'Invisible Wall' bugs */
     nav { 
-      display: flex; 
-      justify-content: center; 
-      gap: 20px; 
-      padding: 20px; 
       background: #000; 
-      position: relative; 
-      z-index: 9999; 
+      padding: 15px; 
+      text-align: center; 
+      border-bottom: 1px solid #333;
     }
     nav a { 
       color: #fff; 
       text-decoration: none; 
-      font-weight: bold; 
-      padding: 10px; /* Makes clicking easier */
+      margin: 0 15px; 
+      font-weight: bold;
+      display: inline-block; /* Essential for mobile clicking */
+      padding: 10px; 
     }
-    .nav-yt { color: var(--primary); }
+    .nav-yt { color: var(--primary); border: 1px solid var(--primary); border-radius: 4px; }
 
-    header { 
-      padding: 60px 20px; 
-      text-align: center; 
-      background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://unsplash.com');
-      background-size: cover;
-      border-bottom: 4px solid var(--primary);
-    }
-
-    .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+    .container { max-width: 800px; margin: 20px auto; padding: 20px; }
     
-    /* VIDEO FIX: Removed fancy CSS to see if it loads simply */
-    .video-section { margin: 40px 0; text-align: center; }
-    .video-container { 
-      position: relative; 
-      padding-bottom: 56.25%; 
-      height: 0; 
+    /* Absolute simplest video embed for troubleshooting */
+    .vid-box { 
+      width: 100%; 
+      aspect-ratio: 16 / 9; 
       background: #111; 
-      border-radius: 12px;
+      margin: 20px 0;
+      border-radius: 8px;
       overflow: hidden;
     }
-    .video-container iframe {
-      position: absolute; 
-      top: 0; left: 0; 
-      width: 100%; height: 100%; 
-      border: 0;
-    }
-
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-    .post { background: var(--card); padding: 20px; border-radius: 10px; border: 1px solid #333; }
-    .post h2 { color: #fff; margin-top: 10px; }
-    .tag { color: var(--primary); font-weight: bold; font-size: 0.8rem; }
-    a { text-decoration: none; color: inherit; }
-
-    footer { text-align: center; padding: 40px; border-top: 1px solid #333; color: #666; }
+    iframe { width: 100%; height: 100%; border: 0; }
   </style>
 </head>
 <body>
 
 <nav>
   <a href="index.html">Home</a>
-  <a href="gallery.html">Gallery</a>
-  <a href="contact.html">Contact</a>
-  <a href="https://youtube.com" target="_blank" class="nav-yt">YouTube Channel</a>
+  <a href="https://youtube.com" target="_blank" class="nav-yt">Visit YouTube Channel</a>
 </nav>
 
-<header>
-  <h1>Secret Reviewer</h1>
-  <p>Motorcycle Blogger | Accessories | Trips</p>
-</header>
-
 <div class="container">
+  <h1>Secret Reviewer</h1>
+  <p>Motorcycle Reviewer & Traveler</p>
+
+  <div class="vid-box">
+    <!-- Using standard embed URL -->
+    <iframe src="https://youtube.com" allowfullscreen></iframe>
+  </div>
   
-  <div class="video-section">
-    <h3>Latest Ride: Malaysia to Thailand</h3>
-    <div class="video-container">
-      <!-- Standard Embed Code -->
-      <iframe src="https://youtube.com" allowfullscreen></iframe>
-    </div>
-  </div>
-
-  <div class="grid">
-    <a href="accessories.html"><div class="post"><span class="tag">REVIEW</span><h2>Accessories</h2></div></a>
-    <a href="thailand-trip.html"><div class="post"><span class="tag">TRIP</span><h2>Thailand Ride</h2></div></a>
-    <a href="electrical-mods.html"><div class="post"><span class="tag">MODS</span><h2>Electrical</h2></div></a>
-    <a href="beyond-riding.html"><div class="post"><span class="tag">LIFE</span><h2>Stories</h2></div></a>
-  </div>
-
+  <p>If you see a black box above, please check if you have <b>iCloud Private Relay</b> or an <b>Ad-Blocker</b> turned on.</p>
 </div>
-
-<footer>© 2026 Secret Reviewer</footer>
 
 </body>
 </html>
