@@ -89,7 +89,19 @@
       width: 100%;
       height: 100%;
       opacity: 0.4;
+       z-index: 1; /* Lowest layer */
     }
+
+    /* ── Particle canvas ── */
+#particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Allows clicks to pass through to buttons */
+  z-index: 5; /* Middle layer - above matrix, below text */
+  opacity: 0.5; 
+}
 
     /* ── Classified file cards ── */
     .file-card {
@@ -243,17 +255,50 @@
 </nav>
 
 <!-- ════════════════════════════════════════════ -->
-<!-- HERO                                        -->
+<!-- HERO -->
 <!-- ════════════════════════════════════════════ -->
 <section id="home" class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden" style="background: linear-gradient(to bottom, #080808 0%, #0d0606 50%, #080808 100%);">
-  <!-- Matrix rain canvas -->
+  
+  <!-- 1. Background Layers (Matrix & Particles) -->
   <canvas id="matrix-canvas"></canvas>
+  <canvas id="particle-canvas" style="position: absolute; inset: 0; pointer-events: none; z-index: 5; opacity: 0.6;"></canvas>
 
-  <!-- Radial red spotlight -->
+  <!-- 2. Visual Overlays (Spotlight & Scanline) -->
   <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(220,38,38,0.08) 0%, transparent 70%);"></div>
-
-  <!-- Horizontal scan line -->
   <div class="absolute left-0 right-0 h-px pointer-events-none" style="top:50%; background: linear-gradient(90deg, transparent, rgba(220,38,38,0.4), transparent); box-shadow: 0 0 10px rgba(220,38,38,0.3);"></div>
+
+  <!-- 3. Content Layer (Title & Buttons) -->
+  <div class="relative z-10 text-center px-5 max-w-4xl mx-auto">
+      
+      <!-- Classification Label -->
+      <div class="inline-flex items-center gap-2 mb-8 animate-fade-slide-up">
+          <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse-dot"></div>
+          <span class="font-mono-tech text-red-500/80 text-xs tracking-[0.3em] uppercase">Classified // Intel Report</span>
+          <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse-dot"></div>
+      </div>
+
+      <!-- Title -->
+      <h1 class="text-6xl sm:text-8xl md:text-9xl font-black uppercase tracking-tighter text-white mb-4 animate-fade-slide-up" style="text-shadow: 0 0 60px rgba(220,38,38,0.2);">Secret</h1>
+      <h1 class="text-6xl sm:text-8xl md:text-9xl font-black uppercase tracking-tighter text-red-600 mb-8 neon-red-glow animate-flicker animate-fade-slide-up" style="animation-delay:0.2s;">Reviewer</h1>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-slide-up" style="animation-delay:0.5s;">
+          <a href="#files" class="cta-primary relative px-8 py-3 border border-red-600 text-red-500 text-xs font-bold tracking-[0.2em] uppercase transition-colors duration-300">
+              <span class="relative z-10">Access Files</span>
+              <div class="cta-fill"></div>
+          </a>
+          <a href="https://youtube.com" target="_blank" class="px-8 py-3 bg-transparent border border-white/10 text-gray-400 text-xs font-bold tracking-[0.2em] uppercase hover:border-white/30 hover:text-white transition-all duration-300">
+              Watch Channel
+          </a>
+      </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <a href="#files" class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-600 hover:text-red-500 transition-colors duration-300 animate-bounce-arrow">
+      <span class="font-mono-tech text-[10px] tracking-widest">SCROLL</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </a>
+</section>
 
   <!-- Content -->
   <div class="relative z-10 text-center px-5 max-w-4xl mx-auto">
@@ -763,6 +808,54 @@
 
     observer.observe(statsSection);
   })();
+// ── Digital Ash Particles ──
+(function() {
+    const pCanvas = document.getElementById('particle-canvas');
+    if (!pCanvas) return;
+    const pCtx = pCanvas.getContext('2d');
+    let particles = [];
+
+    function resize() {
+        pCanvas.width = pCanvas.offsetWidth;
+        pCanvas.height = pCanvas.offsetHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class AshParticle {
+        constructor() { this.reset(); }
+        reset() {
+            this.x = Math.random() * pCanvas.width;
+            this.y = Math.random() * pCanvas.height;
+            this.size = Math.random() * 1.5 + 0.5;
+            this.speedX = Math.random() * 0.8 - 0.4;
+            this.speedY = Math.random() * 0.5 + 0.3; 
+            this.opacity = Math.random() * 0.4 + 0.1;
+        }
+        update() {
+            this.y += this.speedY;
+            this.x += this.speedX;
+            if (this.y > pCanvas.height) { this.y = -10; this.x = Math.random() * pCanvas.width; }
+        }
+        draw() {
+            pCtx.fillStyle = `rgba(220, 38, 38, ${this.opacity})`;
+            pCtx.beginPath();
+            pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            pCtx.fill();
+        }
+    }
+
+    for (let i = 0; i < 60; i++) particles.push(new AshParticle());
+
+    function animateParticles() {
+        pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+})();
+
+
 </script>
 
 </body>
