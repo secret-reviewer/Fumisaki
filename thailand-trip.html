@@ -201,23 +201,32 @@
 
 <script>
   document.getElementById('loadMoreBtn').addEventListener('click', function() {
-    // Find all hidden log entries
+    const allEntries = document.querySelectorAll('.log-entry');
     const hiddenEntries = document.querySelectorAll('.log-entry[style*="display: none"]');
-    
-    // Show the next one in the list
-    if (hiddenEntries.length > 0) {
-      hiddenEntries[0].style.display = 'block';
-      
-      // Smooth scroll to the newly revealed content
-      hiddenEntries[0].scrollIntoView({ behavior: 'smooth' });
-    }
 
-    // Hide the button if no more logs are left
-    if (hiddenEntries.length <= 1) {
-      this.style.display = 'none';
+    if (hiddenEntries.length > 0) {
+      // 1. Hide everything currently visible
+      allEntries.forEach(entry => {
+        entry.style.display = 'none';
+      });
+
+      // 2. Reveal the next "encrypted" log
+      hiddenEntries[0].style.display = 'block';
+
+      // 3. Reset view to top for the new story
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // 4. Update Button Text logic
+      if (hiddenEntries.length === 1) {
+        this.innerText = "RELOAD LATEST LOG";
+        this.onclick = function() { location.reload(); };
+      } else {
+        this.innerText = "DECRYPT NEXT LOG";
+      }
     }
   });
 </script>
+
 
 
 <footer>
