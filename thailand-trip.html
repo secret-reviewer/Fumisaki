@@ -200,32 +200,31 @@
 </div>
 
 <script>
+  let currentLogIndex = 0; // Starts at Trip 1
+  const logs = document.querySelectorAll('.log-entry');
+
   document.getElementById('loadMoreBtn').addEventListener('click', function() {
-    const allEntries = document.querySelectorAll('.log-entry');
-    const hiddenEntries = document.querySelectorAll('.log-entry[style*="display: none"]');
+    // 1. Hide the current log
+    logs[currentLogIndex].style.display = 'none';
 
-    if (hiddenEntries.length > 0) {
-      // 1. Hide everything currently visible
-      allEntries.forEach(entry => {
-        entry.style.display = 'none';
-      });
+    // 2. Move to the next index (and loop back to 0 if at the end)
+    currentLogIndex = (currentLogIndex + 1) % logs.length;
 
-      // 2. Reveal the next "encrypted" log
-      hiddenEntries[0].style.display = 'block';
+    // 3. Show the next log
+    logs[currentLogIndex].style.display = 'block';
 
-      // 3. Reset view to top for the new story
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    // 4. Reset scroll to top for the new story
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      // 4. Update Button Text logic
-      if (hiddenEntries.length === 1) {
-        this.innerText = "RELOAD LATEST LOG";
-        this.onclick = function() { location.reload(); };
-      } else {
+    // 5. Update button text based on which log is active
+    if (currentLogIndex === 0) {
+        this.innerText = "DECRYPT PREVIOUS LOGS";
+    } else {
         this.innerText = "DECRYPT NEXT LOG";
-      }
     }
   });
 </script>
+
 
 
 
