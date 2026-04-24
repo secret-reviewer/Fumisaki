@@ -46,6 +46,8 @@
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 0.8rem;
+   min-width: 180px; /* Ensures buttons stay the same size */
+  margin: 5px;      /* Adds a small breathing room */
 }
 
 .load-more-style:hover {
@@ -194,36 +196,44 @@
   </div>
 </div>
 
-<!-- The Load More Button -->
-<div style="text-align: center; margin-top: 40px;">
-  <button id="loadMoreBtn" class="load-more-style">DECRYPT PREVIOUS TRIPS</button>
+<!-- Archive Navigation -->
+<div style="text-align: center; margin-top: 50px; display: flex; justify-content: center; gap: 15px; padding: 0 20px;">
+  <button id="prevBtn" class="load-more-style">PREVIOUS FILE</button>
+  <button id="nextBtn" class="load-more-style">DECRYPT NEXT</button>
 </div>
 
+
 <script>
-  let currentLogIndex = 0; // Starts at Trip 1
+  let currentLogIndex = 0;
   const logs = document.querySelectorAll('.log-entry');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
 
-  document.getElementById('loadMoreBtn').addEventListener('click', function() {
-    // 1. Hide the current log
+  function updateView(newIndex) {
+    // Hide current log
     logs[currentLogIndex].style.display = 'none';
-
-    // 2. Move to the next index (and loop back to 0 if at the end)
-    currentLogIndex = (currentLogIndex + 1) % logs.length;
-
-    // 3. Show the next log
+    
+    // Update to new log index
+    currentLogIndex = newIndex;
+    
+    // Show the new log
     logs[currentLogIndex].style.display = 'block';
-
-    // 4. Reset scroll to top for the new story
+    
+    // Standard "Disciplined" reset to top of page
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
-    // 5. Update button text based on which log is active
-    if (currentLogIndex === 0) {
-        this.innerText = "DECRYPT PREVIOUS LOGS";
-    } else {
-        this.innerText = "DECRYPT NEXT LOG";
-    }
+  nextBtn.addEventListener('click', () => {
+    let index = (currentLogIndex + 1) % logs.length;
+    updateView(index);
+  });
+
+  prevBtn.addEventListener('click', () => {
+    let index = (currentLogIndex - 1 + logs.length) % logs.length;
+    updateView(index);
   });
 </script>
+
 
 
 
