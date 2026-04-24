@@ -34,7 +34,26 @@
 
     footer { text-align: center; padding: 80px 20px; color: #444; font-size: 0.8rem; border-top: 1px solid #222; margin-top: 100px; }
     .back-btn { display: inline-block; margin-bottom: 20px; color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
-  </style>
+ 
+ .load-more-style {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 12px 30px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.load-more-style:hover {
+  background: var(--primary);
+  color: #fff;
+}
+ 
+ </style>
 </head>
 <body>
 
@@ -44,12 +63,12 @@
   <a href="contact.html">Contact</a>
 </nav>
 
-<div class="container">
-  <a href="index.html" class="back-btn">← BACK TO LOG</a><br>
-  
-  <span class="tag">Rider Log Entry #003</span>
-  
-  <h1>2023: The 6,000km Redemption</h1>
+<div id="log-container">
+  <!-- TRIP 1: Rider Log Entry #003 (Visible by default) -->
+  <div class="log-entry">
+    <span class="tag">Rider Log Entry #003</span>
+    <h1>2023: The 6,000km Redemption</h1>
+
   <p class="lead">Returning to Thailand over a decade later. From mechanical failures and flat tires to train-hopping through the heart of the country.</p>
   
   <div class="featured-image" style="background-image: url('https://unsplash.com'); background-size: cover; background-position: center;"></div>
@@ -137,6 +156,26 @@
 
     footer { text-align: center; padding: 80px 20px; color: #444; font-size: 0.8rem; border-top: 1px solid #222; margin-top: 100px; }
     .back-btn { display: inline-block; margin-bottom: 20px; color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+  
+    .load-more-style {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 12px 30px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.load-more-style:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+  
   </style>
 </head>
 <body>
@@ -148,11 +187,12 @@
 </nav>
 
 <div class="container">
-  <a href="index.html" class="back-btn">← BACK TO LOG</a><br>
   
-  <span class="tag">Rider Log Entry #002</span>
+  <!-- TRIP 2: Rider Log Entry #002 (Hidden initially) -->
+  <div class="log-entry" style="display: none;">
+    <span class="tag">Rider Log Entry #002</span>
+    <h1>The 14-Day Rush: Laos & MHS</h1>
   
-  <h1>The 14-Day Rush: Laos & MHS</h1>
   <p class="lead">A "touch-and-go" mission across four borders. 14 days of field-camp intensity, winding Laos mountain passes, and the brutal reality of the road.</p>
   
   <div class="featured-image" style="background-image: url('https://unsplash.com'); background-size: cover; background-position: center;"></div>
@@ -238,7 +278,27 @@
 
     footer { text-align: center; padding: 80px 20px; color: #444; font-size: 0.8rem; border-top: 1px solid #222; margin-top: 100px; }
     .back-btn { display: inline-block; margin-bottom: 20px; color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
-  </style>
+ 
+.load-more-style {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 12px 30px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.load-more-style:hover {
+  background: var(--primary);
+  color: #fff;
+}
+ 
+
+ </style>
 </head>
 <body>
 
@@ -249,9 +309,11 @@
 </nav>
 
 <div class="container">
-  <a href="index.html" class="back-btn">← BACK TO LOG</a><br>
   
-  <span class="tag">Rider Log Entry #001</span>
+  <!-- TRIP 3: Rider Log Entry #001 (Hidden initially) -->
+  <div class="log-entry" style="display: none;">
+    <span class="tag">Rider Log Entry #001</span>
+    <h1>The Hatyai Run</h1>
   
   <h1>Malaysia ➔ Thailand: The Hatyai Run</h1>
   <p class="lead">Back in 2012, crossing the border on two wheels was more than just a trip—it was a rite of passage. Here is the breakdown of the 4-day grind.</p>
@@ -285,6 +347,32 @@
     <p>Whether you're on a Class 2 monster or a 2B KRR, the road treats everyone the same. Expect the unexpected, because things usually don't go your way—and that's where the fun is.</p>
   </div>
 </div>
+
+<!-- The Load More Button -->
+<div style="text-align: center; margin-top: 40px;">
+  <button id="loadMoreBtn" class="load-more-style">LOAD PREVIOUS LOGS</button>
+</div>
+
+<script>
+  document.getElementById('loadMoreBtn').addEventListener('click', function() {
+    // Find all hidden log entries
+    const hiddenEntries = document.querySelectorAll('.log-entry[style*="display: none"]');
+    
+    // Show the next one in the list
+    if (hiddenEntries.length > 0) {
+      hiddenEntries[0].style.display = 'block';
+      
+      // Smooth scroll to the newly revealed content
+      hiddenEntries[0].scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Hide the button if no more logs are left
+    if (hiddenEntries.length <= 1) {
+      this.style.display = 'none';
+    }
+  });
+</script>
+
 
 <footer>
   &copy; 2012 - 2024 Secret Reviewer | The Thailand Series
