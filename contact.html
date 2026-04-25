@@ -1,80 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact | Secret Reviewer</title>
-  
-  <link rel="preconnect" href="https://googleapis.com">
-  <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-  
-  <style>
-    :root { --primary: #ff0000; --bg: #0a0a0a; --card: #161616; --text: #ececec; }
-    body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Contact | Secret Reviewer</title>
+    <!-- Keep your existing fonts but add the Tech Mono font for the theme -->
+    <link href="https://googleapis.com" rel="stylesheet">
     
-    nav { display: flex; justify-content: center; gap: 30px; padding: 20px; background: rgba(0,0,0,0.9); position: sticky; top: 0; backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid #222; }
-    nav a { color: #fff; text-decoration: none; font-weight: 600; font-size: 0.8rem; transition: 0.3s; opacity: 0.6; text-transform: uppercase; }
-    nav a:hover { opacity: 1; color: var(--primary); }
+    <style>
+        :root { 
+            --primary: #dc2626; 
+            --bg: #080808; 
+            --card: rgba(14, 14, 14, 0.9); 
+            --text: #ececec; 
+        }
+        
+        body { 
+            margin: 0; 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text); 
+            line-height: 1.8; 
+        }
 
-    .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
-    
-    .contact-section { background: var(--card); padding: 40px; border-radius: 12px; border: 1px solid #333; }
-    .contact-form { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; }
-    .contact-form input, .contact-form textarea { padding: 15px; background: #000; border: 1px solid #333; color: #fff; border-radius: 6px; font-family: inherit; }
-    .contact-form button { background: var(--primary); color: #000; border: none; padding: 15px; font-weight: 900; text-transform: uppercase; cursor: pointer; border-radius: 6px; transition: 0.3s; }
-    .contact-form button:hover { background: #fff; color: #000; }
+        /* ── Cyberpunk Navbar ── */
+        nav { 
+            display: flex; 
+            justify-content: center; 
+            gap: 30px; 
+            padding: 15px; 
+            background: rgba(0,0,0,0.9); 
+            border-bottom: 1px solid rgba(220, 38, 38, 0.2);
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+            backdrop-filter: blur(20px);
+        }
+        nav a { 
+            color: #888; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 0.7rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        nav a:hover { color: var(--primary); }
 
-    #disqus_thread { margin-top: 60px; padding: 20px; background: var(--card); border-radius: 12px; border: 1px solid #222; }
+        .container { max-width: 800px; margin: 60px auto; padding: 0 20px; }
 
-    footer { text-align: center; padding: 60px; color: #444; font-size: 0.8rem; border-top: 1px solid #222; margin-top: 50px; }
-  </style>
+        /* ── Styled Contact Section ── */
+        .contact-section { 
+            background: var(--card); 
+            padding: 40px; 
+            border: 1px solid rgba(220, 38, 38, 0.15);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .tag { 
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem; 
+            color: var(--primary); 
+            text-transform: uppercase; 
+            border: 1px solid rgba(220, 38, 38, 0.4); 
+            padding: 4px 10px; 
+            letter-spacing: 1px;
+            background: rgba(220, 38, 38, 0.05);
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        h2 { 
+            font-size: 2.5rem; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            color: #fff; 
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+
+        .contact-form { display: flex; flex-direction: column; gap: 15px; }
+        
+        .contact-form input, .contact-form textarea { 
+            padding: 15px; 
+            background: #000; 
+            border: 1px solid #333; 
+            color: #fff; 
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* ── The "Decrypting" Button Style ── */
+        .btn-style {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 14px 28px;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-style:hover {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.4);
+        }
+
+        .decrypting {
+            color: #fff !important;
+            background: var(--primary) !important;
+            letter-spacing: 4px !important;
+            text-shadow: 2px 0 #00fff9, -2px 0 #ff00c1;
+        }
+
+        #disqus_thread { 
+            margin-top: 60px; 
+            padding: 20px; 
+            background: rgba(18, 18, 18, 0.5); 
+            border: 1px solid rgba(220, 38, 38, 0.15);
+        }
+
+        footer { text-align: center; padding: 60px; color: #444; font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; }
+    </style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html">Home</a>
-  <a href="contact.html">Contact</a>
+    <a href="index.html">Home</a>
+    <a href="contact.html">Contact</a>
 </nav>
 
 <div class="container">
-
-  <!-- Contact Form -->
-  <div class="contact-section">
-    <span style="font-size: 0.7rem; font-weight: 900; color: var(--primary); border: 1px solid var(--primary); padding: 2px 8px; border-radius: 4px;">MESSAGE</span>
-    <h2>Contact Me</h2>
-    <p>Send a private message to discuss about Bikes!</p>
-    
-    <form class="contact-form" action="https://formspree.io/f/mojypvej" method="POST">
+    <div class="contact-section">
+        <span class="tag">System Channel: Secure</span>
+        <h2>Contact Me</h2>
+        <p style="color: #aaa; margin-bottom: 30px;">Transmit a private message regarding bike operations.</p>
+        
+       <form class="contact-form" action="https://formspree.io/f/mojypvej" method="POST">
       <input type="email" name="email" placeholder="Your Email" required>
       <textarea name="message" placeholder="What's on your mind?" rows="4" required></textarea>
       <button type="submit">Send Message</button>
     </form>
   </div>
 
-  <!-- Chatbot / Disqus Section -->
-  <div id="disqus_thread"></div>
+
+    <div id="disqus_thread"></div>
+</div>
+
 <script>
-    /**
-    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    // ── Decrypt Script for Button ──
+    const submitBtn = document.getElementById('submitBtn');
+    const chars = "ABCDEF0123456789/X$#@%";
+
+    function decryptButton(e) {
+        // Let the form submit, but show animation first
+        let iterations = 0;
+        const originalText = "TRANSMIT MESSAGE";
+        submitBtn.classList.add('decrypting');
+
+        const interval = setInterval(() => {
+            submitBtn.innerText = originalText.split("")
+                .map((char, index) => {
+                    if (index < iterations) return originalText[index];
+                    return chars[Math.floor(Math.random() * chars.length)];
+                })
+                .join("");
+
+            if (iterations >= originalText.length) {
+                clearInterval(interval);
+            }
+
+            iterations += 1 / 3;
+        }, 30);
+    }
+
+    submitBtn.addEventListener('click', decryptButton);
+
+    // ── Disqus Embed Script ──
     /*
     var disqus_config = function () {
-    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = PAGE_URL;  
+        this.page.identifier = PAGE_IDENTIFIER; 
     };
     */
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://https-secret-reviewer-com.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
+
+    (function () {
+        var d = document, s = d.createElement('script');
+
+        // Replace with your actual Disqus shortname
+        s.src = 'https://https-secret-reviewer-com.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+
+        (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
 <footer>
-  © 2026 Secret Reviewer | Ride Safe 🏍️
+    &copy; 2026 SECRET REVIEWER // OPERATIONAL CONTACT
 </footer>
 
 </body>
