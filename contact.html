@@ -150,15 +150,21 @@
     <div id="disqus_thread"></div>
 </div>
 
+<div id="disqus_thread"></div>
+
 <script>
-    // ── Decrypt Script for Button ──
+document.addEventListener('DOMContentLoaded', function () {
+
+    // ── Decrypt Script ──
     const submitBtn = document.getElementById('submitBtn');
     const chars = "ABCDEF0123456789/X$#@%";
 
-    function decryptButton(e) {
-        // Let the form submit, but show animation first
+    function decryptButton() {
         let iterations = 0;
         const originalText = "TRANSMIT MESSAGE";
+
+        if (!submitBtn) return;
+
         submitBtn.classList.add('decrypting');
 
         const interval = setInterval(() => {
@@ -177,26 +183,24 @@
         }, 30);
     }
 
-    submitBtn.addEventListener('click', decryptButton);
+    if (submitBtn) {
+        submitBtn.addEventListener('click', decryptButton);
+    }
 
-    // ── Disqus Embed Script ──
-    /*
+    // ── Disqus ──
     var disqus_config = function () {
-        this.page.url = PAGE_URL;  
-        this.page.identifier = PAGE_IDENTIFIER; 
+        this.page.url = window.location.href;
+        this.page.identifier = window.location.pathname;
     };
-    */
 
     (function () {
         var d = document, s = d.createElement('script');
-
-        // Replace with your actual Disqus shortname
-        s.src = 'https://https-secret-reviewer-com.disqus.com/embed.js';
-
+        s.src = 'https://YOUR-SHORTNAME.disqus.com/embed.js'; // <-- FIX THIS
         s.setAttribute('data-timestamp', +new Date());
-
         (d.head || d.body).appendChild(s);
     })();
+
+});
 </script>
 
 <footer>
