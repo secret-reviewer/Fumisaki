@@ -2,17 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact | Secret Reviewer</title>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-
   <script>
     tailwind.config = {
       theme: {
@@ -20,37 +17,36 @@
           fontFamily: {
             sans: ['Barlow Condensed', 'sans-serif'],
             mono: ['"Share Tech Mono"', 'monospace'],
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    };
   </script>
 
   <style>
+    /* ── CSS Variables ── */
     :root {
       --red: #dc2626;
+      --red-dim: rgba(220, 38, 38, 0.15);
+      --red-glow: rgba(220, 38, 38, 0.6);
       --bg: #060606;
-      --surface: rgba(10,10,10,0.88);
+      --surface: rgba(10, 10, 10, 0.85);
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      margin: 0;
-      background: var(--bg);
+      background-color: var(--bg);
       color: #ececec;
       font-family: 'Barlow Condensed', sans-serif;
-      cursor: none;
+      margin: 0;
       overflow-x: hidden;
+      cursor: none;
     }
+    .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
-    /* Cursor */
+    /* ── Custom Cursor ── */
     #cursor {
       position: fixed;
       width: 12px;
@@ -60,8 +56,9 @@
       pointer-events: none;
       z-index: 99999;
       transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+      mix-blend-mode: screen;
     }
-
     #cursor-ring {
       position: fixed;
       width: 36px;
@@ -71,85 +68,170 @@
       pointer-events: none;
       z-index: 99998;
       transform: translate(-50%, -50%);
+      transition: transform 0.12s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
     }
 
-    /* Scanline effect */
+    /* ── Animations ── */
+    @keyframes pulse-red {
+      0%, 100% { box-shadow: 0 0 6px rgba(220,38,38,0.3); }
+      50%       { box-shadow: 0 0 28px rgba(220,38,38,0.8), 0 0 60px rgba(220,38,38,0.25); }
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes borderFlash {
+      0%, 100% { border-color: rgba(220,38,38,0.18); }
+      50%       { border-color: rgba(220,38,38,0.55); }
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+    @keyframes scan {
+      from { top: -100%; }
+      to   { top: 100%; }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .animate-pulse-red     { animation: pulse-red 2.5s infinite; }
+    .animate-fade-slide-up { animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+    .animate-border-flash  { animation: borderFlash 3s infinite; }
+    .animate-pulse-dot     { animation: pulse-dot 2s infinite; }
+
+    /* ── CRT scanline overlay ── */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       background: repeating-linear-gradient(
         0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.04) 2px,
-        rgba(0,0,0,0.04) 4px
+        transparent, transparent 2px,
+        rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px
       );
       pointer-events: none;
       z-index: 9990;
     }
+    /* ── CRT scan sweep ── */
+    body::after {
+      content: "";
+      position: fixed;
+      top: -100%; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(
+        rgba(220,38,38,0) 0%,
+        rgba(220,38,38,0.04) 50%,
+        rgba(220,38,38,0) 100%
+      );
+      animation: scan 8s linear infinite;
+      pointer-events: none;
+      z-index: 9991;
+    }
 
-    /* Progress bar */
+    /* ── Progress bar ── */
     #progress-bar {
       height: 3px;
-      width: 0%;
       background: linear-gradient(90deg, #7f1d1d, #dc2626, #ff6666);
-      box-shadow: 0 0 15px rgba(220,38,38,0.8);
-      transition: width 0.08s ease;
+      box-shadow: 0 0 12px rgba(220,38,38,0.9), 0 0 24px rgba(220,38,38,0.4);
+      width: 0%;
+      transition: width 0.08s ease-out;
     }
 
-    /* Navbar */
-    #navbar {
-      transition: 0.3s;
-    }
-
+    /* ── Navbar ── */
+    #navbar { transition: all 0.4s ease; }
     .nav-scrolled {
-      background: rgba(4,4,4,0.96);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(220,38,38,0.3);
+      background: rgba(4,4,4,0.97) !important;
+      border-bottom-color: rgba(127,29,29,0.5) !important;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
     }
 
-    /* Contact Card */
+    /* ── Mobile menu ── */
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+      background: rgba(4,4,4,0.99);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+    .mobile-menu.open {
+      max-height: 320px;
+      border-bottom: 1px solid rgba(127,29,29,0.3);
+    }
+
+    /* ── Contact box ── */
     .contact-box {
-      background: var(--surface);
+      background: rgba(10,10,10,0.75);
       border: 1px solid rgba(220,38,38,0.18);
       padding: 50px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      position: relative;
+      animation: borderFlash 3s infinite;
     }
 
+    /* Corner accents */
+    .contact-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 32px; height: 32px;
+      border-top: 1px solid rgba(220,38,38,0.5);
+      border-left: 1px solid rgba(220,38,38,0.5);
+      pointer-events: none;
+    }
+    .contact-box::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 32px; height: 32px;
+      border-bottom: 1px solid rgba(220,38,38,0.5);
+      border-right: 1px solid rgba(220,38,38,0.5);
+      pointer-events: none;
+    }
+
+    /* ── Tag ── */
     .tag {
       display: inline-block;
       font-family: 'Share Tech Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       color: var(--red);
-      border: 1px solid rgba(220,38,38,0.5);
-      padding: 4px 12px;
+      border: 1px solid rgba(220,38,38,0.4);
+      padding: 5px 14px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      background: rgba(220,38,38,0.05);
+      background: rgba(220,38,38,0.06);
     }
 
-    .title {
-      font-size: clamp(2.5rem, 5vw, 4rem);
+    /* ── Entry title ── */
+    .entry-title {
+      font-size: clamp(2.5rem, 6vw, 4rem);
       font-weight: 900;
-      margin: 20px 0 10px;
+      margin: 22px 0 10px;
+      color: #fff;
+      line-height: 1.0;
       text-transform: uppercase;
-      line-height: 1;
+      letter-spacing: -0.02em;
     }
 
+    /* ── Lead ── */
     .lead {
+      font-size: 1.05rem;
       color: #999;
       border-left: 2px solid var(--red);
       padding-left: 20px;
       margin-bottom: 40px;
-      font-size: 1.05rem;
+      line-height: 1.75;
     }
 
-    /* Form */
+    /* ── Form fields ── */
     .contact-form {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 16px;
     }
 
     .contact-form input,
@@ -157,39 +239,57 @@
       width: 100%;
       background: #050505;
       border: 1px solid rgba(255,255,255,0.08);
-      padding: 16px;
-      color: white;
-      font-family: inherit;
+      padding: 14px 16px;
+      color: #ececec;
+      font-family: 'Barlow Condensed', sans-serif;
       font-size: 1rem;
       outline: none;
+      transition: border-color 0.25s ease;
     }
-
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+      color: #444;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
     .contact-form input:focus,
     .contact-form textarea:focus {
       border-color: rgba(220,38,38,0.5);
+      box-shadow: 0 0 12px rgba(220,38,38,0.08);
     }
 
-    /* Button */
+    /* ── Submit button ── */
     .submit-btn {
       background: transparent;
       color: var(--red);
       border: 1px solid rgba(220,38,38,0.5);
-      padding: 16px;
+      padding: 14px 28px;
       font-family: 'Share Tech Mono', monospace;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 2px;
       cursor: pointer;
-      transition: 0.3s;
+      font-size: 0.78rem;
+      transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      width: 100%;
     }
-
-    .submit-btn:hover {
-      background: rgba(220,38,38,0.1);
-      box-shadow: 0 0 20px rgba(220,38,38,0.3);
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--red);
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
     }
+    .submit-btn:hover::before { transform: translateX(0); }
+    .submit-btn:hover { color: #fff; box-shadow: 0 0 20px rgba(220,38,38,0.35); }
+    .submit-btn span { position: relative; z-index: 1; }
 
+    /* ── Decrypt scramble ── */
     .decrypting {
       color: #fff !important;
       background: var(--red) !important;
@@ -197,208 +297,349 @@
       text-shadow: 2px 0 #00fff9, -2px 0 #ff00c1;
     }
 
-    /* Disqus */
+    /* ── Section divider ── */
+    .section-rule {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(220,38,38,0.3) 30%, rgba(220,38,38,0.3) 70%, transparent);
+      margin: 60px 0;
+    }
+
+    /* ── Disqus wrapper ── */
     #disqus_thread {
-      margin-top: 60px;
-      background: var(--surface);
+      background: rgba(10,10,10,0.75);
       border: 1px solid rgba(220,38,38,0.18);
       padding: 40px;
     }
 
-    footer {
-      padding: 80px 20px;
+    /* ── Noise overlay ── */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      opacity: 0.02;
+      pointer-events: none;
+      z-index: 9989;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px;
+    }
+
+    /* ── Success message ── */
+    .success-msg {
+      display: none;
       text-align: center;
-      color: #666;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      margin-top: 80px;
+      padding: 20px;
+      border: 1px solid rgba(220,38,38,0.3);
+      background: rgba(220,38,38,0.05);
       font-family: 'Share Tech Mono', monospace;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       letter-spacing: 2px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .contact-box { padding: 28px 20px; }
     }
   </style>
 </head>
 <body>
 
-<!-- Cursor -->
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
+  <!-- Noise overlay -->
+  <div class="noise-overlay"></div>
 
-<!-- Progress -->
-<div class="fixed top-0 left-0 w-full z-[9999]">
-  <div id="progress-bar"></div>
-</div>
+  <!-- Custom cursor -->
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
 
-<!-- Navbar -->
-<nav id="navbar" class="fixed top-0 left-0 w-full z-[900] bg-transparent">
-  <div class="max-w-6xl mx-auto px-5 flex justify-between items-center h-16">
+  <!-- ════ PROGRESS BAR ════ -->
+  <div class="fixed top-0 left-0 w-full z-[9999] bg-transparent" style="height:3px">
+    <div id="progress-bar"></div>
+  </div>
 
-    <a href="index.html" class="flex items-center gap-3">
-      <div class="w-8 h-8 border border-red-600 flex items-center justify-center">
-        <span class="text-red-500 text-s font-mono font-bold">SR</span>
+  <!-- ════ NAVBAR ════ -->
+  <nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+    <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-2 group">
+        <div class="w-7 h-7 border border-red-600 flex items-center justify-center group-hover:bg-red-600/20 transition-all duration-300 relative overflow-hidden">
+          <div class="absolute inset-0 bg-red-600/0 group-hover:bg-red-600/10 transition-colors duration-300"></div>
+          <span class="text-red-500 text-sm font-mono-tech font-bold relative z-10">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+      </a>
+
+      <!-- Desktop links -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html"   class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+        <a href="gallery.html" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+        <a href="contact.html" class="text-red-500 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          YouTube
+        </a>
       </div>
-      <span class="text-white font-bold tracking-widest uppercase text-sm">
-        Secret Reviewer
-      </span>
-    </a>
 
-    <div class="flex gap-8">
-      <a href="index.html" class="text-gray-400 hover:text-red-400 uppercase text-s font-bold tracking-widest">Home</a>
-      <a href="gallery.html" class="text-gray-400 hover:text-red-400 uppercase text-s font-bold tracking-widest">Gallery</a>
-      <a href="contact.html" class="text-red-500 uppercase text-s font-bold tracking-widest">Contact</a>
+      <!-- Mobile toggle -->
+      <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+        <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
     </div>
 
-  </div>
-</nav>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="mobile-menu md:hidden">
+      <div class="flex flex-col px-5 py-4 gap-4">
+        <a href="index.html"   class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+        <a href="gallery.html" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+        <a href="contact.html" class="mobile-link text-red-500 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          YouTube
+        </a>
+      </div>
+    </div>
+  </nav>
 
-<!-- Main -->
-<main class="pt-32 pb-24 px-5">
-  <div class="max-w-3xl mx-auto">
+  <!-- ════ MAIN ════ -->
+  <main class="pt-28 pb-24 px-5">
+    <div class="max-w-3xl mx-auto">
 
-    <div class="contact-box">
+      <!-- Classification header -->
+      <div class="flex items-center gap-2 mb-6 animate-fade-slide-up" style="animation-delay:0s;">
+        <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse-dot"></div>
+        <span class="font-mono-tech text-red-500/60 tracking-[0.35em] uppercase text-xs">Secure Channel // Encrypted Transmission</span>
+        <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse-dot"></div>
+      </div>
 
-      <span class="tag">Secure Message Channel</span>
+      <!-- Contact box -->
+      <div class="contact-box animate-fade-slide-up" style="animation-delay:0.1s;">
 
-      <h1 class="title">Contact Me</h1>
+        <span class="tag">Secure Message Channel</span>
+        <h1 class="entry-title">Contact Me</h1>
 
-      <p class="lead">
-        Send a private message to discuss rides, routes, gear setups,
-        road stories, or motorcycle madness.
-      </p>
+        <p class="lead">
+          Send a private message to discuss rides, routes, gear setups,
+          road stories, or motorcycle madness.
+        </p>
 
-      <!-- Form -->
-      <form
-        class="contact-form"
-        action="https://formspree.io/f/mojypvej"
-        method="POST"
-      >
-        <input
-          type="email"
-          name="email"
-          placeholder="Your Email"
-          required
+        <!-- Top divider -->
+        <div class="h-px w-full bg-gradient-to-r from-transparent via-red-600/30 to-transparent mb-8"></div>
+
+        <!-- Form -->
+        <form
+          class="contact-form"
+          action="https://formspree.io/f/mojypvej"
+          method="POST"
         >
+          <div>
+            <label class="font-mono-tech text-xs text-red-500/70 tracking-widest uppercase block mb-2">// Your Email</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="Operator Email Address"
+              required
+            />
+          </div>
 
-        <textarea
-          name="message"
-          rows="6"
-          placeholder="Transmit your message..."
-          required
-        ></textarea>
+          <div>
+            <label class="font-mono-tech text-xs text-red-500/70 tracking-widest uppercase block mb-2">// Message</label>
+            <textarea
+              name="message"
+              rows="6"
+              placeholder="Transmit your message..."
+              required
+            ></textarea>
+          </div>
 
-        <button
-          id="submitBtn"
-          class="submit-btn"
-          type="submit"
-        >
-          TRANSMIT MESSAGE
-        </button>
-      </form>
+          <button id="submitBtn" class="submit-btn" type="submit">
+            <span>TRANSMIT MESSAGE</span>
+          </button>
+        </form>
+
+        <div class="success-msg" id="successMsg">
+          ✓ &nbsp; Transmission received — standing by.
+        </div>
+
+      </div><!-- /contact-box -->
+
+      <hr class="section-rule" />
+
+      <!-- ── Channel info strip ── -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 animate-fade-slide-up" style="animation-delay:0.2s;">
+
+        <div class="border border-red-900/30 p-5 text-center hover:border-red-600/40 transition-colors duration-300">
+          <div class="font-mono-tech text-red-600/50 text-xs tracking-widest uppercase mb-2">Channel</div>
+          <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+             class="text-gray-300 text-sm font-bold tracking-wider hover:text-red-400 transition-colors duration-200">
+            @Secretreviewer2
+          </a>
+        </div>
+
+        <div class="border border-red-900/30 p-5 text-center hover:border-red-600/40 transition-colors duration-300">
+          <div class="font-mono-tech text-red-600/50 text-xs tracking-widest uppercase mb-2">Topic</div>
+          <p class="text-gray-300 text-sm font-bold tracking-wider">Motorcycles &amp; Life</p>
+        </div>
+
+        <div class="border border-red-900/30 p-5 text-center hover:border-red-600/40 transition-colors duration-300">
+          <div class="font-mono-tech text-red-600/50 text-xs tracking-widest uppercase mb-2">Response</div>
+          <p class="text-gray-300 text-sm font-bold tracking-wider">As Soon As Possible</p>
+        </div>
+
+      </div>
+
+      <hr class="section-rule" />
+
+      <!-- ── Disqus ── -->
+      <div class="mb-4 flex items-center gap-2">
+        <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse-dot"></div>
+        <span class="font-mono-tech text-red-500/60 tracking-[0.35em] uppercase text-xs">Open Comms // Community</span>
+      </div>
+      <div id="disqus_thread"></div>
 
     </div>
+  </main>
 
-    <!-- Disqus -->
-    <div id="disqus_thread"></div>
+  <!-- ════ FOOTER ════ -->
+  <footer class="py-16 px-5 border-t border-white/5">
+    <div class="max-w-5xl mx-auto">
+      <div class="flex flex-col items-center gap-6">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+            <span class="font-mono-tech text-red-600 text-sm font-bold">SR</span>
+          </div>
+          <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+        </div>
+        <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+          <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors duration-300">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <span class="font-mono-tech text-sm tracking-widest uppercase">Watch on YouTube</span>
+        </a>
+        <div class="w-full max-w-sm h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
-  </div>
-</main>
+  <!-- ════ JAVASCRIPT ════ -->
+  <script>
+    // ── Custom cursor ──
+    (function () {
+      var cursor = document.getElementById('cursor');
+      var ring   = document.getElementById('cursor-ring');
+      var mx = 0, my = 0, rx = 0, ry = 0;
 
-<footer>
-  © 2026 SECRET REVIEWER // RIDE SAFE 🏍️
-</footer>
+      document.addEventListener('mousemove', function (e) {
+        mx = e.clientX; my = e.clientY;
+        cursor.style.left = mx + 'px';
+        cursor.style.top  = my + 'px';
+      });
+      (function animRing() {
+        rx += (mx - rx) * 0.12;
+        ry += (my - ry) * 0.12;
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+        requestAnimationFrame(animRing);
+      })();
+      document.querySelectorAll('a, button').forEach(function (el) {
+        el.addEventListener('mouseenter', function () {
+          ring.style.width = '56px'; ring.style.height = '56px';
+          ring.style.borderColor = 'rgba(220,38,38,0.8)';
+        });
+        el.addEventListener('mouseleave', function () {
+          ring.style.width = '36px'; ring.style.height = '36px';
+          ring.style.borderColor = 'rgba(220,38,38,0.5)';
+        });
+      });
+    })();
 
-<script>
-  /* Cursor */
-  (function () {
-    const cursor = document.getElementById("cursor");
-    const ring = document.getElementById("cursor-ring");
+    // ── Progress bar ──
+    window.addEventListener('scroll', function () {
+      var scrollTop    = document.documentElement.scrollTop || document.body.scrollTop;
+      var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      document.getElementById('progress-bar').style.width = pct + '%';
+    }, { passive: true });
 
-    let mx = 0, my = 0, rx = 0, ry = 0;
+    // ── Navbar scroll effect ──
+    window.addEventListener('scroll', function () {
+      var nav = document.getElementById('navbar');
+      if (window.scrollY > 20) nav.classList.add('nav-scrolled');
+      else nav.classList.remove('nav-scrolled');
+    }, { passive: true });
 
-    document.addEventListener("mousemove", function (e) {
-      mx = e.clientX;
-      my = e.clientY;
-      cursor.style.left = mx + "px";
-      cursor.style.top = my + "px";
+    // ── Mobile menu toggle ──
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+      var menu      = document.getElementById('mobile-menu');
+      var openIcon  = document.getElementById('menu-icon-open');
+      var closeIcon = document.getElementById('menu-icon-close');
+      var isOpen    = menu.classList.toggle('open');
+      openIcon.style.display  = isOpen ? 'none' : '';
+      closeIcon.style.display = isOpen ? ''     : 'none';
+    });
+    document.querySelectorAll('.mobile-link').forEach(function (link) {
+      link.addEventListener('click', function () {
+        document.getElementById('mobile-menu').classList.remove('open');
+        document.getElementById('menu-icon-open').style.display  = '';
+        document.getElementById('menu-icon-close').style.display = 'none';
+      });
     });
 
-    function animateRing() {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      ring.style.left = rx + "px";
-      ring.style.top = ry + "px";
-      requestAnimationFrame(animateRing);
-    }
+    // ── Decrypt scramble on submit ──
+    (function () {
+      var btn       = document.getElementById('submitBtn');
+      var span      = btn.querySelector('span');
+      var original  = 'TRANSMIT MESSAGE';
+      var chars     = 'ABCDEF0123456789/X$#@%';
+      var running   = false;
 
-    animateRing();
-  })();
+      btn.addEventListener('click', function () {
+        if (running) return;
+        running = true;
+        btn.classList.add('decrypting');
+        var iterations = 0;
 
-  /* Progress */
-  window.addEventListener("scroll", function () {
-    const scrollTop = document.documentElement.scrollTop;
-    const scrollHeight =
-      document.documentElement.scrollHeight -
-      document.documentElement.clientHeight;
+        var interval = setInterval(function () {
+          span.innerText = original.split('').map(function (char, index) {
+            if (index < iterations) return original[index];
+            return char === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)];
+          }).join('');
 
-    const percent = (scrollTop / scrollHeight) * 100;
-    document.getElementById("progress-bar").style.width = percent + "%";
+          if (iterations >= original.length) {
+            clearInterval(interval);
+            span.innerText = original;
+            btn.classList.remove('decrypting');
+            running = false;
+          }
+          iterations += 1 / 3;
+        }, 30);
+      });
+    })();
 
-    const nav = document.getElementById("navbar");
-    if (window.scrollY > 20) {
-      nav.classList.add("nav-scrolled");
-    } else {
-      nav.classList.remove("nav-scrolled");
-    }
-  });
+    // ── Disqus ──
+    var disqus_config = function () {
+      this.page.url        = window.location.href;
+      this.page.identifier = window.location.pathname;
+    };
+    (function () {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://https-secret-reviewer-com.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
 
-  /* Decrypt Button */
-  const submitBtn = document.getElementById("submitBtn");
-  const chars = "ABCDEF0123456789/X$#@%";
-
-  function decryptButton() {
-    let iterations = 0;
-    const originalText = "TRANSMIT MESSAGE";
-
-    submitBtn.classList.add("decrypting");
-
-    const interval = setInterval(() => {
-      submitBtn.innerText = originalText
-        .split("")
-        .map((char, index) => {
-          if (index < iterations) return originalText[index];
-          return chars[Math.floor(Math.random() * chars.length)];
-        })
-        .join("");
-
-      if (iterations >= originalText.length) {
-        clearInterval(interval);
-      }
-
-      iterations += 1 / 3;
-    }, 30);
-  }
-
-  submitBtn.addEventListener("click", decryptButton);
-
-  /* Disqus */
-  var disqus_config = function () {
-    this.page.url = window.location.href;
-    this.page.identifier = window.location.pathname;
-  };
-
-  (function () {
-    var d = document, s = d.createElement("script");
-
-    s.src = "https://https-secret-reviewer-com.disqus.com/embed.js";
-
-    s.setAttribute("data-timestamp", +new Date());
-
-    (d.head || d.body).appendChild(s);
-  })();
-</script>
-
-<noscript>
-Please enable JavaScript to view the comments powered by Disqus.
-</noscript>
+  <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
 
 </body>
 </html>
