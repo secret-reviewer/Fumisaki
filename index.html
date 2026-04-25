@@ -6,14 +6,14 @@
   <title>Secret Reviewer | Motorcycle Blog</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'sans-serif'],
+            sans: ['Barlow Condensed', 'sans-serif'],
             mono: ['"Share Tech Mono"', 'monospace'],
           },
         },
@@ -21,65 +21,186 @@
     };
   </script>
   <style>
-    /* ── Base ── */
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { background-color: #080808; color: #ececec; font-family: 'Inter', sans-serif; margin: 0; }
+    /* ── CSS Variables ── */
+    :root {
+      --red: #dc2626;
+      --red-dim: rgba(220, 38, 38, 0.15);
+      --red-glow: rgba(220, 38, 38, 0.6);
+      --bg: #060606;
+      --surface: rgba(10, 10, 10, 0.85);
+    }
 
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: #ececec;
+      font-family: 'Barlow Condensed', sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+      cursor: none; /* custom cursor */
+    }
     .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+
+    /* ── Custom Cursor ── */
+    #cursor {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: var(--red);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+      mix-blend-mode: screen;
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(220,38,38,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.12s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+    }
+    body:hover #cursor { opacity: 1; }
+    a:hover ~ #cursor, button:hover ~ #cursor { width: 20px; height: 20px; }
 
     /* ── Animations ── */
     @keyframes flicker {
-      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
-      20%, 24%, 55% { opacity: 0.4; }
+      0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+      20%, 24%, 55% { opacity: 0.3; }
     }
     @keyframes pulse-red {
-      0%, 100% { box-shadow: 0 0 5px rgba(220, 38, 38, 0.3); }
-      50% { box-shadow: 0 0 25px rgba(220, 38, 38, 0.7), 0 0 50px rgba(220, 38, 38, 0.2); }
+      0%, 100% { box-shadow: 0 0 6px rgba(220,38,38,0.3); }
+      50% { box-shadow: 0 0 28px rgba(220,38,38,0.8), 0 0 60px rgba(220,38,38,0.25); }
     }
     @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes borderFlash {
-      0%, 100% { border-color: rgba(220, 38, 38, 0.25); }
-      50% { border-color: rgba(220, 38, 38, 0.7); }
+      0%, 100% { border-color: rgba(220,38,38,0.2); }
+      50%       { border-color: rgba(220,38,38,0.7); }
     }
     @keyframes pulse-dot {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+      50% { opacity: 0.3; }
     }
     @keyframes bounce-arrow {
       0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(6px); }
+      50%       { transform: translateX(-50%) translateY(8px); }
+    }
+    @keyframes scan {
+      from { top: -100%; }
+      to   { top: 100%; }
+    }
+    @keyframes glitch-1 {
+      0%,100% { clip-path: inset(0 0 98% 0); transform: translate(-2px, 0); }
+      20%     { clip-path: inset(20% 0 50% 0); transform: translate(2px, 0); }
+      40%     { clip-path: inset(60% 0 20% 0); transform: translate(-2px, 0); }
+      60%     { clip-path: inset(80% 0 5% 0); transform: translate(2px, 0); }
+      80%     { clip-path: inset(40% 0 60% 0); transform: translate(-2px, 0); }
+    }
+    @keyframes glitch-2 {
+      0%,100% { clip-path: inset(50% 0 30% 0); transform: translate(2px, 0); color: #00ffff; }
+      25%     { clip-path: inset(10% 0 80% 0); transform: translate(-2px, 0); }
+      50%     { clip-path: inset(70% 0 10% 0); transform: translate(2px, 0); color: var(--red); }
+      75%     { clip-path: inset(30% 0 50% 0); transform: translate(-2px, 0); }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes revealBar {
+      from { width: 0; }
+      to   { width: 100%; }
     }
 
-    .animate-flicker { animation: flicker 4s infinite; }
-    .animate-pulse-red { animation: pulse-red 2.5s infinite; }
-    .animate-fade-slide-up { animation: fadeSlideUp 0.6s ease forwards; }
-    .animate-border-flash { animation: borderFlash 3s infinite; }
-    .animate-pulse-dot { animation: pulse-dot 2s infinite; }
-    .animate-bounce-arrow { animation: bounce-arrow 2s ease-in-out infinite; }
+    .animate-flicker        { animation: flicker 5s infinite; }
+    .animate-pulse-red      { animation: pulse-red 2.5s infinite; }
+    .animate-fade-slide-up  { animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+    .animate-border-flash   { animation: borderFlash 3s infinite; }
+    .animate-pulse-dot      { animation: pulse-dot 2s infinite; }
+    .animate-bounce-arrow   { animation: bounce-arrow 2s ease-in-out infinite; }
 
     .neon-red-glow {
-      text-shadow: 0 0 20px rgba(220, 38, 38, 0.8), 0 0 40px rgba(220, 38, 38, 0.4);
+      text-shadow: 0 0 30px rgba(220,38,38,0.9), 0 0 60px rgba(220,38,38,0.5), 0 0 100px rgba(220,38,38,0.2);
+    }
+
+    /* ── Glitch Title ── */
+    .glitch-wrap { position: relative; display: inline-block; }
+    .glitch-wrap::before,
+    .glitch-wrap::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    .glitch-wrap::before {
+      color: #00ffff;
+      animation: glitch-1 4s infinite step-start;
+      opacity: 0.7;
+    }
+    .glitch-wrap::after {
+      color: var(--red);
+      animation: glitch-2 4s infinite step-start;
+      opacity: 0.7;
+    }
+
+    /* ── CRT scanline overlay ── */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.04) 2px,
+        rgba(0,0,0,0.04) 4px
+      );
+      pointer-events: none;
+      z-index: 9990;
+    }
+    /* ── CRT scan sweep ── */
+    body::after {
+      content: "";
+      position: fixed;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        rgba(220,38,38,0) 0%,
+        rgba(220,38,38,0.04) 50%,
+        rgba(220,38,38,0) 100%
+      );
+      animation: scan 8s linear infinite;
+      pointer-events: none;
+      z-index: 9991;
     }
 
     /* ── Progress bar ── */
     #progress-bar {
       height: 3px;
-      background: linear-gradient(90deg, #dc2626, #ff4444);
-      box-shadow: 0 0 10px rgba(220,38,38,0.8), 0 0 20px rgba(220,38,38,0.4);
+      background: linear-gradient(90deg, #7f1d1d, #dc2626, #ff6666);
+      box-shadow: 0 0 12px rgba(220,38,38,0.9), 0 0 24px rgba(220,38,38,0.4);
       width: 0%;
-      transition: width 0.1s ease-out;
+      transition: width 0.08s ease-out;
     }
 
     /* ── Navbar ── */
+    #navbar { transition: all 0.4s ease; }
     .nav-scrolled {
-      background: rgba(0,0,0,0.95) !important;
-      border-bottom-color: rgba(127,29,29,0.4) !important;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(4,4,4,0.97) !important;
+      border-bottom-color: rgba(127,29,29,0.5) !important;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
     }
 
     /* ── Hero matrix canvas ── */
@@ -88,45 +209,53 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      opacity: 0.4;
+      opacity: 0.35;
     }
 
-       /* ── Classified file cards ── */
+    /* ── Classified file cards ── */
     .file-card {
-      background: rgba(14, 14, 14, 0.7); /* Slightly more transparent */
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      /* Changed to a red-tinted border to match the theme */
-      border: 1px solid rgba(220, 38, 38, 0.15); 
+      background: rgba(10,10,10,0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(220,38,38,0.12);
       cursor: pointer;
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.45s cubic-bezier(0.4,0,0.2,1);
       position: relative;
-      /* Tactical "Angled Corner" Look */
-      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
     }
-
-       .file-card:hover {
-      border-color: rgba(220, 38, 38, 0.5);
-      background: rgba(220, 38, 38, 0.05); /* Very subtle red tint on hover */
-      transform: translateY(-2px); /* Slight lift effect */
+    .file-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(220,38,38,0.03) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
     }
-
+    .file-card:hover::after { opacity: 1; }
+    .file-card:hover {
+      border-color: rgba(220,38,38,0.55);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(220,38,38,0.1), 0 0 0 1px rgba(220,38,38,0.05);
+    }
     .file-card.open {
       background: rgba(220,38,38,0.04);
       border-color: rgba(220,38,38,0.5);
+      box-shadow: 0 0 40px rgba(220,38,38,0.08), inset 0 0 20px rgba(220,38,38,0.03);
     }
     .file-card .redacted-content {
       max-height: 0;
       opacity: 0;
       overflow: hidden;
-      transition: all 0.5s ease;
+      transition: max-height 0.55s ease, opacity 0.4s ease 0.1s;
     }
     .file-card.open .redacted-content {
-      max-height: 200px;
+      max-height: 220px;
       opacity: 1;
     }
     .file-card .locked-content {
       opacity: 1;
+      max-height: 80px;
       transition: all 0.3s ease;
     }
     .file-card.open .locked-content {
@@ -136,672 +265,829 @@
     }
     .file-card .edge-glow {
       position: absolute;
-      left: 0;
-      top: 0;
+      left: 0; top: 0;
       width: 2px;
       height: 100%;
-      background: linear-gradient(to bottom, transparent, #dc2626, transparent);
+      background: linear-gradient(to bottom, transparent, var(--red), transparent);
       opacity: 0;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.4s ease;
     }
     .file-card:hover .edge-glow { opacity: 0.6; }
-    .file-card.open .edge-glow { opacity: 0.8; }
+    .file-card.open .edge-glow { opacity: 1; }
+
+    /* Corner cut glow on open card */
+    .file-card.open::before {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 18px; height: 18px;
+      background: var(--red);
+      clip-path: polygon(100% 0, 100% 100%, 0 100%);
+      opacity: 0.3;
+    }
 
     /* ── Video frame ── */
     .video-frame {
-      border: 1px solid rgba(220,38,38,0.25);
-      box-shadow: 0 0 40px rgba(220,38,38,0.08), 0 20px 60px rgba(0,0,0,0.5);
+      border: 1px solid rgba(220,38,38,0.2);
+      box-shadow: 0 0 60px rgba(220,38,38,0.08), 0 24px 80px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .video-frame::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(135deg, rgba(220,38,38,0.25), transparent 40%, transparent 60%, rgba(220,38,38,0.1));
+      border-radius: inherit;
+      z-index: -1;
+      pointer-events: none;
     }
 
     /* ── Stats panel ── */
     .stats-panel {
-      background: rgba(12,12,12,0.9);
-      border: 1px solid rgba(220,38,38,0.15);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(8,8,8,0.92);
+      border: 1px solid rgba(220,38,38,0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position: relative;
+      overflow: hidden;
+    }
+    .stats-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(220,38,38,0.04) 0%, transparent 70%);
+      pointer-events: none;
     }
 
-    /* ── CTA button fill effect ── */
+    /* ── Stat number shimmer ── */
+    .stat-shimmer {
+      background: linear-gradient(90deg, #dc2626 0%, #ff6666 40%, #dc2626 60%, #991b1b 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+    }
+
+    /* ── CTA button ── */
     .cta-primary {
       position: relative;
       overflow: hidden;
+      letter-spacing: 0.2em;
     }
     .cta-primary .cta-fill {
       position: absolute;
       inset: 0;
-      background: #dc2626;
+      background: var(--red);
       transform: translateX(-100%);
-      transition: transform 0.3s ease;
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
     }
-    .cta-primary:hover .cta-fill {
-      transform: translateX(0);
+    .cta-primary:hover .cta-fill { transform: translateX(0); }
+    .cta-primary:hover {
+      box-shadow: 3px 0 var(--red), -3px 0 #00ffff;
+      text-shadow: 1px 0 var(--red), -1px 0 #00ffff;
+      letter-spacing: 0.26em;
+      transition: letter-spacing 0.2s ease, box-shadow 0.1s, text-shadow 0.1s;
     }
-  .cta-primary:hover {
-  box-shadow: 2px 0 #dc2626, -2px 0 #00ffff; /* Subtle red/cyan glitch */
-  text-shadow: 1px 0 #dc2626, -1px 0 #00ffff;
-  letter-spacing: 0.25em; /* Expands slightly when hovered */
-}
-
 
     /* ── Mobile menu ── */
     .mobile-menu {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.3s ease;
-      background: rgba(0,0,0,0.98);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      transition: max-height 0.35s ease;
+      background: rgba(4,4,4,0.99);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
     }
     .mobile-menu.open {
-      max-height: 300px;
+      max-height: 320px;
       border-bottom: 1px solid rgba(127,29,29,0.3);
     }
 
-body::after {
-  content: "";
-  position: fixed;
-  top: -100%;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(rgba(220, 38, 38, 0) 0%, rgba(220, 38, 38, 0.05) 50%, rgba(220, 38, 38, 0) 100%);
-  animation: scan 8s linear infinite;
-  pointer-events: none;
-  z-index: 9999;
-}
+    /* ── Typing cursor for tagline ── */
+    .typed-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      background: var(--red);
+      margin-left: 2px;
+      vertical-align: middle;
+      animation: pulse-dot 0.8s infinite;
+    }
 
-@keyframes scan {
-  from { top: -100%; }
-  to { top: 100%; }
-}
+    /* ── Horizontal reveal bar ── */
+    .reveal-bar {
+      display: block;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      animation: revealBar 1.2s ease forwards;
+      animation-play-state: paused;
+    }
+    .reveal-bar.play { animation-play-state: running; }
 
-  animation: crt-flicker 0.15s infinite;
-}
+    /* ── Section divider line ── */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(220,38,38,0.4) 30%, rgba(220,38,38,0.4) 70%, transparent);
+      margin: 0 auto;
+      max-width: 480px;
+    }
 
-@keyframes crt-flicker {
-  0% { opacity: 0.995; }
-  50% { opacity: 1; }
-  100% { opacity: 0.998; }
-}
+    /* ── Noise texture overlay ── */
+    .noise-overlay {
+      position: absolute;
+      inset: 0;
+      opacity: 0.025;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px;
+    }
 
+    /* ── Lock/unlock icon visibility ── */
+    .lock-icon {}
+    .unlock-icon { display: none; }
+    .file-card.open .lock-icon { display: none; }
+    .file-card.open .unlock-icon { display: block; }
   </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════════════════ -->
-<!-- PROGRESS BAR                                -->
-<!-- ════════════════════════════════════════════ -->
-<div class="fixed top-0 left-0 w-full z-[9999] bg-transparent" style="height:3px">
-  <div id="progress-bar"></div>
-</div>
+  <!-- Custom cursor -->
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
 
-<!-- ════════════════════════════════════════════ -->
-<!-- NAVBAR                                      -->
-<!-- ════════════════════════════════════════════ -->
-<nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] transition-all duration-500 bg-transparent border-b border-transparent">
-  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
-    <!-- Logo -->
-    <a href="index.html" class="flex items-center gap-2 group">
-      <div class="w-7 h-7 border border-red-600 flex items-center justify-center group-hover:bg-red-600/10 transition-colors duration-300">
-        <span class="text-red-500 text-xs font-mono-tech font-bold">SR</span>
-      </div>
-      <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block">Secret Reviewer</span>
-    </a>
-
-    <!-- Desktop links -->
-    <div class="hidden md:flex items-center gap-8">
-      <a href="index.html" class="text-gray-400 hover:text-red-400 text-xs font-semibold tracking-widest uppercase transition-colors duration-200">Home</a>
-      <a href="gallery.html" class="text-gray-400 hover:text-red-400 text-xs font-semibold tracking-widest uppercase transition-colors duration-200">Gallery</a>
-      <a href="contact.html" class="text-gray-400 hover:text-red-400 text-xs font-semibold tracking-widest uppercase transition-colors duration-200">Contact</a>
-      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-red-500 text-xs font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/10 hover:border-red-500 transition-all duration-200 animate-pulse-red">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        YouTube
-      </a>
-    </div>
-
-    <!-- Mobile toggle -->
-    <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
-      <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="hidden"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
+  <!-- ════ PROGRESS BAR ════ -->
+  <div class="fixed top-0 left-0 w-full z-[9999] bg-transparent" style="height:3px">
+    <div id="progress-bar"></div>
   </div>
 
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="mobile-menu md:hidden">
-    <div class="flex flex-col px-5 py-4 gap-4">
-      <a href="index.html" class="mobile-link text-gray-400 hover:text-red-400 text-xs font-semibold tracking-widest uppercase transition-colors duration-200 py-1 border-b border-white/5">Home</a>
-      <a href="gallery.html" class="mobile-link text-gray-400 hover:text-red-400 text-xs font-semibold tracking-widest uppercase transition-colors duration-200 py-1 border-b border-white/5">Gallery</a>
-      <a href="contact.html" class="mobile-link text-gray-400 hover:text-red-400 text-xs font-semibold tracking-widest uppercase transition-colors duration-200 py-1 border-b border-white/5">Contact</a>
-      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-red-500 text-xs font-bold tracking-widest uppercase">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        YouTube
+  <!-- ════ NAVBAR ════ -->
+  <nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+    <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-2 group">
+        <div class="w-7 h-7 border border-red-600 flex items-center justify-center group-hover:bg-red-600/20 transition-all duration-300 relative overflow-hidden">
+          <div class="absolute inset-0 bg-red-600/0 group-hover:bg-red-600/10 transition-colors duration-300"></div>
+          <span class="text-red-500 text-xs font-mono-tech font-bold relative z-10">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
       </a>
-    </div>
-  </div>
-</nav>
 
-<!-- ════════════════════════════════════════════ -->
-<!-- HERO                                        -->
-<!-- ════════════════════════════════════════════ -->
-<section id="home" class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden" style="background: linear-gradient(to bottom, #080808 0%, #0d0606 50%, #080808 100%);">
-  <!-- Matrix rain canvas -->
-  <canvas id="matrix-canvas"></canvas>
+      <!-- Desktop links -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html" class="text-gray-400 hover:text-red-400 text-xs font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+        <a href="gallery.html" class="text-gray-400 hover:text-red-400 text-xs font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+        <a href="contact.html" class="text-gray-400 hover:text-red-400 text-xs font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-1.5 text-red-500 text-xs font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          YouTube
+        </a>
+      </div>
 
-  <!-- Radial red spotlight -->
-  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(220,38,38,0.08) 0%, transparent 70%);"></div>
-
-  <!-- Horizontal scan line -->
-  <div class="absolute left-0 right-0 h-px pointer-events-none" style="top:50%; background: linear-gradient(90deg, transparent, rgba(220,38,38,0.4), transparent); box-shadow: 0 0 10px rgba(220,38,38,0.3);"></div>
-
-  <!-- Content -->
-  <div class="relative z-10 text-center px-5 max-w-4xl mx-auto">
-    <!-- Classification label -->
-    <div class="inline-flex items-center gap-2 mb-8 animate-fade-slide-up">
-      <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse-dot"></div>
-      <span class="font-mono-tech text-red-500/80 text-xs tracking-[0.3em] uppercase">Classified // Intel Report</span>
-      <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse-dot"></div>
+      <!-- Mobile toggle -->
+      <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+        <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
     </div>
 
-    <!-- Title -->
-    <h1 class="text-6xl sm:text-8xl md:text-9xl font-black uppercase tracking-tighter text-white mb-4 animate-fade-slide-up" style="animation-delay:0.1s; text-shadow: 0 0 60px rgba(220,38,38,0.2);">Secret</h1>
-    <h1 class="text-6xl sm:text-8xl md:text-9xl font-black uppercase tracking-tighter text-red-600 mb-8 neon-red-glow animate-flicker animate-fade-slide-up" style="animation-delay:0.2s;">Reviewer</h1>
-
-    <!-- Divider -->
-    <div class="flex items-center justify-center gap-4 mb-8 animate-fade-slide-up" style="animation-delay:0.3s;">
-      <div class="flex-1 max-w-24 h-px bg-gradient-to-r from-transparent to-red-600/60"></div>
-      <span class="font-mono-tech text-gray-500 text-xs tracking-[0.25em]">///</span>
-      <div class="flex-1 max-w-24 h-px bg-gradient-to-l from-transparent to-red-600/60"></div>
-    </div>
-
-    <!-- Tagline -->
-    <p class="text-gray-400 text-sm sm:text-base tracking-[0.2em] uppercase font-light mb-12 animate-fade-slide-up" style="animation-delay:0.4s;">
-      Motorcycle Blogger &nbsp;|&nbsp; Accessories &nbsp;|&nbsp; Trips &nbsp;|&nbsp; Life Stories
-    </p>
-
-    <!-- CTA Buttons -->
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-slide-up" style="animation-delay:0.5s;">
-      <a href="gallery.html" class="cta-primary relative px-8 py-3 border border-red-600 text-red-500 text-xs font-bold tracking-[0.2em] uppercase transition-colors duration-300">
-        <span class="relative z-10">Access Photos</span>
-        <div class="cta-fill"></div>
-      </a>
-      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer" class="px-8 py-3 bg-transparent border border-white/10 text-gray-400 text-xs font-bold tracking-[0.2em] uppercase hover:border-white/30 hover:text-white transition-all duration-300">
-        Watch Channel
-      </a>
-    </div>
-  </div>
-
-  <!-- Scroll indicator -->
-  <a href="contact.html" class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-600 hover:text-red-500 transition-colors duration-300 animate-bounce-arrow">
-    <span class="font-mono-tech text-[10px] tracking-widest">CONTACT</span>
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-  </a>
-
-  <!-- Corner decorations -->
-  <div class="absolute top-20 left-6 w-16 h-16 border-t border-l border-red-600/20 pointer-events-none"></div>
-  <div class="absolute top-20 right-6 w-16 h-16 border-t border-r border-red-600/20 pointer-events-none"></div>
-  <div class="absolute bottom-16 left-6 w-16 h-16 border-b border-l border-red-600/20 pointer-events-none"></div>
-  <div class="absolute bottom-16 right-6 w-16 h-16 border-b border-r border-red-600/20 pointer-events-none"></div>
-</section>
-
-<!-- ════════════════════════════════════════════ -->
-<!-- CLASSIFIED FILES (THE RIDER LOG)            -->
-<!-- ════════════════════════════════════════════ -->
-<section id="files" class="py-24 px-5">
-  <div class="max-w-5xl mx-auto">
-    <!-- Section header -->
-    <div class="text-center mb-16">
-      <p class="font-mono-tech text-red-600/70 text-xs tracking-[0.4em] uppercase mb-3">— Classified Intelligence —</p>
-      <h2 class="text-3xl sm:text-4xl font-black uppercase text-white tracking-tight">The Rider Log</h2>
-      <div class="mt-4 flex items-center justify-center gap-3">
-        <div class="h-px w-20 bg-gradient-to-r from-transparent to-red-600/50"></div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(220,38,38,0.6)" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        <div class="h-px w-20 bg-gradient-to-l from-transparent to-red-600/50"></div>
-      </div>
-    </div>
-
-    <!-- File grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-
-      <!-- FILE SR-001: Review -->
-      <div class="file-card" onclick="toggleFile(this)">
-        <div class="edge-glow"></div>
-        <div class="flex items-center justify-between px-5 py-3 border-b border-white/5">
-          <div class="flex items-center gap-3">
-            <span class="font-mono-tech text-gray-600 text-[10px] tracking-wider">FILE SR-001</span>
-            <span class="font-mono-tech text-[9px] font-bold tracking-widest uppercase border px-2 py-0.5 text-red-500 border-red-600/50">Review</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="font-mono-tech text-[9px] text-gray-600 tracking-wider">LEVEL 2</span>
-            <svg class="lock-icon text-gray-600 transition-colors duration-300" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <svg class="unlock-icon text-red-500 transition-colors duration-300 hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
-          </div>
-        </div>
-        <div class="px-5 py-5">
-          <h3 class="text-white font-bold text-lg leading-snug mb-2 group-hover:text-red-100 transition-colors duration-200">Motorcycle Accessories Test</h3>
-          <p class="text-gray-500 text-sm leading-relaxed">Real-world review of bike accessories and electrical upgrades.</p>
-          <!-- Redacted lines (revealed on unlock) -->
-          <div class="redacted-content mt-4 space-y-2">
-            <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
-              <span class="text-red-600/50 mt-0.5">&#9656;</span> Built by hand, tested on the road.
-            </div>
-            <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
-              <span class="text-red-600/50 mt-0.5">&#9656;</span> Best prices found, trusted links included.
-            </div>
-            <a href="accessories.html" class="inline-flex items-center gap-1.5 mt-3 text-red-500 text-xs font-bold tracking-widest uppercase hover:gap-2.5 transition-all duration-200">
-              Read Story <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </a>
-          </div>
-          <!-- Locked placeholder bars -->
-          <div class="locked-content mt-4 space-y-2">
-            <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:80%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
-            <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:65%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
-          </div>
-        </div>
-        <div class="px-5 pb-4 flex items-center justify-between">
-          <div class="flex items-center gap-1.5">
-            <div class="status-dot w-1.5 h-1.5 rounded-full bg-gray-700"></div>
-            <span class="status-text font-mono-tech text-[9px] text-gray-600 tracking-wider">ENCRYPTED</span>
-          </div>
-          <span class="click-hint font-mono-tech text-[9px] text-gray-700">CLICK TO OPEN</span>
-        </div>
-      </div>
-
-      <!-- FILE SR-002: Trip -->
-      <div class="file-card" onclick="toggleFile(this)">
-        <div class="edge-glow"></div>
-        <div class="flex items-center justify-between px-5 py-3 border-b border-white/5">
-          <div class="flex items-center gap-3">
-            <span class="font-mono-tech text-gray-600 text-[10px] tracking-wider">FILE SR-002</span>
-            <span class="font-mono-tech text-[9px] font-bold tracking-widest uppercase border px-2 py-0.5 text-sky-400 border-sky-500/50">Trip</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="font-mono-tech text-[9px] text-gray-600 tracking-wider">LEVEL 3</span>
-            <svg class="lock-icon text-gray-600 transition-colors duration-300" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <svg class="unlock-icon text-red-500 transition-colors duration-300 hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
-          </div>
-        </div>
-        <div class="px-5 py-5">
-          <h3 class="text-white font-bold text-lg leading-snug mb-2">Malaysia → Thailand Ride</h3>
-          <p class="text-gray-500 text-sm leading-relaxed">Border crossing experience, road conditions, and gear used for long-distance riding.</p>
-          <div class="redacted-content mt-4 space-y-2">
-            <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
-              <span class="text-red-600/50 mt-0.5">&#9656;</span> Darkness arrives before you're ready.
-            </div>
-            <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
-              <span class="text-red-600/50 mt-0.5">&#9656;</span> From Orchard road to Thailand’s endless roads.
-            </div>
-            <a href="thailand-trip.html" class="inline-flex items-center gap-1.5 mt-3 text-red-500 text-xs font-bold tracking-widest uppercase hover:gap-2.5 transition-all duration-200">
-              Read Story <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </a>
-          </div>
-          <div class="locked-content mt-4 space-y-2">
-            <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:80%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
-            <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:65%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
-          </div>
-        </div>
-        <div class="px-5 pb-4 flex items-center justify-between">
-          <div class="flex items-center gap-1.5">
-            <div class="status-dot w-1.5 h-1.5 rounded-full bg-gray-700"></div>
-            <span class="status-text font-mono-tech text-[9px] text-gray-600 tracking-wider">ENCRYPTED</span>
-          </div>
-          <span class="click-hint font-mono-tech text-[9px] text-gray-700">CLICK TO OPEN</span>
-        </div>
-      </div>
-
-      <!-- FILE SR-003: Mods -->
-      <div class="file-card" onclick="toggleFile(this)">
-        <div class="edge-glow"></div>
-        <div class="flex items-center justify-between px-5 py-3 border-b border-white/5">
-          <div class="flex items-center gap-3">
-            <span class="font-mono-tech text-gray-600 text-[10px] tracking-wider">FILE SR-003</span>
-            <span class="font-mono-tech text-[9px] font-bold tracking-widest uppercase border px-2 py-0.5 text-amber-400 border-amber-500/50">Mods</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="font-mono-tech text-[9px] text-gray-600 tracking-wider">LEVEL 2</span>
-            <svg class="lock-icon text-gray-600 transition-colors duration-300" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <svg class="unlock-icon text-red-500 transition-colors duration-300 hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
-          </div>
-        </div>
-        <div class="px-5 py-5">
-          <h3 class="text-white font-bold text-lg leading-snug mb-2">Electrical Upgrades</h3>
-          <p class="text-gray-500 text-sm leading-relaxed">Lighting, wiring, and practical mods that actually improve safety.</p>
-          <div class="redacted-content mt-4 space-y-2">
-            <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
-              <span class="text-red-600/50 mt-0.5">&#9656;</span> Brighter signals, safer rides, smarter DIY.
-            </div>
-            <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
-              <span class="text-red-600/50 mt-0.5">&#9656;</span> Sources classified, performance verified.
-            </div>
-            <a href="electrical-mods.html" class="inline-flex items-center gap-1.5 mt-3 text-red-500 text-xs font-bold tracking-widest uppercase hover:gap-2.5 transition-all duration-200">
-              Read Story <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </a>
-          </div>
-          <div class="locked-content mt-4 space-y-2">
-            <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:80%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
-            <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:65%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
-          </div>
-        </div>
-        <div class="px-5 pb-4 flex items-center justify-between">
-          <div class="flex items-center gap-1.5">
-            <div class="status-dot w-1.5 h-1.5 rounded-full bg-gray-700"></div>
-            <span class="status-text font-mono-tech text-[9px] text-gray-600 tracking-wider">ENCRYPTED</span>
-          </div>
-          <span class="click-hint font-mono-tech text-[9px] text-gray-700">CLICK TO OPEN</span>
-        </div>
-      </div>
-
-      <!-- FILE SR-004: Life -->
-      <div class="file-card" onclick="toggleFile(this)">
-        <div class="edge-glow"></div>
-        <div class="flex items-center justify-between px-5 py-3 border-b border-white/5">
-          <div class="flex items-center gap-3">
-            <span class="font-mono-tech text-gray-600 text-[10px] tracking-wider">FILE SR-004</span>
-            <span class="font-mono-tech text-[9px] font-bold tracking-widest uppercase border px-2 py-0.5 text-emerald-400 border-emerald-500/50">Life</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="font-mono-tech text-[9px] text-gray-600 tracking-wider">LEVEL 1</span>
-            <svg class="lock-icon text-gray-600 transition-colors duration-300" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <svg class="unlock-icon text-red-500 transition-colors duration-300 hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
-          </div>
-        </div>
-        <div class="px-5 py-5">
-          <h3 class="text-white font-bold text-lg leading-snug mb-2">Beyond Riding</h3>
-          <p class="text-gray-500 text-sm leading-relaxed">Sometimes life, family, and balance matter just as much as the ride itself.</p>
-          <div class="redacted-content mt-4 space-y-2">
-            <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
-              <span class="text-red-600/50 mt-0.5">&#9656;</span> Family first, hobbies fuel the soul.
-            </div>
-            <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
-              <span class="text-red-600/50 mt-0.5">&#9656;</span> Life essentials before leisure pursuits.
-            </div>
-            <a href="beyond-riding.html" class="inline-flex items-center gap-1.5 mt-3 text-red-500 text-xs font-bold tracking-widest uppercase hover:gap-2.5 transition-all duration-200">
-              Read Story <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </a>
-          </div>
-          <div class="locked-content mt-4 space-y-2">
-            <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:80%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
-            <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:65%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
-          </div>
-        </div>
-        <div class="px-5 pb-4 flex items-center justify-between">
-          <div class="flex items-center gap-1.5">
-            <div class="status-dot w-1.5 h-1.5 rounded-full bg-gray-700"></div>
-            <span class="status-text font-mono-tech text-[9px] text-gray-600 tracking-wider">ENCRYPTED</span>
-          </div>
-          <span class="click-hint font-mono-tech text-[9px] text-gray-700">CLICK TO OPEN</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════ -->
-<!-- YOUTUBE SECTION                             -->
-<!-- ════════════════════════════════════════════ -->
-<section class="py-16 px-5">
-  <div class="max-w-5xl mx-auto">
-    <!-- Section header -->
-    <div class="text-center mb-10">
-      <p class="font-mono-tech text-red-600/70 text-xs tracking-[0.4em] uppercase mb-3">— Field Footage —</p>
-      <h2 class="text-3xl sm:text-4xl font-black uppercase text-white tracking-tight">Latest on YouTube</h2>
-      <div class="mt-4 flex items-center justify-center gap-3">
-        <div class="h-px w-20 bg-gradient-to-r from-transparent to-red-600/50"></div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(220,38,38,0.6)" stroke="rgba(220,38,38,0.6)" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        <div class="h-px w-20 bg-gradient-to-l from-transparent to-red-600/50"></div>
-      </div>
-    </div>
-
-    <!-- Video frame -->
-    <div class="video-frame animate-border-flash relative overflow-hidden">
-      <!-- Top classification bar -->
-      <div class="flex items-center justify-between px-4 py-2 bg-black/80 border-b border-red-900/30">
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse-dot"></div>
-          <span class="font-mono-tech text-red-500/70 text-[10px] tracking-widest uppercase">Live Feed // Channel SR-2</span>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="font-mono-tech text-gray-600 text-[10px]">REC</span>
-          <div class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse-dot"></div>
-        </div>
-      </div>
-
-      <!-- 16:9 iframe -->
-      <div class="relative w-full" style="padding-bottom:56.25%">
-        <iframe class="absolute inset-0 w-full h-full border-0" src="https://www.youtube.com/embed/BkzadNVY86s" title="Secret Reviewer Latest Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-
-      <!-- Bottom bar -->
-      <div class="flex items-center justify-between px-4 py-2 bg-black/80 border-t border-red-900/30">
-        <span class="font-mono-tech text-gray-600 text-[10px] tracking-wider">Secret Reviewer — Field Operations</span>
-        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-red-500 text-[10px] font-bold tracking-widest uppercase hover:text-red-400 transition-colors">
-          <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          View Channel
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="mobile-menu md:hidden">
+      <div class="flex flex-col px-5 py-4 gap-4">
+        <a href="index.html"   class="mobile-link text-gray-400 hover:text-red-400 text-xs font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+        <a href="gallery.html" class="mobile-link text-gray-400 hover:text-red-400 text-xs font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+        <a href="contact.html" class="mobile-link text-gray-400 hover:text-red-400 text-xs font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-1.5 text-red-500 text-xs font-bold tracking-widest uppercase">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          YouTube
         </a>
       </div>
     </div>
-  </div>
-</section>
+  </nav>
 
-<!-- ════════════════════════════════════════════ -->
-<!-- RIDE STATS                                  -->
-<!-- ════════════════════════════════════════════ -->
-<section class="py-16 px-5">
-  <div class="max-w-5xl mx-auto">
-    <!-- Section header -->
-    <div class="text-center mb-10">
-      <p class="font-mono-tech text-red-600/70 text-xs tracking-[0.4em] uppercase mb-3">— Operational Data —</p>
-      <h2 class="text-3xl sm:text-4xl font-black uppercase text-white tracking-tight">Ride Stats</h2>
-    </div>
+  <!-- ════ HERO ════ -->
+  <section id="home" class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+           style="background: radial-gradient(ellipse 80% 60% at 50% 40%, #120404 0%, #080808 60%, #060606 100%);">
+    
+    <!-- Noise texture -->
+    <div class="noise-overlay"></div>
 
-    <!-- Stats panel -->
-    <div class="stats-panel relative overflow-hidden">
-      <!-- Top accent line -->
-      <div class="h-px w-full bg-gradient-to-r from-transparent via-red-600/50 to-transparent"></div>
+    <!-- Matrix rain canvas -->
+    <canvas id="matrix-canvas"></canvas>
 
-      <!-- Corner markers -->
-      <div class="absolute top-3 left-3 w-4 h-4 border-t border-l border-red-600/40"></div>
-      <div class="absolute top-3 right-3 w-4 h-4 border-t border-r border-red-600/40"></div>
-      <div class="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-red-600/40"></div>
-      <div class="absolute bottom-3 right-3 w-4 h-4 border-b border-r border-red-600/40"></div>
+    <!-- Red spotlight vignette -->
+    <div class="absolute inset-0 pointer-events-none"
+         style="background: radial-gradient(ellipse 55% 45% at 50% 45%, rgba(220,38,38,0.1) 0%, transparent 70%);"></div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/5">
-        <!-- Stat: Start Riding -->
-        <div class="text-center px-6 py-8 relative group">
-          <div class="stat-value text-4xl sm:text-5xl font-black text-red-600 mb-2 transition-colors duration-300 group-hover:text-red-500" data-target="2007" style="font-variant-numeric:tabular-nums">—</div>
-          <div class="font-mono-tech text-gray-500 text-xs tracking-[0.25em] uppercase">Start Riding</div>
-          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-px bg-red-600/30 group-hover:w-16 transition-all duration-300"></div>
-        </div>
+    <!-- Horizontal scan line across center -->
+    <div class="absolute left-0 right-0 h-px pointer-events-none"
+         style="top:50%; background: linear-gradient(90deg, transparent, rgba(220,38,38,0.5), transparent); box-shadow: 0 0 12px rgba(220,38,38,0.4);"></div>
 
-        <!-- Stat: KM Travelled -->
-        <div class="text-center px-6 py-8 relative group">
-          <div class="stat-value text-4xl sm:text-5xl font-black text-red-600 mb-2 transition-colors duration-300 group-hover:text-red-500" data-target="1000" data-suffix="+" style="font-variant-numeric:tabular-nums">—</div>
-          <div class="font-mono-tech text-gray-500 text-xs tracking-[0.25em] uppercase">KM Travelled</div>
-          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-px bg-red-600/30 group-hover:w-16 transition-all duration-300"></div>
-        </div>
+    <!-- Grid overlay -->
+    <div class="absolute inset-0 pointer-events-none" style="
+      background-image: linear-gradient(rgba(220,38,38,0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(220,38,38,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black, transparent);
+    "></div>
 
-        <!-- Stat: Mods Tested -->
-        <div class="text-center px-6 py-8 relative group">
-          <div class="stat-value text-4xl sm:text-5xl font-black text-red-600 mb-2 transition-colors duration-300 group-hover:text-red-500" data-target="100" data-suffix="+" style="font-variant-numeric:tabular-nums">—</div>
-          <div class="font-mono-tech text-gray-500 text-xs tracking-[0.25em] uppercase">Mods Tested</div>
-          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-px bg-red-600/30 group-hover:w-16 transition-all duration-300"></div>
-        </div>
+    <!-- Content -->
+    <div class="relative z-10 text-center px-5 max-w-5xl mx-auto">
+
+      <!-- Classification label -->
+      <div class="inline-flex items-center gap-2 mb-10 animate-fade-slide-up" style="animation-delay:0s;">
+        <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse-dot"></div>
+        <span class="font-mono-tech text-red-500/70 text-xs tracking-[0.35em] uppercase">Classified // Intel Report // Active</span>
+        <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse-dot"></div>
       </div>
 
-      <!-- Bottom accent line -->
-      <div class="h-px w-full bg-gradient-to-r from-transparent via-red-600/50 to-transparent"></div>
-    </div>
-  </div>
-</section>
+      <!-- Glitch Title: "Secret" -->
+      <div class="animate-fade-slide-up" style="animation-delay:0.1s;">
+        <h1 class="text-7xl sm:text-9xl md:text-[11rem] font-black uppercase tracking-tighter text-white leading-none"
+            style="text-shadow: 0 0 80px rgba(220,38,38,0.15);">Secret</h1>
+      </div>
 
-<!-- ════════════════════════════════════════════ -->
-<!-- FOOTER                                      -->
-<!-- ════════════════════════════════════════════ -->
-<footer class="py-16 px-5 border-t border-white/5 mt-8">
-  <div class="max-w-5xl mx-auto">
-    <div class="flex flex-col items-center gap-6">
-      <!-- Logo mark -->
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 border border-red-600/40 flex items-center justify-center">
-          <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
-        </div>
-        <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+      <!-- Glitch Title: "Reviewer" -->
+      <div class="animate-fade-slide-up glitch-wrap" data-text="Reviewer" style="animation-delay:0.2s;">
+        <h1 class="text-7xl sm:text-9xl md:text-[11rem] font-black uppercase tracking-tighter text-red-600 leading-none neon-red-glow animate-flicker">Reviewer</h1>
+      </div>
+
+      <!-- Divider -->
+      <div class="flex items-center justify-center gap-4 my-8 animate-fade-slide-up" style="animation-delay:0.3s;">
+        <div class="flex-1 max-w-32 h-px bg-gradient-to-r from-transparent to-red-600/50"></div>
+        <span class="font-mono-tech text-red-600/50 text-xs tracking-[0.3em]">///</span>
+        <div class="flex-1 max-w-32 h-px bg-gradient-to-l from-transparent to-red-600/50"></div>
       </div>
 
       <!-- Tagline -->
-      <p class="font-mono-tech text-gray-600 text-[10px] tracking-[0.3em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+      <p class="text-gray-400 text-base sm:text-lg tracking-[0.25em] uppercase font-light mb-14 animate-fade-slide-up" style="animation-delay:0.4s;">
+        Motorcycle Blogger &nbsp;|&nbsp; Accessories &nbsp;|&nbsp; Trips &nbsp;|&nbsp; Life Stories
+      </p>
 
-      <!-- YouTube link -->
-      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
-        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors duration-300">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        </div>
-        <span class="font-mono-tech text-xs tracking-widest uppercase">Watch on YouTube</span>
-      </a>
-
-      <!-- Divider -->
-      <div class="w-full max-w-xs h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
-      <!-- Copyright -->
-      <p class="font-mono-tech text-gray-700 text-[10px] tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-slide-up" style="animation-delay:0.5s;">
+        <a href="gallery.html" class="cta-primary relative px-10 py-3.5 border border-red-600 text-red-500 text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300">
+          <span class="relative z-10 transition-colors duration-300 group-hover:text-white">Access Photos</span>
+          <div class="cta-fill"></div>
+        </a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="px-10 py-3.5 bg-transparent border border-white/10 text-gray-400 text-xs font-bold tracking-[0.2em] uppercase hover:border-white/30 hover:text-white transition-all duration-300">
+          Watch Channel
+        </a>
+      </div>
     </div>
-  </div>
-</footer>
 
-<!-- ════════════════════════════════════════════ -->
-<!-- JAVASCRIPT                                  -->
-<!-- ════════════════════════════════════════════ -->
-<script>
-  // ── Progress Bar ──
-  window.addEventListener('scroll', function () {
-    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    var scrolled = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-    document.getElementById('progress-bar').style.width = scrolled + '%';
-  }, { passive: true });
+    <!-- Scroll indicator -->
+    <a href="#files" class="absolute bottom-8 left-1/2 animate-bounce-arrow flex flex-col items-center gap-2 text-gray-600 hover:text-red-500 transition-colors duration-300">
+      <span class="font-mono-tech text-[9px] tracking-widest">SCROLL</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </a>
 
-  // ── Navbar scroll effect ──
-  window.addEventListener('scroll', function () {
-    var nav = document.getElementById('navbar');
-    if (window.scrollY > 20) {
-      nav.classList.add('nav-scrolled');
-    } else {
-      nav.classList.remove('nav-scrolled');
-    }
-  }, { passive: true });
+    <!-- Corner decorations -->
+    <div class="absolute top-20 left-6 w-20 h-20 border-t border-l border-red-600/20 pointer-events-none"></div>
+    <div class="absolute top-20 right-6 w-20 h-20 border-t border-r border-red-600/20 pointer-events-none"></div>
+    <div class="absolute bottom-16 left-6 w-20 h-20 border-b border-l border-red-600/20 pointer-events-none"></div>
+    <div class="absolute bottom-16 right-6 w-20 h-20 border-b border-r border-red-600/20 pointer-events-none"></div>
 
-  // ── Mobile menu toggle ──
-  document.getElementById('menu-toggle').addEventListener('click', function () {
-    var menu = document.getElementById('mobile-menu');
-    var openIcon = document.getElementById('menu-icon-open');
-    var closeIcon = document.getElementById('menu-icon-close');
-    var isOpen = menu.classList.toggle('open');
-    openIcon.classList.toggle('hidden', isOpen);
-    closeIcon.classList.toggle('hidden', !isOpen);
-  });
+    <!-- Crosshair top-left -->
+    <div class="absolute top-20 left-6 pointer-events-none font-mono-tech text-red-600/20 text-[9px] tracking-widest mt-1 ml-1">◉</div>
+    <div class="absolute top-20 right-6 pointer-events-none font-mono-tech text-red-600/20 text-[9px] tracking-widest mt-1 mr-1 text-right">◉</div>
+  </section>
 
-  // Close mobile menu on link click
-  document.querySelectorAll('.mobile-link').forEach(function (link) {
-    link.addEventListener('click', function () {
-      document.getElementById('mobile-menu').classList.remove('open');
-      document.getElementById('menu-icon-open').classList.remove('hidden');
-      document.getElementById('menu-icon-close').classList.add('hidden');
+  <!-- ════ CLASSIFIED FILES ════ -->
+  <section id="files" class="py-24 px-5">
+    <div class="max-w-5xl mx-auto">
+
+      <!-- Section header -->
+      <div class="text-center mb-16">
+        <p class="font-mono-tech text-red-600/60 text-xs tracking-[0.45em] uppercase mb-3">— Classified Intelligence —</p>
+        <h2 class="text-4xl sm:text-5xl font-black uppercase text-white tracking-tight">The Rider Log</h2>
+        <div class="mt-5 flex items-center justify-center gap-3">
+          <div class="h-px w-24 bg-gradient-to-r from-transparent to-red-600/50"></div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(220,38,38,0.6)" stroke-width="2" stroke-linecap="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          <div class="h-px w-24 bg-gradient-to-l from-transparent to-red-600/50"></div>
+        </div>
+      </div>
+
+      <!-- File grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+        <!-- FILE SR-001: Review -->
+        <div class="file-card" onclick="toggleFile(this)">
+          <div class="edge-glow"></div>
+          <div class="flex items-center justify-between px-5 py-3 border-b border-white/5">
+            <div class="flex items-center gap-3">
+              <span class="font-mono-tech text-gray-600 text-[10px] tracking-wider">FILE SR-001</span>
+              <span class="font-mono-tech text-[9px] font-bold tracking-widest uppercase border px-2 py-0.5 text-red-500 border-red-600/50">Review</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono-tech text-[9px] text-gray-600 tracking-wider">LEVEL 2</span>
+              <svg class="lock-icon text-gray-600" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <svg class="unlock-icon text-red-500" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+              </svg>
+            </div>
+          </div>
+          <div class="px-5 py-5">
+            <h3 class="text-white font-bold text-xl leading-snug mb-2">Motorcycle Accessories Test</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Real-world review of bike accessories and electrical upgrades.</p>
+            <div class="redacted-content mt-4 space-y-2">
+              <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
+                <span class="text-red-600/50 mt-0.5">▶</span> Built by hand, tested on the road.
+              </div>
+              <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
+                <span class="text-red-600/50 mt-0.5">▶</span> Best prices found, trusted links included.
+              </div>
+              <a href="accessories.html" class="inline-flex items-center gap-1.5 mt-3 text-red-500 text-xs font-bold tracking-widest uppercase hover:gap-3 transition-all duration-200">
+                Read Story
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </a>
+            </div>
+            <div class="locked-content mt-4 space-y-2">
+              <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:80%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
+              <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:60%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
+            </div>
+          </div>
+          <div class="px-5 pb-4 flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <div class="status-dot w-1.5 h-1.5 rounded-full bg-gray-700"></div>
+              <span class="status-text font-mono-tech text-[9px] text-gray-600 tracking-wider">ENCRYPTED</span>
+            </div>
+            <span class="click-hint font-mono-tech text-[9px] text-gray-700">CLICK TO OPEN</span>
+          </div>
+        </div>
+
+        <!-- FILE SR-002: Trip -->
+        <div class="file-card" onclick="toggleFile(this)">
+          <div class="edge-glow"></div>
+          <div class="flex items-center justify-between px-5 py-3 border-b border-white/5">
+            <div class="flex items-center gap-3">
+              <span class="font-mono-tech text-gray-600 text-[10px] tracking-wider">FILE SR-002</span>
+              <span class="font-mono-tech text-[9px] font-bold tracking-widest uppercase border px-2 py-0.5 text-sky-400 border-sky-500/50">Trip</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono-tech text-[9px] text-gray-600 tracking-wider">LEVEL 3</span>
+              <svg class="lock-icon text-gray-600" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <svg class="unlock-icon text-red-500" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+              </svg>
+            </div>
+          </div>
+          <div class="px-5 py-5">
+            <h3 class="text-white font-bold text-xl leading-snug mb-2">Malaysia → Thailand Ride</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Border crossing experience, road conditions, and gear used for long-distance riding.</p>
+            <div class="redacted-content mt-4 space-y-2">
+              <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
+                <span class="text-red-600/50 mt-0.5">▶</span> Darkness arrives before you're ready.
+              </div>
+              <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
+                <span class="text-red-600/50 mt-0.5">▶</span> From Orchard Road to Thailand's endless roads.
+              </div>
+              <a href="thailand-trip.html" class="inline-flex items-center gap-1.5 mt-3 text-red-500 text-xs font-bold tracking-widest uppercase hover:gap-3 transition-all duration-200">
+                Read Story
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </a>
+            </div>
+            <div class="locked-content mt-4 space-y-2">
+              <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:80%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
+              <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:60%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
+            </div>
+          </div>
+          <div class="px-5 pb-4 flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <div class="status-dot w-1.5 h-1.5 rounded-full bg-gray-700"></div>
+              <span class="status-text font-mono-tech text-[9px] text-gray-600 tracking-wider">ENCRYPTED</span>
+            </div>
+            <span class="click-hint font-mono-tech text-[9px] text-gray-700">CLICK TO OPEN</span>
+          </div>
+        </div>
+
+        <!-- FILE SR-003: Mods -->
+        <div class="file-card" onclick="toggleFile(this)">
+          <div class="edge-glow"></div>
+          <div class="flex items-center justify-between px-5 py-3 border-b border-white/5">
+            <div class="flex items-center gap-3">
+              <span class="font-mono-tech text-gray-600 text-[10px] tracking-wider">FILE SR-003</span>
+              <span class="font-mono-tech text-[9px] font-bold tracking-widest uppercase border px-2 py-0.5 text-amber-400 border-amber-500/50">Mods</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono-tech text-[9px] text-gray-600 tracking-wider">LEVEL 2</span>
+              <svg class="lock-icon text-gray-600" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <svg class="unlock-icon text-red-500" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+              </svg>
+            </div>
+          </div>
+          <div class="px-5 py-5">
+            <h3 class="text-white font-bold text-xl leading-snug mb-2">Electrical Upgrades</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Lighting, wiring, and practical mods that actually improve safety.</p>
+            <div class="redacted-content mt-4 space-y-2">
+              <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
+                <span class="text-red-600/50 mt-0.5">▶</span> Brighter signals, safer rides, smarter DIY.
+              </div>
+              <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
+                <span class="text-red-600/50 mt-0.5">▶</span> Sources classified, performance verified.
+              </div>
+              <a href="electrical-mods.html" class="inline-flex items-center gap-1.5 mt-3 text-red-500 text-xs font-bold tracking-widest uppercase hover:gap-3 transition-all duration-200">
+                Read Story
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </a>
+            </div>
+            <div class="locked-content mt-4 space-y-2">
+              <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:80%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
+              <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:60%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
+            </div>
+          </div>
+          <div class="px-5 pb-4 flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <div class="status-dot w-1.5 h-1.5 rounded-full bg-gray-700"></div>
+              <span class="status-text font-mono-tech text-[9px] text-gray-600 tracking-wider">ENCRYPTED</span>
+            </div>
+            <span class="click-hint font-mono-tech text-[9px] text-gray-700">CLICK TO OPEN</span>
+          </div>
+        </div>
+
+        <!-- FILE SR-004: Life -->
+        <div class="file-card" onclick="toggleFile(this)">
+          <div class="edge-glow"></div>
+          <div class="flex items-center justify-between px-5 py-3 border-b border-white/5">
+            <div class="flex items-center gap-3">
+              <span class="font-mono-tech text-gray-600 text-[10px] tracking-wider">FILE SR-004</span>
+              <span class="font-mono-tech text-[9px] font-bold tracking-widest uppercase border px-2 py-0.5 text-emerald-400 border-emerald-500/50">Life</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono-tech text-[9px] text-gray-600 tracking-wider">LEVEL 1</span>
+              <svg class="lock-icon text-gray-600" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <svg class="unlock-icon text-red-500" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+              </svg>
+            </div>
+          </div>
+          <div class="px-5 py-5">
+            <h3 class="text-white font-bold text-xl leading-snug mb-2">Beyond Riding</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Sometimes life, family, and balance matter just as much as the ride itself.</p>
+            <div class="redacted-content mt-4 space-y-2">
+              <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
+                <span class="text-red-600/50 mt-0.5">▶</span> Family first, hobbies fuel the soul.
+              </div>
+              <div class="font-mono-tech text-[11px] text-red-400/70 flex items-start gap-2">
+                <span class="text-red-600/50 mt-0.5">▶</span> Life essentials before leisure pursuits.
+              </div>
+              <a href="beyond-riding.html" class="inline-flex items-center gap-1.5 mt-3 text-red-500 text-xs font-bold tracking-widest uppercase hover:gap-3 transition-all duration-200">
+                Read Story
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </a>
+            </div>
+            <div class="locked-content mt-4 space-y-2">
+              <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:80%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
+              <div class="h-3 rounded-sm bg-gray-800/60 relative overflow-hidden" style="width:60%"><div class="absolute inset-0 bg-gray-700/40"></div></div>
+            </div>
+          </div>
+          <div class="px-5 pb-4 flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <div class="status-dot w-1.5 h-1.5 rounded-full bg-gray-700"></div>
+              <span class="status-text font-mono-tech text-[9px] text-gray-600 tracking-wider">ENCRYPTED</span>
+            </div>
+            <span class="click-hint font-mono-tech text-[9px] text-gray-700">CLICK TO OPEN</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ YOUTUBE SECTION ════ -->
+  <section class="py-16 px-5">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-10">
+        <p class="font-mono-tech text-red-600/60 text-xs tracking-[0.45em] uppercase mb-3">— Field Footage —</p>
+        <h2 class="text-4xl sm:text-5xl font-black uppercase text-white tracking-tight">Latest on YouTube</h2>
+        <div class="mt-5 flex items-center justify-center gap-3">
+          <div class="h-px w-24 bg-gradient-to-r from-transparent to-red-600/50"></div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(220,38,38,0.7)" stroke="rgba(220,38,38,0.7)" stroke-width="2">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          <div class="h-px w-24 bg-gradient-to-l from-transparent to-red-600/50"></div>
+        </div>
+      </div>
+
+      <div class="video-frame animate-border-flash overflow-hidden">
+        <!-- Top bar -->
+        <div class="flex items-center justify-between px-4 py-2 bg-black/90 border-b border-red-900/30">
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse-dot"></div>
+            <span class="font-mono-tech text-red-500/70 text-[10px] tracking-widest uppercase">Live Feed // Channel SR-2</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="font-mono-tech text-gray-600 text-[10px]">REC</span>
+            <div class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse-dot"></div>
+          </div>
+        </div>
+        <!-- 16:9 iframe -->
+        <div class="relative w-full" style="padding-bottom:56.25%">
+          <iframe class="absolute inset-0 w-full h-full border-0"
+                  src="https://www.youtube.com/embed/BkzadNVY86s"
+                  title="Secret Reviewer Latest Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+        </div>
+        <!-- Bottom bar -->
+        <div class="flex items-center justify-between px-4 py-2 bg-black/90 border-t border-red-900/30">
+          <span class="font-mono-tech text-gray-600 text-[10px] tracking-wider">Secret Reviewer — Field Operations</span>
+          <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+             class="flex items-center gap-1.5 text-red-500 text-[10px] font-bold tracking-widest uppercase hover:text-red-400 transition-colors">
+            <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            View Channel
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ RIDE STATS ════ -->
+  <section class="py-16 px-5">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-10">
+        <p class="font-mono-tech text-red-600/60 text-xs tracking-[0.45em] uppercase mb-3">— Operational Data —</p>
+        <h2 class="text-4xl sm:text-5xl font-black uppercase text-white tracking-tight">Ride Stats</h2>
+      </div>
+
+      <div class="stats-panel">
+        <div class="h-px w-full bg-gradient-to-r from-transparent via-red-600/50 to-transparent"></div>
+
+        <!-- Corner markers -->
+        <div class="absolute top-3 left-3 w-4 h-4 border-t border-l border-red-600/40"></div>
+        <div class="absolute top-3 right-3 w-4 h-4 border-t border-r border-red-600/40"></div>
+        <div class="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-red-600/40"></div>
+        <div class="absolute bottom-3 right-3 w-4 h-4 border-b border-r border-red-600/40"></div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/5">
+
+          <div class="text-center px-6 py-10 relative group">
+            <div class="stat-value stat-shimmer text-5xl sm:text-6xl font-black mb-3" data-target="2007" style="font-variant-numeric:tabular-nums">—</div>
+            <div class="font-mono-tech text-gray-500 text-xs tracking-[0.3em] uppercase">Start Riding</div>
+            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-px bg-red-600/30 group-hover:w-20 transition-all duration-500"></div>
+          </div>
+
+          <div class="text-center px-6 py-10 relative group">
+            <div class="stat-value stat-shimmer text-5xl sm:text-6xl font-black mb-3" data-target="1000" data-suffix="+" style="font-variant-numeric:tabular-nums">—</div>
+            <div class="font-mono-tech text-gray-500 text-xs tracking-[0.3em] uppercase">KM Travelled</div>
+            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-px bg-red-600/30 group-hover:w-20 transition-all duration-500"></div>
+          </div>
+
+          <div class="text-center px-6 py-10 relative group">
+            <div class="stat-value stat-shimmer text-5xl sm:text-6xl font-black mb-3" data-target="100" data-suffix="+" style="font-variant-numeric:tabular-nums">—</div>
+            <div class="font-mono-tech text-gray-500 text-xs tracking-[0.3em] uppercase">Mods Tested</div>
+            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-px bg-red-600/30 group-hover:w-20 transition-all duration-500"></div>
+          </div>
+
+        </div>
+        <div class="h-px w-full bg-gradient-to-r from-transparent via-red-600/50 to-transparent"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ FOOTER ════ -->
+  <footer class="py-16 px-5 border-t border-white/5 mt-8">
+    <div class="max-w-5xl mx-auto">
+      <div class="flex flex-col items-center gap-6">
+
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+            <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+          </div>
+          <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+        </div>
+
+        <p class="font-mono-tech text-gray-600 text-[10px] tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+          <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors duration-300">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <span class="font-mono-tech text-xs tracking-widest uppercase">Watch on YouTube</span>
+        </a>
+
+        <div class="w-full max-w-xs h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+        <p class="font-mono-tech text-gray-700 text-[10px] tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ════ JAVASCRIPT ════ -->
+  <script>
+    // ── Custom cursor ──
+    (function () {
+      var cursor = document.getElementById('cursor');
+      var ring   = document.getElementById('cursor-ring');
+      var mx = 0, my = 0, rx = 0, ry = 0;
+
+      document.addEventListener('mousemove', function (e) {
+        mx = e.clientX; my = e.clientY;
+        cursor.style.left = mx + 'px';
+        cursor.style.top  = my + 'px';
+      });
+
+      // Ring follows with lag
+      (function animRing() {
+        rx += (mx - rx) * 0.12;
+        ry += (my - ry) * 0.12;
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+        requestAnimationFrame(animRing);
+      })();
+
+      // Expand ring on hover
+      document.querySelectorAll('a, button').forEach(function (el) {
+        el.addEventListener('mouseenter', function () {
+          ring.style.width = '56px';
+          ring.style.height = '56px';
+          ring.style.borderColor = 'rgba(220,38,38,0.8)';
+        });
+        el.addEventListener('mouseleave', function () {
+          ring.style.width = '36px';
+          ring.style.height = '36px';
+          ring.style.borderColor = 'rgba(220,38,38,0.5)';
+        });
+      });
+    })();
+
+    // ── Progress bar ──
+    window.addEventListener('scroll', function () {
+      var scrollTop    = document.documentElement.scrollTop || document.body.scrollTop;
+      var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      document.getElementById('progress-bar').style.width = pct + '%';
+    }, { passive: true });
+
+    // ── Navbar scroll effect ──
+    window.addEventListener('scroll', function () {
+      var nav = document.getElementById('navbar');
+      if (window.scrollY > 20) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    }, { passive: true });
+
+    // ── Mobile menu toggle ──
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+      var menu      = document.getElementById('mobile-menu');
+      var openIcon  = document.getElementById('menu-icon-open');
+      var closeIcon = document.getElementById('menu-icon-close');
+      var isOpen    = menu.classList.toggle('open');
+      openIcon.style.display  = isOpen ? 'none'  : '';
+      closeIcon.style.display = isOpen ? ''      : 'none';
     });
-  });
 
-  // ── Classified file toggle ──
-  function toggleFile(card) {
-    var wasOpen = card.classList.contains('open');
-
-    // Close all cards first
-    document.querySelectorAll('.file-card.open').forEach(function (c) {
-      c.classList.remove('open');
-      c.querySelector('.lock-icon').classList.remove('hidden');
-      c.querySelector('.unlock-icon').classList.add('hidden');
-      c.querySelector('.status-dot').classList.remove('bg-red-500');
-      c.querySelector('.status-dot').classList.add('bg-gray-700');
-      c.querySelector('.status-dot').classList.remove('animate-pulse-dot');
-      c.querySelector('.status-text').textContent = 'ENCRYPTED';
-      c.querySelector('.click-hint').textContent = 'CLICK TO OPEN';
+    // Close mobile menu on link click
+    document.querySelectorAll('.mobile-link').forEach(function (link) {
+      link.addEventListener('click', function () {
+        document.getElementById('mobile-menu').classList.remove('open');
+        document.getElementById('menu-icon-open').style.display  = '';
+        document.getElementById('menu-icon-close').style.display = 'none';
+      });
     });
 
-    // If it wasn't open, open it
-    if (!wasOpen) {
-      card.classList.add('open');
-      card.querySelector('.lock-icon').classList.add('hidden');
-      card.querySelector('.unlock-icon').classList.remove('hidden');
-      card.querySelector('.status-dot').classList.remove('bg-gray-700');
-      card.querySelector('.status-dot').classList.add('bg-red-500');
-      card.querySelector('.status-dot').classList.add('animate-pulse-dot');
-      card.querySelector('.status-text').textContent = 'ACCESS GRANTED';
-      card.querySelector('.click-hint').textContent = 'CLICK TO SEAL';
+    // ── Classified file toggle ──
+    function toggleFile(card) {
+      var wasOpen = card.classList.contains('open');
+
+      // Close all
+      document.querySelectorAll('.file-card.open').forEach(function (c) {
+        c.classList.remove('open');
+        c.querySelector('.status-dot').classList.remove('bg-red-500', 'animate-pulse-dot');
+        c.querySelector('.status-dot').classList.add('bg-gray-700');
+        c.querySelector('.status-text').textContent = 'ENCRYPTED';
+        c.querySelector('.click-hint').textContent  = 'CLICK TO OPEN';
+      });
+
+      // Open clicked card
+      if (!wasOpen) {
+        card.classList.add('open');
+        card.querySelector('.status-dot').classList.remove('bg-gray-700');
+        card.querySelector('.status-dot').classList.add('bg-red-500', 'animate-pulse-dot');
+        card.querySelector('.status-text').textContent = 'ACCESS GRANTED';
+        card.querySelector('.click-hint').textContent  = 'CLICK TO SEAL';
+      }
     }
-  }
 
-  // ── Matrix rain canvas ──
-  (function () {
-    var canvas = document.getElementById('matrix-canvas');
-    if (!canvas) return;
-    var ctx = canvas.getContext('2d');
-    var drops = [];
-    var chars = '01SECRET CLASSIFIED REDACTED AGENT MOTO ';
+    // ── Matrix rain canvas ──
+    (function () {
+      var canvas = document.getElementById('matrix-canvas');
+      if (!canvas) return;
+      var ctx   = canvas.getContext('2d');
+      var drops = [];
+      var chars = '01SECRET CLASSIFIED REDACTED AGENT MOTO ';
 
-    function setup() {
-        canvas.width = canvas.offsetWidth;
+      function setup() {
+        canvas.width  = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
         var columns = Math.floor(canvas.width / 14);
-        for (var i = 0; i < columns; i++) drops[i] = 1;
-    }
+        drops = [];
+        for (var i = 0; i < columns; i++) drops[i] = Math.random() * -50;
+      }
+      setup();
+      window.addEventListener('resize', setup, { passive: true });
 
-    setup();
-    window.addEventListener('resize', setup); // Recalculates if screen changes
-
-    setInterval(function () {
-        ctx.fillStyle = 'rgba(8, 8, 8, 0.05)';
+      setInterval(function () {
+        ctx.fillStyle = 'rgba(6, 6, 6, 0.06)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'rgba(220, 38, 38, 0.12)';
+        ctx.fillStyle = 'rgba(220, 38, 38, 0.13)';
         ctx.font = '11px "Share Tech Mono", monospace';
         for (var i = 0; i < drops.length; i++) {
-            var text = chars[Math.floor(Math.random() * chars.length)];
-            ctx.fillText(text, i * 14, drops[i] * 14);
-            if (drops[i] * 14 > canvas.height && Math.random() > 0.975) drops[i] = 0;
-            drops[i]++;
+          var text = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillText(text, i * 14, drops[i] * 14);
+          if (drops[i] * 14 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
         }
-    }, 50);
-})();
+      }, 50);
+    })();
 
+    // ── Stats count-up animation ──
+    (function () {
+      var animated    = false;
+      var statsSection = document.querySelector('.stats-panel');
+      if (!statsSection) return;
 
-  // ── Stats count-up animation ──
-  (function () {
-    var animated = false;
-    var statsSection = document.querySelector('.stats-panel');
-    if (!statsSection) return;
+      var observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting && !animated) {
+          animated = true;
+          document.querySelectorAll('.stat-value').forEach(function (el) {
+            var target   = parseInt(el.getAttribute('data-target'), 10);
+            var suffix   = el.getAttribute('data-suffix') || '';
+            var start    = performance.now();
+            var duration = 1400;
 
-    var observer = new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting && !animated) {
-        animated = true;
-        document.querySelectorAll('.stat-value').forEach(function (el) {
-          var target = parseInt(el.getAttribute('data-target'), 10);
-          var suffix = el.getAttribute('data-suffix') || '';
-          var start = performance.now();
-          var duration = 1200;
+            function step(now) {
+              var elapsed  = now - start;
+              var progress = Math.min(elapsed / duration, 1);
+              var eased    = 1 - Math.pow(1 - progress, 3);
+              var current  = Math.floor(eased * target);
+              el.textContent = current.toLocaleString() + suffix;
+              if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+          });
+        }
+      }, { threshold: 0.3 });
 
-          function step(now) {
-            var elapsed = now - start;
-            var progress = Math.min(elapsed / duration, 1);
-            var eased = 1 - Math.pow(1 - progress, 3);
-            var current = Math.floor(eased * target);
-            el.textContent = current.toLocaleString() + suffix;
-            if (progress < 1) requestAnimationFrame(step);
-          }
-          requestAnimationFrame(step);
-        });
+      observer.observe(statsSection);
+    })();
+
+    // ── Scroll-reveal for file cards ──
+    (function () {
+      var cards = document.querySelectorAll('.file-card');
+      if (!('IntersectionObserver' in window)) {
+        cards.forEach(function (c) { c.style.opacity = '1'; });
+        return;
       }
-    }, { threshold: 0.3 });
-
-    observer.observe(statsSection);
-  })();
-</script>
-
+      cards.forEach(function (card, i) {
+        card.style.opacity  = '0';
+        card.style.transform = 'translateY(24px)';
+        card.style.transition = 'opacity 0.6s ease ' + (i * 0.1) + 's, transform 0.6s ease ' + (i * 0.1) + 's, border-color 0.45s, box-shadow 0.45s, background 0.45s';
+      });
+      var cardObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity   = '1';
+            entry.target.style.transform = 'translateY(0)';
+            cardObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      cards.forEach(function (card) { cardObserver.observe(card); });
+    })();
+  </script>
 </body>
 </html>
