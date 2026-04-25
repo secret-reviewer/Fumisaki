@@ -1,211 +1,404 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Contact | Secret Reviewer</title>
-    <!-- Keep your existing fonts but add the Tech Mono font for the theme -->
-    <link href="https://googleapis.com" rel="stylesheet">
-    
-    <style>
-        :root { 
-            --primary: #dc2626; 
-            --bg: #080808; 
-            --card: rgba(14, 14, 14, 0.9); 
-            --text: #ececec; 
-        }
-        
-        body { 
-            margin: 0; 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg); 
-            color: var(--text); 
-            line-height: 1.8; 
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact | Secret Reviewer</title>
 
-        /* ── Cyberpunk Navbar ── */
-        nav { 
-            display: flex; 
-            justify-content: center; 
-            gap: 30px; 
-            padding: 15px; 
-            background: rgba(0,0,0,0.9); 
-            border-bottom: 1px solid rgba(220, 38, 38, 0.2);
-            position: sticky; 
-            top: 0; 
-            z-index: 100;
-            backdrop-filter: blur(20px);
-        }
-        nav a { 
-            color: #888; 
-            text-decoration: none; 
-            font-weight: 700; 
-            font-size: 0.7rem; 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
-            font-family: 'Share Tech Mono', monospace;
-        }
-        nav a:hover { color: var(--primary); }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
 
-        .container { max-width: 800px; margin: 60px auto; padding: 0 20px; }
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-        /* ── Styled Contact Section ── */
-        .contact-section { 
-            background: var(--card); 
-            padding: 40px; 
-            border: 1px solid rgba(220, 38, 38, 0.15);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Barlow Condensed', 'sans-serif'],
+            mono: ['"Share Tech Mono"', 'monospace'],
+          }
         }
+      }
+    }
+  </script>
 
-        .tag { 
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.7rem; 
-            color: var(--primary); 
-            text-transform: uppercase; 
-            border: 1px solid rgba(220, 38, 38, 0.4); 
-            padding: 4px 10px; 
-            letter-spacing: 1px;
-            background: rgba(220, 38, 38, 0.05);
-            display: inline-block;
-            margin-bottom: 15px;
-        }
+  <style>
+    :root {
+      --red: #dc2626;
+      --bg: #060606;
+      --surface: rgba(10,10,10,0.88);
+    }
 
-        h2 { 
-            font-size: 2.5rem; 
-            font-weight: 900; 
-            text-transform: uppercase; 
-            color: #fff; 
-            letter-spacing: -1px;
-            margin-bottom: 10px;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        .contact-form { display: flex; flex-direction: column; gap: 15px; }
-        
-        .contact-form input, .contact-form textarea { 
-            padding: 15px; 
-            background: #000; 
-            border: 1px solid #333; 
-            color: #fff; 
-            font-family: 'Share Tech Mono', monospace;
-        }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #ececec;
+      font-family: 'Barlow Condensed', sans-serif;
+      cursor: none;
+      overflow-x: hidden;
+    }
 
-        /* ── The "Decrypting" Button Style ── */
-        .btn-style {
-            background: transparent;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 14px 28px;
-            font-family: 'Share Tech Mono', monospace;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .btn-style:hover {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.4);
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        .decrypting {
-            color: #fff !important;
-            background: var(--primary) !important;
-            letter-spacing: 4px !important;
-            text-shadow: 2px 0 #00fff9, -2px 0 #ff00c1;
-        }
+    /* Cursor */
+    #cursor {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: var(--red);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+    }
 
-        #disqus_thread { 
-            margin-top: 60px; 
-            padding: 20px; 
-            background: rgba(18, 18, 18, 0.5); 
-            border: 1px solid rgba(220, 38, 38, 0.15);
-        }
+    #cursor-ring {
+      position: fixed;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(220,38,38,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+    }
 
-        footer { text-align: center; padding: 60px; color: #444; font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; }
-    </style>
+    /* Scanline effect */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.04) 2px,
+        rgba(0,0,0,0.04) 4px
+      );
+      pointer-events: none;
+      z-index: 9990;
+    }
+
+    /* Progress bar */
+    #progress-bar {
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, #7f1d1d, #dc2626, #ff6666);
+      box-shadow: 0 0 15px rgba(220,38,38,0.8);
+      transition: width 0.08s ease;
+    }
+
+    /* Navbar */
+    #navbar {
+      transition: 0.3s;
+    }
+
+    .nav-scrolled {
+      background: rgba(4,4,4,0.96);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(220,38,38,0.3);
+    }
+
+    /* Contact Card */
+    .contact-box {
+      background: var(--surface);
+      border: 1px solid rgba(220,38,38,0.18);
+      padding: 50px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--red);
+      border: 1px solid rgba(220,38,38,0.5);
+      padding: 4px 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: rgba(220,38,38,0.05);
+    }
+
+    .title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      margin: 20px 0 10px;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .lead {
+      color: #999;
+      border-left: 2px solid var(--red);
+      padding-left: 20px;
+      margin-bottom: 40px;
+      font-size: 1.05rem;
+    }
+
+    /* Form */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      background: #050505;
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 16px;
+      color: white;
+      font-family: inherit;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: rgba(220,38,38,0.5);
+    }
+
+    /* Button */
+    .submit-btn {
+      background: transparent;
+      color: var(--red);
+      border: 1px solid rgba(220,38,38,0.5);
+      padding: 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:hover {
+      background: rgba(220,38,38,0.1);
+      box-shadow: 0 0 20px rgba(220,38,38,0.3);
+    }
+
+    .decrypting {
+      color: #fff !important;
+      background: var(--red) !important;
+      letter-spacing: 4px !important;
+      text-shadow: 2px 0 #00fff9, -2px 0 #ff00c1;
+    }
+
+    /* Disqus */
+    #disqus_thread {
+      margin-top: 60px;
+      background: var(--surface);
+      border: 1px solid rgba(220,38,38,0.18);
+      padding: 40px;
+    }
+
+    footer {
+      padding: 80px 20px;
+      text-align: center;
+      color: #666;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      margin-top: 80px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+    }
+  </style>
 </head>
 <body>
 
-<nav>
-    <a href="index.html">Home</a>
-    <a href="contact.html">Contact</a>
-</nav>
+<!-- Cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-<div class="container">
-    <div class="contact-section">
-        <span class="tag">System Channel: Secure</span>
-        <h2>Contact Me</h2>
-        <p style="color: #aaa; margin-bottom: 30px;">Transmit a private message regarding bike operations.</p>
-        
-       <form class="contact-form" action="https://formspree.io/f/mojypvej" method="POST">
-      <input type="email" name="email" placeholder="Your Email" required>
-      <textarea name="message" placeholder="What's on your mind?" rows="4" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-  </div>
-
-
-    <div id="disqus_thread"></div>
+<!-- Progress -->
+<div class="fixed top-0 left-0 w-full z-[9999]">
+  <div id="progress-bar"></div>
 </div>
 
-<div id="disqus_thread"></div>
+<!-- Navbar -->
+<nav id="navbar" class="fixed top-0 left-0 w-full z-[900] bg-transparent">
+  <div class="max-w-6xl mx-auto px-5 flex justify-between items-center h-16">
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
+    <a href="index.html" class="flex items-center gap-3">
+      <div class="w-8 h-8 border border-red-600 flex items-center justify-center">
+        <span class="text-red-500 text-xs font-mono font-bold">SR</span>
+      </div>
+      <span class="text-white font-bold tracking-widest uppercase text-sm">
+        Secret Reviewer
+      </span>
+    </a>
 
-    // ── Decrypt Script ──
-    const submitBtn = document.getElementById('submitBtn');
-    const chars = "ABCDEF0123456789/X$#@%";
+    <div class="flex gap-8">
+      <a href="index.html" class="text-gray-400 hover:text-red-400 uppercase text-xs font-bold tracking-widest">Home</a>
+      <a href="gallery.html" class="text-gray-400 hover:text-red-400 uppercase text-xs font-bold tracking-widest">Gallery</a>
+      <a href="contact.html" class="text-red-500 uppercase text-xs font-bold tracking-widest">Contact</a>
+    </div>
 
-    function decryptButton() {
-        let iterations = 0;
-        const originalText = "TRANSMIT MESSAGE";
+  </div>
+</nav>
 
-        if (!submitBtn) return;
+<!-- Main -->
+<main class="pt-32 pb-24 px-5">
+  <div class="max-w-3xl mx-auto">
 
-        submitBtn.classList.add('decrypting');
+    <div class="contact-box">
 
-        const interval = setInterval(() => {
-            submitBtn.innerText = originalText.split("")
-                .map((char, index) => {
-                    if (index < iterations) return originalText[index];
-                    return chars[Math.floor(Math.random() * chars.length)];
-                })
-                .join("");
+      <span class="tag">Secure Message Channel</span>
 
-            if (iterations >= originalText.length) {
-                clearInterval(interval);
-            }
+      <h1 class="title">Contact Me</h1>
 
-            iterations += 1 / 3;
-        }, 30);
-    }
+      <p class="lead">
+        Send a private message to discuss rides, routes, gear setups,
+        road stories, or motorcycle madness.
+      </p>
 
-    if (submitBtn) {
-        submitBtn.addEventListener('click', decryptButton);
-    }
+      <!-- Form -->
+      <form
+        class="contact-form"
+        action="https://formspree.io/f/mojypvej"
+        method="POST"
+      >
+        <input
+          type="email"
+          name="email"
+          placeholder="Your Email"
+          required
+        >
 
-    // ── Disqus ──
-    var disqus_config = function () {
-        this.page.url = window.location.href;
-        this.page.identifier = window.location.pathname;
-    };
+        <textarea
+          name="message"
+          rows="6"
+          placeholder="Transmit your message..."
+          required
+        ></textarea>
 
-    (function () {
-        var d = document, s = d.createElement('script');
-        s.src = 'https://https-secret-reviewer-com.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
+        <button
+          id="submitBtn"
+          class="submit-btn"
+          type="submit"
+        >
+          TRANSMIT MESSAGE
+        </button>
+      </form>
 
-});
-</script>
+    </div>
+
+    <!-- Disqus -->
+    <div id="disqus_thread"></div>
+
+  </div>
+</main>
 
 <footer>
-    &copy; 2026 SECRET REVIEWER // OPERATIONAL CONTACT
+  © 2026 SECRET REVIEWER // RIDE SAFE 🏍️
 </footer>
+
+<script>
+  /* Cursor */
+  (function () {
+    const cursor = document.getElementById("cursor");
+    const ring = document.getElementById("cursor-ring");
+
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener("mousemove", function (e) {
+      mx = e.clientX;
+      my = e.clientY;
+      cursor.style.left = mx + "px";
+      cursor.style.top = my + "px";
+    });
+
+    function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + "px";
+      ring.style.top = ry + "px";
+      requestAnimationFrame(animateRing);
+    }
+
+    animateRing();
+  })();
+
+  /* Progress */
+  window.addEventListener("scroll", function () {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+
+    const percent = (scrollTop / scrollHeight) * 100;
+    document.getElementById("progress-bar").style.width = percent + "%";
+
+    const nav = document.getElementById("navbar");
+    if (window.scrollY > 20) {
+      nav.classList.add("nav-scrolled");
+    } else {
+      nav.classList.remove("nav-scrolled");
+    }
+  });
+
+  /* Decrypt Button */
+  const submitBtn = document.getElementById("submitBtn");
+  const chars = "ABCDEF0123456789/X$#@%";
+
+  function decryptButton() {
+    let iterations = 0;
+    const originalText = "TRANSMIT MESSAGE";
+
+    submitBtn.classList.add("decrypting");
+
+    const interval = setInterval(() => {
+      submitBtn.innerText = originalText
+        .split("")
+        .map((char, index) => {
+          if (index < iterations) return originalText[index];
+          return chars[Math.floor(Math.random() * chars.length)];
+        })
+        .join("");
+
+      if (iterations >= originalText.length) {
+        clearInterval(interval);
+      }
+
+      iterations += 1 / 3;
+    }, 30);
+  }
+
+  submitBtn.addEventListener("click", decryptButton);
+
+  /* Disqus */
+  var disqus_config = function () {
+    this.page.url = window.location.href;
+    this.page.identifier = window.location.pathname;
+  };
+
+  (function () {
+    var d = document, s = d.createElement("script");
+
+    s.src = "https://https-secret-reviewer-com.disqus.com/embed.js";
+
+    s.setAttribute("data-timestamp", +new Date());
+
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+
+<noscript>
+Please enable JavaScript to view the comments powered by Disqus.
+</noscript>
 
 </body>
 </html>
