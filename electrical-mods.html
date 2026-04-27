@@ -3,67 +3,1018 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Story Details | Secret Reviewer</title>
-  <link rel="preconnect" href="https://googleapis.com">
-  <link href="https://googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <title>DIY Logs | Secret Reviewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Barlow Condensed', 'sans-serif'],
+            mono: ['"Share Tech Mono"', 'monospace'],
+            prose: ['"IBM Plex Sans"', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
   <style>
-    :root { --primary: #ff0000; --bg: #0a0a0a; --card: #161616; --text: #ececec; }
-    body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; }
-    
-    /* Simple Navigation */
-    nav { display: flex; justify-content: center; gap: 30px; padding: 20px; background: rgba(0,0,0,0.9); border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 100; }
-    nav a { color: #fff; text-decoration: none; font-weight: 600; font-size: 0.8rem; opacity: 0.6; text-transform: uppercase; }
-    nav a:hover { opacity: 1; color: var(--primary); }
+    :root {
+      --red: #dc2626;
+      --red-dim: rgba(220, 38, 38, 0.15);
+      --red-glow: rgba(220, 38, 38, 0.6);
+      --bg: #060606;
+      --surface: rgba(10, 10, 10, 0.85);
+    }
 
-    /* Content Area */
-    .container { max-width: 800px; margin: 60px auto; padding: 0 20px; }
-    .tag { font-size: 0.7rem; font-weight: 900; color: var(--primary); text-transform: uppercase; border: 1px solid var(--primary); padding: 2px 8px; border-radius: 4px; }
-    
-    Electrical Upgrades { font-size: 3rem; font-weight: 900; margin: 20px 0; color: #fff; line-height: 1.1; }
-    .lead { font-size: 1.2rem; color: #aaa; margin-bottom: 40px; border-left: 4px solid var(--primary); padding-left: 20px; }
-    
-    .story-content { font-size: 1.1rem; color: #ccc; }
-    .story-content h2 { color: var(--primary); margin-top: 40px; text-transform: uppercase; font-size: 1.2rem; letter-spacing: 1px; }
-    .story-content p { margin-bottom: 20px; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: #ececec;
+      font-family: 'Barlow Condensed', sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+      cursor: none;
+      line-height: 1.75;
+    }
+    .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+    .font-prose { font-family: 'IBM Plex Sans', sans-serif; }
 
-    /* Image Placeholder */
-    .featured-image { width: 100%; height: 400px; background: #222; border-radius: 12px; margin-bottom: 40px; object-fit: cover; border: 1px solid #333; }
+    /* ── Custom Cursor ── */
+    #cursor {
+      position: fixed;
+      width: 12px; height: 12px;
+      background: var(--red);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+      mix-blend-mode: screen;
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(220,38,38,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+    }
 
-    footer { text-align: center; padding: 80px 20px; color: #444; font-size: 0.8rem; border-top: 1px solid #222; margin-top: 100px; }
-    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--primary); text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+    /* ── Animations ── */
+    @keyframes flicker {
+      0%,18%,22%,25%,53%,57%,100% { opacity: 1; }
+      20%,24%,55% { opacity: 0.3; }
+    }
+    @keyframes pulse-red {
+      0%,100% { box-shadow: 0 0 6px rgba(220,38,38,0.3); }
+      50%      { box-shadow: 0 0 28px rgba(220,38,38,0.8), 0 0 60px rgba(220,38,38,0.25); }
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.3; }
+    }
+    @keyframes scan {
+      from { top: -100%; }
+      to   { top: 100%; }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes folderOpen {
+      from { opacity: 0; transform: translateY(16px); filter: blur(4px); }
+      to   { opacity: 1; transform: translateY(0);  filter: blur(0); }
+    }
+    @keyframes glitch-1 {
+      0%,100% { clip-path: inset(0 0 98% 0);  transform: translate(-2px,0); }
+      20%     { clip-path: inset(20% 0 50% 0); transform: translate(2px,0); }
+      40%     { clip-path: inset(60% 0 20% 0); transform: translate(-2px,0); }
+      60%     { clip-path: inset(80% 0 5% 0);  transform: translate(2px,0); }
+      80%     { clip-path: inset(40% 0 60% 0); transform: translate(-2px,0); }
+    }
+    @keyframes glitch-2 {
+      0%,100% { clip-path: inset(50% 0 30% 0); transform: translate(2px,0);  color:#00ffff; }
+      25%     { clip-path: inset(10% 0 80% 0); transform: translate(-2px,0); }
+      50%     { clip-path: inset(70% 0 10% 0); transform: translate(2px,0);  color:var(--red); }
+      75%     { clip-path: inset(30% 0 50% 0); transform: translate(-2px,0); }
+    }
+    @keyframes borderFlash {
+      0%,100% { border-color: rgba(220,38,38,0.15); }
+      50%     { border-color: rgba(220,38,38,0.5); }
+    }
+
+    .animate-pulse-red    { animation: pulse-red 2.5s infinite; }
+    .animate-pulse-dot    { animation: pulse-dot 2s infinite; }
+    .animate-fade-slide-up{ animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+    .animate-border-flash { animation: borderFlash 3s infinite; }
+
+    /* ── CRT scanlines + sweep ── */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
+      pointer-events: none;
+      z-index: 9990;
+    }
+    body::after {
+      content: "";
+      position: fixed; top: -100%; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(rgba(220,38,38,0) 0%, rgba(220,38,38,0.04) 50%, rgba(220,38,38,0) 100%);
+      animation: scan 8s linear infinite;
+      pointer-events: none;
+      z-index: 9991;
+    }
+
+    /* ── Progress bar ── */
+    #progress-bar {
+      height: 3px;
+      background: linear-gradient(90deg, #7f1d1d, #dc2626, #ff6666);
+      box-shadow: 0 0 12px rgba(220,38,38,0.9), 0 0 24px rgba(220,38,38,0.4);
+      width: 0%;
+      transition: width 0.08s ease-out;
+    }
+
+    /* ── Navbar ── */
+    #navbar { transition: all 0.4s ease; }
+    .nav-scrolled {
+      background: rgba(4,4,4,0.97) !important;
+      border-bottom-color: rgba(127,29,29,0.5) !important;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+
+    /* ── Story content typography ── */
+    .story-content {
+      font-size: 1.1rem;
+      letter-spacing: 0.01em;
+      margin-bottom: 1.5rem;
+      color: #d0d0d0;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      line-height: 1.85;
+    }
+    .story-content p { margin: 0 0 1.6em 0; }
+    .story-content h2 {
+      color: var(--red);
+      margin-top: 52px;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 3px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .story-content h2::before { content: "—"; opacity: 0.4; }
+    .story-content h3 {
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 36px 0 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .story-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.6em 0;
+    }
+    .story-content ul li {
+      position: relative;
+      padding-left: 22px;
+      margin-bottom: 14px;
+      color: #bbb;
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+    .story-content ul li::before {
+      content: "▶";
+      position: absolute;
+      left: 0;
+      color: var(--red);
+      font-size: 0.6rem;
+      top: 6px;
+      opacity: 0.7;
+    }
+    .story-content strong { color: #fff; font-weight: 700; }
+
+    /* ── Lead paragraph ── */
+    .lead {
+      font-size: 1.15rem;
+      color: #999;
+      margin-bottom: 40px;
+      border-left: 2px solid var(--red);
+      padding-left: 20px;
+      font-style: italic;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.8;
+    }
+
+    /* ── Tag pill ── */
+    .tag {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--red);
+      text-transform: uppercase;
+      border: 1px solid rgba(220,38,38,0.4);
+      padding: 5px 14px;
+      letter-spacing: 2px;
+      background: rgba(220,38,38,0.06);
+    }
+
+    /* ── Entry title ── */
+    .entry-title {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900;
+      margin: 22px 0 10px;
+      color: #fff;
+      line-height: 1.0;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    /* ── Featured image placeholder ── */
+    .featured-image {
+      width: 100%;
+      height: 420px;
+      background: linear-gradient(135deg, #0d0d0d 0%, #111 50%, #0a0a0a 100%);
+      border: 1px solid rgba(220,38,38,0.2);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      position: relative;
+      overflow: hidden;
+      margin: 32px 0;
+    }
+    .featured-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 3px,
+        rgba(220,38,38,0.015) 3px, rgba(220,38,38,0.015) 4px
+      );
+      pointer-events: none;
+    }
+    .featured-image-label {
+      position: absolute;
+      bottom: 12px; left: 12px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: rgba(220,38,38,0.5);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .featured-image::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 40px; height: 40px;
+      border-top: 1px solid rgba(220,38,38,0.4);
+      border-left: 1px solid rgba(220,38,38,0.4);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* ── Steps grid (like itinerary-grid but for DIY steps) ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 0;
+      background: rgba(10,10,10,0.7);
+      border: 1px solid rgba(220,38,38,0.15);
+      margin: 28px 0;
+      font-family: 'Share Tech Mono', monospace;
+      overflow: hidden;
+      animation: borderFlash 3s infinite;
+    }
+    .steps-grid > div {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.85rem;
+    }
+    .steps-grid > div:last-child,
+    .steps-grid > div:nth-last-child(2) { border-bottom: none; }
+    .steps-grid > div:nth-child(odd) {
+      color: var(--red);
+      font-weight: bold;
+      font-size: 0.8rem;
+      border-right: 1px solid rgba(220,38,38,0.1);
+      background: rgba(220,38,38,0.03);
+    }
+    .steps-grid > div:nth-child(even) { color: #999; }
+
+    /* ── Log entry animation ── */
+    .log-entry { animation: folderOpen 0.6s cubic-bezier(0.22,1,0.36,1) both; }
+
+    /* ── Decrypt scramble effect ── */
+    .decrypting {
+      color: #fff !important;
+      background: var(--red) !important;
+      letter-spacing: 4px !important;
+      text-shadow: 2px 0 #00fff9, -2px 0 #ff00c1;
+    }
+
+    /* ── Nav buttons ── */
+    .nav-btn {
+      background: transparent;
+      color: var(--red);
+      border: 1px solid rgba(220,38,38,0.5);
+      padding: 14px 28px;
+      font-family: 'Share Tech Mono', monospace;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.78rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--red);
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .nav-btn:hover::before  { transform: translateX(0); }
+    .nav-btn:hover { color: #fff; box-shadow: 0 0 20px rgba(220,38,38,0.35); }
+    .nav-btn span { position: relative; z-index: 1; }
+    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .nav-btn:disabled::before { display: none; }
+
+    /* ── Page counter ── */
+    .page-counter {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: #444;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      align-self: center;
+    }
+    .page-counter span { color: var(--red); }
+
+    /* ── Section dividers ── */
+    .section-rule {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(220,38,38,0.3), transparent);
+      margin: 48px 0;
+    }
+
+    /* ── Glitch title ── */
+    .glitch-wrap { position: relative; display: inline-block; }
+    .glitch-wrap::before, .glitch-wrap::after {
+      content: attr(data-text);
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    .glitch-wrap::before { color: #00ffff; animation: glitch-1 6s infinite step-start; opacity: 0.6; }
+    .glitch-wrap::after  { color: var(--red); animation: glitch-2 6s infinite step-start; opacity: 0.6; }
+
+    /* ── Mobile menu ── */
+    #mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, border-bottom 0.35s ease;
+    }
+
+    /* ── Load more / intel button style ── */
+    .load-more-style {
+      background: transparent;
+      color: var(--red);
+      border: 1px solid rgba(220,38,38,0.4);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 10px 22px;
+      transition: background 0.25s, color 0.25s;
+    }
+    .load-more-style:hover { background: var(--red); color: #fff; }
+
+    /* ── Intel timestamp ── */
+    .intel-timestamp { color: var(--red); font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; }
+
+    /* ── Warning callout box ── */
+    .warning-box {
+      background: rgba(220,38,38,0.06);
+      border: 1px solid rgba(220,38,38,0.3);
+      border-left: 3px solid var(--red);
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-size: 0.95rem;
+      color: #bbb;
+      font-family: 'Share Tech Mono', monospace;
+    }
+    .warning-box strong { color: var(--red); }
+
+    /* ── Parts list ── */
+    .parts-list {
+      background: rgba(10,10,10,0.8);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .parts-list h5 {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--red);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin: 0 0 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 8px;
+    }
+    .parts-list ul { list-style: none; padding: 0; margin: 0; }
+    .parts-list ul li {
+      font-size: 0.88rem;
+      color: #888;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      font-family: 'Share Tech Mono', monospace;
+    }
+    .parts-list ul li::before { content: "> "; color: var(--red); }
   </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html">Home</a>
-  <a href="gallery.html">Gallery</a>
-  <a href="contact.html">Contact</a>
-</nav>
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-<div class="container">
-  <a href="index.html" class="back-btn">← BACK TO LOG</a><br>
-  
-  <span class="tag">Rider Log Entry</span>
-  
-  <!-- EDIT THESE THREE LINES FOR EACH PAGE -->
-  <Electrical Upgrades>Tons of DIY I've done before</Electrical Upgrades>
-  <p class="lead">DIY - Bike Camera installation, Volt meter, Hazard light mod, fuse box installation</p>
-  
-  <div class="featured-image" style="background-image: url('https://unsplash.com'); background-size: cover; background-position: center;"></div>
-
-  <div class="story-content">
-    <h2>The Journey of DIY</h2>
-    <p>I start DIY when I was almost conned a few thousands from a motorcycle workshop. I also almost become a motorcycle mechanics but someone who's already a mechanics tell me this. Don't take your hobby as your job or you will lose interest in your hobby, which I find it super relatable. But recently, i found another phrase, if you are doing something that you like daily, your life wil be happier, this is also relatable, so which one do you guys think?</p>
-    
-    <h2>Key Takeaways</h2>
-    <p>Learning to DIY means learning about your bike, and that also means that you will be able to troubleshoot stuff on your end easier.</p>
-  </div>
+<!-- Progress bar -->
+<div class="fixed top-0 left-0 w-full z-[9999]">
+  <div id="progress-bar"></div>
 </div>
 
-<footer>
-  © 2026 Secret Reviewer | Ride Safe 🏍️
+<!-- ════ NAVBAR ════ -->
+<nav id="navbar" class="fixed top-3 left-0 w-full z-[9997] px-5">
+  <div class="max-w-5xl mx-auto bg-black/60 border border-white/8 backdrop-blur-xl px-6 py-4 flex items-center justify-between" style="border-color:rgba(255,255,255,0.08);">
+
+    <!-- Logo -->
+    <a href="index.html" class="flex items-center gap-3 group">
+      <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center group-hover:bg-red-600/10 transition-colors duration-300">
+        <span class="font-mono-tech text-red-600 text-sm font-bold">SR</span>
+      </div>
+      <span class="font-bold text-sm tracking-widest uppercase text-white hidden sm:block">Secret Reviewer</span>
+    </a>
+
+    <!-- Desktop nav -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="index.html" class="font-mono-tech text-gray-400 hover:text-red-500 text-xs tracking-widest uppercase transition-colors duration-300">Home</a>
+      <a href="thailand.html" class="font-mono-tech text-gray-400 hover:text-red-500 text-xs tracking-widest uppercase transition-colors duration-300">Rider Logs</a>
+      <a href="DIY.html" class="font-mono-tech text-red-500 text-xs tracking-widest uppercase">DIY Logs</a>
+      <a href="gallery.html" class="font-mono-tech text-gray-400 hover:text-red-500 text-xs tracking-widest uppercase transition-colors duration-300">Gallery</a>
+    </div>
+
+    <!-- Mobile menu toggle -->
+    <button id="menu-toggle" class="md:hidden w-8 h-8 flex flex-col items-center justify-center gap-1.5 focus:outline-none">
+      <span id="menu-icon-open">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(220,38,38,0.8)" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </span>
+      <span id="menu-icon-close" style="display:none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(220,38,38,0.8)" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </span>
+    </button>
+  </div>
+
+  <!-- Mobile dropdown -->
+  <div id="mobile-menu" class="max-w-5xl mx-auto bg-black/95 border-x border-white/8" style="border-color:rgba(255,255,255,0.08);">
+    <div class="flex flex-col px-6 py-4 gap-4">
+      <a href="index.html" class="mobile-link font-mono-tech text-gray-400 hover:text-red-500 text-xs tracking-widest uppercase transition-colors duration-300">Home</a>
+      <a href="thailand.html" class="mobile-link font-mono-tech text-gray-400 hover:text-red-500 text-xs tracking-widest uppercase transition-colors duration-300">Rider Logs</a>
+      <a href="DIY.html" class="mobile-link font-mono-tech text-red-500 text-xs tracking-widest uppercase">DIY Logs</a>
+      <a href="gallery.html" class="mobile-link font-mono-tech text-gray-400 hover:text-red-500 text-xs tracking-widest uppercase transition-colors duration-300">Gallery</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ MAIN ════ -->
+<main class="pt-32 pb-16 px-5">
+  <div class="max-w-3xl mx-auto">
+
+    <!-- Page header -->
+    <div class="mb-12 animate-fade-slide-up">
+      <p class="font-mono-tech text-red-600/60 text-xs tracking-[0.4em] uppercase mb-4">// Classified DIY Archive</p>
+      <h1 class="text-5xl sm:text-7xl font-black uppercase leading-none tracking-tight text-white mb-4">
+        <span class="glitch-wrap" data-text="DIY LOGS">DIY LOGS</span>
+      </h1>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-widest mt-4">
+        <span class="text-red-600 animate-pulse-dot inline-block w-2 h-2 rounded-full mr-2 align-middle"></span>
+        4 MODS DOCUMENTED // FIELD TESTED // RIDER APPROVED
+      </p>
+    </div>
+
+    <hr class="section-rule" />
+
+    <!-- ════ LOG ENTRIES ════ -->
+    <div id="log-container">
+
+      <!-- ══ LOG 1: Bike Camera Installation ══ -->
+      <div class="log-entry">
+        <span class="tag">DIY Log Entry #004</span>
+        <h1 class="entry-title">Bike Camera Installation</h1>
+        <p class="lead">Eyes on the road — and behind you. Installing a front and rear camera on the bike is one of the most underrated safety upgrades you can do. Here's the full breakdown.</p>
+
+        <div class="featured-image" id="img-004">
+          <div class="featured-image-label">// SR-DIY-004 // Camera Mod // Rider Safety</div>
+          <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
+          <!-- Camera icon watermark -->
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">📷</div>
+        </div>
+
+        <div class="story-content">
+          <h2>Why I Installed a Camera</h2>
+          <p>After witnessing a few close calls on the road and hearing stories from fellow riders who got into disputes with no evidence to back them up, I decided it was time. A camera doesn't prevent accidents — but it protects you when the unexpected happens. Evidence is everything.</p>
+
+          <h3>The Install Process</h3>
+          <div class="steps-grid">
+            <div>Step 1</div><div>Choose mounting points — handlebar clamp for front, rear grab bar for back cam</div>
+            <div>Step 2</div><div>Route power wire through the fairings to the fuse box — clean and hidden</div>
+            <div>Step 3</div><div>Tap into an ignition-switched circuit so camera powers on/off with bike</div>
+            <div>Step 4</div><div>Angle calibration — ensure both lenses cover the correct field of view</div>
+            <div>Step 5</div><div>Test ride and review footage for vibration, glare, and coverage blind spots</div>
+          </div>
+
+          <h2>Parts & Tools Used</h2>
+          <div class="parts-list">
+            <h5>// Bill of Materials</h5>
+            <ul>
+              <li>Front + rear action cameras (or dedicated bike cam unit)</li>
+              <li>RAM mount or aluminium handlebar clamp</li>
+              <li>Mini USB/hardwire kit with low-profile fuse tap</li>
+              <li>Zip ties, heat shrink tubing, electrical tape</li>
+              <li>Micro SD cards (high endurance, Class 10 minimum)</li>
+            </ul>
+          </div>
+
+          <div class="warning-box">
+            <strong>// PRO TIP:</strong> Use a high-endurance SD card rated for dash cam use. Regular cards die fast from the constant write cycles. Don't cheap out here.
+          </div>
+
+          <h2>Key Takeaways</h2>
+          <p>The install took about 3 hours, most of which was routing the cables neatly through the fairings. The result looks clean and the camera boots up the moment you turn the key. Loop recording means you never have to manually manage footage — and if something happens, the file is there waiting.</p>
+          <p>Total investment: Well worth every dollar. Peace of mind on every ride.</p>
+
+          <div class="mt-8 pt-8 border-t border-red-900/30">
+            <div id="full-intel-diy004" class="hidden space-y-6 text-gray-300">
+              <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
+                <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Field Notes: Camera Install</h4>
+                <p class="text-sm text-gray-500 italic">Mod Classification: Safety / Evidence</p>
+              </div>
+              <div class="space-y-4">
+                <p><strong>[WIRING]</strong> The hardest part is routing the wire without cutting fairings. Take time to find existing grommets and cable runs. The fuse box tap is clean — no cutting of factory wires needed.</p>
+                <p><strong>[MOUNT CHOICE]</strong> RAM mounts are pricey but vibration-dampened. Generic clamps work but expect jello footage at higher RPMs. Invest in quality mounts if the camera is a priority.</p>
+                <p><strong>[REAR CAM]</strong> Rear camera angle is critical. Aim too high and you film the sky. Too low and you lose the following traffic. Spend time getting this right before buttoning everything up.</p>
+              </div>
+              <div class="bg-black/40 p-4 border border-red-900/50">
+                <h5 class="text-red-500 text-sm mb-3 underline text-center tracking-widest uppercase">FINAL ASSESSMENT</h5>
+                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                  <li>Difficulty: 3/5 — Mainly the wiring routing</li>
+                  <li>Time Required: ~3 hours</li>
+                  <li>Would Recommend: Absolutely, Day 1 mod</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex justify-center mt-6">
+              <button onclick="toggleIntel('full-intel-diy004', this)" class="load-more-style">
+                ACCESS FULL INTEL REPORT
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ LOG 2: Volt Meter ══ -->
+      <div class="log-entry" style="display:none;">
+        <span class="tag">DIY Log Entry #003</span>
+        <h1 class="entry-title">Volt Meter Installation</h1>
+        <p class="lead">Know your bike's electrical health at a glance. A volt meter is one of the cheapest, most useful mods you can do — and it takes less than an hour to install.</p>
+
+        <div class="featured-image" id="img-003">
+          <div class="featured-image-label">// SR-DIY-003 // Electrical Mod // Diagnostics</div>
+          <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">⚡</div>
+        </div>
+
+        <div class="story-content">
+          <h2>Why You Need One</h2>
+          <p>A weak or failing battery is one of the most common reasons a bike doesn't start. A volt meter gives you a real-time readout of your battery voltage — so you can catch issues before they leave you stranded. At idle, you should see around 12.5–13V. With engine running and charging, expect 13.5–14.5V. Anything outside that range, you know to investigate.</p>
+
+          <h3>Installation Steps</h3>
+          <div class="steps-grid">
+            <div>Step 1</div><div>Source a mini waterproof volt meter with LED display (under $5 online)</div>
+            <div>Step 2</div><div>Identify a clean mounting spot visible while riding — handlebar or dash area</div>
+            <div>Step 3</div><div>Connect red wire to positive 12V source (ignition-switched preferred)</div>
+            <div>Step 4</div><div>Connect black wire to chassis ground — any bare metal bolt point</div>
+            <div>Step 5</div><div>Secure with double-sided tape or small bracket. Power up and verify reading</div>
+          </div>
+
+          <h2>Parts Required</h2>
+          <div class="parts-list">
+            <h5>// Bill of Materials</h5>
+            <ul>
+              <li>Mini waterproof 12V volt meter display (LED, 3-wire)</li>
+              <li>2x ring terminals or spade connectors</li>
+              <li>Short lengths of 18AWG wire (red and black)</li>
+              <li>Heat shrink tubing</li>
+              <li>Double-sided mounting tape or bracket</li>
+            </ul>
+          </div>
+
+          <div class="warning-box">
+            <strong>// PRO TIP:</strong> Tap into an ignition-switched circuit so the meter turns off with the bike. Leaving it on battery all the time will slowly drain your cells overnight.
+          </div>
+
+          <h2>Key Takeaways</h2>
+          <p>Total cost: Under $5. Total install time: 30–45 minutes. This mod has saved me from an unexpected dead battery more than once. You can see at a glance if your stator is charging correctly, if your battery is dropping at idle, or if something is drawing too much current.</p>
+          <p>Small mod. Big peace of mind.</p>
+
+          <div class="mt-8 pt-8 border-t border-red-900/30">
+            <div id="full-intel-diy003" class="hidden space-y-6 text-gray-300">
+              <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
+                <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Field Notes: Volt Meter</h4>
+                <p class="text-sm text-gray-500 italic">Mod Classification: Electrical / Diagnostics</p>
+              </div>
+              <div class="space-y-4">
+                <p><strong>[CALIBRATION]</strong> Most cheap volt meters are accurate to within ±0.1V. Good enough for a bike. Cross-reference against a known-good multimeter when first installed to confirm accuracy.</p>
+                <p><strong>[READINGS GUIDE]</strong> 12.0–12.5V (engine off) = battery healthy at rest. Below 12.0V at rest = battery struggling. 13.5–14.5V (engine running) = charging system healthy. Below 13V while running = stator or regulator issue.</p>
+                <p><strong>[WEATHERPROOFING]</strong> Make sure your meter is rated IP65 or better if it's exposed to rain. Wrap all connections in self-amalgamating tape for long-term reliability.</p>
+              </div>
+              <div class="bg-black/40 p-4 border border-red-900/50">
+                <h5 class="text-red-500 text-sm mb-3 underline text-center tracking-widest uppercase">FINAL ASSESSMENT</h5>
+                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                  <li>Difficulty: 1/5 — Easiest mod on the list</li>
+                  <li>Time Required: ~45 minutes</li>
+                  <li>Would Recommend: 100%, everyone should have one</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex justify-center mt-6">
+              <button onclick="toggleIntel('full-intel-diy003', this)" class="load-more-style">
+                ACCESS FULL INTEL REPORT
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ LOG 3: Hazard Light Mod ══ -->
+      <div class="log-entry" style="display:none;">
+        <span class="tag">DIY Log Entry #002</span>
+        <h1 class="entry-title">Hazard Light Mod</h1>
+        <p class="lead">Most bikes in Singapore don't come with factory hazard lights. This mod adds that function — both sides flashing simultaneously — using a simple relay and switch setup.</p>
+
+        <div class="featured-image" id="img-002">
+          <div class="featured-image-label">// SR-DIY-002 // Electrical Mod // Safety</div>
+          <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">⚠️</div>
+        </div>
+
+        <div class="story-content">
+          <h2>The Problem With No Hazards</h2>
+          <p>Stock bikes often lack a hazard light function. When you're broken down by the roadside, you can't flash both sides simultaneously to warn other road users. This mod fixes that. It's a safety feature that should be standard — and frankly, in Singapore traffic, it's essential.</p>
+          <p>This was also the mod that first got me into DIY. Finding out that a workshop wanted to charge a few hundred bucks for what is essentially a $10 parts job — that was the wake-up call.</p>
+
+          <h3>How It Works</h3>
+          <div class="steps-grid">
+            <div>Concept</div><div>Bridge both turn signal outputs through a relay, triggered by a standalone switch</div>
+            <div>Step 1</div><div>Identify the left and right indicator power wires at the handlebar switch cluster</div>
+            <div>Step 2</div><div>Install a SPST momentary or latching switch in an accessible position</div>
+            <div>Step 3</div><div>Wire the relay: coil triggered by switch, contacts bridge both indicator lines</div>
+            <div>Step 4</div><div>Tap relay power from the battery via an inline fuse (5A recommended)</div>
+            <div>Step 5</div><div>Test both individual indicators still work — then verify hazard mode engages</div>
+          </div>
+
+          <h2>Parts Required</h2>
+          <div class="parts-list">
+            <h5>// Bill of Materials</h5>
+            <ul>
+              <li>12V 4-pin or 5-pin automotive relay (SPST or SPDT)</li>
+              <li>Relay base / harness</li>
+              <li>Latching toggle switch or momentary push button</li>
+              <li>Inline fuse holder + 5A fuse</li>
+              <li>Wire, connectors, heat shrink, zip ties</li>
+            </ul>
+          </div>
+
+          <div class="warning-box">
+            <strong>// IMPORTANT:</strong> Do NOT splice directly into the indicator wires without a relay. The relay isolates your new circuit from the OEM wiring and protects the factory flasher relay from overload. Always fuse your added circuit.
+          </div>
+
+          <h2>Key Takeaways</h2>
+          <p>Once you understand relays, this mod becomes straightforward. The trickiest part is finding a clean place to mount the switch where it won't interfere with normal handlebar operation. I mounted mine under the instrument cluster — out of sight but reachable in an emergency.</p>
+          <p>Workshop quote for this mod: Several hundred dollars. Actual parts cost: Under $15. That gap is what pushed me deep into DIY territory — and I never looked back.</p>
+
+          <div class="mt-8 pt-8 border-t border-red-900/30">
+            <div id="full-intel-diy002" class="hidden space-y-6 text-gray-300">
+              <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
+                <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Field Notes: Hazard Mod</h4>
+                <p class="text-sm text-gray-500 italic">Mod Classification: Electrical / Safety</p>
+              </div>
+              <div class="space-y-4">
+                <p><strong>[RELAY LOGIC]</strong> The relay coil draws very little current from your switch. The heavy indicator load flows through the relay contacts, not through your new switch wiring. This keeps everything clean and protected.</p>
+                <p><strong>[FLASHER COMPATIBILITY]</strong> If your stock flasher relay is load-sensitive (common on older bikes), switching to an LED-compatible or heavy-duty flasher unit first will prevent irregular flash rates when both sides are on simultaneously.</p>
+                <p><strong>[SWITCH PLACEMENT]</strong> Accessibility matters. In an emergency you need to activate this fast. Practice reaching for it blindly so muscle memory kicks in when you need it most.</p>
+              </div>
+              <div class="bg-black/40 p-4 border border-red-900/50">
+                <h5 class="text-red-500 text-sm mb-3 underline text-center tracking-widest uppercase">FINAL ASSESSMENT</h5>
+                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                  <li>Difficulty: 3/5 — Relay wiring logic takes some understanding</li>
+                  <li>Time Required: ~2 hours</li>
+                  <li>Would Recommend: Essential safety mod for all riders</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex justify-center mt-6">
+              <button onclick="toggleIntel('full-intel-diy002', this)" class="load-more-style">
+                ACCESS FULL INTEL REPORT
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ LOG 4: Fuse Box Installation ══ -->
+      <div class="log-entry" style="display:none;">
+        <span class="tag">DIY Log Entry #001</span>
+        <h1 class="entry-title">Fuse Box Installation</h1>
+        <p class="lead">The foundation of all future electrical mods. Installing a proper auxiliary fuse box gives you clean, protected, independent circuits for every add-on — cameras, volt meters, USB chargers, you name it.</p>
+
+        <div class="featured-image" id="img-001">
+          <div class="featured-image-label">// SR-DIY-001 // Electrical Foundation // Must-Do Mod</div>
+          <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">🔌</div>
+        </div>
+
+        <div class="story-content">
+          <h2>Why a Fuse Box Changes Everything</h2>
+          <p>Before this mod, every electrical addition meant tapping directly into existing wires — messy, risky, and hard to trace when things go wrong. A dedicated auxiliary fuse box gives you multiple independent fused circuits with a single clean connection to the battery. It's the correct way to build up your bike's electrical system.</p>
+          <p>After doing the hazard mod and volt meter the "direct tap" way, I realised I was making a mess. The fuse box was installed first on my next bike — and every mod after that was cleaner for it.</p>
+
+          <h3>The Install Process</h3>
+          <div class="steps-grid">
+            <div>Step 1</div><div>Select a waterproof ATC/ATO blade fuse block with enough circuits for your plans</div>
+            <div>Step 2</div><div>Mount the fuse box in a protected location — under the seat or behind a fairing panel</div>
+            <div>Step 3</div><div>Run a single heavy-gauge wire (14AWG or 12AWG) from the positive battery terminal</div>
+            <div>Step 4</div><div>Install an inline main fuse (20–30A) close to the battery as the master protection</div>
+            <div>Step 5</div><div>Run a common ground wire from the fuse box to a solid chassis ground point</div>
+            <div>Step 6</div><div>Label each circuit slot and verify each fused output with a test light before use</div>
+          </div>
+
+          <h2>Parts Required</h2>
+          <div class="parts-list">
+            <h5>// Bill of Materials</h5>
+            <ul>
+              <li>Waterproof blade fuse block (6 or 12 way — get more than you think you need)</li>
+              <li>14AWG or 12AWG red wire (for positive feed, ~1 metre)</li>
+              <li>Inline fuse holder + 20A or 25A main fuse</li>
+              <li>Black wire for common ground return</li>
+              <li>Ring terminals, butt connectors, heat shrink</li>
+              <li>Cable labels or masking tape for marking circuits</li>
+            </ul>
+          </div>
+
+          <div class="warning-box">
+            <strong>// CRITICAL:</strong> Always install the main inline fuse as close to the battery positive terminal as possible — within 30cm ideally. This protects the entire wire run if there is ever a short circuit before the fuse block. No fuse = potential wiring fire.
+          </div>
+
+          <h2>Key Takeaways</h2>
+          <p>This is the first mod you should do if you plan to add any electrical accessories to your bike. Full stop. It costs around $15–30 for the fuse block and components, and it gives you a professional, organised foundation for everything that follows.</p>
+          <p>With a proper fuse box, each accessory gets its own circuit and its own fuse. If one thing blows, only that circuit goes down — not everything at once. It also makes troubleshooting 10x easier.</p>
+          <p>Do this first. Thank yourself later.</p>
+
+          <div class="mt-8 pt-8 border-t border-red-900/30">
+            <div id="full-intel-diy001" class="hidden space-y-6 text-gray-300">
+              <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
+                <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Field Notes: Fuse Box Build</h4>
+                <p class="text-sm text-gray-500 italic">Mod Classification: Electrical / Foundation</p>
+              </div>
+              <div class="space-y-4">
+                <p><strong>[WIRE GAUGE]</strong> Use the correct wire gauge for the total load. If you plan to run 4 circuits each drawing up to 5A, your feed wire needs to handle 20A+. Undersize the wire and you get heat buildup and potential fire. Oversize is always safer.</p>
+                <p><strong>[SWITCHED VS PERMANENT]</strong> You can tie the fuse box feed to an ignition-switched source so everything cuts off with the key. Alternatively, run always-on for accessories like USB chargers that you might use without the engine. Consider splitting across both depending on your needs.</p>
+                <p><strong>[LABELLING]</strong> Label every single circuit slot before you use it. Future-you will be extremely grateful when troubleshooting or adding new mods six months later.</p>
+                <p><strong>[WATERPROOFING]</strong> Even "waterproof" fuse blocks benefit from a wrap in self-amalgamating tape around the main connectors. Singapore rain is brutal and water ingress into electrical connections is the #1 cause of issues down the road.</p>
+              </div>
+              <div class="bg-black/40 p-4 border border-red-900/50">
+                <h5 class="text-red-500 text-sm mb-3 underline text-center tracking-widest uppercase">FINAL ASSESSMENT</h5>
+                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                  <li>Difficulty: 2/5 — Planning the layout is the hardest part</li>
+                  <li>Time Required: ~2–3 hours including planning and routing</li>
+                  <li>Would Recommend: Do this first before any other electrical mod</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex justify-center mt-6">
+              <button onclick="toggleIntel('full-intel-diy001', this)" class="load-more-style">
+                ACCESS FULL INTEL REPORT
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /log-container -->
+
+    <hr class="section-rule" />
+
+    <!-- ── Navigation buttons ── -->
+    <div class="flex items-center justify-center gap-5 flex-wrap">
+      <button id="prevBtn" class="nav-btn"><span>◄ Previous File</span></button>
+      <div class="page-counter">FILE <span id="current-page">01</span> / <span id="total-pages">04</span></div>
+      <button id="nextBtn" class="nav-btn"><span>Decrypt Next ►</span></button>
+    </div>
+
+  </div>
+</main>
+
+<!-- ════ FOOTER ════ -->
+<footer class="py-16 px-5 border-t border-white/5">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex flex-col items-center gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+          <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+      </div>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors duration-300">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="font-mono-tech text-xs tracking-widest uppercase">Watch on YouTube</span>
+      </a>
+      <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+    </div>
+  </div>
 </footer>
+
+<!-- ════ JAVASCRIPT ════ -->
+<script>
+  // ── Custom cursor ──
+  (function () {
+    var cursor = document.getElementById('cursor');
+    var ring   = document.getElementById('cursor-ring');
+    var mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', function (e) {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top  = my + 'px';
+    });
+    (function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(animRing);
+    })();
+    document.querySelectorAll('a, button').forEach(function (el) {
+      el.addEventListener('mouseenter', function () {
+        ring.style.width = '56px'; ring.style.height = '56px';
+        ring.style.borderColor = 'rgba(220,38,38,0.8)';
+      });
+      el.addEventListener('mouseleave', function () {
+        ring.style.width = '36px'; ring.style.height = '36px';
+        ring.style.borderColor = 'rgba(220,38,38,0.5)';
+      });
+    });
+  })();
+
+  // ── Progress bar ──
+  window.addEventListener('scroll', function () {
+    var scrollTop    = document.documentElement.scrollTop || document.body.scrollTop;
+    var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    document.getElementById('progress-bar').style.width = pct + '%';
+  }, { passive: true });
+
+  // ── Navbar scroll effect ──
+  window.addEventListener('scroll', function () {
+    var nav = document.getElementById('navbar');
+    if (window.scrollY > 20) nav.classList.add('nav-scrolled');
+    else nav.classList.remove('nav-scrolled');
+  }, { passive: true });
+
+  // ── Mobile menu toggle ──
+  document.getElementById('menu-toggle').addEventListener('click', function () {
+    var menu      = document.getElementById('mobile-menu');
+    var openIcon  = document.getElementById('menu-icon-open');
+    var closeIcon = document.getElementById('menu-icon-close');
+    var isOpen    = menu.style.maxHeight === '320px';
+    menu.style.maxHeight    = isOpen ? '0' : '320px';
+    menu.style.borderBottom = isOpen ? '' : '1px solid rgba(127,29,29,0.3)';
+    openIcon.style.display  = isOpen ? '' : 'none';
+    closeIcon.style.display = isOpen ? 'none' : '';
+  });
+  document.querySelectorAll('.mobile-link').forEach(function (link) {
+    link.addEventListener('click', function () {
+      document.getElementById('mobile-menu').style.maxHeight = '0';
+      document.getElementById('menu-icon-open').style.display  = '';
+      document.getElementById('menu-icon-close').style.display = 'none';
+    });
+  });
+
+  // ── Scramble / decrypt effect ──
+  var scrambleChars = 'ABCDEF0123456789/X$#@%';
+  function decryptText(button, originalText, callback) {
+    var iterations = 0;
+    button.classList.add('decrypting');
+    button.disabled = true;
+
+    var interval = setInterval(function () {
+      button.querySelector('span').innerText = originalText.split('').map(function (char, index) {
+        if (index < iterations) return originalText[index];
+        return char === ' ' ? ' ' : scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+      }).join('');
+
+      if (iterations >= originalText.length) {
+        clearInterval(interval);
+        button.classList.remove('decrypting');
+        button.querySelector('span').innerText = originalText;
+        button.disabled = false;
+        callback();
+      }
+      iterations += 1 / 3;
+    }, 30);
+  }
+
+  // ── Log navigation ──
+  var logs        = document.querySelectorAll('.log-entry');
+  var nextBtn     = document.getElementById('nextBtn');
+  var prevBtn     = document.getElementById('prevBtn');
+  var currentPage = document.getElementById('current-page');
+  var totalPages  = document.getElementById('total-pages');
+  var currentLogIndex = 0;
+
+  totalPages.textContent = String(logs.length).padStart(2, '0');
+
+  function updateButtons() {
+    prevBtn.disabled = currentLogIndex === 0;
+    nextBtn.disabled = currentLogIndex === logs.length - 1;
+    currentPage.textContent = String(currentLogIndex + 1).padStart(2, '0');
+  }
+
+  function updateView(newIndex) {
+    logs.forEach(function (log) { log.style.display = 'none'; });
+    currentLogIndex = newIndex;
+    logs[currentLogIndex].style.display = 'block';
+    logs[currentLogIndex].style.animation = 'none';
+    logs[currentLogIndex].offsetHeight;
+    logs[currentLogIndex].style.animation = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateButtons();
+  }
+
+  nextBtn.addEventListener('click', function () {
+    if (currentLogIndex >= logs.length - 1) return;
+    var nextIndex = currentLogIndex + 1;
+    decryptText(nextBtn, 'Decrypt Next ►', function () { updateView(nextIndex); });
+  });
+
+  prevBtn.addEventListener('click', function () {
+    if (currentLogIndex <= 0) return;
+    var prevIndex = currentLogIndex - 1;
+    decryptText(prevBtn, '◄ Previous File', function () { updateView(prevIndex); });
+  });
+
+  updateView(0);
+
+  // ── Toggle intel report ──
+  function toggleIntel(id, btn) {
+    var report = document.getElementById(id);
+    var isHidden = report.classList.contains('hidden');
+    if (isHidden) {
+      report.classList.remove('hidden');
+      btn.innerText = 'CLOSE INTEL REPORT';
+      report.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+      report.classList.add('hidden');
+      btn.innerText = 'ACCESS FULL INTEL REPORT';
+    }
+  }
+</script>
 
 </body>
 </html>
