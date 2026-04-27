@@ -441,6 +441,16 @@
       font-size: 0.85rem !important;
     }
 
+    /* ── Glitch title ── */
+    .glitch-wrap { position: relative; display: inline-block; }
+    .glitch-wrap::before, .glitch-wrap::after {
+      content: attr(data-text);
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    .glitch-wrap::before { color: #00ffff; animation: glitch-1 6s infinite step-start; opacity: 0.6; }
+    .glitch-wrap::after  { color: var(--red); animation: glitch-2 6s infinite step-start; opacity: 0.6; }
+
     /* ── Noise texture ── */
     .noise-overlay {
       position: fixed;
@@ -525,7 +535,7 @@
         <a href="gallery.html" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
         <a href="contact.html" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
         <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
-           class="flex items-center gap-1.5 text-red-500 text-xs font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           YouTube
         </a>
@@ -568,6 +578,20 @@
         </svg>
         Back to Intel / Rider Logs
       </a>
+
+      <!-- Page header with glitch title -->
+      <div class="mb-12 animate-fade-slide-up">
+        <p class="font-mono-tech text-red-600/60 text-xs tracking-[0.4em] uppercase mb-4">// Classified Trip Intel // Active Log</p>
+        <h1 class="text-5xl sm:text-7xl font-black uppercase leading-none tracking-tight text-white mb-4">
+          <span class="glitch-wrap" data-text="RIDER LOGS">RIDER LOGS</span>
+        </h1>
+        <p class="font-mono-tech text-gray-600 text-xs tracking-widest mt-4">
+          <span class="text-red-600 animate-pulse-dot inline-block w-2 h-2 rounded-full mr-2 align-middle"></span>
+          3 TRIPS DOCUMENTED // FIELD TESTED // SOLO & GROUP
+        </p>
+      </div>
+
+      <hr class="section-rule" />
 
       <!-- Classification header -->
       <div class="flex items-center gap-2 mb-6">
