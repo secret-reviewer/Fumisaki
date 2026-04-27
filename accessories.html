@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
- <head>
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Accessories Logs | Secret Reviewer</title>
@@ -68,10 +68,6 @@
     }
 
     /* ── Animations ── */
-    @keyframes flicker {
-      0%,18%,22%,25%,53%,57%,100% { opacity: 1; }
-      20%,24%,55% { opacity: 0.3; }
-    }
     @keyframes pulse-red {
       0%,100% { box-shadow: 0 0 6px rgba(220,38,38,0.3); }
       50%      { box-shadow: 0 0 28px rgba(220,38,38,0.8), 0 0 60px rgba(220,38,38,0.25); }
@@ -87,10 +83,6 @@
     @keyframes scan {
       from { top: -100%; }
       to   { top: 100%; }
-    }
-    @keyframes shimmer {
-      0%   { background-position: -200% center; }
-      100% { background-position: 200% center; }
     }
     @keyframes folderOpen {
       from { opacity: 0; transform: translateY(16px); filter: blur(4px); }
@@ -114,10 +106,9 @@
       50%     { border-color: rgba(220,38,38,0.5); }
     }
 
-    .animate-pulse-red    { animation: pulse-red 2.5s infinite; }
-    .animate-pulse-dot    { animation: pulse-dot 2s infinite; }
-    .animate-fade-slide-up{ animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
-    .animate-border-flash { animation: borderFlash 3s infinite; }
+    .animate-pulse-red     { animation: pulse-red 2.5s infinite; }
+    .animate-pulse-dot     { animation: pulse-dot 2s infinite; }
+    .animate-fade-slide-up { animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
 
     /* ── CRT scanlines + sweep ── */
     body::before {
@@ -154,6 +145,16 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
+
+    /* ── Glitch title ── */
+    .glitch-wrap { position: relative; display: inline-block; }
+    .glitch-wrap::before, .glitch-wrap::after {
+      content: attr(data-text);
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    .glitch-wrap::before { color: #00ffff; animation: glitch-1 6s infinite step-start; opacity: 0.6; }
+    .glitch-wrap::after  { color: var(--red); animation: glitch-2 6s infinite step-start; opacity: 0.6; }
 
     /* ── Story content typography ── */
     .story-content {
@@ -262,13 +263,21 @@
     }
     .featured-image::after {
       content: '';
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background: repeating-linear-gradient(
         0deg, transparent, transparent 3px,
         rgba(220,38,38,0.015) 3px, rgba(220,38,38,0.015) 4px
       );
       pointer-events: none;
+    }
+    .featured-image::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 40px; height: 40px;
+      border-top: 1px solid rgba(220,38,38,0.4);
+      border-left: 1px solid rgba(220,38,38,0.4);
+      pointer-events: none;
+      z-index: 2;
     }
     .featured-image-label {
       position: absolute;
@@ -278,19 +287,10 @@
       color: rgba(220,38,38,0.5);
       letter-spacing: 2px;
       text-transform: uppercase;
-    }
-    .featured-image::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 40px; height: 40px;
-      border-top: 1px solid rgba(220,38,38,0.4);
-      border-left: 1px solid rgba(220,38,38,0.4);
-      pointer-events: none;
-      z-index: 2;
+      z-index: 3;
     }
 
-    /* ── Steps grid (like itinerary-grid but for DIY steps) ── */
+    /* ── Steps grid ── */
     .steps-grid {
       display: grid;
       grid-template-columns: 130px 1fr;
@@ -347,8 +347,7 @@
     }
     .nav-btn::before {
       content: '';
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background: var(--red);
       transform: translateX(-100%);
       transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
@@ -378,34 +377,6 @@
       margin: 48px 0;
     }
 
-    /* ── Glitch title ── */
-    .glitch-wrap { position: relative; display: inline-block; }
-    .glitch-wrap::before, .glitch-wrap::after {
-      content: attr(data-text);
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
-    }
-    .glitch-wrap::before { color: #00ffff; animation: glitch-1 6s infinite step-start; opacity: 0.6; }
-    .glitch-wrap::after  { color: var(--red); animation: glitch-2 6s infinite step-start; opacity: 0.6; }
-
-    /* ── Load more / intel button style ── */
-    .load-more-style {
-      background: transparent;
-      color: var(--red);
-      border: 1px solid rgba(220,38,38,0.4);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      padding: 10px 22px;
-      transition: background 0.25s, color 0.25s;
-    }
-    .load-more-style:hover { background: var(--red); color: #fff; }
-
-    /* ── Intel timestamp ── */
-    .intel-timestamp { color: var(--red); font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; }
-
     /* ── Warning callout box ── */
     .warning-box {
       background: rgba(220,38,38,0.06);
@@ -419,7 +390,7 @@
     }
     .warning-box strong { color: var(--red); }
 
-    /* ── Parts list ── */
+    /* ── Parts list / shopping links ── */
     .parts-list {
       background: rgba(10,10,10,0.8);
       border: 1px solid rgba(255,255,255,0.06);
@@ -445,43 +416,23 @@
       font-family: 'Share Tech Mono', monospace;
     }
     .parts-list ul li::before { content: "> "; color: var(--red); }
+
+    /* ── Load more / intel button ── */
+    .load-more-style {
+      background: transparent;
+      color: var(--red);
+      border: 1px solid rgba(220,38,38,0.4);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 10px 22px;
+      transition: background 0.25s, color 0.25s;
+    }
+    .load-more-style:hover { background: var(--red); color: #fff; }
   </style>
 </head>
-
-<hr class="section-rule" />
-
-<script>
-  var logs = document.querySelectorAll('.log-entry');
-  var nextBtn = document.getElementById('nextBtn');
-  var prevBtn = document.getElementById('prevBtn');
-  var currentPage = document.getElementById('current-page');
-  var totalPages = document.getElementById('total-pages');
-
-  var currentLogIndex = 0;
-  totalPages.textContent = String(logs.length).padStart(2, '0');
-
-  function updateView(index) {
-    logs.forEach(log => log.style.display = 'none');
-    logs[index].style.display = 'block';
-    currentPage.textContent = String(index + 1).padStart(2, '0');
-    currentLogIndex = index;
-  }
-
-  nextBtn.onclick = () => {
-    if (currentLogIndex < logs.length - 1) {
-      updateView(currentLogIndex + 1);
-    }
-  };
-
-  prevBtn.onclick = () => {
-    if (currentLogIndex > 0) {
-      updateView(currentLogIndex - 1);
-    }
-  };
-
-  updateView(0);
-</script>
-
 <body>
 
 <!-- Custom cursor -->
@@ -489,59 +440,59 @@
 <div id="cursor-ring"></div>
 
 <!-- Progress bar -->
-<div class="fixed top-0 left-0 w-full z-[9999]">
+<div class="fixed top-0 left-0 w-full z-[9999]" style="height:3px">
   <div id="progress-bar"></div>
 </div>
 
-<!-- ════ NAVBAR (matches index & thailand exactly) ════ -->
-  <nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
-    <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+<!-- ════ NAVBAR ════ -->
+<nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
 
-      <!-- Logo -->
-      <a href="index.html" class="flex items-center gap-2 group">
-        <div class="w-7 h-7 border border-red-600 flex items-center justify-center group-hover:bg-red-600/20 transition-all duration-300">
-          <span class="text-red-500 text-xs font-mono-tech font-bold">SR</span>
-        </div>
-        <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+    <!-- Logo -->
+    <a href="index.html" class="flex items-center gap-2 group">
+      <div class="w-7 h-7 border border-red-600 flex items-center justify-center group-hover:bg-red-600/20 transition-all duration-300">
+        <span class="text-red-500 text-xs font-mono-tech font-bold">SR</span>
+      </div>
+      <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="index.html"   class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+      <a href="gallery.html" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+      <a href="contact.html" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
       </a>
-
-      <!-- Desktop links -->
-      <div class="hidden md:flex items-center gap-8">
-        <a href="index.html"   class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
-        <a href="gallery.html" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
-        <a href="contact.html" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
-        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
-           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          YouTube
-        </a>
-      </div>
-
-      <!-- Mobile toggle -->
-      <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
-        <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-        <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
-          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
     </div>
 
-    <!-- Mobile menu -->
-    <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
-      <div class="flex flex-col px-5 py-4 gap-4">
-        <a href="index.html"   class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
-        <a href="gallery.html" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
-        <a href="contact.html" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
-        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
-           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          YouTube
-        </a>
-      </div>
+    <!-- Mobile toggle -->
+    <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+      <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
+    <div class="flex flex-col px-5 py-4 gap-4">
+      <a href="index.html"   class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+      <a href="gallery.html" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+      <a href="contact.html" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
     </div>
-  </nav>
+  </div>
+</nav>
 
 <!-- ════ MAIN ════ -->
 <main class="pt-28 pb-24 px-5">
@@ -549,9 +500,9 @@
 
     <!-- Page header -->
     <div class="mb-12 animate-fade-slide-up">
-      <p class="font-mono-tech text-red-600/60 text-xs tracking-[0.4em] uppercase mb-4">// Classified ACCESSORIES Archive</p>
+      <p class="font-mono-tech text-red-600/60 text-xs tracking-[0.4em] uppercase mb-4">// Classified Accessories Archive</p>
       <h1 class="text-5xl sm:text-7xl font-black uppercase leading-none tracking-tight text-white mb-4">
-        <span class="glitch-wrap" data-text="ACCESSORIES LOGS">ACCESSORIES LOGS</span>
+        <span class="glitch-wrap" data-text="ACCESSORIES">ACCESSORIES</span>
       </h1>
       <p class="font-mono-tech text-gray-600 text-xs tracking-widest mt-4">
         <span class="text-red-600 animate-pulse-dot inline-block w-2 h-2 rounded-full mr-2 align-middle"></span>
@@ -559,275 +510,310 @@
       </p>
     </div>
 
-<div id="log-container">
+    <hr class="section-rule" />
 
-  <!-- ══ LOG 1: TomTom 550 ══ -->
-  <div class="log-entry">
-    <span class="tag">Accessory Log #003</span>
-    <h1 class="entry-title">TomTom Rider 550</h1>
-    <p class="lead">When signal drops, this is your lifeline. A dedicated GPS built for riders — not cars.</p>
+    <!-- ════ LOG ENTRIES ════ -->
+    <div id="log-container">
 
-    <div class="featured-image">
-      <div class="featured-image-label">// NAVIGATION SYSTEM // TOURING ESSENTIAL</div>
-      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">🧭</div>
+      <!-- ══ LOG 1: TomTom 550 ══ -->
+      <div class="log-entry">
+        <span class="tag">Accessory Log #003</span>
+        <h1 class="entry-title">TomTom Rider 550</h1>
+        <p class="lead">When signal drops, this is your lifeline. A dedicated GPS built for riders — not cars.</p>
+
+        <div class="featured-image">
+          <div class="featured-image-label">// SR-ACC-003 // Navigation System // Touring Essential</div>
+          <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">🧭</div>
+        </div>
+
+        <div class="story-content">
+          <h2>Why I Chose It</h2>
+          <p>Phone GPS fails when you need it most — heat, no signal, battery drain. The TomTom 550 is built for bikes: waterproof, glove-friendly, and works offline in remote areas where mobile data is non-existent. After burning money on car GPS units that couldn't survive rain, this was the right call.</p>
+
+          <h3>Installation</h3>
+          <div class="steps-grid">
+            <div>Step 1</div><div>Mount on handlebar using RAM mount base</div>
+            <div>Step 2</div><div>Connect to ignition-switched power via fuse box</div>
+            <div>Step 3</div><div>Route wiring cleanly through fairings</div>
+            <div>Step 4</div><div>Pair with phone for optional live traffic updates</div>
+          </div>
+
+          <div class="warning-box">
+            <strong>// PRO TIP:</strong> Update maps via TomTom MyDrive before every long trip. Rural SEA map data lags — always keep Google Maps offline as a backup layer.
+          </div>
+
+          <h2>Where to Buy</h2>
+          <div class="parts-list">
+            <h5>// Shopping Links</h5>
+            <ul>
+              <!-- Replace this line with your actual affiliate/shopping link:
+                   <li><a href="YOUR_LINK" target="_blank" style="color:#dc2626;">Shopee — TomTom Rider 550</a></li>
+              -->
+              <li>INSERT YOUR SHOPPING LINK HERE</li>
+            </ul>
+          </div>
+
+          <h2>Verdict</h2>
+          <p>Expensive, but worth every dollar for long-distance touring. Especially when you're deep in the mountains of northern Thailand with zero signal. Don't repeat my mistake — skip the car GPS detour and go straight to a proper motorcycle unit.</p>
+        </div>
+      </div>
+
+      <!-- ══ LOG 2: Charging Port ══ -->
+      <div class="log-entry" style="display:none;">
+        <span class="tag">Accessory Log #002</span>
+        <h1 class="entry-title">Motorcycle Charging Port</h1>
+        <p class="lead">If your phone dies, your ride plan dies. A hardwired charging system isn't optional — it's infrastructure.</p>
+
+        <div class="featured-image">
+          <div class="featured-image-label">// SR-ACC-002 // Power System // Essential Mod</div>
+          <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">🔋</div>
+        </div>
+
+        <div class="story-content">
+          <h2>Why It Matters</h2>
+          <p>Power banks are too slow. Singapore heat plus GPS plus camera use will drain your phone from 100% to 20% in a single riding day. A direct bike charging system — wired into the ignition circuit — keeps everything alive: navigation, camera, communication.</p>
+          <p>Wireless charging is the best option if you can. No cable to plug in, no connector wearing out from vibration, no fumbling with wires while geared up.</p>
+
+          <h3>Installation</h3>
+          <div class="steps-grid">
+            <div>Step 1</div><div>Tap into auxiliary fuse box (preferred) or battery directly</div>
+            <div>Step 2</div><div>Use ignition-switched circuit — auto on/off with the key</div>
+            <div>Step 3</div><div>Mount USB or wireless charging port near handlebar</div>
+            <div>Step 4</div><div>Secure all wiring with zip ties and heat shrink; waterproof connections</div>
+          </div>
+
+          <div class="warning-box">
+            <strong>// PRO TIP:</strong> Use a short coiled USB cable if going wired. A cable flapping in the wind at 100km/h will eventually snap the connector on your phone. Learned this the hard way.
+          </div>
+
+          <h2>Where to Buy</h2>
+          <div class="parts-list">
+            <h5>// Shopping Links</h5>
+            <ul>
+              <!-- Replace this line with your actual affiliate/shopping link:
+                   <li><a href="YOUR_LINK" target="_blank" style="color:#dc2626;">Shopee — Wireless Motorcycle Charger Mount</a></li>
+              -->
+              <li>INSERT YOUR SHOPPING LINK HERE</li>
+            </ul>
+          </div>
+
+          <h2>Verdict</h2>
+          <p>One of the most important upgrades on any bike. Without this, long rides become stressful. Wire it in properly via a fuse box — don't rely on battery power or a power bank for a full day's ride.</p>
+        </div>
+      </div>
+
+      <!-- ══ LOG 3: RAM Mount Points ══ -->
+      <div class="log-entry" style="display:none;">
+        <span class="tag">Accessory Log #001</span>
+        <h1 class="entry-title">RAM Mount Points</h1>
+        <p class="lead">Flexibility matters — but so does restraint. Mount what you need, where you need it, and nothing more.</p>
+
+        <div class="featured-image">
+          <div class="featured-image-label">// SR-ACC-001 // Mount System // Modular Setup</div>
+          <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">🎯</div>
+        </div>
+
+        <div class="story-content">
+          <h2>Why Use RAM Mounts</h2>
+          <p>Stable, adjustable, and vibration-resistant. RAM Mounts are what workshops, military, and serious tourers use because they don't fail. The ball-and-socket system absorbs vibration that cheaper mounts transmit straight into your device. One good base, many heads — modular and future-proof.</p>
+
+          <h3>Installation</h3>
+          <div class="steps-grid">
+            <div>Step 1</div><div>Install handlebar base clamp (fits 22mm–25mm bars)</div>
+            <div>Step 2</div><div>Attach arm — short for GPS, medium for phone</div>
+            <div>Step 3</div><div>Secure device holder (X-Grip universal or specific cradle)</div>
+            <div>Step 4</div><div>Adjust angles, torque down, test at low speed before touring</div>
+          </div>
+
+          <div class="warning-box">
+            <strong>// LESSON LEARNED:</strong> Keep it to two mounts maximum — GPS and phone. Every extra mount is another vibration point and more clutter. I bought extra mounts for the Insta360 and never used them on the Thailand run.
+          </div>
+
+          <h2>Where to Buy</h2>
+          <div class="parts-list">
+            <h5>// Shopping Links</h5>
+            <ul>
+              <!-- Replace this line with your actual affiliate/shopping link:
+                   <li><a href="YOUR_LINK" target="_blank" style="color:#dc2626;">Shopee — RAM Mount Handlebar Base B-Size</a></li>
+              -->
+              <li>INSERT YOUR SHOPPING LINK HERE</li>
+            </ul>
+          </div>
+
+          <h2>Verdict</h2>
+          <p>Useful, but don't overdo it. Two mounts maximum — GPS left, phone right. Buy genuine RAM; the knockoffs look identical and start failing at highway speed. Your GPS hitting the road at 100km/h is not a risk worth taking to save $10.</p>
+        </div>
+      </div>
+
+    </div><!-- /log-container -->
+
+    <hr class="section-rule" />
+
+    <!-- ── Navigation buttons ── -->
+    <div class="flex items-center justify-center gap-5 flex-wrap">
+      <button id="prevBtn" class="nav-btn"><span>◄ Previous File</span></button>
+      <div class="page-counter">FILE <span id="current-page">01</span> / <span id="total-pages">03</span></div>
+      <button id="nextBtn" class="nav-btn"><span>Decrypt Next ►</span></button>
     </div>
 
-    <div class="story-content">
-      <h2>Why I Chose It</h2>
-      <p>Phone GPS fails when you need it most — heat, no signal, battery drain. The TomTom 550 is built for bikes, waterproof, glove-friendly, and reliable even in remote areas.</p>
+  </div>
+</main>
 
-      <h3>Installation</h3>
-      <div class="steps-grid">
-        <div>Step 1</div><div>Mount on handlebar using RAM mount</div>
-        <div>Step 2</div><div>Connect to ignition-switched power</div>
-        <div>Step 3</div><div>Route wiring cleanly through fairings</div>
-        <div>Step 4</div><div>Pair with phone (optional traffic updates)</div>
+<!-- ════ FOOTER ════ -->
+<footer class="py-16 px-5 border-t border-white/5">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex flex-col items-center gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+          <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
       </div>
-
-      <h2>Where to Buy</h2>
-      <div class="parts-list">
-        <h5>// SHOPPING LINKS</h5>
-        <ul>
-          <li>INSERT YOUR SHOPPING LINK HERE</li>
-        </ul>
-      </div>
-
-      <h2>Verdict</h2>
-      <p>Expensive, but worth it for long-distance riding. Especially useful when overseas or in low-signal areas.</p>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors duration-300">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="font-mono-tech text-xs tracking-widest uppercase">Watch on YouTube</span>
+      </a>
+      <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
     </div>
   </div>
-
-
-  <!-- ══ LOG 2: Charging Port ══ -->
-  <div class="log-entry" style="display:none;">
-    <span class="tag">Accessory Log #002</span>
-    <h1 class="entry-title">Motorcycle Charging Port</h1>
-    <p class="lead">If your phone dies, your ride plan dies. This is non-negotiable.</p>
-
-    <div class="featured-image">
-      <div class="featured-image-label">// POWER SYSTEM // ESSENTIAL MOD</div>
-      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">🔋</div>
-    </div>
-
-    <div class="story-content">
-      <h2>Why It Matters</h2>
-      <p>Power banks are too slow. Heat drains your phone fast. A direct bike charging system keeps everything alive — navigation, camera, communication.</p>
-
-      <h3>Installation</h3>
-      <div class="steps-grid">
-        <div>Step 1</div><div>Tap into fuse box or battery</div>
-        <div>Step 2</div><div>Use ignition-switched power</div>
-        <div>Step 3</div><div>Mount USB port near handlebar</div>
-        <div>Step 4</div><div>Secure wiring and waterproof</div>
-      </div>
-
-      <h2>Where to Buy</h2>
-      <div class="parts-list">
-        <h5>// SHOPPING LINKS</h5>
-        <ul>
-          <li>INSERT YOUR SHOPPING LINK HERE</li>
-        </ul>
-      </div>
-
-      <h2>Verdict</h2>
-      <p>One of the most important upgrades. Without this, long rides become stressful.</p>
-    </div>
-  </div>
-
-
-  <!-- ══ LOG 3: RAM Mount Points ══ -->
-  <div class="log-entry" style="display:none;">
-    <span class="tag">Accessory Log #001</span>
-    <h1 class="entry-title">RAM Mount Points</h1>
-    <p class="lead">Flexibility matters. Mount what you need, where you need it.</p>
-
-    <div class="featured-image">
-      <div class="featured-image-label">// MOUNT SYSTEM // MODULAR SETUP</div>
-      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">📍</div>
-    </div>
-
-    <div class="story-content">
-      <h2>Why Use RAM Mounts</h2>
-      <p>Stable, adjustable, and vibration-resistant. Ideal for cameras, GPS, and phones.</p>
-
-      <h3>Installation</h3>
-      <div class="steps-grid">
-        <div>Step 1</div><div>Install base on handlebar or mirror mount</div>
-        <div>Step 2</div><div>Attach arm and ball joints</div>
-        <div>Step 3</div><div>Secure device holder</div>
-        <div>Step 4</div><div>Adjust angles and tighten</div>
-      </div>
-
-      <h2>Where to Buy</h2>
-      <div class="parts-list">
-        <h5>// SHOPPING LINKS</h5>
-        <ul>
-          <li>INSERT YOUR SHOPPING LINK HERE</li>
-        </ul>
-      </div>
-
-      <h2>Verdict</h2>
-      <p>Useful, but don’t overdo it. Too many mounts = clutter.</p>
-    </div>
-  </div>
-
-<hr class="section-rule" />
-
-<div class="flex items-center justify-center gap-5 flex-wrap">
-  <button id="prevBtn" class="nav-btn"><span>◄ Previous File</span></button>
-  <div class="page-counter">
-    FILE <span id="current-page">01</span> / <span id="total-pages">03</span>
-  </div>
-  <button id="nextBtn" class="nav-btn"><span>Decrypt Next ►</span></button>
-</div>
-
-
-</div>
-
-<hr class="section-rule mt-20" />
-
-<footer class="mt-6 text-center text-gray-500 text-xs tracking-widest">
-  © 2026 Secret Reviewer // Ride Safe 🏍️
 </footer>
 
-
+<!-- ════ JAVASCRIPT ════ -->
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-
-  /* ─────────────────────────────
-     CUSTOM CURSOR
-  ───────────────────────────── */
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursor-ring');
-
-  let mouseX = 0, mouseY = 0;
-  let ringX = 0, ringY = 0;
-
-  if (cursor && ring) {
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-
-      cursor.style.left = mouseX + 'px';
-      cursor.style.top = mouseY + 'px';
+  // ── Custom cursor ──
+  (function () {
+    var cursor = document.getElementById('cursor');
+    var ring   = document.getElementById('cursor-ring');
+    var mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', function (e) {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top  = my + 'px';
     });
+    (function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(animRing);
+    })();
+    document.querySelectorAll('a, button').forEach(function (el) {
+      el.addEventListener('mouseenter', function () {
+        ring.style.width = '56px'; ring.style.height = '56px';
+        ring.style.borderColor = 'rgba(220,38,38,0.8)';
+      });
+      el.addEventListener('mouseleave', function () {
+        ring.style.width = '36px'; ring.style.height = '36px';
+        ring.style.borderColor = 'rgba(220,38,38,0.5)';
+      });
+    });
+  })();
 
-    function animateCursor() {
-      ringX += (mouseX - ringX) * 0.15;
-      ringY += (mouseY - ringY) * 0.15;
+  // ── Progress bar ──
+  window.addEventListener('scroll', function () {
+    var scrollTop    = document.documentElement.scrollTop || document.body.scrollTop;
+    var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    document.getElementById('progress-bar').style.width = pct + '%';
+  }, { passive: true });
 
-      ring.style.left = ringX + 'px';
-      ring.style.top = ringY + 'px';
+  // ── Navbar scroll effect ──
+  window.addEventListener('scroll', function () {
+    var nav = document.getElementById('navbar');
+    if (window.scrollY > 20) nav.classList.add('nav-scrolled');
+    else nav.classList.remove('nav-scrolled');
+  }, { passive: true });
 
-      requestAnimationFrame(animateCursor);
-    }
+  // ── Mobile menu toggle ──
+  document.getElementById('menu-toggle').addEventListener('click', function () {
+    var menu      = document.getElementById('mobile-menu');
+    var openIcon  = document.getElementById('menu-icon-open');
+    var closeIcon = document.getElementById('menu-icon-close');
+    var isOpen    = menu.style.maxHeight === '320px';
+    menu.style.maxHeight    = isOpen ? '0' : '320px';
+    menu.style.borderBottom = isOpen ? '' : '1px solid rgba(127,29,29,0.3)';
+    openIcon.style.display  = isOpen ? '' : 'none';
+    closeIcon.style.display = isOpen ? 'none' : '';
+  });
+  document.querySelectorAll('.mobile-link').forEach(function (link) {
+    link.addEventListener('click', function () {
+      document.getElementById('mobile-menu').style.maxHeight = '0';
+      document.getElementById('menu-icon-open').style.display  = '';
+      document.getElementById('menu-icon-close').style.display = 'none';
+    });
+  });
 
-    animateCursor();
-  }
-
-  /* ─────────────────────────────
-     DECRYPT / SCRAMBLE EFFECT
-  ───────────────────────────── */
-  const scrambleChars = 'ABCDEF0123456789/X$#@%';
-
+  // ── Scramble / decrypt effect ──
+  var scrambleChars = 'ABCDEF0123456789/X$#@%';
   function decryptText(button, originalText, callback) {
-    const span = button.querySelector('span');
-    if (!span) return;
-
-    let iterations = 0;
+    var iterations = 0;
     button.classList.add('decrypting');
     button.disabled = true;
-
-    const interval = setInterval(() => {
-      span.innerText = originalText
-        .split('')
-        .map((char, index) => {
-          if (index < iterations) return originalText[index];
-          return char === ' '
-            ? ' '
-            : scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
-        })
-        .join('');
-
+    var interval = setInterval(function () {
+      button.querySelector('span').innerText = originalText.split('').map(function (char, index) {
+        if (index < iterations) return originalText[index];
+        return char === ' ' ? ' ' : scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+      }).join('');
       if (iterations >= originalText.length) {
         clearInterval(interval);
-        span.innerText = originalText;
         button.classList.remove('decrypting');
+        button.querySelector('span').innerText = originalText;
         button.disabled = false;
-
-        if (callback) callback();
+        callback();
       }
-
       iterations += 1 / 3;
     }, 30);
   }
 
-  /* ─────────────────────────────
-     LOG NAVIGATION
-  ───────────────────────────── */
-  const logs = document.querySelectorAll('.log-entry');
-  const nextBtn = document.getElementById('nextBtn');
-  const prevBtn = document.getElementById('prevBtn');
-  const currentPage = document.getElementById('current-page');
-  const totalPages = document.getElementById('total-pages');
+  // ── Log navigation ──
+  var logs        = document.querySelectorAll('.log-entry');
+  var nextBtn     = document.getElementById('nextBtn');
+  var prevBtn     = document.getElementById('prevBtn');
+  var currentPage = document.getElementById('current-page');
+  var totalPages  = document.getElementById('total-pages');
+  var currentLogIndex = 0;
 
-  let currentLogIndex = 0;
-
-  if (totalPages) {
-    totalPages.textContent = String(logs.length).padStart(2, '0');
-  }
+  totalPages.textContent = String(logs.length).padStart(2, '0');
 
   function updateButtons() {
-    if (!prevBtn || !nextBtn) return;
-
     prevBtn.disabled = currentLogIndex === 0;
     nextBtn.disabled = currentLogIndex === logs.length - 1;
-
-    if (currentPage) {
-      currentPage.textContent = String(currentLogIndex + 1).padStart(2, '0');
-    }
+    currentPage.textContent = String(currentLogIndex + 1).padStart(2, '0');
   }
 
-  function updateView(index) {
-    logs.forEach(log => log.style.display = 'none');
-    currentLogIndex = index;
-
-    if (logs[currentLogIndex]) {
-      logs[currentLogIndex].style.display = 'block';
-    }
-
+  function updateView(newIndex) {
+    logs.forEach(function (log) { log.style.display = 'none'; });
+    currentLogIndex = newIndex;
+    logs[currentLogIndex].style.display = 'block';
+    logs[currentLogIndex].style.animation = 'none';
+    logs[currentLogIndex].offsetHeight;
+    logs[currentLogIndex].style.animation = '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
     updateButtons();
   }
 
-  if (nextBtn) {
-    nextBtn.addEventListener('click', function () {
-      if (currentLogIndex >= logs.length - 1) return;
+  nextBtn.addEventListener('click', function () {
+    if (currentLogIndex >= logs.length - 1) return;
+    var nextIndex = currentLogIndex + 1;
+    decryptText(nextBtn, 'Decrypt Next ►', function () { updateView(nextIndex); });
+  });
 
-      decryptText(nextBtn, 'ACCESSING FILE ►', function () {
-        updateView(currentLogIndex + 1);
-      });
-    });
-  }
+  prevBtn.addEventListener('click', function () {
+    if (currentLogIndex <= 0) return;
+    var prevIndex = currentLogIndex - 1;
+    decryptText(prevBtn, '◄ Previous File', function () { updateView(prevIndex); });
+  });
 
-  if (prevBtn) {
-    prevBtn.addEventListener('click', function () {
-      if (currentLogIndex <= 0) return;
-
-      decryptText(prevBtn, '◄ Previous File', function () {
-        updateView(currentLogIndex - 1);
-      });
-    });
-  }
-
-  // INIT
-  if (logs.length > 0) {
-    updateView(0);
-  }
-
-});
+  updateView(0);
 </script>
-
 
 </body>
 </html>
