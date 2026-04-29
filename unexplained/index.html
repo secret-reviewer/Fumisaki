@@ -23,14 +23,10 @@
   </script>
   <style>
     :root {
-      --red: #dc2626;
-      --red-dim: rgba(220, 38, 38, 0.15);
-      --red-glow: rgba(220, 38, 38, 0.6);
-      --bg: #060606;
-      --surface: rgba(10, 10, 10, 0.85);
-      --violet: #7c3aed;
-      --violet-dim: rgba(124, 58, 237, 0.15);
-      --violet-glow: rgba(124, 58, 237, 0.5);
+    
+     --violet: var(--red);
+--violet-dim: var(--red-dim);
+--violet-glow: var(--red-glow);
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -51,7 +47,7 @@
     #cursor {
       position: fixed;
       width: 12px; height: 12px;
-      background: var(--violet);
+      background: var(--red);
       border-radius: 50%;
       pointer-events: none;
       z-index: 99999;
@@ -62,7 +58,7 @@
     #cursor-ring {
       position: fixed;
       width: 36px; height: 36px;
-      border: 1px solid rgba(124,58,237,0.5);
+      border: 1px solid rgba(220,38,38,0.5);
       border-radius: 50%;
       pointer-events: none;
       z-index: 99998;
@@ -75,9 +71,9 @@
       0%,18%,22%,25%,53%,57%,100% { opacity: 1; }
       20%,24%,55% { opacity: 0.3; }
     }
-    @keyframes pulse-violet {
-      0%,100% { box-shadow: 0 0 6px rgba(124,58,237,0.3); }
-      50%      { box-shadow: 0 0 28px rgba(124,58,237,0.8), 0 0 60px rgba(124,58,237,0.25); }
+    @keyframes pulse-red {
+      0%,100% { box-shadow: 0 0 6px rgba(220,38,38,0.3); }
+      50%      { box-shadow: 0 0 28px rgba(220,38,38,0.8), 0 0 60px rgba(220,38,38,0.25); }
     }
     @keyframes pulse-red {
       0%,100% { box-shadow: 0 0 6px rgba(220,38,38,0.3); }
@@ -117,8 +113,8 @@
       75%     { clip-path: inset(30% 0 50% 0); transform: translate(-2px,0); }
     }
     @keyframes borderFlash {
-      0%,100% { border-color: rgba(124,58,237,0.15); }
-      50%     { border-color: rgba(124,58,237,0.5); }
+      0%,100% { border-color: rgba(220,38,38,0.15); }
+      50%     { border-color: rgba(220,38,38,0.5); }
     }
     @keyframes staticNoise {
       0%   { opacity: 0.03; }
@@ -132,7 +128,7 @@
       50%     { opacity: 0.07; transform: scale(1.02); }
     }
 
-    .animate-pulse-violet  { animation: pulse-violet 2.5s infinite; }
+    .animate-pulse-red  { animation: pulse-red 2.5s infinite; }
     .animate-pulse-red     { animation: pulse-red 2.5s infinite; }
     .animate-pulse-dot     { animation: pulse-dot 2s infinite; }
     .animate-fade-slide-up { animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
@@ -150,7 +146,7 @@
       content: "";
       position: fixed; top: -100%; left: 0;
       width: 100%; height: 100%;
-      background: linear-gradient(rgba(124,58,237,0) 0%, rgba(124,58,237,0.03) 50%, rgba(124,58,237,0) 100%);
+      background: linear-gradient(rgba(220,38,38,0) 0%, rgba(220,38,38,0.03) 50%, rgba(220,38,38,0) 100%);
       animation: scan 12s linear infinite;
       pointer-events: none;
       z-index: 9991;
@@ -159,8 +155,8 @@
     /* ── Progress bar ── */
     #progress-bar {
       height: 3px;
-      background: linear-gradient(90deg, #4c1d95, #7c3aed, #a78bfa);
-      box-shadow: 0 0 12px rgba(124,58,237,0.9), 0 0 24px rgba(124,58,237,0.4);
+      background: linear-gradient(90deg, #4c1d95, #dc2626, #f87171);
+      box-shadow: 0 0 12px rgba(220,38,38,0.9), 0 0 24px rgba(220,38,38,0.4);
       width: 0%;
       transition: width 0.08s ease-out;
     }
@@ -186,7 +182,7 @@
     }
     .story-content p { margin: 0 0 1.6em 0; }
     .story-content h2 {
-      color: #a78bfa;
+      color: #f87171; /* lighter red accent */
       margin-top: 52px;
       text-transform: uppercase;
       font-size: 0.82rem;
@@ -224,7 +220,7 @@
       content: "▶";
       position: absolute;
       left: 0;
-      color: #7c3aed;
+      color: #dc2626;
       font-size: 0.6rem;
       top: 6px;
       opacity: 0.7;
@@ -236,7 +232,7 @@
       font-size: 1.15rem;
       color: #999;
       margin-bottom: 40px;
-      border-left: 2px solid #7c3aed;
+      border-left: 2px solid #dc2626;
       padding-left: 20px;
       font-style: italic;
       font-family: 'IBM Plex Sans', sans-serif;
@@ -277,12 +273,12 @@
       display: inline-block;
       font-family: 'Share Tech Mono', monospace;
       font-size: 0.75rem;
-      color: #a78bfa;
+      color: #f87171; /* lighter red accent */
       text-transform: uppercase;
-      border: 1px solid rgba(124,58,237,0.4);
+      border: 1px solid rgba(220,38,38,0.4);
       padding: 5px 14px;
       letter-spacing: 2px;
-      background: rgba(124,58,237,0.06);
+      background: rgba(220,38,38,0.06);
     }
 
     /* ── Entry title ── */
@@ -301,8 +297,8 @@
       width: 100%;
       height: 420px;
       background: linear-gradient(135deg, #06060a 0%, #0a080f 50%, #060609 100%);
-      border: 1px solid rgba(124,58,237,0.2);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 60px rgba(124,58,237,0.04);
+      border: 1px solid rgba(220,38,38,0.2);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 60px rgba(220,38,38,0.04);
       position: relative;
       overflow: hidden;
       margin: 32px 0;
@@ -313,7 +309,7 @@
       inset: 0;
       background: repeating-linear-gradient(
         0deg, transparent, transparent 3px,
-        rgba(124,58,237,0.012) 3px, rgba(124,58,237,0.012) 4px
+        rgba(220,38,38,0.012) 3px, rgba(220,38,38,0.012) 4px
       );
       pointer-events: none;
     }
@@ -330,7 +326,7 @@
       bottom: 12px; left: 12px;
       font-family: 'Share Tech Mono', monospace;
       font-size: 0.65rem;
-      color: rgba(124,58,237,0.5);
+      color: rgba(220,38,38,0.5);
       letter-spacing: 2px;
       text-transform: uppercase;
     }
@@ -339,16 +335,16 @@
       position: absolute;
       top: 0; left: 0;
       width: 40px; height: 40px;
-      border-top: 1px solid rgba(124,58,237,0.4);
-      border-left: 1px solid rgba(124,58,237,0.4);
+      border-top: 1px solid rgba(220,38,38,0.4);
+      border-left: 1px solid rgba(220,38,38,0.4);
       pointer-events: none;
       z-index: 2;
     }
     .featured-image .corner-br {
       position: absolute; bottom: 0; right: 0;
       width: 40px; height: 40px;
-      border-bottom: 1px solid rgba(124,58,237,0.4);
-      border-right: 1px solid rgba(124,58,237,0.4);
+      border-bottom: 1px solid rgba(220,38,38,0.4);
+      border-right: 1px solid rgba(220,38,38,0.4);
       pointer-events: none; z-index: 2;
     }
 
@@ -358,7 +354,7 @@
     /* ── Decrypt scramble effect ── */
     .decrypting {
       color: #fff !important;
-      background: var(--violet) !important;
+      background: var(--red) !important;
       letter-spacing: 4px !important;
       text-shadow: 2px 0 #00fff9, -2px 0 #ff00c1;
     }
@@ -366,8 +362,8 @@
     /* ── Nav buttons ── */
     .nav-btn {
       background: transparent;
-      color: #a78bfa;
-      border: 1px solid rgba(124,58,237,0.5);
+      color: #f87171; /* lighter red accent */
+      border: 1px solid rgba(220,38,38,0.5);
       padding: 14px 28px;
       font-family: 'Share Tech Mono', monospace;
       font-weight: 900;
@@ -383,12 +379,12 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: var(--violet);
+      background: var(--red);
       transform: translateX(-100%);
       transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
     }
     .nav-btn:hover::before  { transform: translateX(0); }
-    .nav-btn:hover { color: #fff; box-shadow: 0 0 20px rgba(124,58,237,0.35); }
+    .nav-btn:hover { color: #fff; box-shadow: 0 0 20px rgba(220,38,38,0.35); }
     .nav-btn span { position: relative; z-index: 1; }
     .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
     .nav-btn:disabled::before { display: none; }
@@ -402,13 +398,13 @@
       text-transform: uppercase;
       align-self: center;
     }
-    .page-counter span { color: #a78bfa; }
+    .page-counter span { color: #f87171; /* lighter red accent */ }
 
     /* ── Section dividers ── */
     .section-rule {
       border: none;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(124,58,237,0.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(220,38,38,0.3), transparent);
       margin: 48px 0;
     }
 
@@ -420,13 +416,13 @@
       width: 100%; height: 100%;
     }
     .glitch-wrap::before { color: #00ffff; animation: glitch-1 6s infinite step-start; opacity: 0.6; }
-    .glitch-wrap::after  { color: #a78bfa; animation: glitch-2 6s infinite step-start; opacity: 0.6; }
+    .glitch-wrap::after  { color: #f87171; /* lighter red accent */ animation: glitch-2 6s infinite step-start; opacity: 0.6; }
 
     /* ── Load more / intel button style ── */
     .load-more-style {
       background: transparent;
-      color: #a78bfa;
-      border: 1px solid rgba(124,58,237,0.4);
+      color: #f87171; /* lighter red accent */
+      border: 1px solid rgba(220,38,38,0.4);
       font-family: 'Share Tech Mono', monospace;
       font-size: 0.72rem;
       letter-spacing: 2px;
@@ -435,20 +431,20 @@
       padding: 10px 22px;
       transition: background 0.25s, color 0.25s;
     }
-    .load-more-style:hover { background: var(--violet); color: #fff; }
+    .load-more-style:hover { background: var(--red); color: #fff; }
 
     /* ── Unexplained callout box ── */
     .signal-box {
-      background: rgba(124,58,237,0.05);
-      border: 1px solid rgba(124,58,237,0.3);
-      border-left: 3px solid #7c3aed;
+      background: rgba(220,38,38,0.05);
+      border: 1px solid rgba(220,38,38,0.3);
+      border-left: 3px solid #dc2626;
       padding: 14px 18px;
       margin: 20px 0;
       font-size: 0.95rem;
       color: #bbb;
       font-family: 'Share Tech Mono', monospace;
     }
-    .signal-box strong { color: #a78bfa; }
+    .signal-box strong { color: #f87171; /* lighter red accent */ }
 
     /* ── Rider notes block ── */
     .rider-notes {
@@ -460,7 +456,7 @@
     .rider-notes h5 {
       font-family: 'Share Tech Mono', monospace;
       font-size: 0.7rem;
-      color: #7c3aed;
+      color: #dc2626;
       letter-spacing: 3px;
       text-transform: uppercase;
       margin: 0 0 14px 0;
@@ -475,7 +471,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.03);
       font-family: 'Share Tech Mono', monospace;
     }
-    .rider-notes ul li::before { content: "> "; color: #7c3aed; }
+    .rider-notes ul li::before { content: "> "; color: #dc2626; }
 
     /* ── Field data grid ── */
     .field-grid {
@@ -483,7 +479,7 @@
       grid-template-columns: 140px 1fr;
       gap: 0;
       background: rgba(10,10,10,0.7);
-      border: 1px solid rgba(124,58,237,0.15);
+      border: 1px solid rgba(220,38,38,0.15);
       margin: 28px 0;
       font-family: 'Share Tech Mono', monospace;
       overflow: hidden;
@@ -497,11 +493,11 @@
     .field-grid > div:last-child,
     .field-grid > div:nth-last-child(2) { border-bottom: none; }
     .field-grid > div:nth-child(odd) {
-      color: #a78bfa;
+      color: #f87171; /* lighter red accent */
       font-weight: bold;
       font-size: 0.8rem;
-      border-right: 1px solid rgba(124,58,237,0.1);
-      background: rgba(124,58,237,0.03);
+      border-right: 1px solid rgba(220,38,38,0.1);
+      background: rgba(220,38,38,0.03);
     }
     .field-grid > div:nth-child(even) { color: #999; }
 
@@ -590,7 +586,7 @@
         <span class="glitch-wrap" data-text="UNEXPLAINED">UNEXPLAINED</span>
       </h1>
       <p class="font-mono-tech text-gray-600 text-xs tracking-widest mt-4">
-        <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#7c3aed; animation: pulse-dot 2s infinite;"></span>
+        <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#dc2626; animation: pulse-dot 2s infinite;"></span>
         3 LOGS DOCUMENTED // CANNOT BE RATED // RIDER EXPERIENCES
       </p>
       <p class="mt-5 text-gray-500 text-base leading-relaxed max-w-xl" style="font-family:'IBM Plex Sans',sans-serif; font-style:italic;">
@@ -615,7 +611,7 @@
           <div class="featured-image-label">// SR-UNX-003 // Midnight // Singapore Roads</div>
           <div class="corner-br"></div>
           <!-- Atmospheric lines -->
-          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 60% 50% at 50% 50%, rgba(124,58,237,0.06) 0%, transparent 70%);pointer-events:none;"></div>
+          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 60% 50% at 50% 50%, rgba(220,38,38,0.06) 0%, transparent 70%);pointer-events:none;"></div>
         </div>
 
         <div class="story-content">
@@ -666,10 +662,10 @@
             <strong>// SIGNAL RECORDED:</strong> Engine behaviour returned to baseline immediately after pillion stand was folded and verbal acknowledgement was made. No mechanical cause was identified before or after the incident.
           </div>
 
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(124,58,237,0.2);">
+          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
             <div id="full-intel-unx003" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(124,58,237,0.08); border-color:#7c3aed;">
-                <h4 class="font-bold uppercase mb-2" style="color:#a78bfa;">Additional Field Notes: The Sudden Passenger</h4>
+              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
+                <h4 class="font-bold uppercase mb-2" style="color:#f87171; /* lighter red accent */">Additional Field Notes: The Sudden Passenger</h4>
                 <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Mechanical Anomaly / Road Encounter</p>
               </div>
               <div class="space-y-4">
@@ -677,8 +673,8 @@
                 <p><strong>[ENGINE BEHAVIOUR]</strong> Under normal load changes, RPM and speed adjust together. A situation where the engine sounds strained but instruments read normal is not a standard mechanical failure pattern. It suggests the load was not physical in any conventional sense.</p>
                 <p><strong>[THE APOLOGY]</strong> Multiple accounts from riders across Southeast Asia describe the same resolution — acknowledging the presence, apologising for the inconvenience, and asking it to leave. Not commanding. Not panicking. Just speaking plainly. It consistently works.</p>
               </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(124,58,237,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#a78bfa;">INCIDENT ASSESSMENT</h5>
+              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
+                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171; /* lighter red accent */">INCIDENT ASSESSMENT</h5>
                 <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
                   <li>Mechanical cause: None identified</li>
                   <li>Duration: 5–10 minutes of abnormal behaviour</li>
@@ -706,7 +702,7 @@
           <div class="img-watermark">🛣️</div>
           <div class="featured-image-label">// SR-UNX-002 // Long Haul // Guardian</div>
           <div class="corner-br"></div>
-          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 50% 60% at 30% 50%, rgba(124,58,237,0.05) 0%, transparent 65%);pointer-events:none;"></div>
+          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 50% 60% at 30% 50%, rgba(220,38,38,0.05) 0%, transparent 65%);pointer-events:none;"></div>
         </div>
 
         <div class="story-content">
@@ -760,10 +756,10 @@
           <p>Whatever you believe — don't push it. If you're tired enough to micro-sleep, pull over. Petrol station. Road shoulder. Carpark. Rest. No destination is worth that gap in consciousness on two wheels. I was fortunate. Not everyone gets what I got that night.</p>
           <p>Rest when the road tells you to. And if something ever keeps you upright when you shouldn't be — say thank you.</p>
 
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(124,58,237,0.2);">
+          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
             <div id="full-intel-unx002" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(124,58,237,0.08); border-color:#7c3aed;">
-                <h4 class="font-bold uppercase mb-2" style="color:#a78bfa;">Additional Field Notes: The Angel That Brought Me Home</h4>
+              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
+                <h4 class="font-bold uppercase mb-2" style="color:#f87171; /* lighter red accent */">Additional Field Notes: The Angel That Brought Me Home</h4>
                 <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Protective Encounter / Long Distance</p>
               </div>
               <div class="space-y-4">
@@ -771,8 +767,8 @@
                 <p><strong>[THE ACCOUNTS]</strong> Across rider communities in Malaysia, Thailand, and Singapore, stories of protective presences on long-distance night rides appear with enough frequency that they are not considered isolated incidents. The consistent elements: sudden full alertness after a fatigue collapse, a felt presence, safe arrival, and departure of that presence upon thanks.</p>
                 <p><strong>[THE ADVICE]</strong> Regardless of belief, the rider community consensus remains unchanged — pull over when tired. Whatever protection may exist on the road, it is not a reason to push limits. It is a reminder that some forces take care of you when you cannot care for yourself, and you owe them the respect of not making that necessary.</p>
               </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(124,58,237,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#a78bfa;">INCIDENT ASSESSMENT</h5>
+              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
+                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171; /* lighter red accent */">INCIDENT ASSESSMENT</h5>
                 <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
                   <li>Risk level at onset: Critical — confirmed micro-sleep while riding</li>
                   <li>Expected outcome: Loss of control event</li>
@@ -800,7 +796,7 @@
           <div class="img-watermark">🎣</div>
           <div class="featured-image-label">// SR-UNX-001 // Punggol End // Old Singapore</div>
           <div class="corner-br"></div>
-          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 70% 40% at 50% 80%, rgba(124,58,237,0.04) 0%, transparent 65%);pointer-events:none;"></div>
+          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 70% 40% at 50% 80%, rgba(220,38,38,0.04) 0%, transparent 65%);pointer-events:none;"></div>
         </div>
 
         <div class="story-content">
@@ -876,10 +872,10 @@
             <strong>// SIGNAL RECORDED:</strong> Complete absence of ambient sound at waterfront location. Involuntary change in movement pattern during exit. Sudden normalisation upon reaching main road. No rational environmental explanation for the silence or the altered perception of distance.
           </div>
 
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(124,58,237,0.2);">
+          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
             <div id="full-intel-unx001" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(124,58,237,0.08); border-color:#7c3aed;">
-                <h4 class="font-bold uppercase mb-2" style="color:#a78bfa;">Additional Field Notes: Punggol End</h4>
+              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
+                <h4 class="font-bold uppercase mb-2" style="color:#f87171; /* lighter red accent */">Additional Field Notes: Punggol End</h4>
                 <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Location / Old Singapore</p>
               </div>
               <div class="space-y-4">
@@ -887,8 +883,8 @@
                 <p><strong>[THE SILENCE]</strong> A waterfront location with no ambient sound — no insects, no water movement, no wildlife — is ecologically abnormal. Animals and insects go silent in response to threat or disturbance. Sustained total silence suggests something in that environment was causing sustained suppression of normal activity. What that was, is not recorded.</p>
                 <p><strong>[INVOLUNTARY PACE CHANGE]</strong> Slowing down without conscious decision in a context of no physical obstruction points to something affecting perception or movement at a level below conscious control. Whether environmental, psychological, or otherwise — the effect was consistent with accounts from others who had visited the same location at similar hours.</p>
               </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(124,58,237,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#a78bfa;">INCIDENT ASSESSMENT</h5>
+              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
+                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171; /* lighter red accent */">INCIDENT ASSESSMENT</h5>
                 <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
                   <li>Location: No longer accessible in original form</li>
                   <li>Corroborating accounts: Multiple — consistent across different riders and residents</li>
@@ -978,11 +974,11 @@
     document.querySelectorAll('a, button').forEach(function (el) {
       el.addEventListener('mouseenter', function () {
         ring.style.width = '56px'; ring.style.height = '56px';
-        ring.style.borderColor = 'rgba(124,58,237,0.8)';
+        ring.style.borderColor = 'rgba(220,38,38,0.8)';
       });
       el.addEventListener('mouseleave', function () {
         ring.style.width = '36px'; ring.style.height = '36px';
-        ring.style.borderColor = 'rgba(124,58,237,0.5)';
+        ring.style.borderColor = 'rgba(220,38,38,0.5)';
       });
     });
   })();
