@@ -4,108 +4,607 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Family Trips | Secret Reviewer</title>
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans&display=swap" rel="stylesheet" />
-
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
-
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Barlow Condensed', 'sans-serif'],
+            mono: ['"Share Tech Mono"', 'monospace'],
+            prose: ['"IBM Plex Sans"', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
   <style>
+    :root {
+      --red: #dc2626;
+      --red-dim: rgba(220, 38, 38, 0.15);
+      --red-glow: rgba(220, 38, 38, 0.6);
+      --bg: #060606;
+      --surface: rgba(10, 10, 10, 0.85);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      background-color: #060606;
+      background-color: var(--bg);
       color: #ececec;
       font-family: 'Barlow Condensed', sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+      cursor: none;
+      line-height: 1.75;
+    }
+    .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+    .font-prose { font-family: 'IBM Plex Sans', sans-serif; }
+
+    #cursor {
+      position: fixed;
+      width: 12px; height: 12px;
+      background: var(--red);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+      mix-blend-mode: screen;
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(220,38,38,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
     }
 
-    .card {
+    @keyframes pulse-red {
+      0%,100% { box-shadow: 0 0 6px rgba(220,38,38,0.3); }
+      50%      { box-shadow: 0 0 28px rgba(220,38,38,0.8), 0 0 60px rgba(220,38,38,0.25); }
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.3; }
+    }
+    @keyframes scan {
+      from { top: -100%; }
+      to   { top: 100%; }
+    }
+    @keyframes glitch-1 {
+      0%,100% { clip-path: inset(0 0 98% 0);  transform: translate(-2px,0); }
+      20%     { clip-path: inset(20% 0 50% 0); transform: translate(2px,0); }
+      40%     { clip-path: inset(60% 0 20% 0); transform: translate(-2px,0); }
+      60%     { clip-path: inset(80% 0 5% 0);  transform: translate(2px,0); }
+      80%     { clip-path: inset(40% 0 60% 0); transform: translate(-2px,0); }
+    }
+    @keyframes glitch-2 {
+      0%,100% { clip-path: inset(50% 0 30% 0); transform: translate(2px,0);  color:#00ffff; }
+      25%     { clip-path: inset(10% 0 80% 0); transform: translate(-2px,0); }
+      50%     { clip-path: inset(70% 0 10% 0); transform: translate(2px,0);  color:var(--red); }
+      75%     { clip-path: inset(30% 0 50% 0); transform: translate(-2px,0); }
+    }
+    @keyframes revealCard {
+      from { opacity: 0; transform: translateY(24px); filter: blur(4px); }
+      to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+
+    .animate-pulse-red     { animation: pulse-red 2.5s infinite; }
+    .animate-pulse-dot     { animation: pulse-dot 2s infinite; }
+    .animate-fade-slide-up { animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+
+    /* CRT scanlines */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
+      pointer-events: none;
+      z-index: 9990;
+    }
+    body::after {
+      content: "";
+      position: fixed; top: -100%; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(rgba(220,38,38,0) 0%, rgba(220,38,38,0.04) 50%, rgba(220,38,38,0) 100%);
+      animation: scan 8s linear infinite;
+      pointer-events: none;
+      z-index: 9991;
+    }
+
+    #progress-bar {
+      height: 3px;
+      background: linear-gradient(90deg, #7f1d1d, #dc2626, #ff6666);
+      box-shadow: 0 0 12px rgba(220,38,38,0.9), 0 0 24px rgba(220,38,38,0.4);
+      width: 0%;
+      transition: width 0.08s ease-out;
+    }
+
+    #navbar { transition: all 0.4s ease; }
+    .nav-scrolled {
+      background: rgba(4,4,4,0.97) !important;
+      border-bottom-color: rgba(127,29,29,0.5) !important;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+
+    /* Glitch title */
+    .glitch-wrap { position: relative; display: inline-block; }
+    .glitch-wrap::before, .glitch-wrap::after {
+      content: attr(data-text);
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    .glitch-wrap::before { color: #00ffff; animation: glitch-1 6s infinite step-start; opacity: 0.6; }
+    .glitch-wrap::after  { color: var(--red); animation: glitch-2 6s infinite step-start; opacity: 0.6; }
+
+    /* Section divider */
+    .section-rule {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(220,38,38,0.3) 30%, rgba(220,38,38,0.3) 70%, transparent);
+      margin: 48px 0;
+    }
+
+    /* Section heading label */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .section-label-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(220,38,38,0.25), transparent);
+    }
+
+    /* Destination card */
+    .dest-card {
+      display: block;
+      text-decoration: none;
+      position: relative;
       border: 1px solid rgba(220,38,38,0.15);
       background: rgba(10,10,10,0.8);
-      transition: all 0.3s ease;
+      overflow: hidden;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+      animation: revealCard 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .dest-card:hover {
+      border-color: rgba(220,38,38,0.6);
+      box-shadow: 0 0 40px rgba(220,38,38,0.12), 0 12px 40px rgba(0,0,0,0.7);
+      transform: translateY(-3px);
+    }
+    .dest-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 28px; height: 28px;
+      border-top: 1px solid rgba(220,38,38,0.5);
+      border-left: 1px solid rgba(220,38,38,0.5);
+      z-index: 3; pointer-events: none;
+      transition: width 0.3s, height 0.3s, border-color 0.3s;
+    }
+    .dest-card::after {
+      content: '';
+      position: absolute; bottom: 0; right: 0;
+      width: 28px; height: 28px;
+      border-bottom: 1px solid rgba(220,38,38,0.3);
+      border-right: 1px solid rgba(220,38,38,0.3);
+      z-index: 3; pointer-events: none;
+      transition: width 0.3s, height 0.3s, border-color 0.3s;
+    }
+    .dest-card:hover::before { width: 48px; height: 48px; border-color: rgba(220,38,38,0.9); }
+    .dest-card:hover::after  { width: 48px; height: 48px; border-color: rgba(220,38,38,0.7); }
+
+    .dest-card-img {
+      width: 100%;
+      height: 220px;
+      background: linear-gradient(135deg, #0d0d0d 0%, #111 50%, #0a0a0a 100%);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dest-card-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(220,38,38,0.015) 3px, rgba(220,38,38,0.015) 4px);
+      pointer-events: none;
+    }
+    .dest-card-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      filter: brightness(0.75) saturate(0.8);
+      transition: transform 0.5s cubic-bezier(0.22,1,0.36,1), filter 0.4s ease;
+    }
+    .dest-card:hover .dest-card-img img {
+      transform: scale(1.05);
+      filter: brightness(0.9) saturate(1);
+    }
+    .dest-card-img-placeholder {
+      font-size: 5rem;
+      opacity: 0.06;
+      position: relative;
+      z-index: 1;
     }
 
-    .card:hover {
-      border-color: rgba(220,38,38,0.6);
-      transform: translateY(-4px);
-      box-shadow: 0 10px 30px rgba(220,38,38,0.15);
+    .dest-card-body {
+      padding: 24px 26px 28px;
+      position: relative;
+    }
+    .dest-card-tag {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--red);
+      text-transform: uppercase;
+      border: 1px solid rgba(220,38,38,0.4);
+      padding: 3px 10px;
+      letter-spacing: 2px;
+      background: rgba(220,38,38,0.06);
+      margin-bottom: 14px;
+    }
+    .dest-card-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 1.0;
+      margin: 0 0 10px 0;
+    }
+    .dest-card-sub {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 0.95rem;
+      color: #777;
+      font-style: italic;
+      line-height: 1.6;
+      margin: 0 0 20px 0;
+    }
+    .dest-card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .dest-card-meta span {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: #555;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 3px 10px;
+    }
+    .dest-card-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: gap 0.2s ease;
+    }
+    .dest-card:hover .dest-card-cta { gap: 14px; }
+
+    .dest-card.coming-soon {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .dest-card.coming-soon .dest-card-title { color: #555; }
+
+    /* Noise overlay */
+    .noise-overlay {
+      position: fixed; inset: 0;
+      opacity: 0.02;
+      pointer-events: none;
+      z-index: 9989;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px;
     }
   </style>
 </head>
-
 <body>
 
-<!-- NAVBAR (same as your main) -->
-<nav class="fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur border-b border-red-900/40">
-  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+  <div class="noise-overlay"></div>
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
 
-    <a href="/" class="flex items-center gap-2">
-      <div class="w-7 h-7 border border-red-600 flex items-center justify-center">
-        <span class="text-red-500 text-xs font-bold">SR</span>
+  <div class="fixed top-0 left-0 w-full z-[9999]" style="height:3px">
+    <div id="progress-bar"></div>
+  </div>
+
+  <!-- ════ NAVBAR ════ -->
+  <nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+    <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+
+      <a href="/" class="flex items-center gap-2 group">
+        <div class="w-7 h-7 border border-red-600 flex items-center justify-center group-hover:bg-red-600/20 transition-all duration-300">
+          <span class="text-red-500 text-xs font-mono-tech font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8">
+        <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+        <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+        <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          YouTube
+        </a>
       </div>
-      <span class="text-white text-sm tracking-widest uppercase">Secret Reviewer</span>
-    </a>
 
-    <div class="hidden md:flex gap-8 text-sm uppercase tracking-widest">
-      <a href="/" class="text-gray-400 hover:text-red-400">Home</a>
-      <a href="/gallery/" class="text-gray-400 hover:text-red-400">Gallery</a>
-      <a href="/contact/" class="text-gray-400 hover:text-red-400">Contact</a>
+      <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+        <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
     </div>
 
-  </div>
-</nav>
+    <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
+      <div class="flex flex-col px-5 py-4 gap-4">
+        <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+        <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+        <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          YouTube
+        </a>
+      </div>
+    </div>
+  </nav>
 
-<!-- MAIN -->
-<main class="pt-28 pb-20 px-5">
-  <div class="max-w-5xl mx-auto">
+  <!-- ════ MAIN ════ -->
+  <main class="pt-28 pb-24 px-5">
+    <div class="max-w-4xl mx-auto">
 
-    <!-- HEADER -->
-    <div class="mb-12">
-      <p class="text-red-600/60 text-sm tracking-[0.4em] uppercase mb-4">
-        // FAMILY LOGS //
+      <!-- Page header -->
+      <div class="mb-12 animate-fade-slide-up">
+        <p class="font-mono-tech text-red-600/60 text-sm tracking-[0.4em] uppercase mb-4">// Family Logs // Filed & Documented</p>
+        <h1 class="text-5xl sm:text-7xl font-black uppercase leading-none tracking-tight text-white mb-4">
+          <span class="glitch-wrap" data-text="FAMILY TRIPS">FAMILY TRIPS</span>
+        </h1>
+        <p class="font-mono-tech text-gray-600 text-sm tracking-widest mt-4">
+          <span class="text-red-600 animate-pulse-dot inline-block w-2 h-2 rounded-full mr-2 align-middle"></span>
+          4 DESTINATIONS LOGGED // CAR + VAN + PUBLIC TRANSPORT // THE WHOLE CREW
+        </p>
+      </div>
+
+      <hr class="section-rule" />
+
+      <!-- Intro -->
+      <p class="font-prose text-gray-500 text-base leading-relaxed mb-12" style="font-family:'IBM Plex Sans',sans-serif; font-size:1.05rem;">
+        Different vehicles, different countries, same mission — get the whole family somewhere worth going and come back with stories. Some trips were across the causeway. Others took a flight to get there. All of them are logged here.
       </p>
 
-      <h1 class="text-5xl sm:text-6xl font-black uppercase">
-        FAMILY TRIPS
-      </h1>
+      <!-- ════ CARDS GRID ════ -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
-      <p class="text-gray-500 mt-4 font-sans">
-        Slower journeys, louder laughter, and memories that hit different.
-      </p>
+        <!-- ── Malaysia – Desaru ── -->
+        <a href="/overseas/family/malaysia" class="dest-card coming-soon" style="animation-delay:0.05s;">
+          <div class="dest-card-img">
+            <!-- <img src="/images/desaru-cover.JPG" alt="Desaru Road Trip" /> -->
+            <div class="dest-card-img-placeholder">🇲🇾</div>
+            <div style="position:absolute;bottom:10px;left:12px;font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(220,38,38,0.5);letter-spacing:2px;text-transform:uppercase;z-index:3;">// SR-FAMILY-001 // Malaysia</div>
+          </div>
+          <div class="dest-card-body">
+            <div class="dest-card-tag">Family Log // Coming Soon</div>
+            <h2 class="dest-card-title">Malaysia — Desaru</h2>
+            <p class="dest-card-sub">A family road trip down to Desaru. Short drive across the border — beach, animal farms, and two adults problem-solving a hotel with a broken heater and a faulty door.</p>
+            <div class="dest-card-meta">
+              <span>📍 Desaru</span>
+              <span>📍 Johor</span>
+              <span>🚗 Car</span>
+              <span>👨‍👩‍👧 2 Adults + 2 Kids</span>
+              <span>🗓️ Nov 2024</span>
+            </div>
+            <div class="dest-card-cta">
+              Coming Soon
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- ── Taiwan ── -->
+        <a href="/overseas/family/taiwan" class="dest-card coming-soon" style="animation-delay:0.12s;">
+          <div class="dest-card-img">
+            <!-- <img src="/images/taiwan-cover.JPG" alt="Taiwan Road Trip" /> -->
+            <div class="dest-card-img-placeholder">🇹🇼</div>
+            <div style="position:absolute;bottom:10px;left:12px;font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(220,38,38,0.5);letter-spacing:2px;text-transform:uppercase;z-index:3;">// SR-FAMILY-002 // Taiwan</div>
+          </div>
+          <div class="dest-card-body">
+            <div class="dest-card-tag">Family Log // Coming Soon</div>
+            <h2 class="dest-card-title">Taiwan</h2>
+            <p class="dest-card-sub">Nine people, one 9-seater van, one driver — four days through Yilan's DIY farms and craft stops, then four days navigating Taipei entirely on MRT and foot.</p>
+            <div class="dest-card-meta">
+              <span>📍 Yilan</span>
+              <span>📍 Taipei</span>
+              <span>🚐 9-Seater Van</span>
+              <span>👨‍👩‍👧 5 Adults + 1 Elderly + 3 Kids</span>
+              <span>🗓️ Jun 2025</span>
+            </div>
+            <div class="dest-card-cta">
+              Coming Soon
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- ── South Korea ── -->
+        <a href="/overseas/family/korea" class="dest-card coming-soon" style="animation-delay:0.19s;">
+          <div class="dest-card-img">
+            <!-- <img src="/images/korea-cover.JPG" alt="Korea Trip" /> -->
+            <div class="dest-card-img-placeholder">🇰🇷</div>
+            <div style="position:absolute;bottom:10px;left:12px;font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(220,38,38,0.5);letter-spacing:2px;text-transform:uppercase;z-index:3;">// SR-FAMILY-003 // South Korea</div>
+          </div>
+          <div class="dest-card-body">
+            <div class="dest-card-tag">Family Log // Coming Soon</div>
+            <h2 class="dest-card-title">South Korea</h2>
+            <p class="dest-card-sub">Five days in a mini car through Jeju's lava caves, lavender estate, and volcanic coastline. Then no car — pure T-Money, MRT and ferries through Seoul for the second half.</p>
+            <div class="dest-card-meta">
+              <span>📍 Jeju Island</span>
+              <span>📍 Seoul</span>
+              <span>🚗 Mini Car → MRT + Bus</span>
+              <span>👨‍👩‍👧 Family</span>
+              <span>🗓️ Aug–Sep 2015</span>
+            </div>
+            <div class="dest-card-cta">
+              Coming Soon
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- ── Australia – Tasmania + Sydney ── -->
+        <a href="/overseas/family/australia" class="dest-card coming-soon" style="animation-delay:0.26s;">
+          <div class="dest-card-img">
+            <!-- <img src="/images/tasmania-cover.JPG" alt="Tasmania Road Trip" /> -->
+            <div class="dest-card-img-placeholder">🇦🇺</div>
+            <div style="position:absolute;bottom:10px;left:12px;font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(220,38,38,0.5);letter-spacing:2px;text-transform:uppercase;z-index:3;">// SR-FAMILY-004 // Australia</div>
+          </div>
+          <div class="dest-card-body">
+            <div class="dest-card-tag">Family Log // Coming Soon</div>
+            <h2 class="dest-card-title">Australia — Tasmania</h2>
+            <p class="dest-card-sub">Six days driving 1,575km through Tasmania — waterfalls, convict ruins, and a road that ends at the Southern Ocean. One final evening in Sydney on foot before the flight home.</p>
+            <div class="dest-card-meta">
+              <span>📍 Hobart</span>
+              <span>📍 Launceston</span>
+              <span>📍 Sydney</span>
+              <span>🚗 Rental Car + On Foot</span>
+              <span>🗓️ May 2015</span>
+            </div>
+            <div class="dest-card-cta">
+              Coming Soon
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+          </div>
+        </a>
+
+      </div><!-- /grid -->
+
+      <hr class="section-rule" />
+
+      <!-- Back link -->
+      <div class="flex justify-center">
+        <a href="/overseas/" class="group flex items-center gap-2 font-mono-tech text-gray-600 hover:text-red-500 text-sm tracking-widest uppercase transition-colors duration-200">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="transition-transform duration-200 group-hover:-translate-x-1">
+            <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+          </svg>
+          Back to Overseas
+        </a>
+      </div>
+
     </div>
+  </main>
 
-    <!-- GRID -->
-    <div class="grid sm:grid-cols-2 gap-6">
-
-      <!-- MALAYSIA -->
-      <a href="/overseas/family/malaysia/" class="card p-6 block">
-        <div class="text-4xl mb-4">🇲🇾</div>
-        <h2 class="text-2xl font-bold uppercase">Malaysia</h2>
-        <p class="text-gray-400 mt-2 text-sm">
-          Food runs, short drives, and easy escapes across the border.
-        </p>
-      </a>
-
-      <!-- TAIWAN -->
-      <a href="/overseas/family/taiwan/" class="card p-6 block">
-        <div class="text-4xl mb-4">🇹🇼</div>
-        <h2 class="text-2xl font-bold uppercase">Taiwan</h2>
-        <p class="text-gray-400 mt-2 text-sm">
-          Full family trip — mountains, city, and night market chaos.
-        </p>
-      </a>
-
+  <!-- ════ FOOTER ════ -->
+  <footer class="py-16 px-5 border-t border-white/5">
+    <div class="max-w-5xl mx-auto">
+      <div class="flex flex-col items-center gap-6">
+        <a href="/" class="flex items-center gap-3 group">
+          <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+            <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+          </div>
+          <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+        </a>
+        <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+          <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors duration-300">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <span class="font-mono-tech text-xs tracking-widest uppercase">Watch on YouTube</span>
+        </a>
+        <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+      </div>
     </div>
+  </footer>
 
-    <!-- BACK -->
-    <div class="mt-12">
-      <a href="/overseas/" class="text-gray-500 hover:text-red-500 text-sm uppercase tracking-widest">
-        ← Back to Overseas
-      </a>
-    </div>
+  <!-- ════ JAVASCRIPT ════ -->
+  <script>
+    // Custom cursor
+    (function () {
+      var cursor = document.getElementById('cursor');
+      var ring   = document.getElementById('cursor-ring');
+      var mx = 0, my = 0, rx = 0, ry = 0;
+      document.addEventListener('mousemove', function (e) {
+        mx = e.clientX; my = e.clientY;
+        cursor.style.left = mx + 'px';
+        cursor.style.top  = my + 'px';
+      });
+      (function animRing() {
+        rx += (mx - rx) * 0.12;
+        ry += (my - ry) * 0.12;
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+        requestAnimationFrame(animRing);
+      })();
+      document.querySelectorAll('a, button').forEach(function (el) {
+        el.addEventListener('mouseenter', function () {
+          ring.style.width = '56px'; ring.style.height = '56px';
+          ring.style.borderColor = 'rgba(220,38,38,0.8)';
+        });
+        el.addEventListener('mouseleave', function () {
+          ring.style.width = '36px'; ring.style.height = '36px';
+          ring.style.borderColor = 'rgba(220,38,38,0.5)';
+        });
+      });
+    })();
 
-  </div>
-</main>
+    // Progress bar
+    window.addEventListener('scroll', function () {
+      var scrollTop    = document.documentElement.scrollTop || document.body.scrollTop;
+      var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      document.getElementById('progress-bar').style.width = pct + '%';
+    }, { passive: true });
+
+    // Navbar scroll
+    window.addEventListener('scroll', function () {
+      var nav = document.getElementById('navbar');
+      if (window.scrollY > 20) nav.classList.add('nav-scrolled');
+      else nav.classList.remove('nav-scrolled');
+    }, { passive: true });
+
+    // Mobile menu
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+      var menu      = document.getElementById('mobile-menu');
+      var openIcon  = document.getElementById('menu-icon-open');
+      var closeIcon = document.getElementById('menu-icon-close');
+      var isOpen    = menu.style.maxHeight === '320px';
+      menu.style.maxHeight    = isOpen ? '0' : '320px';
+      menu.style.borderBottom = isOpen ? '' : '1px solid rgba(127,29,29,0.3)';
+      openIcon.style.display  = isOpen ? '' : 'none';
+      closeIcon.style.display = isOpen ? 'none' : '';
+    });
+    document.querySelectorAll('.mobile-link').forEach(function (link) {
+      link.addEventListener('click', function () {
+        document.getElementById('mobile-menu').style.maxHeight = '0';
+        document.getElementById('menu-icon-open').style.display  = '';
+        document.getElementById('menu-icon-close').style.display = 'none';
+      });
+    });
+  </script>
 
 </body>
 </html>
