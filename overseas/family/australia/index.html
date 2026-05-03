@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Australia – Tasmania &amp; Sydney | Trip Log | Secret Reviewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Barlow Condensed', 'sans-serif'],
+            mono: ['"Share Tech Mono"', 'monospace'],
+            prose: ['"IBM Plex Sans"', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root { --red: #dc2626; --bg: #060606; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg); color: #ececec;
+      font-family: 'Barlow Condensed', sans-serif;
+      margin: 0; overflow-x: hidden; cursor: none; line-height: 1.75;
+    }
+    .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+
+    #cursor {
+      position: fixed; width: 12px; height: 12px; background: var(--red);
+      border-radius: 50%; pointer-events: none; z-index: 99999;
+      transform: translate(-50%,-50%); transition: width .2s, height .2s; mix-blend-mode: screen;
+    }
+    #cursor-ring {
+      position: fixed; width: 36px; height: 36px;
+      border: 1px solid rgba(220,38,38,.5); border-radius: 50%;
+      pointer-events: none; z-index: 99998; transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, border-color .2s;
+    }
+
+    @keyframes pulse-red   { 0%,100%{box-shadow:0 0 6px rgba(220,38,38,.3)}50%{box-shadow:0 0 28px rgba(220,38,38,.8),0 0 60px rgba(220,38,38,.25)}}
+    @keyframes fadeSlideUp { from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse-dot   { 0%,100%{opacity:1}50%{opacity:.3}}
+    @keyframes scan        { from{top:-100%}to{top:100%}}
+    @keyframes folderOpen  { from{opacity:0;transform:translateY(16px);filter:blur(4px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+    @keyframes borderFlash { 0%,100%{border-color:rgba(220,38,38,.15)}50%{border-color:rgba(220,38,38,.5)}}
+    @keyframes glitch-1    { 0%,100%{clip-path:inset(0 0 98% 0);transform:translate(-2px,0)}20%{clip-path:inset(20% 0 50% 0);transform:translate(2px,0)}40%{clip-path:inset(60% 0 20% 0);transform:translate(-2px,0)}60%{clip-path:inset(80% 0 5% 0);transform:translate(2px,0)}80%{clip-path:inset(40% 0 60% 0);transform:translate(-2px,0)}}
+    @keyframes glitch-2    { 0%,100%{clip-path:inset(50% 0 30% 0);transform:translate(2px,0);color:#00ffff}25%{clip-path:inset(10% 0 80% 0);transform:translate(-2px,0)}50%{clip-path:inset(70% 0 10% 0);transform:translate(2px,0);color:var(--red)}75%{clip-path:inset(30% 0 50% 0);transform:translate(-2px,0)}}
+
+    .glitch-wrap{position:relative;display:inline-block}
+    .glitch-wrap::before,.glitch-wrap::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%}
+    .glitch-wrap::before{color:#00ffff;animation:glitch-1 6s infinite step-start;opacity:.6}
+    .glitch-wrap::after{color:var(--red);animation:glitch-2 6s infinite step-start;opacity:.6}
+
+    .animate-pulse-red{animation:pulse-red 2.5s infinite}
+    .animate-pulse-dot{animation:pulse-dot 2s infinite}
+    .animate-fade-slide-up{animation:fadeSlideUp .7s cubic-bezier(.22,1,.36,1) both}
+
+    body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px);pointer-events:none;z-index:9990}
+    body::after{content:"";position:fixed;top:-100%;left:0;width:100%;height:100%;background:linear-gradient(rgba(220,38,38,0) 0%,rgba(220,38,38,.04) 50%,rgba(220,38,38,0) 100%);animation:scan 8s linear infinite;pointer-events:none;z-index:9991}
+
+    #progress-bar{height:3px;background:linear-gradient(90deg,#7f1d1d,#dc2626,#ff6666);box-shadow:0 0 12px rgba(220,38,38,.9),0 0 24px rgba(220,38,38,.4);width:0%;transition:width .08s ease-out}
+
+    #navbar{transition:all .4s ease}
+    .nav-scrolled{background:rgba(4,4,4,.97)!important;border-bottom-color:rgba(127,29,29,.5)!important;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+
+    .phase-split{margin:52px 0 8px;display:flex;align-items:center;gap:16px}
+    .phase-split-label{font-family:'Share Tech Mono',monospace;font-size:.75rem;letter-spacing:4px;text-transform:uppercase;color:rgba(220,38,38,.6);white-space:nowrap}
+    .phase-split-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(220,38,38,.25),transparent)}
+
+    .phase-banner{background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.2);border-left:3px solid var(--red);padding:12px 18px;margin:40px 0 20px;font-family:'Share Tech Mono',monospace;font-size:.85rem;letter-spacing:3px;text-transform:uppercase;color:#fff;display:flex;align-items:center;gap:14px}
+    .phase-banner .day-num{color:var(--red);font-size:1.1rem;font-weight:bold;min-width:48px}
+    .phase-banner .day-sub{color:#555;font-size:.75rem;display:block;letter-spacing:2px;margin-top:2px}
+
+    .itinerary-grid{display:grid;grid-template-columns:110px 1fr;gap:0;background:rgba(10,10,10,.7);border:1px solid rgba(220,38,38,.15);margin:28px 0;font-family:'Share Tech Mono',monospace;overflow:hidden;animation:borderFlash 3s infinite}
+    .itinerary-grid>div{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.04);font-size:.95rem}
+    .itinerary-grid>div:last-child,.itinerary-grid>div:nth-last-child(2){border-bottom:none}
+    .itinerary-grid>div:nth-child(odd){color:var(--red);font-weight:bold;font-size:.9rem;border-right:1px solid rgba(220,38,38,.1);background:rgba(220,38,38,.03)}
+    .itinerary-grid>div:nth-child(even){color:#999}
+
+    /* drive stat cards */
+    .drive-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.15);margin:28px 0;overflow:hidden}
+    .drive-stat{background:rgba(10,10,10,.8);padding:16px 14px;text-align:center}
+    .drive-stat .val{font-family:'Share Tech Mono',monospace;font-size:1.4rem;color:var(--red);font-weight:bold;display:block}
+    .drive-stat .lbl{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:#555;letter-spacing:2px;text-transform:uppercase;margin-top:4px;display:block}
+
+    .story-content{font-size:1.15rem;letter-spacing:.01em;margin-bottom:1.5rem;color:#d0d0d0;font-family:'Barlow Condensed',sans-serif;font-weight:400;line-height:1.85}
+    .story-content p{margin:0 0 1.6em 0}
+    .story-content h2{color:var(--red);margin-top:52px;text-transform:uppercase;font-size:.95rem;font-family:'Share Tech Mono',monospace;letter-spacing:3px;border-bottom:1px solid rgba(255,255,255,.05);padding-bottom:10px;display:flex;align-items:center;gap:10px}
+    .story-content h2::before{content:"—";opacity:.4}
+    .story-content h3{color:#fff;font-size:1.4rem;font-weight:700;margin:36px 0 12px;text-transform:uppercase;letter-spacing:.05em}
+    .story-content ul{list-style:none;padding:0;margin:0 0 1.6em 0}
+    .story-content ul li{position:relative;padding-left:22px;margin-bottom:14px;color:#bbb;font-size:1.1rem;line-height:1.8}
+    .story-content ul li::before{content:"▶";position:absolute;left:0;color:var(--red);font-size:.6rem;top:6px;opacity:.7}
+    .story-content strong{color:#fff;font-weight:700}
+
+    .lead{font-size:1.15rem;color:#999;margin-bottom:40px;border-left:2px solid var(--red);padding-left:20px;font-style:italic;font-family:'IBM Plex Sans',sans-serif;font-weight:400;line-height:1.8}
+
+    .tag{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:.85rem;color:var(--red);text-transform:uppercase;border:1px solid rgba(220,38,38,.4);padding:5px 14px;letter-spacing:2px;background:rgba(220,38,38,.06)}
+
+    .entry-title{font-size:clamp(2.5rem,6vw,4rem);font-weight:900;margin:22px 0 10px;color:#fff;line-height:1.0;text-transform:uppercase;letter-spacing:-.02em}
+
+    .featured-image{width:100%;height:420px;background:linear-gradient(135deg,#0d0d0d 0%,#111 50%,#0a0a0a 100%);border:1px solid rgba(220,38,38,.2);box-shadow:0 20px 60px rgba(0,0,0,.6);position:relative;overflow:hidden;margin:32px 0;display:flex;align-items:center;justify-content:center}
+    .featured-image::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,.015) 3px,rgba(220,38,38,.015) 4px);pointer-events:none}
+    .featured-image::before{content:'';position:absolute;top:0;left:0;width:40px;height:40px;border-top:1px solid rgba(220,38,38,.4);border-left:1px solid rgba(220,38,38,.4);pointer-events:none;z-index:2}
+    .featured-image-label{position:absolute;bottom:12px;left:12px;font-family:'Share Tech Mono',monospace;font-size:.75rem;color:rgba(220,38,38,.5);letter-spacing:2px;text-transform:uppercase;z-index:3}
+    .featured-image-placeholder{font-size:5rem;opacity:.05;position:relative;z-index:1}
+
+    .callout-quote{border-left:2px solid var(--red);padding:16px 20px;margin:28px 0;background:rgba(220,38,38,.04);font-family:'IBM Plex Sans',sans-serif;font-size:1.05rem;font-style:italic;color:#aaa;line-height:1.8}
+
+    .tag-pill{display:inline-flex;align-items:center;gap:6px;font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;border:1px solid rgba(220,38,38,.25);padding:4px 12px;background:rgba(220,38,38,.04);color:#888;margin:3px 3px 3px 0}
+    .tag-pill .dot{width:5px;height:5px;border-radius:50%;background:var(--red);opacity:.6;flex-shrink:0}
+
+    .log-entry{animation:folderOpen .6s cubic-bezier(.22,1,.36,1) both}
+    .section-rule{border:none;height:1px;background:linear-gradient(90deg,transparent,rgba(220,38,38,.3) 30%,rgba(220,38,38,.3) 70%,transparent);margin:60px 0}
+
+    .breadcrumb{display:inline-flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:.85rem;color:#555;text-transform:uppercase;letter-spacing:2px;text-decoration:none;margin-bottom:32px;transition:color .2s}
+    .breadcrumb:hover{color:var(--red)}
+    .breadcrumb:hover svg{transform:translateX(-3px)}
+    .breadcrumb svg{transition:transform .2s}
+
+    .nav-btn{background:transparent;color:var(--red);border:1px solid rgba(220,38,38,.5);padding:14px 28px;font-family:'Share Tech Mono',monospace;font-weight:900;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:all .3s;font-size:.9rem;position:relative;overflow:hidden}
+    .nav-btn::before{content:'';position:absolute;inset:0;background:var(--red);transform:translateX(-100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+    .nav-btn:hover::before{transform:translateX(0)}
+    .nav-btn:hover{color:#fff;box-shadow:0 0 20px rgba(220,38,38,.35)}
+    .nav-btn span{position:relative;z-index:1}
+    .nav-btn:disabled{opacity:.3;cursor:not-allowed}
+    .nav-btn:disabled::before{display:none}
+
+    .page-counter{font-family:'Share Tech Mono',monospace;font-size:.85rem;color:#444;letter-spacing:3px;text-transform:uppercase;align-self:center}
+    .page-counter span{color:var(--red)}
+
+    .decrypting{color:#fff!important;background:var(--red)!important;letter-spacing:4px!important;text-shadow:2px 0 #00fff9,-2px 0 #ff00c1}
+
+    [id^="full-intel-"]{font-family:'IBM Plex Sans',sans-serif!important;font-size:1.05rem!important;line-height:1.85!important;color:#c8c8c8!important}
+    [id^="full-intel-"] p{margin-bottom:1.5em;font-family:'IBM Plex Sans',sans-serif;font-size:1.05rem;line-height:1.85;color:#c8c8c8}
+    [id^="full-intel-"] strong{font-family:'IBM Plex Sans',sans-serif;font-weight:600}
+    [id^="full-intel-"] h4{font-family:'Share Tech Mono',monospace;font-size:.95rem;letter-spacing:2px}
+    [id^="full-intel-"] h5{font-family:'Share Tech Mono',monospace;font-size:.9rem;letter-spacing:2px}
+    [id^="full-intel-"] li{font-family:'IBM Plex Sans',sans-serif;font-size:1rem;line-height:1.8;margin-bottom:6px}
+    [id^="full-intel-"] .space-y-4>p{padding:14px 18px;border-left:2px solid rgba(220,38,38,.18);background:rgba(255,255,255,.015);border-radius:0 2px 2px 0;line-height:1.9}
+
+    .intel-timestamp{display:inline-block;color:var(--red);font-family:'Share Tech Mono',monospace;font-size:.9rem;letter-spacing:1px;margin-top:.6em;opacity:.85}
+
+    .noise-overlay{position:fixed;inset:0;opacity:.02;pointer-events:none;z-index:9989;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:128px}
+  </style>
+</head>
+<body>
+
+  <div class="noise-overlay"></div>
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <div class="fixed top-0 left-0 w-full z-[9999] bg-transparent" style="height:3px">
+    <div id="progress-bar"></div>
+  </div>
+
+  <!-- ════ NAVBAR ════ -->
+  <nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+    <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+      <a href="/" class="flex items-center gap-2 group">
+        <div class="w-7 h-7 border border-red-600 flex items-center justify-center group-hover:bg-red-600/20 transition-all duration-300">
+          <span class="text-red-500 text-xs font-mono-tech font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:.25em">Secret Reviewer</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors">Home</a>
+        <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors">Gallery</a>
+        <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors">Contact</a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all animate-pulse-red">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>YouTube
+        </a>
+      </div>
+      <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+        <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="md:hidden" style="max-height:0;overflow:hidden;transition:max-height .35s ease;background:rgba(4,4,4,.99)">
+      <div class="flex flex-col px-5 py-4 gap-4">
+        <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+        <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+        <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>YouTube
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ════ MAIN ════ -->
+  <main class="pt-28 pb-24 px-5">
+    <div class="max-w-3xl mx-auto">
+
+      <a href="/overseas/" class="breadcrumb">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Back to Overseas
+      </a>
+
+      <div class="mb-12 animate-fade-slide-up">
+        <p class="font-mono-tech text-red-600/60 text-sm tracking-[0.4em] uppercase mb-4">// Family Log // Field Documented</p>
+        <h1 class="text-5xl sm:text-7xl font-black uppercase leading-none tracking-tight text-white mb-4">
+          <span class="glitch-wrap" data-text="FAMILY LOGS">FAMILY LOGS</span>
+        </h1>
+        <p class="font-mono-tech text-gray-600 text-sm tracking-widest mt-4">
+          <span class="text-red-600 animate-pulse-dot inline-block w-2 h-2 rounded-full mr-2 align-middle"></span>
+          1 TRIP DOCUMENTED // TASMANIA (RENTAL CAR) + SYDNEY (ON FOOT)
+        </p>
+      </div>
+
+      <hr class="section-rule" />
+
+      <div id="log-container">
+
+        <div class="log-entry">
+
+          <span class="tag">Family Log Entry #001</span>
+          <h1 class="entry-title">Tasmania: Edge of the World</h1>
+          <p class="lead">Seven days. Six in a rental car grinding through Tasmania's empty highways, waterfalls, sea arches, lavender fields, and one road that literally ends at the ocean. One final day in Sydney on foot — Tower Eye, Circular Quay, Opera House, Harbour Bridge, Chinatown — all covered in a single evening before the flight home. May 2015.</p>
+
+          <div class="featured-image">
+            <!-- <img src="/images/tasmania-cover.JPG" alt="Tasmania 2015" style="width:100%;height:100%;object-fit:cover;filter:brightness(.75) saturate(.8)"/> -->
+            <div class="featured-image-placeholder">🇦🇺</div>
+            <div class="featured-image-label">// SR-FAMILY-004 // Tasmania + Sydney, Australia // May 2015</div>
+            <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,.4);border-right:1px solid rgba(220,38,38,.4);pointer-events:none;z-index:2"></div>
+          </div>
+
+          <div class="story-content">
+
+            <h2>Trip Overview</h2>
+
+            <div class="mb-5">
+              <span class="tag-pill"><span class="dot"></span>7 Days Total</span>
+              <span class="tag-pill"><span class="dot"></span>Tasmania: Rental Car</span>
+              <span class="tag-pill"><span class="dot"></span>Sydney: On Foot + Public Transport</span>
+              <span class="tag-pill"><span class="dot"></span>11–17 May 2015</span>
+              <span class="tag-pill"><span class="dot"></span>~1,575km driven in Tasmania</span>
+            </div>
+
+            <div class="itinerary-grid">
+              <div>Flight In</div><div>Singapore → Hobart · 11 May · Arrive 1:55PM</div>
+              <div>Tas Car</div><div>Collected 2:55PM Hobart Airport · Returned 11:15AM 16 May</div>
+              <div>Base 1</div><div>Days 1–2: Hobart (Wrest Point Hotel)</div>
+              <div>Base 2</div><div>Days 3–4: Launceston (Elphin Villa Serviced Apartments)</div>
+              <div>Base 3</div><div>Day 5: Back to Hobart area (Bay View Villa)</div>
+              <div>Sydney</div><div>16 May: No car · Train, ferry, bus only · Quality Hotel CKS</div>
+              <div>Flight Out</div><div>17 May 3:55PM Sydney → Singapore · Arrive 10:15PM</div>
+            </div>
+
+            <!-- Tasmania total drive stats -->
+            <div class="drive-stats">
+              <div class="drive-stat"><span class="val">175km</span><span class="lbl">Day 1</span></div>
+              <div class="drive-stat"><span class="val">252km</span><span class="lbl">Day 2</span></div>
+              <div class="drive-stat"><span class="val">357km</span><span class="lbl">Day 3</span></div>
+              <div class="drive-stat"><span class="val">621km</span><span class="lbl">Day 4</span></div>
+              <div class="drive-stat"><span class="val">324km</span><span class="lbl">Day 5</span></div>
+              <div class="drive-stat"><span class="val">21km</span><span class="lbl">Day 6 (to airport)</span></div>
+            </div>
+
+            <p class="font-mono-tech text-xs text-gray-600 tracking-widest uppercase mt-2">// Total Tasmania driving: ~1,575km across 5.5 days. Day 4 is the outlier at 621km — plan that one carefully. Sunrise in Tas is ~7:10AM, sunset ~5:00PM throughout. Very short daylight windows.</p>
+
+            <!-- ═══ PHASE 1: TASMANIA ═══ -->
+            <div class="phase-split">
+              <span class="phase-split-label">// Phase 01 — Tasmania</span>
+              <div class="phase-split-line"></div>
+            </div>
+
+            <div class="phase-banner">
+              <div><span class="day-num">DAY 1</span><span class="day-sub">11 May (Mon) · 175km</span></div>
+              <span style="color:#aaa">Hobart · Mount Wellington · Sea Lights at Night</span>
+            </div>
+            <p>Arrive Hobart at <strong>1:55PM</strong>. Car collected and lunch sorted by 2:55PM — a tight window, but Tasmania is small enough that you don't waste time sitting in traffic getting out of the airport. Check in at <strong>Wrest Point Hotel</strong> by 3:30PM, bags down, and back in the car by 4:30PM.</p>
+            <p><strong>Mount Wellington</strong> is the first real stop — the mountain that sits directly behind Hobart. Reach the summit by 5:10PM. The drive up is as good as the view from the top: a sealed road that winds through eucalyptus forest and then breaks into open dolerite rock near the peak. At 1,270 metres the wind is a different proposition from the city below. On a clear May evening, Hobart spreads out across the Derwent River valley — it's the kind of view that sets the tone for the whole trip.</p>
+            <p>Leave Wellington at 6:30PM and head east toward <strong>Brown River / Howrah / Lower Sandy Bay</strong> — the objective is the lights of the sea at night. This is an after-dark photography and atmosphere stop: the Derwent estuary at night, city lights reflected across the water, virtually no one else around. Arrive 7PM, leave by 8PM, back at Wrest Point by 8:20PM.</p>
+            <p class="font-mono-tech text-xs text-gray-600 tracking-widest uppercase">// Driver note: Day 1 is light on distance (175km) but you're still running on arrival energy. Mount Wellington before dark is the priority — don't let check-in drag.</p>
+
+            <div class="phase-banner">
+              <div><span class="day-num">DAY 2</span><span class="day-sub">12 May (Tue) · 252km</span></div>
+              <span style="color:#aaa">Salamanca · Richmond Bridge · Port Arthur · Tasman Peninsula · Arch · Tessellated Pavement</span>
+            </div>
+            <p>Full day, earliest start. <strong>Salamanca Market</strong> at 10AM — a 10-minute drive from Wrest Point. The market runs 8AM–3PM on Saturdays only, so if you're here on a Saturday this is mandatory. Fresh produce, local art, Tasmanian produce stalls, and the historic sandstone warehouses of Salamanca Place as the backdrop. Leave by 11AM.</p>
+
+            <div class="callout-quote">
+              Important: Salamanca Market is Saturday only, 8AM–3PM. If Day 2 falls on a different day, skip it and add time to Port Arthur instead.
+            </div>
+
+            <p><strong>Richmond Bridge</strong> at 11:30AM — Australia's oldest intact bridge, built by convicts in 1823. It's about a 30-minute drive northeast of Hobart. Ten minutes here is enough to walk the bridge and understand the scale of what was built with convict labour, but the surrounding village is worth a brief explore too.</p>
+            <p>Leave by noon for <strong>Port Arthur</strong> — Tasmania's most significant convict heritage site. Arrive 1:30PM. The UNESCO-listed ruins of the former penal colony occupy a peninsula facing a protected bay. Allow at least an hour — the grounds are large, the history is dense, and the guided components are worth it. The story of the place is as dark as the architecture.</p>
+            <p>Afternoon circuit of the Tasman Peninsula: leave Port Arthur at 2:30PM, reach <strong>Tasman Peninsula</strong> viewpoints at 3PM, then to <strong>Tasman Arch</strong> at 4PM — a natural stone arch carved by the sea, accessible via a short boardwalk trail. Then <strong>Tessellated Pavement</strong> at 5PM — a naturally fractured rock platform at the waterline that looks machine-cut. The geometry of it is genuinely hard to believe is natural. Head back to Hobart by 5:30PM, home by 7PM.</p>
+            <p class="font-mono-tech text-xs text-gray-600 tracking-widest uppercase">// Food note: Buy ready-made food before leaving Hobart. Some stretches of the Tasman Peninsula have no food options. Don't assume you'll find a café between Port Arthur and the arch.</p>
+
+            <div class="phase-banner">
+              <div><span class="day-num">DAY 3</span><span class="day-sub">13 May (Wed) · 357km</span></div>
+              <span style="color:#aaa">Russell Falls · Drive North · Launceston · Bridestowe Lavender Estate</span>
+            </div>
+            <p>Check out of Hobart. The new base is <strong>Elphin Villa Serviced Apartments</strong> in Launceston — but check-in is only available after 2PM, so the morning is built around the drive north with a stop on the way.</p>
+            <p><strong>Russell Falls</strong> at 11:30AM — inside Mount Field National Park, about 75km northwest of Hobart. A short 20-minute walk from the carpark brings you to one of Tasmania's most photographed waterfalls: tiered, mossy, surrounded by tree ferns and myrtle forest. The kind of place that looks like it was designed to be impressive, except it's entirely natural and entirely free. Don't rush it.</p>
+            <p>Proceed to Launceston, checking in at Elphin Villa by 3PM. Then the afternoon race to <strong>Bridestowe Lavender Estate</strong> — Australia's largest lavender farm, about 30 minutes east of Launceston. It closes at 5PM. Arrive by 4PM to get a full hour. In May the lavender isn't in bloom (peak is December–January) but the estate is still worth visiting for the shop, the dried lavender, and the landscape. If you're planning around peak bloom, adjust timing accordingly.</p>
+            <p class="font-mono-tech text-xs text-gray-600 tracking-widest uppercase">// Hotel note: Elphin Villa check-in after 2PM only. Don't arrive early expecting to drop bags.</p>
+
+            <div class="phase-banner">
+              <div><span class="day-num">DAY 4</span><span class="day-sub">14 May (Thu) · 621km</span></div>
+              <span style="color:#aaa">Cataract Gorge · Edge of the World · Arthur River</span>
+            </div>
+            <p>The big one. <strong>621km</strong> in a single day — the longest drive of the whole trip by a significant margin. The spreadsheet explicitly notes to observe the previous day's actual timing and reconsider the Edge of the World based on real pace. That's the right call: this day lives or dies by an early departure.</p>
+            <p>Leave at <strong>9AM</strong>. First stop: <strong>Cataract Gorge Reserve</strong>, 30 minutes from Launceston. The gorge cuts right through the edge of the city — the South Esk River carved it over millennia, and the result is a dramatic rocky chasm with a swimming pool, chairlift, and walking tracks at its heart. Leave by 11:30AM.</p>
+            <p><strong>Edge of the World</strong> at Arthur River — this is the headline. Drive northwest across Tasmania's remote interior (roughly 3 hours of driving). Arthur River is a small township on the northwest coast where the Southern Ocean stretches uninterrupted all the way to South America. There's a boulder on the bank with a plaque that says exactly that: the next landmass west is Argentina. Stand there. Appreciate what "edge of the world" actually feels like when there's nothing between you and it. A wish can reportedly be made here. Arrive approximately 2:30PM.</p>
+
+            <div class="callout-quote">
+              West of Arthur River: open Southern Ocean, nothing until South America. Some places earn the name. This one does.
+            </div>
+
+            <p>Leave at 3:30PM and begin the long drive back east. Return to Launceston hotel by 7:30PM. Four hours of driving back after a full day's exploring — factor that in when you're standing at the water's edge deciding whether to stay another ten minutes.</p>
+            <p class="font-mono-tech text-xs text-gray-600 tracking-widest uppercase">// This day is the one most likely to run over time. The drive back from Arthur River is remote with limited fuel stops. Fill the tank before heading west.</p>
+
+            <div class="phase-banner">
+              <div><span class="day-num">DAY 5</span><span class="day-sub">15 May (Fri) · 324km</span></div>
+              <span style="color:#aaa">Drive South · The Neck Lookout · Bruny Island Ferry</span>
+            </div>
+            <p>Check out of Launceston at 10AM. Drive south back to Hobart — a different base for the final night. Check in at <strong>Bay View Villa</strong> near Hobart by 1PM, then the afternoon activity is the ferry crossing.</p>
+            <p><strong>The Neck</strong> — a narrow isthmus connecting North and South Bruny Island, accessed via ferry from Kettering (about 30 minutes south of Hobart). The Neck Lookout is a short boardwalk climb that puts you directly above the isthmus with ocean on both sides. In May you have a reasonable chance of seeing little penguins returning to their burrows at dusk on the beach below.</p>
+            <p>Depart hotel at 2PM, reach the Kettering ferry by 2:30PM. Cross to Bruny Island, reach The Neck by 3:30PM. Leave by 4:30PM, back to the ferry by 5PM, reach the Hobart-side mainland by 5:30PM, hotel by 6PM. The evening is open — if the sea-light photography from Day 1 was unsatisfying, <strong>Brown River / Howrah / Lower Sandy Bay</strong> is the backup run. Same route, same objective.</p>
+
+            <div class="phase-banner">
+              <div><span class="day-num">DAY 6</span><span class="day-sub">16 May (Sat) · 21km to airport</span></div>
+              <span style="color:#aaa">Check Out · Return Car · Fly to Sydney · Full Sydney Afternoon</span>
+            </div>
+            <p>Final Tasmania morning. Check out, eat, drive the 21km to Hobart Airport. <strong>Car returned at 11:15AM</strong> — five days and roughly 1,575km covered. Check in and prepare to fly by 11:45AM.</p>
+            <p><strong>Qantas to Sydney</strong>: departs 12:45PM, arrives Sydney Domestic at 2:35PM. From the domestic terminal, the Service Desk is opposite Baggage Carousel 3 (or Carousel 5). Transit to the hotel by train: <strong>Wolli Creek Station</strong>, T8 Green line towards Airport/City, drop off at St James Station. Reach <strong>Quality Hotel CKS Sydney</strong> by 3:30PM.</p>
+
+            <!-- ═══ PHASE 2: SYDNEY ═══ -->
+            <div class="phase-split">
+              <span class="phase-split-label">// Phase 02 — Sydney (One Day, No Car)</span>
+              <div class="phase-split-line"></div>
+            </div>
+
+            <p>One afternoon and evening. No car — everything on public transport and on foot. The route is tight, the timing is deliberate, and it covers the city's five most iconic spots in a single run. The logic is simple: you've been driving remote Tasmanian roads for five days. One evening of pure city-walking is the right way to close the trip.</p>
+
+            <div class="phase-banner">
+              <div><span class="day-num">DAY 7</span><span class="day-sub">16 May (Sat) — Sydney Evening</span></div>
+              <span style="color:#aaa">Tower Eye · Circular Quay · Opera House · Harbour Bridge · Chinatown</span>
+            </div>
+
+            <p>Leave the hotel at <strong>4PM</strong>. Walk 3 minutes to <strong>Sydney Tower Eye</strong> — arrive 4:35PM. The observation deck at 268 metres sits at the top of the city's tallest structure. Clear day and you can see all the way to the Blue Mountains. Worth the entry; the revolving restaurant is in the same building if dinner is the plan.</p>
+            <p>Walk 3 minutes to <strong>Market Street</strong>, then train from <strong>St James Station to Circular Quay</strong> — one stop, five minutes. Arrive Circular Quay at 5:30PM. Walk 10 minutes to <strong>Sydney Opera House</strong> — reach it by 6PM. You don't need to go inside. Walking up to the forecourt at dusk with the harbour behind it is the experience. The building from the outside in the evening light does everything a building should do.</p>
+            <p>From Circular Quay: <strong>Ferry from Wharf 5 to Milsons Point</strong>. Cross the harbour directly under the bridge. Step off and walk to the base of <strong>Sydney Harbour Bridge</strong> — reach it by 6:30PM. The city skyline from the north shore at night is the best view of the trip's final day. Take the time.</p>
+            <p>Train back into the city: <strong>Milsons Point Station to Town Hall Station</strong> — two stops. Arrive <strong>Chinatown</strong> at 7PM. Dinner. The area runs from Haymarket down through Dixon Street — duck noodles, BBQ pork, and the kind of late-night food energy that's a sharp contrast to five days of remote Tasmanian silence. Back to Quality Hotel CKS via <strong>Bus 422</strong> (26 stops from Chinatown Centre to West Botany Street at Flora Street) by 8:30PM.</p>
+            <p>Next day, 3:55PM: Emirates/Qantas departs Sydney. Singapore arrival 10:15PM. Trip closed.</p>
+
+            <h2>Tasmania Driver Notes</h2>
+            <ul>
+              <li><strong>Day 4 is the planning anchor.</strong> 621km in one day means an early departure, a full tank, and a realistic exit time from Arthur River. Don't still be at the Edge of the World at 4PM — you won't make it back before dark.</li>
+              <li><strong>Sunset at 5PM throughout.</strong> May is late autumn in Tasmania. You lose light fast. Every afternoon activity has a hard cutoff. Build your schedule around that, not around Singapore daylight assumptions.</li>
+              <li><strong>No food between stops in remote areas.</strong> Specifically on Day 2 (Tasman Peninsula) and Day 4 (Arthur River run) — buy food in Hobart or Launceston before heading out. Do not assume a café exists where you're going.</li>
+              <li><strong>Fuel before heading west on Day 4.</strong> The Arthur River route crosses through some of the least-populated parts of Tasmania. Don't gamble on finding a petrol station mid-way.</li>
+              <li><strong>Salamanca Market is Saturday only.</strong> If Day 2 doesn't fall on a Saturday, the market isn't there. Adjust accordingly.</li>
+              <li><strong>Bridestowe lavender peak is December–January.</strong> A May visit gets the estate and the shop but not the purple fields. If you specifically want the lavender in bloom, this is a summer trip.</li>
+            </ul>
+
+            <!-- FULL INTEL PANEL -->
+            <div class="mt-8 pt-8 border-t border-red-900/30">
+              <div id="full-intel-001" class="hidden space-y-6 text-gray-300">
+                <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
+                  <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Field Log: Australia — Tasmania + Sydney</h4>
+                  <p class="text-sm text-gray-500 italic">11–17 May 2015 // Rental Car (Tas) + Public Transport (Sydney) // Sunrise ~07:10 / Sunset ~17:00 throughout</p>
+                </div>
+
+                <div class="space-y-4">
+                  <p><strong class="text-red-500">[DAY 1 — 11 MAY — ARRIVAL + MOUNT WELLINGTON]</strong>
+1355: Land Hobart Airport.
+1455: Car collected. Lunch. 175km total for the day.
+1530: Check in Wrest Point Hotel. -42.902460, 147.337642.
+1630: Depart for Mount Wellington.
+1710: Summit reached. City views over the Derwent Valley from 1,270m. Wind. Dolerite columns. Hobart from above.
+1830: Leave Wellington. Head east toward Brown River / Howrah / Lower Sandy Bay.
+1900: Arrive. Sea lights. Night photography. Derwent estuary with city lights reflected.
+2000: Depart. Return to Wrest Point.
+2020: Hotel. Day 1 done.</p>
+
+                  <p><strong class="text-red-500">[DAY 2 — 12 MAY — SALAMANCA + PORT ARTHUR CIRCUIT]</strong>
+1000: Salamanca Market. 10min from hotel. Runs 8AM-3PM on Saturdays. Sandstone warehouse precinct. Fresh produce, local craft, Tassie food.
+1100: Depart for Richmond.
+1130: Richmond Bridge. Oldest intact bridge in Australia (1823). Convict-built. Short stop.
+1200: Depart for Port Arthur.
+1330: Port Arthur Historic Site. UNESCO-listed convict settlement ruins. Penitentiary, church ruins, separate prison, harbour. Minimum 1 hour.
+1430: Depart for Tasman Peninsula circuit.
+1500: Tasman Peninsula viewpoints.
+1600: Tasman Arch. Natural sea arch. Short boardwalk from carpark.
+1700: Tessellated Pavement. Rock platform fractured into near-perfect geometric tiles by geological stress. Looks human-made. Is not.
+1730: Begin return to Hobart.
+1900: Wrest Point Hotel. 252km day complete.</p>
+
+                  <p><strong class="text-red-500">[DAY 3 — 13 MAY — NORTH TO LAUNCESTON]</strong>
+1000: Check out Wrest Point. Head northwest.
+1130: Russell Falls. Mount Field National Park. 20min walk from carpark. Tiered falls. Tree ferns. Very green.
+1200: Proceed north to Launceston.
+1500: Elphin Villa Serviced Apartments. -41.431246, 147.148213. Check in (after 2PM).
+1530: Immediate departure for Bridestowe Lavender Estate. Closes 5PM.
+1600: Bridestowe reached. Lavender estate. Shop, grounds, dried product. Peak bloom Dec-Jan — May visit is off-season but the estate still delivers.
+1700: Close. Proceed back to hotel or find food nearby.
+1740: Hotel surroundings. Dinner. 357km day complete.</p>
+
+                  <p><strong class="text-red-500">[DAY 4 — 14 MAY — EDGE OF THE WORLD · 621KM]</strong>
+0900: Depart Launceston. Critical: early start mandatory. This is the big day.
+0930: Cataract Gorge Reserve. Gorge carved by the South Esk River through the edge of the city. Chairlift, swimming basin, walking tracks. Dramatic rock walls.
+1130: Depart west. Long drive across Tasmania's remote interior.
+1430: Edge of the World, Arthur River. Northwest coast. Southern Ocean. The next landmass west is Argentina. Boulder with plaque confirms this. No infrastructure beyond this point.
+1530: Depart east. Return journey begins.
+1930: Back at Launceston hotel. Four hours of driving back. 621km total. Day complete.</p>
+
+                  <p><strong class="text-red-500">[DAY 5 — 15 MAY — SOUTH + BRUNY ISLAND]</strong>
+1000: Check out Launceston. Drive south.
+1300: Arrive Bay View Villa, Hobart area. -42.885908, 147.308793.
+1400: Depart for Kettering ferry.
+1430: Reach Kettering ferry terminal for Bruny Island.
+1500: Cross to Bruny Island.
+1530: Reach The Neck isthmus.
+1545: The Neck Lookout. Boardwalk climb. Ocean both sides. Penguin burrows visible on beach below at dusk (in season).
+1630: Depart. Return to ferry.
+1700: Ferry crossing back.
+1730: Mainland. Drive north to hotel.
+1800: Bay View Villa.
+2000: Optional run — Brown River / Howrah / Lower Sandy Bay if Day 1 sea-lights attempt was unsatisfactory. 324km day complete.</p>
+
+                  <p><strong class="text-red-500">[DAY 6 — 16 MAY — CAR RETURN + SYDNEY]</strong>
+1000: Check out Bay View Villa. Final Tasmanian meal.
+1115: Car returned at Hobart Airport. Total Tasmania mileage: ~1,575km. Car handed back clean, full tank.
+1145: Check in Qantas domestic.
+1245: Depart Hobart.
+1435: Land Sydney Domestic Airport. Service Desk opp. Carousel 3.
+1530: Wolli Creek Station → T8 Green line → St James Station → Quality Hotel CKS Sydney.
+
+SYDNEY EVENING:
+1600: Depart hotel.
+1635: Sydney Tower Eye. 268m observation deck. City views.
+1638: Walk 3min to Market Street.
+1645: St James Station → Circular Quay (1 stop).
+1730: Circular Quay.
+1740: Walk 10min.
+1800: Sydney Opera House forecourt. Harbour at dusk.
+Ferry from Circular Quay Wharf 5 to Milsons Point.
+1830: Harbour Bridge, north shore. Night city skyline from Milsons Point.
+Train: Milsons Point → Town Hall (2 stops).
+1900: Chinatown / Haymarket. Dinner. Dixon Street.
+Bus 422 from Chinatown Centre — 26 stops — to West Botany St at Flora St.
+2030: Quality Hotel CKS. Day complete. Trip almost over.</p>
+
+                  <p><strong class="text-red-500">[DAY 7 — 17 MAY — DEPARTURE]</strong>
+Final breakfast. Check out. Transit to Sydney Airport.
+1555: Depart Sydney. Emirates/Qantas.
+2215: Arrive Singapore. Trip closed. ~1,575km driven in Tasmania. One afternoon in Sydney. Everything on the plan, executed.</p>
+                </div>
+
+                <div class="bg-black/40 p-4 border border-red-900/50">
+                  <h5 class="text-red-500 text-sm mb-3 underline text-center tracking-widest uppercase">TRIP DEBRIEF</h5>
+                  <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                    <li>Dates: 11–17 May 2015</li>
+                    <li>Tasmania: Rental car, collected Hobart 11 May, returned 16 May</li>
+                    <li>Total Tasmania driving: ~1,575km across 5.5 days</li>
+                    <li>Biggest day: Day 4 (621km — Cataract Gorge + Edge of the World)</li>
+                    <li>Sydney: No car — T8 train + ferry + Bus 422</li>
+                    <li>Hotels: Wrest Point (Hobart) · Elphin Villa (Launceston) · Bay View Villa (Hobart) · Quality Hotel CKS (Sydney)</li>
+                    <li>Standout — Tasmania: Edge of the World, Arthur River + Tessellated Pavement</li>
+                    <li>Standout — Sydney: Opera House at dusk · Harbour Bridge at night</li>
+                    <li>Watch: Day 4 fuel + early departure. Sunset at 5PM. No cafés on remote routes.</li>
+                    <li>Salamanca Market: Saturday only, 8AM–3PM. Verify day of week before building itinerary around it.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="flex justify-center mt-6">
+                <button onclick="toggleIntel('full-intel-001', this)" class="border border-red-500/30 text-red-500 px-6 py-2 text-sm font-mono hover:bg-red-600 hover:text-white transition-all">
+                  ACCESS FULL INTEL REPORT
+                </button>
+              </div>
+            </div>
+            <!-- END INTEL PANEL -->
+
+          </div>
+        </div><!-- /log-entry -->
+
+      </div><!-- /log-container -->
+
+      <hr class="section-rule" />
+
+      <div class="flex items-center justify-center gap-5 flex-wrap">
+        <button id="prevBtn" class="nav-btn"><span>◄ Previous File</span></button>
+        <div class="page-counter">FILE <span id="current-page">01</span> / <span id="total-pages">01</span></div>
+        <button id="nextBtn" class="nav-btn"><span>Decrypt Next ►</span></button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ════ FOOTER ════ -->
+  <footer class="py-16 px-5 border-t border-white/5">
+    <div class="max-w-5xl mx-auto flex flex-col items-center gap-6">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors">
+          <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+      </a>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-[.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors">
+        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="font-mono-tech text-xs tracking-widest uppercase">Watch on YouTube</span>
+      </a>
+      <div class="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ════ JS ════ -->
+  <script>
+    (function(){
+      var c=document.getElementById('cursor'),r=document.getElementById('cursor-ring'),mx=0,my=0,rx=0,ry=0;
+      document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;c.style.left=mx+'px';c.style.top=my+'px'});
+      (function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(a)})();
+      document.querySelectorAll('a,button').forEach(function(el){
+        el.addEventListener('mouseenter',function(){r.style.width='56px';r.style.height='56px';r.style.borderColor='rgba(220,38,38,.8)'});
+        el.addEventListener('mouseleave',function(){r.style.width='36px';r.style.height='36px';r.style.borderColor='rgba(220,38,38,.5)'});
+      });
+    })();
+
+    window.addEventListener('scroll',function(){
+      var st=document.documentElement.scrollTop||document.body.scrollTop;
+      var sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+      document.getElementById('progress-bar').style.width=(sh>0?(st/sh)*100:0)+'%';
+    },{passive:true});
+
+    window.addEventListener('scroll',function(){
+      var n=document.getElementById('navbar');
+      if(window.scrollY>20)n.classList.add('nav-scrolled');else n.classList.remove('nav-scrolled');
+    },{passive:true});
+
+    document.getElementById('menu-toggle').addEventListener('click',function(){
+      var m=document.getElementById('mobile-menu'),o=document.getElementById('menu-icon-open'),cl=document.getElementById('menu-icon-close');
+      var open=m.style.maxHeight==='320px';
+      m.style.maxHeight=open?'0':'320px';m.style.borderBottom=open?'':'1px solid rgba(127,29,29,.3)';
+      o.style.display=open?'':'none';cl.style.display=open?'none':'';
+    });
+    document.querySelectorAll('.mobile-link').forEach(function(l){
+      l.addEventListener('click',function(){
+        document.getElementById('mobile-menu').style.maxHeight='0';
+        document.getElementById('menu-icon-open').style.display='';
+        document.getElementById('menu-icon-close').style.display='none';
+      });
+    });
+
+    var sc='ABCDEF0123456789/X$#@%';
+    function decryptText(btn,txt,cb){
+      var i=0;btn.classList.add('decrypting');btn.disabled=true;
+      var iv=setInterval(function(){
+        btn.querySelector('span').innerText=txt.split('').map(function(ch,idx){
+          if(idx<i)return txt[idx];return ch===' '?' ':sc[Math.floor(Math.random()*sc.length)];
+        }).join('');
+        if(i>=txt.length){clearInterval(iv);btn.classList.remove('decrypting');btn.querySelector('span').innerText=txt;btn.disabled=false;cb();}
+        i+=1/3;
+      },30);
+    }
+
+    var logs=document.querySelectorAll('.log-entry');
+    var nb=document.getElementById('nextBtn'),pb=document.getElementById('prevBtn');
+    var cp=document.getElementById('current-page'),tp=document.getElementById('total-pages');
+    var idx=0;
+    tp.textContent=String(logs.length).padStart(2,'0');
+    function upBtn(){pb.disabled=idx===0;nb.disabled=idx===logs.length-1;cp.textContent=String(idx+1).padStart(2,'0');}
+    function upView(ni){logs.forEach(function(l){l.style.display='none';});idx=ni;logs[idx].style.display='block';logs[idx].style.animation='none';logs[idx].offsetHeight;logs[idx].style.animation='';window.scrollTo({top:0,behavior:'smooth'});upBtn();}
+    nb.addEventListener('click',function(){if(idx>=logs.length-1)return;decryptText(nb,'Decrypt Next ►',function(){upView(idx+1);});});
+    pb.addEventListener('click',function(){if(idx<=0)return;decryptText(pb,'◄ Previous File',function(){upView(idx-1);});});
+    upView(0);
+
+    function toggleIntel(id,btn){
+      var rep=document.getElementById(id),hidden=rep.classList.contains('hidden');
+      if(hidden){
+        rep.classList.remove('hidden');btn.innerText='CLOSE INTEL REPORT';
+        rep.querySelectorAll('p').forEach(function(p){
+          var h=p.innerHTML;
+          h=h.replace(/(\[DAY \d+[^\]]*\])/g,'<span class="intel-timestamp">$1</span><br>');
+          p.innerHTML=h;
+        });
+        rep.scrollIntoView({behavior:'smooth',block:'nearest'});
+      } else {rep.classList.add('hidden');btn.innerText='ACCESS FULL INTEL REPORT';}
+    }
+  </script>
+
+</body>
+</html>
