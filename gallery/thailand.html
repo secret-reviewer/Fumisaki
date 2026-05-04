@@ -494,35 +494,37 @@
 
 
     
-   const gallery = document.getElementById("gallery-grid");
+  const images = [
+  "2thai51_jnlha2",
+  "2thai52_trggmb"
+];
 
-for (let i = 51; i <= 80; i++) {  // adjust range
-  const base = `2thai${i}`;
+const gallery = document.getElementById("gallery-grid");
 
-  // try loading image
-  const img = new Image();
-  img.src = `https://res.cloudinary.com/dwwz04x1n/image/upload/w_800,q_auto,f_auto/${base}`;
+images.forEach((id, index) => {
+  const url = `https://res.cloudinary.com/dwwz04x1n/image/upload/w_800,q_auto,f_auto/${id}`;
 
-  img.onload = function () {
-    const wrap = document.createElement("div");
-    wrap.className = "gallery-item-wrap";
+  const wrap = document.createElement("div");
+  wrap.className = "gallery-item-wrap";
 
-    wrap.innerHTML = `
-      <img src="${img.src}" class="gallery-item" loading="lazy" />
-      <div class="gallery-overlay"></div>
-      <div class="gallery-label">// Frame ${i}</div>
-    `;
+  wrap.innerHTML = `
+    <img src="${url}" class="gallery-item" loading="lazy" />
+    <div class="gallery-overlay"></div>
+    <div class="gallery-label">// Frame ${index + 1}</div>
+  `;
 
-    wrap.addEventListener("click", function () {
-      document.getElementById('lightbox-img').src = img.src;
-      document.getElementById('lightbox-caption').textContent = `// SR-FIELD // Frame ${i}`;
-      document.getElementById('lightbox').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    });
+  wrap.addEventListener("click", function () {
+    document.getElementById('lightbox-img').src = url;
+    document.getElementById('lightbox-caption').textContent = `// SR-FIELD // Frame ${index + 1}`;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
 
-    gallery.appendChild(wrap);
-  };
-}
+  gallery.appendChild(wrap);
+});
+
+document.getElementById('photo-count').textContent =
+  '// ' + images.length + ' Frames';
     
   </script>
 
