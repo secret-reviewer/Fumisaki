@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Thailand Trip</title>
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      padding: 20px;
+      background: #111;
+      color: white;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Thailand Trip 🇹🇭</h1>
+
+<div class="gallery" id="gallery"></div>
+
+<script>
+fetch("https://res.cloudinary.com/dwwz04x1n/image/list/thailand.json")
+  .then(res => res.json())
+  .then(data => {
+    const gallery = document.getElementById("gallery");
+
+    data.resources.forEach(img => {
+      const image = document.createElement("img");
+      image.src = `https://res.cloudinary.com/dwwz04x1n/image/upload/w_600,q_auto,f_auto/${img.public_id}.jpg`;
+      gallery.appendChild(image);
+    });
+  });
+</script>
+
+</body>
+</html>
