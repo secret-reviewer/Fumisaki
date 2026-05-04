@@ -492,9 +492,7 @@
       setTimeout(function () { lightboxImg.src = ''; }, 300);
     }
 
-
-    
-  const images = [
+const images = [
   "1thai1_vhzzxj",
   "1thai2_nbftys",
   "1thai3_swnsq5",
@@ -515,12 +513,12 @@
   "2thai20_wtbvhp",
   "2thai21_hqfori",
   "2thai22_q1vngd",
-  "2thai23_p5i5lf",
+  "2thai23_p5i5lf", // video-type
   "2thai24_ovnuzh",
   "2thai25_p0o4fr",
   "2thai26_o4wmv1",
   "2thai27_qt57o8",
-  "2thai28_l1ybd8",
+  "2thai28_l1ybd8", // video-type
   "2thai29_bkuxvv",
 
   "2thai30_iuevdp",
@@ -540,7 +538,15 @@
 const gallery = document.getElementById("gallery-grid");
 
 images.forEach((id, index) => {
-  const url = `https://res.cloudinary.com/dwwz04x1n/image/upload/w_800,q_auto,f_auto/${id}`;
+
+  // detect special video-type uploads
+  const isVideo =
+    id === "2thai23_p5i5lf" ||
+    id === "2thai28_l1ybd8";
+
+  const url = isVideo
+    ? `https://res.cloudinary.com/dwwz04x1n/video/upload/w_800,q_auto,f_auto/${id}`
+    : `https://res.cloudinary.com/dwwz04x1n/image/upload/w_800,q_auto,f_auto/${id}`;
 
   const wrap = document.createElement("div");
   wrap.className = "gallery-item-wrap";
@@ -561,8 +567,10 @@ images.forEach((id, index) => {
   gallery.appendChild(wrap);
 });
 
+// update counter
 document.getElementById('photo-count').textContent =
   '// ' + images.length + ' Frames';
+    
     
     
   </script>
