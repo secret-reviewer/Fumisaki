@@ -492,42 +492,37 @@
       setTimeout(function () { lightboxImg.src = ''; }, 300);
     }
 
-    fetch("https://res.cloudinary.com/dwwz04x1n/image/list/thailand.json")
-  .then(res => {
-    if (!res.ok) throw new Error("Cloudinary list failed");
-    return res.json();
-  })
-  .then(data => {
-    const gallery = document.getElementById("gallery-grid");
 
-    data.resources.forEach((img, index) => {
-      const wrap = document.createElement("div");
-      wrap.className = "gallery-item-wrap";
+    
+   const gallery = document.getElementById("gallery-grid");
 
-      const url = `https://res.cloudinary.com/dwwz04x1n/image/upload/w_800,q_auto,f_auto/${img.public_id}`;
+for (let i = 51; i <= 80; i++) {  // adjust range
+  const base = `2thai${i}`;
 
-      wrap.innerHTML = `
-        <img src="${url}" class="gallery-item" loading="lazy" />
-        <div class="gallery-overlay"></div>
-        <div class="gallery-label">// Frame ${index + 1}</div>
-      `;
+  // try loading image
+  const img = new Image();
+  img.src = `https://res.cloudinary.com/dwwz04x1n/image/upload/w_800,q_auto,f_auto/${base}`;
 
-      wrap.addEventListener("click", function () {
-        document.getElementById('lightbox-img').src = url;
-        document.getElementById('lightbox-caption').textContent = `// SR-FIELD // Frame ${index + 1}`;
-        document.getElementById('lightbox').classList.add('open');
-        document.body.style.overflow = 'hidden';
-      });
+  img.onload = function () {
+    const wrap = document.createElement("div");
+    wrap.className = "gallery-item-wrap";
 
-      gallery.appendChild(wrap);
+    wrap.innerHTML = `
+      <img src="${img.src}" class="gallery-item" loading="lazy" />
+      <div class="gallery-overlay"></div>
+      <div class="gallery-label">// Frame ${i}</div>
+    `;
+
+    wrap.addEventListener("click", function () {
+      document.getElementById('lightbox-img').src = img.src;
+      document.getElementById('lightbox-caption').textContent = `// SR-FIELD // Frame ${i}`;
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
     });
 
-    document.getElementById('photo-count').textContent =
-      '// ' + data.resources.length + ' Frames';
-  })
-  .catch(err => {
-    console.error("Cloudinary error:", err);
-  });
+    gallery.appendChild(wrap);
+  };
+}
     
   </script>
 
