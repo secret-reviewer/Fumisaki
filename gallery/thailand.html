@@ -492,12 +492,11 @@
       setTimeout(function () { lightboxImg.src = ''; }, 300);
     }
 
-    var count = document.querySelectorAll('.gallery-item-wrap').length;
-    document.getElementById('photo-count').textContent = '// ' + count + ' Frame' + (count !== 1 ? 's' : '');
-
-    
-fetch("https://res.cloudinary.com/YOUR_CLOUD_NAME/image/list/thailand.json")
-  .then(res => res.json())
+    fetch("https://res.cloudinary.com/dwwz04x1n/image/list/thailand.json")
+  .then(res => {
+    if (!res.ok) throw new Error("Cloudinary list failed");
+    return res.json();
+  })
   .then(data => {
     const gallery = document.getElementById("gallery-grid");
 
@@ -505,10 +504,7 @@ fetch("https://res.cloudinary.com/YOUR_CLOUD_NAME/image/list/thailand.json")
       const wrap = document.createElement("div");
       wrap.className = "gallery-item-wrap";
 
-      const url = `https://res.cloudinary.com/dwwz04x1n/image/upload/w_800,q_auto,f_auto/${img.public_id}.jpg`;
-
-      wrap.setAttribute("data-src", url);
-      wrap.setAttribute("data-caption", `// SR-FIELD // Frame ${index + 1}`);
+      const url = `https://res.cloudinary.com/dwwz04x1n/image/upload/w_800,q_auto,f_auto/${img.public_id}`;
 
       wrap.innerHTML = `
         <img src="${url}" class="gallery-item" loading="lazy" />
@@ -516,7 +512,6 @@ fetch("https://res.cloudinary.com/YOUR_CLOUD_NAME/image/list/thailand.json")
         <div class="gallery-label">// Frame ${index + 1}</div>
       `;
 
-      // click event (important for your lightbox)
       wrap.addEventListener("click", function () {
         document.getElementById('lightbox-img').src = url;
         document.getElementById('lightbox-caption').textContent = `// SR-FIELD // Frame ${index + 1}`;
@@ -527,9 +522,11 @@ fetch("https://res.cloudinary.com/YOUR_CLOUD_NAME/image/list/thailand.json")
       gallery.appendChild(wrap);
     });
 
-    // update count
     document.getElementById('photo-count').textContent =
       '// ' + data.resources.length + ' Frames';
+  })
+  .catch(err => {
+    console.error("Cloudinary error:", err);
   });
     
   </script>
