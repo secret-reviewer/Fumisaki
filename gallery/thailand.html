@@ -495,7 +495,7 @@
     var count = document.querySelectorAll('.gallery-item-wrap').length;
     document.getElementById('photo-count').textContent = '// ' + count + ' Frame' + (count !== 1 ? 's' : '');
 
-    <script>
+    
 fetch("https://res.cloudinary.com/YOUR_CLOUD_NAME/image/list/thailand.json")
   .then(res => res.json())
   .then(data => {
@@ -531,7 +531,6 @@ fetch("https://res.cloudinary.com/YOUR_CLOUD_NAME/image/list/thailand.json")
     document.getElementById('photo-count').textContent =
       '// ' + data.resources.length + ' Frames';
   });
-</script>
     
   </script>
 
