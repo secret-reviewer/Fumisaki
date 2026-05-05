@@ -361,7 +361,7 @@
         <span class="font-mono-tech text-gray-600 text-sm tracking-widest uppercase" id="photo-count">// 4 Frames</span>
       </div>
 
-      <div class="gallery-grid" id="gallery-grid"></div>
+      <div id="gallery-grid"></div>
 
 <div class="mt-20 text-center animate-fade-slide-up intel-section">
 
@@ -378,7 +378,7 @@
   // Vehicle logs detected beyond ride data
 </p>
 
- <a href="/gallery/vehicle/"
+ <a href="/gallery/vehicles/"
    class="group relative inline-flex items-center gap-3 border border-red-600/50 px-6 py-3
           font-mono-tech text-red-500 text-sm tracking-widest uppercase
           hover:bg-red-600/10 hover:border-red-500 transition-all duration-300 animate-pulse-red">
@@ -523,92 +523,67 @@
       }
     });
 
+// ── Data ────────────────────────────────────────────────────────────────────
+const thai2023all = [
+  "2thai1_lhobbl",  "2thai2_zzjx8p",  "2thai3_etkpso",  "2thai4_qhgzxb",
+  "2thai13_htokss", "2thai14_zuogou", "2thai15_vmld2q", "2thai16_uozpx8",
+  "2thai17_wgeksb", "2thai18_lgrvta", "2thai19_ei39qe", "2thai20_wtbvhp",
+  "2thai21_hqfori", "2thai22_q1vngd", "2thai23_p5i5lf", "2thai24_ovnuzh",
+  "2thai25_p0o4fr", "2thai26_o4wmv1", "2thai27_qt57o8", "2thai28_l1ybd8",
+  "2thai29_bkuxvv", "2thai30_iuevdp", "2thai31_squmrv", "2thai32_q7d0kn",
+  "2thai33_yzzxln", "2thai34_wzuwkm", "2thai35_u8xzhy", "2thai36_kc2ifh",
+  "2thai37_sn73t7", "2thai38_gs7eex", "2thai39_hw9cik", "2thai40_k94g73",
+  "2thai41_fzotmu", "2thai42_y4apni", "2thai43_nk9l4u", "2thai44_oohqia",
+  "2thai45_z5kgd6", "2thai46_evcfr8", "2thai47_spgmxs", "2thai48_nr8irk",
+  "2thai49_obfati", "2thai50_xkopnr", "2thai52_trggmb", "2thai53_voeawr",
+  "2thai54_s5gsle"
+];
+
+const third = Math.ceil(thai2023all.length / 3);
+
 const groups = [
   {
-    title: "2012 // Thailand // Archive Entry",
+    year:  "2012 // Thailand",
+    title: "Archive Entry",
+    sub:   false,
     items: [
-      "1thai1_vhzzxj",
-      "1thai2_nbftys",
-      "1thai3_swnsq5",
-      "1thai4_nyjjqz"
+      "1thai1_vhzzxj", "1thai2_nbftys", "1thai3_swnsq5", "1thai4_nyjjqz"
     ]
   },
   {
-    title: "2023 // Thailand // Ride Log",
-    items: [
-      "2thai1_lhobbl",
-      "2thai2_zzjx8p",
-      "2thai3_etkpso",
-      "2thai4_qhgzxb",
-
-      "2thai13_htokss",
-      "2thai14_zuogou",
-      "2thai15_vmld2q",
-      "2thai16_uozpx8",
-      "2thai17_wgeksb",
-      "2thai18_lgrvta",
-      "2thai19_ei39qe",
-
-      "2thai20_wtbvhp",
-      "2thai21_hqfori",
-      "2thai22_q1vngd",
-      "2thai23_p5i5lf",
-      "2thai24_ovnuzh",
-      "2thai25_p0o4fr",
-      "2thai26_o4wmv1",
-      "2thai27_qt57o8",
-      "2thai28_l1ybd8",
-      "2thai29_bkuxvv",
-
-      "2thai30_iuevdp",
-      "2thai31_squmrv",
-      "2thai32_q7d0kn",
-      "2thai33_yzzxln",
-      "2thai34_wzuwkm",
-      "2thai35_u8xzhy",
-      "2thai36_kc2ifh",
-      "2thai37_sn73t7",
-      "2thai38_gs7eex",
-      "2thai39_hw9cik",
-
-      "2thai40_k94g73",
-      "2thai41_fzotmu",
-      "2thai42_y4apni",
-      "2thai43_nk9l4u",
-      "2thai44_oohqia",
-      "2thai45_z5kgd6",
-      "2thai46_evcfr8",
-      "2thai47_spgmxs",
-      "2thai48_nr8irk",
-      "2thai49_obfati",
-
-      "2thai50_xkopnr",
-      "2thai52_trggmb",
-      "2thai53_voeawr",
-      "2thai54_s5gsle"
-    ]
+    year:  "2023 // Thailand // Ride Log",
+    title: "// Entry Log",
+    sub:   true,
+    desc:  "Pre-border warmup — Day 1 & early Day 2",
+    items: thai2023all.slice(0, third)
+  },
+  {
+    year:  "2023 // Thailand // Ride Log",
+    title: "// Route Intelligence",
+    sub:   true,
+    desc:  "Deep in-country — the ride proper begins",
+    items: thai2023all.slice(third, third * 2)
+  },
+  {
+    year:  "2023 // Thailand // Ride Log",
+    title: "// Extraction Log",
+    sub:   true,
+    desc:  "Final push — crossing back out of Thailand",
+    items: thai2023all.slice(third * 2)
   }
 ];
 
-// Flatten all group items into a single images array
-const images = groups.flatMap(g => g.items);
+// ── Helpers ──────────────────────────────────────────────────────────────────
+const VIDEO_IDS = new Set(["2thai23_p5i5lf", "2thai28_l1ybd8"]);
 
-const gallery = document.getElementById("gallery-grid");
-
-images.forEach((id, index) => {
-
-  const isVideo =
-    id === "2thai23_p5i5lf" ||
-    id === "2thai28_l1ybd8";
-
-  const base = isVideo ? "video" : "image";
-
-  const url = `https://res.cloudinary.com/dwwz04x1n/${base}/upload/w_800,q_auto,f_auto/${id}`;
+function renderItem(id, frameLabel) {
+  const isVideo = VIDEO_IDS.has(id);
+  const base    = isVideo ? "video" : "image";
+  const url     = `https://res.cloudinary.com/dwwz04x1n/${base}/upload/w_800,q_auto,f_auto/${id}`;
 
   const wrap = document.createElement("div");
   wrap.className = "gallery-item-wrap";
 
-  // 🔥 Render differently for video vs image
   if (isVideo) {
     wrap.innerHTML = `
       <video class="gallery-item" muted playsinline preload="none"
@@ -616,51 +591,106 @@ images.forEach((id, index) => {
         <source src="${url}" type="video/mp4">
       </video>
       <div class="gallery-overlay"></div>
-      <div class="gallery-label">// Clip ${index + 1}</div>
+      <div class="gallery-label">// Clip — ${frameLabel}</div>
     `;
   } else {
     wrap.innerHTML = `
       <img src="${url}" class="gallery-item" loading="lazy" />
       <div class="gallery-overlay"></div>
-      <div class="gallery-label">// Frame ${index + 1}</div>
+      <div class="gallery-label">// Frame — ${frameLabel}</div>
     `;
   }
 
-  // 🔥 Click → Lightbox (image + video supported)
   wrap.addEventListener("click", function () {
     const lightbox = document.getElementById("lightbox");
-
     if (isVideo) {
       lightbox.innerHTML = `
         <button id="lightbox-close">✕ Close</button>
-        <video controls autoplay playsinline style="max-width:90vw; max-height:85vh;">
+        <video controls autoplay playsinline style="max-width:90vw;max-height:85vh;">
           <source src="${url}" type="video/mp4">
         </video>
-        <div id="lightbox-caption">// Clip ${index + 1}</div>
+        <div id="lightbox-caption">// Clip — ${frameLabel}</div>
       `;
     } else {
       lightbox.innerHTML = `
         <button id="lightbox-close">✕ Close</button>
-        <img src="${url}" style="max-width:90vw; max-height:85vh;" />
-        <div id="lightbox-caption">// Frame ${index + 1}</div>
+        <img src="${url}" style="max-width:90vw;max-height:85vh;" />
+        <div id="lightbox-caption">// Frame — ${frameLabel}</div>
       `;
     }
-
     lightbox.classList.add("open");
     document.body.style.overflow = "hidden";
-
     document.getElementById("lightbox-close").onclick = () => {
       lightbox.classList.remove("open");
       document.body.style.overflow = "";
     };
   });
 
-  gallery.appendChild(wrap);
+  return wrap;
+}
+
+// ── Render ───────────────────────────────────────────────────────────────────
+const container  = document.getElementById("gallery-grid");
+let   totalCount = 0;
+let   prevYear   = null;
+
+groups.forEach((group) => {
+
+  // ── Year banner (only once per unique year string) ──
+  if (group.year !== prevYear) {
+    prevYear = group.year;
+
+    if (totalCount > 0) {
+      // divider between year blocks
+      const rule = document.createElement("hr");
+      rule.className = "section-rule";
+      rule.style.cssText = "margin: 40px 0;";
+      container.appendChild(rule);
+    }
+
+    const yearBanner = document.createElement("div");
+    yearBanner.style.cssText = "margin-bottom: 8px;";
+    yearBanner.innerHTML = `
+      <div class="flex items-center gap-2 mb-2">
+        <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse-dot"></div>
+        <span class="font-mono-tech text-red-500/60 text-sm tracking-[0.35em] uppercase">${group.year}</span>
+      </div>
+    `;
+    container.appendChild(yearBanner);
+  }
+
+  // ── Sub-section header (Entry Log / Route Intel / Extraction Log) ──
+  const subHeader = document.createElement("div");
+  subHeader.style.cssText = "margin: 28px 0 14px;";
+
+  if (group.sub) {
+    subHeader.innerHTML = `
+      <h2 style="font-family:'Share Tech Mono',monospace; font-size:1rem; color:#dc2626; letter-spacing:0.2em; text-transform:uppercase; margin:0 0 4px;">${group.title}</h2>
+      <p style="font-family:'Share Tech Mono',monospace; font-size:0.75rem; color:rgba(156,163,175,0.5); letter-spacing:0.2em; text-transform:uppercase; margin:0;">${group.desc}</p>
+    `;
+  } else {
+    subHeader.innerHTML = `
+      <h2 style="font-family:'Share Tech Mono',monospace; font-size:1rem; color:#dc2626; letter-spacing:0.2em; text-transform:uppercase; margin:0;">// ${group.title}</h2>
+    `;
+  }
+  container.appendChild(subHeader);
+
+  // ── Grid wrapper ──
+  const grid = document.createElement("div");
+  grid.className = "gallery-grid";
+  grid.style.cssText = "margin-bottom: 12px;";
+  container.appendChild(grid);
+
+  // ── Items ──
+  group.items.forEach((id) => {
+    totalCount++;
+    grid.appendChild(renderItem(id, totalCount));
+  });
 });
 
 // update count
 document.getElementById('photo-count').textContent =
-  '// ' + images.length + ' Frames';
+  '// ' + totalCount + ' Frames';
 
 const intelSection = document.querySelector('.intel-section');
 
