@@ -495,7 +495,10 @@
         title: "// Yilan · Taipei",
         desc:  "Northeast coast run — winding mountain roads down to Yilan, then back up into Taipei. Clean tarmac, zero traffic drama.",
         items: [
-          "2thai5_t802ub", "2thai6_xsnx82", "2thai7_ktdzmw", "2thai8_bhxiar", "2thai9_l4puzc"
+          { id: "2thai5_t802ub", label: "" },
+          { id: "2thai6_xsnx82", label: "" },
+          { id: "2thai7_ktdzmw", label: "" },
+          { id: "2thai8_bhxiar", label: "" }
         ]
       },
       {
@@ -503,7 +506,10 @@
         title: "// Desaru Coast",
         desc:  "Short blast across the causeway — Desaru for the coastal stretch. Easy drive, good food stops, worth the border queue.",
         items: [
-          "2thai10_srjz4y", "2thai11_mukl4e", "2thai12_hqcwbt"
+          { id: "2thai9_l4puzc",   label: "" },
+          { id: "2thai10_srjz4y",  label: "" },
+          { id: "2thai11_mukl4e",  label: "" },
+          { id: "2thai12_hqcwbt",  label: "" }
         ]
       },
       {
@@ -511,8 +517,13 @@
         title: "// Jeju Island",
         desc:  "Off the peninsula and onto the island — Jeju on four wheels. Volcanic crater roads, Hallasan in the background. Cold, quiet, worth it.",
         items: [
-          "Jeju1_dyugik", "Jeju2_vhdv9i", "Jeju3_pbm05u", "Jeju4_nm87ub",
-          "Jeju5_uizjts", "Jeju6_xfwgcz", "Jeju7_zk0scl"
+          { id: "Jeju1_dyugik", label: "" },
+          { id: "Jeju2_vhdv9i", label: "" },
+          { id: "Jeju3_pbm05u", label: "" },
+          { id: "Jeju4_nm87ub", label: "" },
+          { id: "Jeju5_uizjts", label: "" },
+          { id: "Jeju6_xfwgcz", label: "" },
+          { id: "Jeju7_zk0scl", label: "" }
         ]
       },
       {
@@ -520,9 +531,16 @@
         title: "// Tasmania Drive Log",
         desc:  "Flew in, hired a car, drove the whole island. Cradle Mountain, the east coast, empty roads with no other cars in sight. One of the best drives on record.",
         items: [
-          "aus1_qq4jky", "aus2_w2wbhy", "aus3_tfzdgw", "aus4_dj2sg1",
-          "aus5_ofdjnq", "aus6_mazrky", "aus7_mwmv4j", "aus8_e7yaof",
-          "aus9_fkto7s", "aus10_fbkkyn"
+          { id: "aus1_qq4jky",  label: "" },
+          { id: "aus2_w2wbhy",  label: "" },
+          { id: "aus3_tfzdgw",  label: "" },
+          { id: "aus4_dj2sg1",  label: "" },
+          { id: "aus5_ofdjnq",  label: "" },
+          { id: "aus6_mazrky",  label: "" },
+          { id: "aus7_mwmv4j",  label: "" },
+          { id: "aus8_e7yaof",  label: "" },
+          { id: "aus9_fkto7s",  label: "" },
+          { id: "aus10_fbkkyn", label: "" }
         ]
       }
     ];
@@ -560,24 +578,26 @@
       container.appendChild(grid);
 
       // Items
-      group.items.forEach(function (id) {
+      group.items.forEach(function (item) {
         totalCount++;
         var frameNum = totalCount;
-        var url = 'https://res.cloudinary.com/dwwz04x1n/image/upload/w_800,q_auto,f_auto/' + id;
+        var id       = typeof item === 'object' ? item.id : item;
+        var caption  = typeof item === 'object' && item.label ? item.label : 'Frame — ' + frameNum;
+        var url      = 'https://res.cloudinary.com/dwwz04x1n/image/upload/w_800,q_auto,f_auto/' + id;
 
         var wrap = document.createElement('div');
         wrap.className = 'gallery-item-wrap';
         wrap.innerHTML =
           '<img src="' + url + '" class="gallery-item" loading="lazy" />' +
           '<div class="gallery-overlay"></div>' +
-          '<div class="gallery-label">// Frame — ' + frameNum + '</div>';
+          '<div class="gallery-label">// ' + caption + '</div>';
 
         wrap.addEventListener('click', function () {
           var lb = document.getElementById('lightbox');
           lb.innerHTML =
             '<button id="lightbox-close">✕ Close</button>' +
             '<img src="' + url + '" style="max-width:90vw;max-height:85vh;object-fit:contain;border:1px solid rgba(220,38,38,0.3);box-shadow:0 0 60px rgba(0,0,0,0.8);" />' +
-            '<div id="lightbox-caption">// Frame — ' + frameNum + '</div>';
+            '<div id="lightbox-caption">// ' + caption + '</div>';
           lb.classList.add('open');
           document.body.style.overflow = 'hidden';
           document.getElementById('lightbox-close').onclick = function () {
