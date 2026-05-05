@@ -627,7 +627,12 @@ const groups = [
 // ── Helpers ──────────────────────────────────────────────────────────────────
 const VIDEO_IDS = new Set(["2thai23_p5i5lf", "2thai28_l1ybd8"]);
 
-function renderItem(id, frameLabel) {
+function renderItem(item, frameNum) {
+  const id      = typeof item === "object" ? item.id    : item;
+  const caption = typeof item === "object" && item.label
+                    ? item.label
+                    : "Frame — " + frameNum;
+
   const isVideo = VIDEO_IDS.has(id);
   const base    = isVideo ? "video" : "image";
   const url     = `https://res.cloudinary.com/dwwz04x1n/${base}/upload/w_800,q_auto,f_auto/${id}`;
@@ -642,13 +647,13 @@ function renderItem(id, frameLabel) {
         <source src="${url}" type="video/mp4">
       </video>
       <div class="gallery-overlay"></div>
-      <div class="gallery-label">// Clip — ${frameLabel}</div>
+      <div class="gallery-label">// Clip — ${caption}</div>
     `;
   } else {
     wrap.innerHTML = `
       <img src="${url}" class="gallery-item" loading="lazy" />
       <div class="gallery-overlay"></div>
-      <div class="gallery-label">// Frame — ${frameLabel}</div>
+      <div class="gallery-label">// ${caption}</div>
     `;
   }
 
@@ -660,13 +665,13 @@ function renderItem(id, frameLabel) {
         <video controls autoplay playsinline style="max-width:90vw;max-height:85vh;">
           <source src="${url}" type="video/mp4">
         </video>
-        <div id="lightbox-caption">// Clip — ${frameLabel}</div>
+        <div id="lightbox-caption">// Clip — ${caption}</div>
       `;
     } else {
       lightbox.innerHTML = `
         <button id="lightbox-close">✕ Close</button>
         <img src="${url}" style="max-width:90vw;max-height:85vh;" />
-        <div id="lightbox-caption">// Frame — ${frameLabel}</div>
+        <div id="lightbox-caption">// ${caption}</div>
       `;
     }
     lightbox.classList.add("open");
