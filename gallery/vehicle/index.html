@@ -350,8 +350,8 @@
           <span class="font-mono-tech text-red-500/60 text-sm tracking-[0.35em] uppercase">Field Archive // Visual Intel // Classified</span>
           <div class="w-2 h-2 rounded-full bg-red-600 animate-pulse-dot"></div>
         </div>
-        <h1 class="text-white font-black uppercase tracking-tight" style="font-size: clamp(2.5rem, 7vw, 5rem); line-height: 1; letter-spacing: -0.02em;"><span class="glitch-wrap" data-text="ROAD PHOTOS">4 wheels PHOTOS</span></h1>
-        <p class="font-mono-tech text-gray-500 text-sm tracking-[0.2em] uppercase mt-3">// Raw Field Documentation — Southeast Asia Expeditions</p>
+        <h1 class="text-white font-black uppercase tracking-tight" style="font-size: clamp(2.5rem, 7vw, 5rem); line-height: 1; letter-spacing: -0.02em;"><span class="glitch-wrap" data-text="TRAVEL LOG">TRAVEL LOG</span></h1>
+        <p class="font-mono-tech text-gray-500 text-sm tracking-[0.2em] uppercase mt-3">// 4-Wheel Field Archive — Regional and International Expeditions</p>
       </div>
 
       <hr class="section-rule" style="margin-top: 0; margin-bottom: 40px;" />
@@ -361,28 +361,7 @@
         <span class="font-mono-tech text-gray-600 text-sm tracking-widest uppercase" id="photo-count">// 4 Frames</span>
       </div>
 
-      <div class="gallery-grid" id="gallery-grid">
-        <div class="gallery-item-wrap" data-src="/images/IMG_5468.JPG" data-caption="// SR-FIELD // Route 41">
-          <img src="/images/IMG_5468.JPG" class="gallery-item" alt="Route 41" loading="lazy" />
-          <div class="gallery-overlay"></div>
-          <div class="gallery-label">// Route 41</div>
-        </div>
-        <div class="gallery-item-wrap" data-src="/images/IMG_5651.JPG" data-caption="// SR-FIELD // Rider's Corner">
-          <img src="/images/IMG_5651.JPG" class="gallery-item" alt="Rider's Corner" loading="lazy" />
-          <div class="gallery-overlay"></div>
-          <div class="gallery-label">// Rider's Corner</div>
-        </div>
-        <div class="gallery-item-wrap" data-src="/images/IMG_5735.JPG" data-caption="// SR-FIELD // Highest Point — Thailand">
-          <img src="/images/IMG_5735.JPG" class="gallery-item" alt="Highest Point in Thailand" loading="lazy" />
-          <div class="gallery-overlay"></div>
-          <div class="gallery-label">// Highest Point — Thailand</div>
-        </div>
-        <div class="gallery-item-wrap" data-src="/images/IMG_5830.JPG" data-caption="// SR-FIELD // Scenic Overlook">
-          <img src="/images/IMG_5830.JPG" class="gallery-item" alt="Scenic Overlook" loading="lazy" />
-          <div class="gallery-overlay"></div>
-          <div class="gallery-label">// Scenic Overlook</div>
-        </div>
-      </div>
+      <div id="gallery-grid"></div>
 
       <hr class="section-rule" />
 
@@ -492,29 +471,127 @@
       });
     });
 
-    var lightbox    = document.getElementById('lightbox');
-    var lightboxImg = document.getElementById('lightbox-img');
-    var lightboxCap = document.getElementById('lightbox-caption');
-    document.querySelectorAll('.gallery-item-wrap').forEach(function (wrap) {
-      wrap.addEventListener('click', function () {
-        lightboxImg.src = wrap.getAttribute('data-src');
-        lightboxImg.alt = wrap.getAttribute('data-caption');
-        lightboxCap.textContent = wrap.getAttribute('data-caption');
-        lightbox.classList.add('open');
-        document.body.style.overflow = 'hidden';
+    // Escape key closes lightbox
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        var lb = document.getElementById('lightbox');
+        lb.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Backdrop click closes lightbox
+    document.getElementById('lightbox').addEventListener('click', function (e) {
+      if (e.target === this) {
+        this.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // ── Data ─────────────────────────────────────────────────────────────────
+    const groups = [
+      {
+        label: "2025 // Taiwan",
+        title: "// Yilan · Taipei",
+        desc:  "Northeast coast run — winding mountain roads down to Yilan, then back up into Taipei. Clean tarmac, zero traffic drama.",
+        items: [
+          "2thai5_t802ub", "2thai6_xsnx82", "2thai7_ktdzmw", "2thai8_bhxiar"
+        ]
+      },
+      {
+        label: "2024 // Malaysia",
+        title: "// Desaru Coast",
+        desc:  "Short blast across the causeway — Desaru for the coastal stretch. Easy drive, good food stops, worth the border queue.",
+        items: [
+          "2thai9_l4puzc", "2thai10_srjz4y", "2thai11_mukl4e", "2thai12_hqcwbt"
+        ]
+      },
+      {
+        label: "2015 // South Korea",
+        title: "// Jeju Island",
+        desc:  "Off the peninsula and onto the island — Jeju on four wheels. Volcanic crater roads, Hallasan in the background. Cold, quiet, worth it.",
+        items: [
+          "Jeju1_dyugik", "Jeju2_vhdv9i", "Jeju3_pbm05u", "Jeju4_nm87ub",
+          "Jeju5_uizjts", "Jeju6_xfwgcz", "Jeju7_zk0scl"
+        ]
+      },
+      {
+        label: "2018 // Australia",
+        title: "// Tasmania Drive Log",
+        desc:  "Flew in, hired a car, drove the whole island. Cradle Mountain, the east coast, empty roads with no other cars in sight. One of the best drives on record.",
+        items: [
+          "aus1_qq4jky", "aus2_w2wbhy", "aus3_tfzdgw", "aus4_dj2sg1",
+          "aus5_ofdjnq", "aus6_mazrky", "aus7_mwmv4j", "aus8_e7yaof",
+          "aus9_fkto7s", "aus10_fbkkyn"
+        ]
+      }
+    ];
+
+    // ── Render ────────────────────────────────────────────────────────────────
+    const container = document.getElementById('gallery-grid');
+    let totalCount  = 0;
+
+    groups.forEach(function (group, gi) {
+
+      // Divider between groups
+      if (gi > 0) {
+        var rule = document.createElement('hr');
+        rule.className = 'section-rule';
+        rule.style.cssText = 'margin: 40px 0;';
+        container.appendChild(rule);
+      }
+
+      // Group header
+      var header = document.createElement('div');
+      header.style.cssText = 'margin-bottom: 14px;';
+      header.innerHTML =
+        '<div class="flex items-center gap-2 mb-2">' +
+          '<div class="w-2 h-2 rounded-full bg-red-600 animate-pulse-dot"></div>' +
+          '<span class="font-mono-tech text-red-500/60 text-sm tracking-[0.35em] uppercase">' + group.label + '</span>' +
+        '</div>' +
+        '<h2 style="font-family:\'Share Tech Mono\',monospace;font-size:1rem;color:#dc2626;letter-spacing:0.2em;text-transform:uppercase;margin:0 0 4px;">' + group.title + '</h2>' +
+        '<p style="font-family:\'Share Tech Mono\',monospace;font-size:0.75rem;color:rgba(156,163,175,0.5);letter-spacing:0.15em;text-transform:uppercase;margin:0;">' + group.desc + '</p>';
+      container.appendChild(header);
+
+      // Grid
+      var grid = document.createElement('div');
+      grid.className = 'gallery-grid';
+      grid.style.cssText = 'margin-bottom: 12px;';
+      container.appendChild(grid);
+
+      // Items
+      group.items.forEach(function (id) {
+        totalCount++;
+        var frameNum = totalCount;
+        var url = 'https://res.cloudinary.com/dwwz04x1n/image/upload/w_800,q_auto,f_auto/' + id;
+
+        var wrap = document.createElement('div');
+        wrap.className = 'gallery-item-wrap';
+        wrap.innerHTML =
+          '<img src="' + url + '" class="gallery-item" loading="lazy" />' +
+          '<div class="gallery-overlay"></div>' +
+          '<div class="gallery-label">// Frame — ' + frameNum + '</div>';
+
+        wrap.addEventListener('click', function () {
+          var lb = document.getElementById('lightbox');
+          lb.innerHTML =
+            '<button id="lightbox-close">✕ Close</button>' +
+            '<img src="' + url + '" style="max-width:90vw;max-height:85vh;object-fit:contain;border:1px solid rgba(220,38,38,0.3);box-shadow:0 0 60px rgba(0,0,0,0.8);" />' +
+            '<div id="lightbox-caption">// Frame — ' + frameNum + '</div>';
+          lb.classList.add('open');
+          document.body.style.overflow = 'hidden';
+          document.getElementById('lightbox-close').onclick = function () {
+            lb.classList.remove('open');
+            document.body.style.overflow = '';
+          };
+        });
+
+        grid.appendChild(wrap);
       });
     });
-    document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', function (e) { if (e.target === lightbox) closeLightbox(); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLightbox(); });
-    function closeLightbox() {
-      lightbox.classList.remove('open');
-      document.body.style.overflow = '';
-      setTimeout(function () { lightboxImg.src = ''; }, 300);
-    }
 
-    var count = document.querySelectorAll('.gallery-item-wrap').length;
-    document.getElementById('photo-count').textContent = '// ' + count + ' Frame' + (count !== 1 ? 's' : '');
+    // Frame count
+    document.getElementById('photo-count').textContent = '// ' + totalCount + ' Frames';
   </script>
 
 </body>
