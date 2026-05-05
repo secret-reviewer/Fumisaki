@@ -551,14 +551,34 @@ images.forEach((id, index) => {
   const wrap = document.createElement("div");
   wrap.className = "gallery-item-wrap";
 
+if (isVideo) {
+  wrap.innerHTML = `
+    <video class="gallery-item" muted playsinline preload="metadata">
+      <source src="${url}" type="video/mp4">
+    </video>
+    <div class="gallery-overlay"></div>
+    <div class="gallery-label">// Clip ${index + 1}</div>
+  `;
+} else {
   wrap.innerHTML = `
     <img src="${url}" class="gallery-item" loading="lazy" />
     <div class="gallery-overlay"></div>
     <div class="gallery-label">// Frame ${index + 1}</div>
   `;
+}
 
   wrap.addEventListener("click", function () {
-    document.getElementById('lightbox-img').src = url;
+   const lightboxImg = document.getElementById('lightbox-img');
+
+if (isVideo) {
+  lightboxImg.outerHTML = `
+    <video id="lightbox-img" controls autoplay style="max-width:90vw; max-height:85vh;">
+      <source src="${url}" type="video/mp4">
+    </video>
+  `;
+} else {
+  lightboxImg.src = url;
+}
     document.getElementById('lightbox-caption').textContent = `// SR-FIELD // Frame ${index + 1}`;
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
