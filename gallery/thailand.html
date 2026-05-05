@@ -506,28 +506,23 @@
       });
     });
 
-    var lightbox    = document.getElementById('lightbox');
-    var lightboxImg = document.getElementById('lightbox-img');
-    var lightboxCap = document.getElementById('lightbox-caption');
-    document.querySelectorAll('.gallery-item-wrap').forEach(function (wrap) {
-      wrap.addEventListener('click', function () {
-        lightboxImg.src = wrap.getAttribute('data-src');
-        lightboxImg.alt = wrap.getAttribute('data-caption');
-        lightboxCap.textContent = wrap.getAttribute('data-caption');
-        lightbox.classList.add('open');
-        document.body.style.overflow = 'hidden';
-      });
+    // Close lightbox on Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        var lb = document.getElementById('lightbox');
+        lb.classList.remove('open');
+        document.body.style.overflow = '';
+      }
     });
-    document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', function (e) { if (e.target === lightbox) closeLightbox(); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLightbox(); });
-    function closeLightbox() {
-      lightbox.classList.remove('open');
-      document.body.style.overflow = '';
-      setTimeout(function () { lightboxImg.src = ''; }, 300);
-    }
 
-    
+    // Close lightbox on backdrop click
+    document.getElementById('lightbox').addEventListener('click', function (e) {
+      if (e.target === this) {
+        this.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+
 const groups = [
   {
     title: "2012 // Thailand // Archive Entry",
@@ -594,6 +589,9 @@ const groups = [
     ]
   }
 ];
+
+// Flatten all group items into a single images array
+const images = groups.flatMap(g => g.items);
 
 const gallery = document.getElementById("gallery-grid");
 
