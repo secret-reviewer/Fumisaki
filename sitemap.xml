@@ -34,6 +34,11 @@
     <priority>0.7</priority>
   </url>
 
+    <url>
+    <loc>https://secret-reviewer.com/overseas/malaysia/</loc>
+    <priority>0.7</priority>
+  </url>
+
   <url>
     <loc>https://secret-reviewer.com/beyond-riding/</loc>
     <priority>0.6</priority>
@@ -44,4 +49,29 @@
     <priority>0.7</priority>
   </url>
 
+   <url>
+    <loc>https://secret-reviewer.com/unexplained/hotel/</loc>
+    <priority>0.7</priority>
+  </url>
+
+   <url>
+    <loc>https://secret-reviewer.com/unexplained/malaysia/</loc>
+    <priority>0.7</priority>
+  </url>
+
+   <url>
+    <loc>https://secret-reviewer.com/unexplained/nightride/</loc>
+    <priority>0.7</priority>
+  </url>
+
+   <url>
+    <loc>https://secret-reviewer.com/unexplained/personal/</loc>
+    <priority>0.7</priority>
+  </url>
+
+   <url>
+    <loc>https://secret-reviewer.com/unexplained/thailand/</loc>
+    <priority>0.7</priority>
+  </url>
+  
 </urlset>
