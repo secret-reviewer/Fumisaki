@@ -3,1797 +3,586 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Unexplained Logs | Secret Reviewer</title>
+  <title>Unexplained // Field Archive | Secret Reviewer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Barlow Condensed', 'sans-serif'],
-            mono: ['"Share Tech Mono"', 'monospace'],
-            prose: ['"IBM Plex Sans"', 'sans-serif'],
-          },
-        },
-      },
+      theme: { extend: { fontFamily: {
+        sans: ['Barlow Condensed','sans-serif'],
+        mono: ['"Share Tech Mono"','monospace'],
+        prose: ['"IBM Plex Sans"','sans-serif'],
+      }}}
     };
   </script>
   <style>
     :root {
-  --red: #dc2626;
-  --red-dim: rgba(220, 38, 38, 0.15);
-  --red-glow: rgba(220, 38, 38, 0.6);
-
-  --violet: var(--red);
-  --violet-dim: var(--red-dim);
-  --violet-glow: var(--red-glow);
-
-  --bg: #060606;
-  --surface: rgba(10, 10, 10, 0.85);
-}
-
+      --red: #dc2626;
+      --red-dim: rgba(220,38,38,0.15);
+      --red-glow: rgba(220,38,38,0.6);
+      --bg: #060606;
+    }
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       background-color: var(--bg);
       color: #ececec;
       font-family: 'Barlow Condensed', sans-serif;
-      margin: 0;
-      overflow-x: hidden;
-      cursor: none;
-      line-height: 1.75;
+      margin: 0; overflow-x: hidden; cursor: none; line-height: 1.75;
     }
     .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
-    .font-prose { font-family: 'IBM Plex Sans', sans-serif; }
 
-    /* ── Custom Cursor ── */
+    /* Cursor */
     #cursor {
-      position: fixed;
-      width: 12px; height: 12px;
-      background: var(--red);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 99999;
-      transform: translate(-50%, -50%);
-      transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
-      mix-blend-mode: screen;
+      position: fixed; width: 12px; height: 12px;
+      background: var(--red); border-radius: 50%;
+      pointer-events: none; z-index: 99999;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s; mix-blend-mode: screen;
     }
     #cursor-ring {
-      position: fixed;
-      width: 36px; height: 36px;
-      border: 1px solid rgba(220,38,38,0.5);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 99998;
-      transform: translate(-50%, -50%);
-      transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+      position: fixed; width: 36px; height: 36px;
+      border: 1px solid rgba(220,38,38,0.5); border-radius: 50%;
+      pointer-events: none; z-index: 99998;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, border-color .2s;
     }
 
-    /* ── Animations ── */
-    @keyframes flicker {
-      0%,18%,22%,25%,53%,57%,100% { opacity: 1; }
-      20%,24%,55% { opacity: 0.3; }
-    }
-    @keyframes pulse-red {
-      0%,100% { box-shadow: 0 0 6px rgba(220,38,38,0.3); }
-      50%      { box-shadow: 0 0 28px rgba(220,38,38,0.8), 0 0 60px rgba(220,38,38,0.25); }
-    }
-    @keyframes pulse-red {
-      0%,100% { box-shadow: 0 0 6px rgba(220,38,38,0.3); }
-      50%      { box-shadow: 0 0 28px rgba(220,38,38,0.8), 0 0 60px rgba(220,38,38,0.25); }
-    }
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse-dot {
-      0%,100% { opacity: 1; }
-      50%      { opacity: 0.3; }
-    }
-    @keyframes scan {
-      from { top: -100%; }
-      to   { top: 100%; }
-    }
-    @keyframes shimmer {
-      0%   { background-position: -200% center; }
-      100% { background-position: 200% center; }
-    }
-    @keyframes folderOpen {
-      from { opacity: 0; transform: translateY(16px); filter: blur(4px); }
-      to   { opacity: 1; transform: translateY(0);  filter: blur(0); }
-    }
-    @keyframes glitch-1 {
-      0%,100% { clip-path: inset(0 0 98% 0);  transform: translate(-2px,0); }
-      20%     { clip-path: inset(20% 0 50% 0); transform: translate(2px,0); }
-      40%     { clip-path: inset(60% 0 20% 0); transform: translate(-2px,0); }
-      60%     { clip-path: inset(80% 0 5% 0);  transform: translate(2px,0); }
-      80%     { clip-path: inset(40% 0 60% 0); transform: translate(-2px,0); }
-    }
-    @keyframes glitch-2 {
-      0%,100% { clip-path: inset(50% 0 30% 0); transform: translate(2px,0);  color:#00ffff; }
-      25%     { clip-path: inset(10% 0 80% 0); transform: translate(-2px,0); }
-      50%     { clip-path: inset(70% 0 10% 0); transform: translate(2px,0);  color:var(--violet); }
-      75%     { clip-path: inset(30% 0 50% 0); transform: translate(-2px,0); }
-    }
-    @keyframes borderFlash {
-      0%,100% { border-color: rgba(220,38,38,0.15); }
-      50%     { border-color: rgba(220,38,38,0.5); }
-    }
-    @keyframes staticNoise {
-      0%   { opacity: 0.03; }
-      25%  { opacity: 0.05; }
-      50%  { opacity: 0.02; }
-      75%  { opacity: 0.06; }
-      100% { opacity: 0.03; }
-    }
-    @keyframes breathe {
-      0%,100% { opacity: 0.04; transform: scale(1); }
-      50%     { opacity: 0.07; transform: scale(1.02); }
-    }
+    /* Animations */
+    @keyframes scan { from{top:-100%} to{top:100%} }
+    @keyframes fadeSlideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse-red { 0%,100%{box-shadow:0 0 6px rgba(220,38,38,0.3)} 50%{box-shadow:0 0 28px rgba(220,38,38,0.8),0 0 60px rgba(220,38,38,0.25)} }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    @keyframes staticNoise { 0%{opacity:.03} 25%{opacity:.05} 50%{opacity:.02} 75%{opacity:.06} 100%{opacity:.03} }
+    @keyframes glitch-1 { 0%,100%{clip-path:inset(0 0 98% 0);transform:translate(-2px,0)} 20%{clip-path:inset(20% 0 50% 0);transform:translate(2px,0)} 40%{clip-path:inset(60% 0 20% 0);transform:translate(-2px,0)} 60%{clip-path:inset(80% 0 5% 0);transform:translate(2px,0)} 80%{clip-path:inset(40% 0 60% 0);transform:translate(-2px,0)} }
+    @keyframes glitch-2 { 0%,100%{clip-path:inset(50% 0 30% 0);transform:translate(2px,0);color:#00ffff} 25%{clip-path:inset(10% 0 80% 0);transform:translate(-2px,0)} 50%{clip-path:inset(70% 0 10% 0);transform:translate(2px,0);color:var(--red)} 75%{clip-path:inset(30% 0 50% 0);transform:translate(-2px,0)} }
+    @keyframes cardReveal { from{opacity:0;transform:translateY(20px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+    @keyframes borderPulse { 0%,100%{border-color:rgba(220,38,38,0.15)} 50%{border-color:rgba(220,38,38,0.45)} }
 
-    .animate-pulse-red  { animation: pulse-red 2.5s infinite; }
-    .animate-pulse-red     { animation: pulse-red 2.5s infinite; }
-    .animate-pulse-dot     { animation: pulse-dot 2s infinite; }
     .animate-fade-slide-up { animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
-    .animate-border-flash  { animation: borderFlash 3s infinite; }
+    .animate-pulse-red { animation: pulse-red 2.5s infinite; }
 
-    /* ── CRT scanlines + sweep ── */
+    /* CRT */
     body::before {
-      content: "";
-      position: fixed; inset: 0;
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
-      pointer-events: none;
-      z-index: 9990;
+      content:""; position:fixed; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);
+      pointer-events:none; z-index:9990;
     }
     body::after {
-      content: "";
-      position: fixed; top: -100%; left: 0;
-      width: 100%; height: 100%;
-      background: linear-gradient(rgba(220,38,38,0) 0%, rgba(220,38,38,0.03) 50%, rgba(220,38,38,0) 100%);
-      animation: scan 12s linear infinite;
-      pointer-events: none;
-      z-index: 9991;
+      content:""; position:fixed; top:-100%; left:0; width:100%; height:100%;
+      background:linear-gradient(rgba(220,38,38,0) 0%,rgba(220,38,38,0.03) 50%,rgba(220,38,38,0) 100%);
+      animation:scan 12s linear infinite; pointer-events:none; z-index:9991;
     }
 
-    /* ── Progress bar ── */
+    /* Progress bar */
     #progress-bar {
-      height: 3px;
-      background: linear-gradient(90deg, #4c1d95, #dc2626, #f87171);
-      box-shadow: 0 0 12px rgba(220,38,38,0.9), 0 0 24px rgba(220,38,38,0.4);
-      width: 0%;
-      transition: width 0.08s ease-out;
+      height:3px;
+      background:linear-gradient(90deg,#4c1d95,#dc2626,#f87171);
+      box-shadow:0 0 12px rgba(220,38,38,0.9),0 0 24px rgba(220,38,38,0.4);
+      width:0%; transition:width .08s ease-out;
     }
 
-    /* ── Navbar ── */
-    #navbar { transition: background 0.4s ease, border-color 0.4s ease; }
+    /* Navbar */
+    #navbar { transition:background .4s,border-color .4s; }
     .nav-scrolled {
-      background: rgba(4,4,4,0.96) !important;
-      border-bottom-color: rgba(76,29,149,0.4) !important;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background:rgba(4,4,4,0.96) !important;
+      border-bottom-color:rgba(76,29,149,0.4) !important;
+      backdrop-filter:blur(20px);
     }
 
-    /* ── Story content typography ── */
-    .story-content {
-      font-size: 1.1rem;
-      letter-spacing: 0.01em;
-      margin-bottom: 1.5rem;
-      color: #d0d0d0;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 400;
-      line-height: 1.85;
-    }
-    .story-content p { margin: 0 0 1.6em 0; }
-    .story-content h2 {
-      color: #f87171; /* lighter red accent */
-      margin-top: 52px;
-      text-transform: uppercase;
-      font-size: 0.82rem;
-      font-family: 'Share Tech Mono', monospace;
-      letter-spacing: 3px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      padding-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .story-content h2::before { content: "—"; opacity: 0.4; }
-    .story-content h3 {
-      color: #fff;
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin: 36px 0 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .story-content ul {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 1.6em 0;
-    }
-    .story-content ul li {
-      position: relative;
-      padding-left: 22px;
-      margin-bottom: 14px;
-      color: #bbb;
-      font-size: 1.05rem;
-      line-height: 1.8;
-    }
-    .story-content ul li::before {
-      content: "▶";
-      position: absolute;
-      left: 0;
-      color: #dc2626;
-      font-size: 0.6rem;
-      top: 6px;
-      opacity: 0.7;
-    }
-    .story-content strong { color: #fff; font-weight: 700; }
-
-    /* ── Lead paragraph ── */
-    .lead {
-      font-size: 1.15rem;
-      color: #999;
-      margin-bottom: 40px;
-      border-left: 2px solid #dc2626;
-      padding-left: 20px;
-      font-style: italic;
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-weight: 400;
-      line-height: 1.8;
-    }
-
-    /* ── Atmospheric prose — sparse, short lines ── */
-    .atmosphere-prose {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 1.05rem;
-      color: #aaa;
-      line-height: 2.1;
-      letter-spacing: 0.01em;
-    }
-    .atmosphere-prose p {
-      margin: 0 0 0.5em 0;
-    }
-    .atmosphere-prose p.pause {
-      color: #666;
-      font-size: 0.9rem;
-      letter-spacing: 0.2em;
-      margin: 1.4em 0;
-    }
-    .atmosphere-prose p.emphasis {
-      color: #e0e0e0;
-      font-weight: 500;
-    }
-    .atmosphere-prose p.closing {
-      color: #777;
-      font-size: 0.95rem;
-      margin-top: 2em;
-      font-style: italic;
-    }
-
-    /* ── Tag pill ── */
-    .tag {
-      display: inline-block;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.75rem;
-      color: #f87171; /* lighter red accent */
-      text-transform: uppercase;
-      border: 1px solid rgba(220,38,38,0.4);
-      padding: 5px 14px;
-      letter-spacing: 2px;
-      background: rgba(220,38,38,0.06);
-    }
-
-    /* ── Entry title ── */
-    .entry-title {
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      font-weight: 900;
-      margin: 22px 0 10px;
-      color: #fff;
-      line-height: 1.0;
-      text-transform: uppercase;
-      letter-spacing: -0.02em;
-    }
-
-    /* ── Featured image / atmospheric visual ── */
-    .featured-image {
-      width: 100%;
-      height: 420px;
-      background: linear-gradient(135deg, #06060a 0%, #0a080f 50%, #060609 100%);
-      border: 1px solid rgba(220,38,38,0.2);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 60px rgba(220,38,38,0.04);
-      position: relative;
-      overflow: hidden;
-      margin: 32px 0;
-    }
-    .featured-image::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg, transparent, transparent 3px,
-        rgba(220,38,38,0.012) 3px, rgba(220,38,38,0.012) 4px
-      );
-      pointer-events: none;
-    }
-    .featured-image .img-watermark {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      opacity: 0.05;
-      font-size: 8rem;
-      animation: breathe 6s ease-in-out infinite;
-    }
-    .featured-image-label {
-      position: absolute;
-      bottom: 12px; left: 12px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.65rem;
-      color: rgba(220,38,38,0.5);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    .featured-image::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 40px; height: 40px;
-      border-top: 1px solid rgba(220,38,38,0.4);
-      border-left: 1px solid rgba(220,38,38,0.4);
-      pointer-events: none;
-      z-index: 2;
-    }
-    .featured-image .corner-br {
-      position: absolute; bottom: 0; right: 0;
-      width: 40px; height: 40px;
-      border-bottom: 1px solid rgba(220,38,38,0.4);
-      border-right: 1px solid rgba(220,38,38,0.4);
-      pointer-events: none; z-index: 2;
-    }
-
-    /* ── Log entry animation ── */
-    .log-entry { animation: folderOpen 0.6s cubic-bezier(0.22,1,0.36,1) both; }
-
-    /* ── Decrypt scramble effect ── */
-    .decrypting {
-      color: #fff !important;
-      background: var(--red) !important;
-      letter-spacing: 4px !important;
-      text-shadow: 2px 0 #00fff9, -2px 0 #ff00c1;
-    }
-
-    /* ── Nav buttons ── */
-    .nav-btn {
-      background: transparent;
-      color: #f87171; /* lighter red accent */
-      border: 1px solid rgba(220,38,38,0.5);
-      padding: 14px 28px;
-      font-family: 'Share Tech Mono', monospace;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 0.78rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .nav-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--red);
-      transform: translateX(-100%);
-      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-    }
-    .nav-btn:hover::before  { transform: translateX(0); }
-    .nav-btn:hover { color: #fff; box-shadow: 0 0 20px rgba(220,38,38,0.35); }
-    .nav-btn span { position: relative; z-index: 1; }
-    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-    .nav-btn:disabled::before { display: none; }
-
-    /* ── Page counter ── */
-    .page-counter {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.75rem;
-      color: #444;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      align-self: center;
-    }
-    .page-counter span { color: #f87171; /* lighter red accent */ }
-
-    /* ── Section dividers ── */
-    .section-rule {
-      border: none;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(220,38,38,0.3), transparent);
-      margin: 48px 0;
-    }
-
-    /* ── Glitch title ── */
-    .glitch-wrap { position: relative; display: inline-block; }
+    /* Glitch title */
+    .glitch-wrap { position:relative; display:inline-block; }
     .glitch-wrap::before, .glitch-wrap::after {
-      content: attr(data-text);
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
+      content:attr(data-text); position:absolute; top:0; left:0; width:100%; height:100%;
     }
-    .glitch-wrap::before { color: #00ffff; animation: glitch-1 6s infinite step-start; opacity: 0.6; }
-    .glitch-wrap::after  { color: #f87171; /* lighter red accent */ animation: glitch-2 6s infinite step-start; opacity: 0.6; }
+    .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
+    .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
 
-    /* ── Load more / intel button style ── */
-    .load-more-style {
-      background: transparent;
-      color: #f87171; /* lighter red accent */
-      border: 1px solid rgba(220,38,38,0.4);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      padding: 10px 22px;
-      transition: background 0.25s, color 0.25s;
+    /* Section rule */
+    .section-rule {
+      border:none; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(220,38,38,0.3),transparent);
+      margin:48px 0;
     }
-    .load-more-style:hover { background: var(--red); color: #fff; }
 
-    /* ── Unexplained callout box ── */
-    .signal-box {
-      background: rgba(220,38,38,0.05);
-      border: 1px solid rgba(220,38,38,0.3);
-      border-left: 3px solid #dc2626;
-      padding: 14px 18px;
-      margin: 20px 0;
-      font-size: 0.95rem;
-      color: #bbb;
-      font-family: 'Share Tech Mono', monospace;
-    }
-    .signal-box strong { color: #f87171; /* lighter red accent */ }
-
-    /* ── Rider notes block ── */
-    .rider-notes {
-      background: rgba(10,10,10,0.8);
-      border: 1px solid rgba(255,255,255,0.06);
-      padding: 20px;
-      margin: 20px 0;
-    }
-    .rider-notes h5 {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.7rem;
-      color: #dc2626;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin: 0 0 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      padding-bottom: 8px;
-    }
-    .rider-notes ul { list-style: none; padding: 0; margin: 0; }
-    .rider-notes ul li {
-      font-size: 0.88rem;
-      color: #888;
-      padding: 5px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.03);
-      font-family: 'Share Tech Mono', monospace;
-    }
-    .rider-notes ul li::before { content: "> "; color: #dc2626; }
-
-    /* ── Field data grid ── */
-    .field-grid {
-      display: grid;
-      grid-template-columns: 140px 1fr;
-      gap: 0;
-      background: rgba(10,10,10,0.7);
-      border: 1px solid rgba(220,38,38,0.15);
-      margin: 28px 0;
-      font-family: 'Share Tech Mono', monospace;
-      overflow: hidden;
-      animation: borderFlash 3s infinite;
-    }
-    .field-grid > div {
-      padding: 12px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      font-size: 0.85rem;
-    }
-    .field-grid > div:last-child,
-    .field-grid > div:nth-last-child(2) { border-bottom: none; }
-    .field-grid > div:nth-child(odd) {
-      color: #f87171; /* lighter red accent */
-      font-weight: bold;
-      font-size: 0.8rem;
-      border-right: 1px solid rgba(220,38,38,0.1);
-      background: rgba(220,38,38,0.03);
-    }
-    .field-grid > div:nth-child(even) { color: #999; }
-
-    /* ── Noise texture overlay ── */
+    /* Noise overlay */
     .noise-overlay {
-      position: absolute;
-      inset: 0;
-      opacity: 0.025;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-      background-size: 128px;
-      animation: staticNoise 4s step-start infinite;
+      position:absolute; inset:0; opacity:.025; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size:128px; animation:staticNoise 4s step-start infinite;
     }
+
+    /* ── Section cards ── */
+    .section-card {
+      position: relative;
+      border: 1px solid rgba(220,38,38,0.18);
+      background: rgba(10,10,10,0.9);
+      overflow: hidden;
+      transition: border-color 0.35s, transform 0.35s, box-shadow 0.35s;
+      animation: cardReveal 0.6s cubic-bezier(0.22,1,0.36,1) both;
+      text-decoration: none;
+      display: block;
+    }
+    .section-card:hover {
+      border-color: rgba(220,38,38,0.55);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 30px rgba(220,38,38,0.08);
+    }
+    .section-card::before {
+      content:''; position:absolute; top:0; left:0;
+      width:36px; height:36px;
+      border-top:1px solid rgba(220,38,38,0.5);
+      border-left:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .section-card::after {
+      content:''; position:absolute; bottom:0; right:0;
+      width:36px; height:36px;
+      border-bottom:1px solid rgba(220,38,38,0.5);
+      border-right:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .section-card .card-bg {
+      position:absolute; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.008) 3px,rgba(220,38,38,0.008) 4px);
+      pointer-events:none;
+    }
+    .section-card .card-glow {
+      position:absolute; inset:0; pointer-events:none;
+      opacity:0; transition:opacity 0.4s;
+    }
+    .section-card:hover .card-glow { opacity:1; }
+
+    /* Log count badge */
+    .log-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.72rem; letter-spacing:2px;
+      color:#f87171; border:1px solid rgba(220,38,38,0.35);
+      background:rgba(220,38,38,0.07);
+      padding:4px 12px; text-transform:uppercase;
+    }
+
+    /* Tag */
+    .tag {
+      display:inline-block; font-family:'Share Tech Mono',monospace;
+      font-size:0.72rem; color:#f87171; text-transform:uppercase;
+      border:1px solid rgba(220,38,38,0.4); padding:4px 12px;
+      letter-spacing:2px; background:rgba(220,38,38,0.06);
+    }
+
+    /* Preview snippet */
+    .preview-snippet {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#777; line-height:1.75;
+      font-style:italic;
+      border-left:2px solid rgba(220,38,38,0.3);
+      padding-left:14px; margin:0;
+    }
+
+    /* Access button */
+    .access-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.72rem; letter-spacing:2px; text-transform:uppercase;
+      color:#f87171; border:1px solid rgba(220,38,38,0.4);
+      padding:10px 20px; background:transparent;
+      transition:background .25s, color .25s, box-shadow .25s;
+      text-decoration:none;
+    }
+    .access-btn:hover {
+      background:var(--red); color:#fff;
+      box-shadow:0 0 20px rgba(220,38,38,0.35);
+    }
+
+    /* Individual log preview */
+    .log-preview {
+      border-bottom:1px solid rgba(255,255,255,0.04);
+      padding:18px 0;
+    }
+    .log-preview:last-child { border-bottom:none; }
+    .log-preview-title {
+      font-size:1.1rem; font-weight:700; color:#e0e0e0;
+      text-transform:uppercase; letter-spacing:0.03em;
+      margin:0 0 6px 0; line-height:1.2;
+    }
+
+    /* Stats bar */
+    .stat-item {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.7rem; color:#444; letter-spacing:2px;
+      text-transform:uppercase; display:flex; flex-direction:column; gap:4px;
+    }
+    .stat-item span { color:#f87171; font-size:1.4rem; font-weight:700; letter-spacing:-1px; }
+
+    /* Signal line */
+    .signal-line {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.68rem; color:rgba(220,38,38,0.4);
+      letter-spacing:2px; text-transform:uppercase;
+      display:flex; align-items:center; gap:8px;
+    }
+    .signal-line::before {
+      content:''; display:block; width:24px; height:1px;
+      background:rgba(220,38,38,0.4); flex-shrink:0;
+    }
+
+    /* Delay utilities */
+    .delay-1 { animation-delay:.1s }
+    .delay-2 { animation-delay:.2s }
+    .delay-3 { animation-delay:.3s }
+    .delay-4 { animation-delay:.4s }
+    .delay-5 { animation-delay:.5s }
   </style>
 </head>
 <body>
 
-<!-- Custom cursor -->
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
-<!-- Progress bar -->
 <div class="fixed top-0 left-0 w-full z-[9999]">
   <div id="progress-bar"></div>
 </div>
 
-<!-- ════ NAVBAR ════ -->
-<nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
-  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
-
-    <!-- Logo -->
-    <a href="/" class="flex items-center gap-2 group">
-      <div class="w-7 h-7 border border-red-600 flex items-center justify-center group-hover:bg-red-600/20 transition-all duration-300">
-        <span class="text-red-500 text-xs font-mono-tech font-bold">SR</span>
+  <!-- ════ NAVBAR ════ -->
+  <nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+    <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+          <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+        <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+        <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          YouTube
+        </a>
       </div>
-      <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
-    </a>
-
-    <!-- Desktop links -->
-    <div class="hidden md:flex items-center gap-8">
-      <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
-      <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
-      <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
-      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
-         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        YouTube
-      </a>
+      <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+        <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
     </div>
-
-    <!-- Mobile toggle -->
-    <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
-      <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
-      <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
-        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </button>
-  </div>
-
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
-    <div class="flex flex-col px-5 py-4 gap-4">
-      <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
-      <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
-      <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
-      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
-         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        YouTube
-      </a>
+    <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
+      <div class="flex flex-col px-5 py-4 gap-4">
+        <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+        <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+        <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          YouTube
+        </a>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
 <!-- ════ MAIN ════ -->
 <main class="pt-28 pb-24 px-5">
-  <div class="max-w-3xl mx-auto">
+  <div class="max-w-4xl mx-auto">
 
     <!-- Page header -->
-    <div class="mb-12 animate-fade-slide-up" style="position:relative;">
+    <div class="mb-14 animate-fade-slide-up" style="position:relative;">
       <div class="noise-overlay"></div>
-      <p class="font-mono-tech text-violet-400/60 text-xs tracking-[0.4em] uppercase mb-4" style="color:rgba(167,139,250,0.6);">// Unexplained Field Logs — Unrated</p>
-      <h1 class="text-5xl sm:text-7xl font-black uppercase leading-none tracking-tight text-white mb-4">
+
+      
+      <p class="font-mono-tech text-xs tracking-[0.4em] uppercase mb-4" style="color:rgba(167,139,250,0.6);">// Classified Field Archive — Rider Documentation</p>
+      <h1 class="font-black uppercase leading-none tracking-tight text-white mb-4" style="font-size:clamp(3.5rem,10vw,6rem);">
         <span class="glitch-wrap" data-text="UNEXPLAINED">UNEXPLAINED</span>
       </h1>
       <p class="font-mono-tech text-gray-600 text-xs tracking-widest mt-4">
-        <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#dc2626; animation: pulse-dot 2s infinite;"></span>
-        14 LOGS DOCUMENTED // CANNOT BE RATED // RIDER EXPERIENCES
+        <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+        14 LOGS DOCUMENTED // UNRATED // CANNOT BE EXPLAINED
       </p>
-      <p class="mt-5 text-gray-500 text-base leading-relaxed max-w-xl" style="font-family:'IBM Plex Sans',sans-serif; font-style:italic;">
-        Some things don't give ratings. I review places, experiences, and moments. Some of them… can't be rated.
+      <p class="mt-5 text-gray-500 text-base leading-relaxed max-w-2xl" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">
+        These are not ghost stories. They are field logs — documented exactly as they happened, across years of riding through Singapore, Malaysia, and Thailand. Some have no explanation. Some I am still thinking about. None were written for entertainment.
       </p>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="flex gap-10 mb-14 pl-1">
+      <div class="stat-item"><span>14</span>Total Logs</div>
+      <div class="stat-item"><span>5</span>Sections</div>
+      <div class="stat-item"><span>3</span>Countries</div>
+      <div class="stat-item"><span>0</span>Ratings</div>
     </div>
 
     <hr class="section-rule" />
 
-    <!-- ════ LOG ENTRIES ════ -->
-    <div id="log-container">
+    <!-- ════ SECTION CARDS ════ -->
+    <p class="font-mono-tech text-xs text-gray-600 tracking-[0.35em] uppercase mb-8">// Browse by Territory</p>
 
-      <!-- ══ LOG 1: The Sudden Passenger ══ -->
-      <div class="log-entry">
-        <span class="tag">Unexplained Log #003</span>
-        <h1 class="entry-title">The Sudden Passenger</h1>
-        <p class="lead">It was past midnight. The roads were empty. I was riding alone — or at least, I thought I was. The pillion stand was down. I hadn't noticed.</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
 
-        <div class="featured-image">
-          <div class="noise-overlay"></div>
-          <div class="img-watermark">🏍️</div>
-          <div class="featured-image-label">// SR-UNX-003 // Midnight // Singapore Roads</div>
-          <div class="corner-br"></div>
-          <!-- Atmospheric lines -->
-          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 60% 50% at 50% 50%, rgba(220,38,38,0.06) 0%, transparent 70%);pointer-events:none;"></div>
-        </div>
+      <!-- Malaysia -->
+      <a href="/unexplained/malaysia/" class="section-card delay-1" style="animation-delay:.05s;">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 20% 30%, rgba(220,38,38,0.06) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
 
-        <div class="story-content">
-          <h2>Context</h2>
-          <p>Every rider knows the pillion footrest. You fold it up when you're solo — it's just habit. But that night I'd parked up earlier, had a friend sit behind briefly for a photo, and when he hopped off, neither of us bothered to fold it back up. Small thing. Forgotten.</p>
-          <p>I left solo. Pillion stand still extended. The bike — without knowing it — was still configured to welcome someone.</p>
+                <!-- Malaysia IMAGE -->
+<div class="relative h-64 overflow-hidden border-b border-red-900/20">
+  <img
+    src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778216562/malaysia_kbn6ci.png"
+    alt="Malaysia Archive"
+    class="w-full h-full object-cover grayscale contrast-110 brightness-90 transition-transform duration-700 hover:scale-105"
+  />
 
-          <h2>What Happened</h2>
-          <div class="atmosphere-prose">
-            <p>Five, maybe ten minutes into the ride, the bike started feeling different.</p>
-            <p class="pause">. . .</p>
-            <p>Not mechanically. The engine was fine. RPM steady. Speed wasn't climbing unusually. But there was a weight — a drag — a resistance that wasn't there when I left.</p>
-            <p>I checked my mirrors instinctively. Nothing.</p>
-            <p>But the feeling stayed.</p>
-            <p class="pause">. . .</p>
-            <p>Then the screaming started.</p>
-            <p>Not a person. The bike. The engine note shifted — not like it was revving harder, but like it was straining against something. Like it was carrying a load it hadn't been told about. RPM and speed were both reading normal, but the sound… wasn't right. It was working too hard for the numbers it was showing.</p>
-            <p>I've ridden long enough to know when a bike sounds wrong. This was wrong.</p>
-            <p class="pause">. . .</p>
-            <p>I pulled over at the next stretch of road shoulder. Killed the engine.</p>
-            <p>Sat there. Looked behind me.</p>
-            <p class="emphasis">Nothing.</p>
-            <p>No person. No object. Nothing physically there.</p>
-            <p>That's when I noticed the pillion stand — still down. Open. Extended like an invitation.</p>
-            <p>I don't know what came over me, but I spoke out loud. Just a few words. Something along the lines of — <em>I'm sorry, I didn't know you were there. This ride's done. You need to go now.</em></p>
-            <p>I folded the stand up.</p>
-            <p>Started the engine.</p>
-            <p class="pause">. . .</p>
-            <p>The bike felt lighter immediately. The engine note returned to normal — clean, smooth, nothing extra in it. The resistance was gone. Whatever weight I'd been carrying, it wasn't there anymore.</p>
-            <p>I rode home without incident.</p>
-          </div>
+  <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+</div>
 
-          <h2>Field Data</h2>
-          <div class="field-grid">
-            <div>Time</div><div>Past midnight — road was empty</div>
-            <div>Location</div><div>Singapore, stretch of quiet road</div>
-            <div>Symptom</div><div>Engine straining, abnormal note — RPM and speed reading normal</div>
-            <div>Trigger</div><div>Pillion footrest left extended (open / accepting position)</div>
-            <div>Resolution</div><div>Verbal acknowledgement, folded up pillion stand</div>
-            <div>After</div><div>Bike returned to normal immediately. No mechanical fault found.</div>
-          </div>
-
-          <h2>Rider's Note</h2>
-          <p>I've heard this story from other riders before. It's one of those things that gets passed around in kopitiam conversations — fold up your pillion stand when you're riding solo, especially at night. Not because of aerodynamics. For another reason entirely. I always thought it was superstition.</p>
-          <p>I don't call it that anymore.</p>
-
-          <div class="signal-box">
-            <strong>// SIGNAL RECORDED:</strong> Engine behaviour returned to baseline immediately after pillion stand was folded and verbal acknowledgement was made. No mechanical cause was identified before or after the incident.
-          </div>
-
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx003" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
-                <h4 class="font-bold uppercase mb-2" style="color:#f87171; /* lighter red accent */">Additional Field Notes: The Sudden Passenger</h4>
-                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Mechanical Anomaly / Road Encounter</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[PILLION STAND LORE]</strong> Among older riders in Malaysia and Singapore, there is a well-known practice: never ride with your pillion stand down unless you have a pillion. The belief is that an extended stand signals vacancy — and on certain roads, at certain hours, something may decide to fill that space.</p>
-                <p><strong>[ENGINE BEHAVIOUR]</strong> Under normal load changes, RPM and speed adjust together. A situation where the engine sounds strained but instruments read normal is not a standard mechanical failure pattern. It suggests the load was not physical in any conventional sense.</p>
-                <p><strong>[THE APOLOGY]</strong> Multiple accounts from riders across Southeast Asia describe the same resolution — acknowledging the presence, apologising for the inconvenience, and asking it to leave. Not commanding. Not panicking. Just speaking plainly. It consistently works.</p>
-              </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171; /* lighter red accent */">INCIDENT ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Mechanical cause: None identified</li>
-                  <li>Duration: 5–10 minutes of abnormal behaviour</li>
-                  <li>Resolution method: Verbal + physical (pillion stand folded)</li>
-                </ul>
-              </div>
+        
+        <div class="p-7 relative z-10">
+          <div class="flex items-start justify-between mb-5">
+            <div>
+              <div class="signal-line mb-3">Malaysia Sector</div>
+              <h2 class="text-3xl font-black uppercase text-white tracking-tight leading-none">Malaysia<br/>Logs</h2>
             </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx003', this)" class="load-more-style">
-                ACCESS FULL FIELD NOTES
-              </button>
+            <div class="text-5xl opacity-10 leading-none select-none">MY</div>
+          </div>
+          <div class="space-y-3 mb-6">
+            <div class="log-preview">
+              <p class="log-preview-title">The Route That Wouldn't End</p>
+              <p class="preview-snippet">Two riders. A Nokia 6280. A GPS that kept rerouting deeper inside. And a biker ahead whose gap never once closed.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">The Road That Rejected Us</p>
+              <p class="preview-snippet">A charity convoy to Laos. Cascading failures from the start — carburettor, GPS, crash, piston jam. One by one, the road told us to stop.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">Stay In The Light</p>
+              <p class="preview-snippet">He only asked one thing the entire ride. Keep me inside the light. I still don't know what he saw in those mirrors.</p>
             </div>
           </div>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              3 Logs
+            </span>
+            <span class="access-btn">Enter Archive ▶</span>
+          </div>
         </div>
-      </div>
+      </a>
 
-      <!-- ══ LOG 2: The Angel That Brought Me Home ══ -->
-      <div class="log-entry" style="display:none;">
-        <span class="tag">Unexplained Log #002</span>
-        <h1 class="entry-title">The Angel That Brought Me Home</h1>
-        <p class="lead">Micro-sleep on a bike is a death sentence. Most riders who've hit that wall will tell you about the accidents that followed. I didn't get an accident. I got something else.</p>
+      <!-- Night Ride -->
+      <a href="/unexplained/nightride/" class="section-card delay-2" style="animation-delay:.1s;">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 80% 20%, rgba(220,38,38,0.06) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
+        
+        <!-- Nightride IMAGE -->
+<div class="relative h-64 overflow-hidden border-b border-red-900/20">
+  <img
+    src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778216562/nightride_sipblf.png"
+    alt="Night Ride Archive"
+    class="w-full h-full object-cover grayscale contrast-110 brightness-90 transition-transform duration-700 hover:scale-105"
+  />
 
-        <div class="featured-image">
-          <div class="noise-overlay"></div>
-          <div class="img-watermark">🛣️</div>
-          <div class="featured-image-label">// SR-UNX-002 // Long Haul // Guardian</div>
-          <div class="corner-br"></div>
-          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 50% 60% at 30% 50%, rgba(220,38,38,0.05) 0%, transparent 65%);pointer-events:none;"></div>
-        </div>
+  <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+</div>
 
-        <div class="story-content">
-          <h2>The Danger Most Riders Know</h2>
-          <p>Any rider who has done long distances — especially overnight runs — knows the feeling. It starts subtle. Your eyes get heavy for a fraction of a second. You snap back. You think you're fine. Then it happens again, slightly longer. Then again.</p>
-          <p>Micro-sleep is insidious because you don't know it's happening. One moment you're riding. Then there's a gap. Then you're riding again, slightly further down the road, with no memory of the in-between. On a bike at 90km/h, a two-second gap is 50 metres of uncontrolled machine.</p>
-          <p>I've heard the stories. Rider found unconscious in a ditch. Rider who woke up already on the gravel shoulder with no idea how he got there. Rider who didn't wake up at all. We all know someone who knows someone.</p>
-          <p>That night, I was in the same trap.</p>
-
-          <h2>What I Remember</h2>
-          <div class="atmosphere-prose">
-            <p>It was a long ride back. Hours of highway. Past 2am. I was running on whatever reserves I had left, and they were running out.</p>
-            <p class="pause">. . .</p>
-            <p>I felt the weight on my eyelids. The familiar pull. I was fighting it — sitting up straighter, moving my head, trying to stay sharp.</p>
-            <p>Then — nothing.</p>
-            <p class="pause">. . .</p>
-            <p>Then — I was still on the road. Still moving. Still in my lane.</p>
-            <p>But I wasn't alone anymore.</p>
-            <p class="pause">. . .</p>
-            <p>There was a presence behind me. I can't describe it better than that — a presence. Not a passenger I'd let on. Not a feeling I'd had before. Something behind me, steady, calm. Not threatening. The opposite of threatening. It felt like being guided. Like having a hand on the back of your shoulder, keeping you upright when you'd otherwise list sideways.</p>
-            <p>I don't know how much time passed. But I was alert. Fully, completely alert in a way that made no sense given how exhausted I'd been moments before. The roads were clear. The bike was smooth. I was home before I'd processed what had happened.</p>
-            <p class="pause">. . .</p>
-            <p>I pulled into my carpark. Cut the engine.</p>
-            <p>Sat for a moment.</p>
-            <p>Said thank you. Out loud. To whatever had been there.</p>
-            <p class="emphasis">When I looked behind me — nothing.</p>
-            <p>Not a person. Not a shadow. The seat was empty.</p>
-            <p>But the ride was done, and I was home, and I was alive.</p>
-          </div>
-
-          <h2>Field Data</h2>
-          <div class="field-grid">
-            <div>Time</div><div>Past 2am — long highway return</div>
-            <div>Condition</div><div>Severe fatigue, micro-sleep onset confirmed</div>
-            <div>Duration</div><div>Unknown — gap in memory while in motion</div>
-            <div>Presence</div><div>Felt behind rider — calming, stabilising, non-threatening</div>
-            <div>Physical result</div><div>Remained in lane, no incident, arrived home safely</div>
-            <div>Departure</div><div>After verbal thanks — presence was gone</div>
-          </div>
-
-          <h2>What Other Riders Say</h2>
-          <p>This is not a unique account. Dig into any forum with long-distance riders across Southeast Asia and you'll find versions of this story. The presence. The sudden alertness. The inexplicable safety after a moment that should have ended badly. Some riders call it luck. Some call it instinct.</p>
-          <p>Some call it exactly what it felt like — something that was there when it shouldn't have been, helping when it didn't have to.</p>
-          <p>I'm not going to put a name to it. I'm just going to say it happened, it was real, and I'm grateful.</p>
-
-          <div class="signal-box">
-            <strong>// SIGNAL RECORDED:</strong> Micro-sleep onset confirmed. Rider arrived home safely with no memory of the critical gap. Presence felt throughout — departed upon acknowledgement. No rational explanation found.
-          </div>
-
-          <h2>The Practical Note</h2>
-          <p>Whatever you believe — don't push it. If you're tired enough to micro-sleep, pull over. Petrol station. Road shoulder. Carpark. Rest. No destination is worth that gap in consciousness on two wheels. I was fortunate. Not everyone gets what I got that night.</p>
-          <p>Rest when the road tells you to. And if something ever keeps you upright when you shouldn't be — say thank you.</p>
-
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx002" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
-                <h4 class="font-bold uppercase mb-2" style="color:#f87171; /* lighter red accent */">Additional Field Notes: The Angel That Brought Me Home</h4>
-                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Protective Encounter / Long Distance</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[MICRO-SLEEP SCIENCE]</strong> A micro-sleep episode lasting 2–3 seconds at highway speed covers 50–80 metres with no rider input. On a motorcycle, this typically results in a lane drift or loss of control. Arriving safely in lane after a confirmed micro-sleep event with no corrective action taken by the rider is statistically unusual.</p>
-                <p><strong>[THE ACCOUNTS]</strong> Across rider communities in Malaysia, Thailand, and Singapore, stories of protective presences on long-distance night rides appear with enough frequency that they are not considered isolated incidents. The consistent elements: sudden full alertness after a fatigue collapse, a felt presence, safe arrival, and departure of that presence upon thanks.</p>
-                <p><strong>[THE ADVICE]</strong> Regardless of belief, the rider community consensus remains unchanged — pull over when tired. Whatever protection may exist on the road, it is not a reason to push limits. It is a reminder that some forces take care of you when you cannot care for yourself, and you owe them the respect of not making that necessary.</p>
-              </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171; /* lighter red accent */">INCIDENT ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Risk level at onset: Critical — confirmed micro-sleep while riding</li>
-                  <li>Expected outcome: Loss of control event</li>
-                  <li>Actual outcome: Safe arrival, no incident</li>
-                </ul>
-              </div>
+        
+        <div class="p-7 relative z-10">
+          <div class="flex items-start justify-between mb-5">
+            <div>
+              <div class="signal-line mb-3">Local Sector</div>
+              <h2 class="text-3xl font-black uppercase text-white tracking-tight leading-none">Night Ride<br/>Encounters</h2>
             </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx002', this)" class="load-more-style">
-                ACCESS FULL FIELD NOTES
-              </button>
+            <div class="text-5xl opacity-10 leading-none select-none">🌑</div>
+          </div>
+          <div class="space-y-3 mb-6">
+            <div class="log-preview">
+              <p class="log-preview-title">The Sudden Passenger</p>
+              <p class="preview-snippet">Past midnight. Riding solo. The engine was straining against something. The pillion stand was still down.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">The Angel That Brought Me Home</p>
+              <p class="preview-snippet">Micro-sleep at 2am on a highway. I should not have made it. Something kept me upright until I did.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">The Night I Ended The Ride Early</p>
+              <p class="preview-snippet">My wife called at 11pm. "Tonight feels wrong." I had been thinking the exact same thing the whole ride. I went home early. One rider didn't.</p>
             </div>
           </div>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              5 Logs
+            </span>
+            <span class="access-btn">Enter Archive ▶</span>
+          </div>
         </div>
-      </div>
+      </a>
 
-      <!-- ══ LOG 3: Punggol, Before It Became Punggol ══ -->
-      <div class="log-entry" style="display:none;">
-        <span class="tag">Unexplained Log #001</span>
-        <h1 class="entry-title">Punggol, Before It Became Punggol</h1>
-        <p class="lead">This was before everything was built up. No HDB. No lights. No people. Just one long stretch of road — and the fishing spot at the end that people said you might not feel like leaving.</p>
+      <!-- Thailand -->
+      <a href="/unexplained/thailand/" class="section-card delay-3" style="animation-delay:.15s;">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 20% 80%, rgba(220,38,38,0.06) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
 
-        <div class="featured-image">
-          <div class="noise-overlay"></div>
-          <div class="img-watermark">🎣</div>
-          <div class="featured-image-label">// SR-UNX-001 // Punggol End // Old Singapore</div>
-          <div class="corner-br"></div>
-          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 70% 40% at 50% 80%, rgba(220,38,38,0.04) 0%, transparent 65%);pointer-events:none;"></div>
-        </div>
+        <!-- thailand IMAGE -->
+<div class="relative h-64 overflow-hidden border-b border-red-900/20">
+  <img
+    src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778216562/thailand_szcchi.png"
+    alt="Thailand Archive"
+    class="w-full h-full object-cover grayscale contrast-110 brightness-90 transition-transform duration-700 hover:scale-105"
+  />
 
-        <div class="story-content">
-          <h2>The Place</h2>
-          <p>Old-timers who knew Punggol before the development will understand what I'm describing. There was a version of Punggol that no longer exists — a dark, quiet stretch of land at the northeastern edge of Singapore. Kampung houses. Dirt paths. And at the very end of it all, a fishing spot that sat right at the water's edge.</p>
-          <p>The road in was long and straight and unlit. No streetlamps in those days. You drove or rode in on faith and whatever headlights you had, and the darkness on either side of you was complete.</p>
-          <p>People talked about that place. Not loudly — but they talked. The specific thing they said was this: <em>if you go there late enough, you won't feel like walking back.</em></p>
-          <p>I heard it from a few different people. Old uncles, a couple of older riders. Always said the same way — not as a warning exactly, more like a fact. The way you'd say: don't lean into a corner if you haven't checked your tyres. Just something you know.</p>
-          <p>I didn't believe it.</p>
-          <p>So one night, I went anyway.</p>
-
-          <h2>Going In</h2>
-          <div class="atmosphere-prose">
-            <p>I rode in late. Well past the hour where anyone sensible would be there.</p>
-            <p>The road was exactly as described — long, straight, empty. My headlight carved a tunnel through the dark. The trees on either side were old growth, thick canopy, the kind that blocks even starlight.</p>
-            <p>Didn't think much of it at first. Same as any other quiet place, I told myself. Just darker.</p>
-            <p>I parked at the end. Walked to the water. Sat there.</p>
-            <p class="pause">. . .</p>
-            <p>Nothing happened.</p>
-            <p>No sounds. No movement. Not even wind.</p>
-            <p>That was the strange part.</p>
-            <p class="pause">. . .</p>
-            <p>A spot near water at night — even calm water — should have something. Frogs. Insects. The sound of the tide. The ordinary background noise of a living place.</p>
-            <p>There was none of that.</p>
-            <p class="emphasis">It felt paused.</p>
-            <p>Like someone had pressed mute on everything, and the world was holding its breath, and I was the only thing in it still moving.</p>
-            <p>I sat there for a while. Telling myself I was fine. Telling myself it was just quiet. Enjoying the solitude.</p>
-            <p>But the solitude didn't feel empty.</p>
-            <p>It felt occupied.</p>
-          </div>
-
-          <h2>Going Out</h2>
-          <div class="atmosphere-prose">
-            <p>After a while I stood up to leave.</p>
-            <p>That's when it started.</p>
-            <p class="pause">. . .</p>
-            <p>The path back looked the same. Same dirt, same trees, same dark. But it felt longer than when I'd walked in. Not physically — my legs knew the distance was the same. But something in the walk had changed. Like the space had stretched around me without moving.</p>
-            <p>I slowed down without deciding to.</p>
-            <p>My feet were still moving. I hadn't stopped. I hadn't frozen up. But my pace had dropped to something careful and deliberate, the way you move when every part of you is paying attention to something you can't see.</p>
-            <p class="pause">. . .</p>
-            <p>I didn't run. I want to be clear about that. There was no panic. No moment of terror that sent me sprinting. Just this steady, conscious awareness that I needed to finish the walk — that it was something to be completed, not something to be fled from.</p>
-            <p>Step by step.</p>
-            <p>The whole way out felt like that. Like something I was being permitted to do, rather than something I was choosing.</p>
-            <p class="pause">. . .</p>
-            <p>When I reached the main road, everything went back to normal.</p>
-            <p>Cars. Streetlights. Sound returning. The world un-muting itself all at once.</p>
-            <p>I stood at the edge for a moment. Looked back down the dark road.</p>
-            <p>Didn't go back in.</p>
-            <p>Rode home. Didn't stop.</p>
-          </div>
-
-          <h2>Field Data</h2>
-          <div class="field-grid">
-            <div>Location</div><div>Punggol End — old Singapore, pre-development era</div>
-            <div>Time</div><div>Late night — well past midnight</div>
-            <div>Going in</div><div>Normal. Quiet. Nothing unusual.</div>
-            <div>At the spot</div><div>Total silence. No ambient sound. Felt occupied, not empty.</div>
-            <div>Going out</div><div>Path felt longer. Pace slowed involuntarily. Sense of being permitted to leave.</div>
-            <div>On main road</div><div>Everything normalised immediately — sound, light, atmosphere.</div>
-            <div>Return visits</div><div>None. Not at that hour.</div>
-          </div>
-
-          <h2>What I Understand Now</h2>
-          <p>I went in a sceptic. I came out something more complicated than that.</p>
-          <p>I'm not going to tell you what was there. I don't know what was there. What I know is that the place had a quality to it — a specific, felt quality — that I have not experienced anywhere else. And I understand now, with a clarity I didn't have before I went, exactly why those old uncles said what they said the way they said it.</p>
-          <p>Not a ghost story. Not a warning designed to scare. Just a fact about a place — stated plainly by people who'd been there and come back and knew.</p>
-          <p>Punggol End is gone now. Built over. Lit up. Populated. Whatever was there — if it was ever just one thing — has either moved on or been buried under concrete and HDB blocks and a waterway park.</p>
-          <p>Maybe that's fine. Maybe it's better that way.</p>
-          <p>But on certain quiet nights, when I'm riding through that part of the island and the road gets briefly dark between streetlamps, I still think about that walk out. And I still feel the same thing I felt then.</p>
-          <p>That some places hold something. That you don't always know what it is. And that sometimes the most honest thing you can say is: I went. I felt it. I came back. And I never went at that hour again.</p>
-
-          <div class="signal-box">
-            <strong>// SIGNAL RECORDED:</strong> Complete absence of ambient sound at waterfront location. Involuntary change in movement pattern during exit. Sudden normalisation upon reaching main road. No rational environmental explanation for the silence or the altered perception of distance.
-          </div>
-
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx001" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
-                <h4 class="font-bold uppercase mb-2" style="color:#f87171; /* lighter red accent */">Additional Field Notes: Punggol End</h4>
-                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Location / Old Singapore</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[PUNGGOL HISTORY]</strong> Before Singapore's rapid northeastern development in the 2000s, Punggol was largely undeveloped — a mix of former kampung land, seafront areas, and old fishing grounds. Punggol End specifically referred to the far northeastern tip, known as a fishing destination and, among older residents, associated with unexplained phenomena at night. The area is now fully developed.</p>
-                <p><strong>[THE SILENCE]</strong> A waterfront location with no ambient sound — no insects, no water movement, no wildlife — is ecologically abnormal. Animals and insects go silent in response to threat or disturbance. Sustained total silence suggests something in that environment was causing sustained suppression of normal activity. What that was, is not recorded.</p>
-                <p><strong>[INVOLUNTARY PACE CHANGE]</strong> Slowing down without conscious decision in a context of no physical obstruction points to something affecting perception or movement at a level below conscious control. Whether environmental, psychological, or otherwise — the effect was consistent with accounts from others who had visited the same location at similar hours.</p>
-              </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171; /* lighter red accent */">INCIDENT ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Location: No longer accessible in original form</li>
-                  <li>Corroborating accounts: Multiple — consistent across different riders and residents</li>
-                  <li>Recommendation: Some places are not meant to be tested. Go at daylight if curiosity demands it. Not at night.</li>
-                </ul>
-              </div>
+  <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+</div>
+        
+        <div class="p-7 relative z-10">
+          <div class="flex items-start justify-between mb-5">
+            <div>
+              <div class="signal-line mb-3">Thailand Sector</div>
+              <h2 class="text-3xl font-black uppercase text-white tracking-tight leading-none">Thailand<br/>Logs</h2>
             </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx001', this)" class="load-more-style">
-                ACCESS FULL FIELD NOTES
-              </button>
+            <div class="text-5xl opacity-10 leading-none select-none">TH</div>
+          </div>
+          <div class="space-y-3 mb-6">
+            <div class="log-preview">
+              <p class="log-preview-title">The Two Hotels That Got Worse</p>
+              <p class="preview-snippet">380 baht. Barrack-style walls. Nobody suggested turning off the lights. The second hotel was worse — power tripped at 3am, CRT static, then silence.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">The Hotel That Felt Too Familiar</p>
+              <p class="preview-snippet">I knew where the switches were before I reached for them. I had never been to this room before in my life.</p>
+            </div>
+              <div class="log-preview">
+              <p class="log-preview-title">The Highway That Took Twice As Long</p>
+              <p class="preview-snippet">Two hours on the map. Almost four hours on the road. No stops. No detour. Always something ahead that we could never reach.</p>
             </div>
           </div>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              3 Logs
+            </span>
+            <span class="access-btn">Enter Archive ▶</span>
+          </div>
         </div>
-      </div>
+      </a>
+
+      <!-- Hotels & Rest Stops -->
+      <a href="/unexplained/hotel/" class="section-card delay-4" style="animation-delay:.2s;">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 80% 80%, rgba(220,38,38,0.06) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
       
-       <!-- ══ LOG 4: The Route That Wouldn't End ══ -->
-      <div class="log-entry" style="display:none;">
-        <span class="tag">Unexplained Log #004</span>
-        <h1 class="entry-title">The Route That Wouldn't End</h1>
-        <p class="lead">Back then, entering Malaysia was different. No live maps. No reliable signal. You rode on memory — and that night, memory wasn't enough to get us out.</p>
 
-        <div class="featured-image">
-          <div class="noise-overlay"></div>
-          <div class="img-watermark">🧭</div>
-          <div class="featured-image-label">// SR-UNX-004 // JB Night Ride // Nokia 6280</div>
-          <div class="corner-br"></div>
-          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 60% 50% at 40% 60%, rgba(220,38,38,0.04) 0%, transparent 65%);pointer-events:none;"></div>
+<!-- HOTEL IMAGE -->
+<div class="relative h-64 overflow-hidden border-b border-red-900/20">
+  <img
+    src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778216561/Hotel_xhedvr.png"
+    alt="Hotels Archive"
+    class="w-full h-full object-cover grayscale contrast-110 brightness-90 transition-transform duration-700 hover:scale-105"
+  />
+
+  <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+</div>
+
+
+        <div class="p-7 relative z-10">
+          <div class="flex items-start justify-between mb-5">
+            <div>
+              <div class="signal-line mb-3">Rest Stop Sector</div>
+              <h2 class="text-3xl font-black uppercase text-white tracking-tight leading-none">Hotels &amp;<br/>Rest Stops</h2>
+            </div>
+            <div class="text-5xl opacity-10 leading-none select-none">🏚️</div>
+          </div>
+          <div class="space-y-3 mb-6">
+            <div class="log-preview">
+              <p class="log-preview-title">The Two Hotels That Got Worse</p>
+              <p class="preview-snippet">The 380-baht place felt like an army barrack. The mountain hotel had one room deeper inside the darkness. Neither of us chose it. No discussion needed.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">The Hotel That Felt Too Familiar</p>
+              <p class="preview-snippet">A woman appeared from somewhere inside without any sound. No surprise on her face. Like she had been expecting us all along.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              2 Logs
+            </span>
+            <span class="access-btn">Enter Archive ▶</span>
+          </div>
         </div>
+      </a>
 
-        <div class="story-content">
-          <h2>How It Started</h2>
-          <p>Back then, crossing into Malaysia meant riding on instinct. No realtime traffic. No proper mobile signal everywhere. The phone I had at the time was a Nokia 6280 — sliding phone, small screen. GPS wasn't even reliably functional yet. Half the time the map froze, the signal drifted, or the arrow jumped around like it was confused itself.</p>
-          <p>That night, sometime past 1am, two of us crossed in with a simple plan — head to the old bak kut teh lane. The usual biker spot. Shops only really alive after evening, and late-night JB rides were completely normal back then.</p>
-          <p>Petrol was full. Roads mostly empty. Cool night air. Just two riders following old memories.</p>
+    </div>
 
-          <h2>Where It Went Wrong</h2>
-          <div class="atmosphere-prose">
-            <p>Somewhere after a wrong turn, things started feeling off.</p>
-            <p>The roads became narrower. Streetlights fewer. The surroundings looked older.</p>
-            <p>We joked at first. "Eh bro, you sure or not?"</p>
-            <p class="pause">. . .</p>
-            <p>But slowly, even the jokes stopped.</p>
-            <p>Then we reached somewhere neither of us had ever been before.</p>
-            <p>A graveyard. Not the modern type. The old quiet kind. Dark. Uneven ground. Trees moving from the wind.</p>
-            <p class="pause">. . .</p>
-            <p>That was when we finally switched on the GPS. The Nokia took forever to load. Screen kept freezing. Signal bar dropping in and out.</p>
-            <p>Then: <em>Route found.</em></p>
-            <p>Relieved, we followed it. One turn. Then another. Then another.</p>
-            <p class="pause">. . .</p>
-            <p class="emphasis">The surroundings never changed.</p>
-            <p>Same bends. Same trees. Same walls.</p>
-            <p>The GPS arrow started behaving strangely. Sometimes pointing sideways. Sometimes lagging behind. Sometimes the map jumped ahead like we had teleported.</p>
-            <p>Then: <em>Rerouting…</em></p>
-            <p>Again. And again. And again. One moment straight ahead. A few minutes later a U-turn. Then another reroute. Every suggested route led deeper inside.</p>
-            <p class="pause">. . .</p>
-            <p>Time also started feeling strange. Could have been 15 minutes. Could have been over 30. Till today, neither of us knows.</p>
-            <p>The scariest part wasn't even the graveyard. It was the silence. No cars. No people. No sound except our engines. Even the usual late-night insects sounded absent.</p>
+    <!-- Personal Logs — full width feature card -->
+    <a href="/unexplained/personal/" class="section-card delay-5" style="animation-delay:.25s;">
+      <div class="card-bg"></div>
+      <div class="card-glow" style="background:radial-gradient(ellipse 50% 80% at 50% 50%, rgba(220,38,38,0.05) 0%, transparent 70%);"></div>
+      <div class="noise-overlay"></div>
+
+                      <!-- Personal IMAGE -->
+<div class="relative h-64 overflow-hidden border-b border-red-900/20">
+  <img
+    src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778216562/personal_izu4aa.png"
+    alt="Personal Archive"
+    class="w-full h-full object-cover grayscale contrast-110 brightness-90 transition-transform duration-700 hover:scale-105"
+  />
+
+  <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+</div>
+      
+      <div class="p-7 relative z-10">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+          <div class="flex-1">
+            <div class="signal-line mb-3">Personal Record</div>
+            <h2 class="text-3xl font-black uppercase text-white tracking-tight leading-none mb-4">Personal<br/>Logs</h2>
+            <p class="text-gray-500 text-sm leading-relaxed mb-5" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;max-width:480px;">
+              Before the road. Before the bike. These are the experiences that came first — childhood encounters, a house with things in it, a sensitivity that never fully went away, and why some of these stories took decades to write down.
+            </p>
           </div>
-
-          <h2>The Biker Ahead</h2>
-          <div class="atmosphere-prose">
-            <p>Then — headlights. Another biker. Far ahead.</p>
-            <p>Both of us immediately sped up. Finally, another human.</p>
-            <p class="pause">. . .</p>
-            <p>I still remember how desperate we felt trying to close the distance. We high-beamed him, waved, pushed harder.</p>
-            <p class="emphasis">The gap never changed. Not nearer. Not further. Just fixed — no matter how fast we rode.</p>
-            <p>That was when the panic really started. Because by then, even the GPS had stopped making sense. Map jittering. Arrow spinning randomly. Route line flickering on and off.</p>
-            <p class="pause">. . .</p>
-            <p>Then, without noticing exactly when, everything changed. Streetlights returned. Cars appeared. Other bikes overtook us. Petrol stations. Shops. Traffic.</p>
-            <p>Just like that — back on the main road. Like nothing had happened. The biker ahead? Gone. No turning point. No junction. Nothing.</p>
-          </div>
-
-          <h2>Field Data</h2>
-          <div class="field-grid">
-            <div>Location</div><div>Johor Bahru outskirts — post-midnight</div>
-            <div>Navigation</div><div>Nokia 6280 GPS — unreliable signal throughout</div>
-            <div>Anomaly 1</div><div>Repeated rerouting despite unchanging surroundings</div>
-            <div>Anomaly 2</div><div>Biker ahead — consistent gap, impossible to close</div>
-            <div>Anomaly 3</div><div>Time distortion — estimated 15–30+ mins, unverifiable</div>
-            <div>Resolution</div><div>Sudden normalisation — back on main road, no memory of exit route</div>
-          </div>
-
-          <h2>What We Understood After</h2>
-          <p>We stopped by the roadside for a while without saying much. Both of us already knew we couldn't explain what had just happened. Maybe bad GPS signal. Maybe too tired, accidentally looping some old road. Maybe the graveyard atmosphere made both of us imagine things we'd rather not name.</p>
-          <p>But one thing I still remember clearly — that Nokia kept rerouting even when the road in front of us never changed. And that biker ahead never turned around, never pulled away naturally, never disappeared at a visible junction. He was just there. And then he wasn't.</p>
-
-          <div class="signal-box">
-            <strong>// SIGNAL RECORDED:</strong> Repeated rerouting with no navigational logic. Unknown biker ahead maintaining fixed, unclosable distance. Time distortion estimated 15–30+ minutes. No identified exit from the loop. Sudden return to main road with no memory of the transition point.
-          </div>
-
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx004" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
-                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Route That Wouldn't End</h4>
-                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Navigation Failure / Road Loop</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[GPS FAILURE CONTEXT]</strong> Early 2000s GPS on consumer phones operated with significant lag, signal dropout, and positional errors — particularly near dense vegetation, old burial grounds, and areas with inconsistent mobile tower coverage. However, repeated rerouting that consistently leads deeper into the same area, rather than outward, is not consistent with standard signal drift behaviour.</p>
-                <p><strong>[THE BIKER]</strong> A vehicle maintaining a perfectly fixed distance regardless of rider speed — not accelerating away, not slowing to allow approach — is not consistent with normal traffic behaviour. The biker did not brake, did not acknowledge high-beam signals, and disappeared without any identifiable junction or turn.</p>
-                <p><strong>[ROAD LOOPS]</strong> Experiences of riding in loops without conscious awareness are documented across night-riding communities in Malaysia and Thailand. The consistent elements: a graveyard or old burial area nearby, GPS failure, loss of time, and a guide figure that cannot be reached.</p>
-              </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Navigation: Completely unreliable — led inward, not outward</li>
-                  <li>Time lost: 15–30+ minutes, unverifiable</li>
-                  <li>Recommendation: If the road keeps looping and the GPS keeps rerouting — stop. Wait. Do not follow figures ahead.</li>
-                </ul>
-              </div>
+          <div class="md:w-72 flex-shrink-0 space-y-3">
+            <div class="log-preview">
+              <p class="log-preview-title">The First Time I Saw Something</p>
+              <p class="preview-snippet">Six years old. High fever. An old woman in the kitchen who disappeared when the lights came on.</p>
             </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx004', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
+            <div class="log-preview">
+              <p class="log-preview-title">The House With The Little Ghosts</p>
+              <p class="preview-snippet">KitKats and Vitagen left out every day. I still can't remember why. My mother knows.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">Maybe Some Stories Don't Want To Be Written</p>
+              <p class="preview-snippet">Every time I seriously try to write these down, something stops me. Tonight felt different. It probably wasn't.</p>
             </div>
           </div>
+        </div>
+        <div class="flex items-center justify-between mt-4 pt-4 border-t" style="border-color:rgba(255,255,255,0.05);">
+          <span class="log-badge">
+            <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+            3 Logs
+          </span>
+          <span class="access-btn">Enter Archive ▶</span>
         </div>
       </div>
-
-      <!-- ══ LOG 5: The Night I Ended The Ride Early ══ -->
-      <div class="log-entry" style="display:none;">
-        <span class="tag">Unexplained Log #005</span>
-        <h1 class="entry-title">The Night I Ended The Ride Early</h1>
-        <p class="lead">Every Friday night for years, I organised a meetup. No registration, no planning — just riders. But this particular night, both the road and my wife were trying to tell me the same thing at the same time.</p>
-
-        <div class="featured-image">
-          <div class="noise-overlay"></div>
-          <div class="img-watermark">🌑</div>
-          <div class="featured-image-label">// SR-UNX-005 // Friday Night Convoy // Singapore</div>
-          <div class="corner-br"></div>
-        </div>
-
-        <div class="story-content">
-          <h2>The Usual Setup</h2>
-          <p>For years, every Friday night was the same. No matter how many riders showed up — five people or fifty — I would organise a meetup somewhere in Singapore. Sometimes Kallang. Sometimes the west side. Sometimes north. Post the location the night before and whoever wanted to ride would just appear. No registration. No planning. Just riders.</p>
-          <p>That night felt different from the start. Too many people showed up — more than twenty bikes. Some familiar faces, some completely unknown. Usually the mood was noisy: people laughing, revving, talking nonsense. But that night felt strangely heavy. Not silent. Just different. Even the air felt wrong. Still. Humid. Like rain was already waiting somewhere above us.</p>
-
-          <h2>The Feeling on the Road</h2>
-          <div class="atmosphere-prose">
-            <p>We rode the usual route — from the old Kallang KFC area, through town past Cathay Cineleisure Orchard, then north up towards Yishun Dam to rest.</p>
-            <p>Everything looked normal.</p>
-            <p class="pause">. . .</p>
-            <p>But the entire night, I had this feeling that something was following the group. Not physically. Just present. Trailing behind us like a shadow that didn't belong to anyone riding.</p>
-            <p>At first I ignored it. You ride long enough at night, your mind plays tricks — shadows, fatigue, headlights in your mirrors. I told myself it was nothing.</p>
-            <p class="pause">. . .</p>
-            <p>Then around 11pm, my phone rang. My wife.</p>
-            <p>"Can you come home earlier tonight?"</p>
-            <p>I laughed and asked why. She paused before saying: <em>"I don't know… tonight feels wrong."</em></p>
-            <p class="emphasis">That immediately hit me. Because I had been feeling the exact same thing the entire ride.</p>
-          </div>
-
-          <h2>The Decision</h2>
-          <div class="atmosphere-prose">
-            <p>I looked around at the group. Big turnout. Dark clouds moving in. Atmosphere getting heavier by the minute.</p>
-            <p>So for the first time in a long while, I ended the meetup early. "Rain coming already. Go home early tonight."</p>
-            <p class="pause">. . .</p>
-            <p>Most riders listened and left. But a smaller group stayed behind — they wanted to continue riding to another location after we dismissed.</p>
-            <p>I headed home.</p>
-            <p class="pause">. . .</p>
-            <p>Less than thirty minutes later — before I even reached home — my phone started exploding with calls. One after another.</p>
-            <p>At first I thought maybe someone got stopped by traffic police. Then I answered.</p>
-            <p class="emphasis">Accident. Bad accident.</p>
-            <p>The riders who stayed behind had crashed on the way to the next location. Three bikes involved. Two riders survived. But one rider did not come home that night.</p>
-          </div>
-
-          <h2>What Nobody Said Afterward</h2>
-          <p>Even today, I still cannot forget what I heard from the others who arrived at the scene first. The way his body had come to rest — it wasn't like a normal crash. The position was wrong in a way that stayed in the heads of everyone who saw it.</p>
-          <p>After that, nobody discussed what happened. No theories. No ghost stories. No arguments about what the night had felt like before it went wrong. Just silence. The kind that means everyone had already decided, quietly and separately, to leave it buried.</p>
-
-          <h2>What I Still Think About</h2>
-          <p>I still organise rides sometimes. But ever since that night, whenever the atmosphere feels off — heavier than it should be, quieter than the road explains — I go home. No debate. No finishing the route. Just home.</p>
-          <p>Three things still stay with me. Why did the whole evening feel different before anything had happened? Why did my wife call using almost exactly the words I had been thinking, when she almost never interrupted my Friday rides? And why did I feel genuinely relieved — for the first time ever — after ending a ride early?</p>
-
-          <div class="signal-box">
-            <strong>// SIGNAL RECORDED:</strong> Shared unease between rider and spouse with no prior communication — both described the same feeling independently. Heavy atmospheric sensation throughout the ride preceding the accident. Rider who acted on instinct arrived home safely. Riders who continued did not.
-          </div>
-
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx005" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
-                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Night I Ended The Ride Early</h4>
-                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Premonition / Fatal Incident</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[SHARED PREMONITION]</strong> Independent, simultaneous unease felt by a rider and his spouse — with no prior communication — is among the more consistently reported phenomena in accounts preceding serious incidents. The specific language ("tonight feels wrong") appearing almost identically in both the rider's internal experience and the spouse's unprompted call is not easily explained by coincidence alone.</p>
-                <p><strong>[CONVOY DYNAMICS]</strong> Large, informal convoys with unknown riders, mixed skill levels, no formal briefing, and a heavy atmosphere are a combination experienced riders learn to recognise as high risk. The decision to end early in this context was not timid. It was correct.</p>
-                <p><strong>[THE RIDER TABOO]</strong> Among experienced night riders in Singapore and Malaysia, there is a widely understood but rarely spoken rule: never say anything unlucky during a ride, and never ignore the feeling that something is wrong. This is not superstition. It is pattern recognition built from years of witnessing what happens when riders push through a night that is already telling them to stop.</p>
-              </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Warning signals: Multiple — atmospheric, physical, spousal</li>
-                  <li>Outcome for those who left: Safe</li>
-                  <li>Outcome for those who stayed: One fatality, two injured</li>
-                  <li>Recommendation: When the road tells you to go home — go home.</li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx005', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ LOG 6: The Two Figures At Kent Ridge ══ -->
-      <div class="log-entry" style="display:none;">
-        <span class="tag">Unexplained Log #006</span>
-        <h1 class="entry-title">The Two Figures At Kent Ridge</h1>
-        <p class="lead">Every biker who rode long enough in Singapore eventually heard about the Kent Ridge bends. I heard the stories. I laughed them off. Then one night, I stopped laughing.</p>
-
-        <div class="featured-image">
-          <div class="noise-overlay"></div>
-          <div class="img-watermark">🌿</div>
-          <div class="featured-image-label">// SR-UNX-006 // Kent Ridge // The 99 Bends</div>
-          <div class="corner-br"></div>
-        </div>
-
-        <div class="story-content">
-          <h2>The Road Every Singapore Rider Knows</h2>
-          <p>Every biker who rode long enough in Singapore would eventually hear about the old Kent Ridge bends. Some called it the "99 bends." Some said it was cursed. Some laughed it off completely. The stories were always similar — late at night, riders would claim to see a woman near the sharpest bend. White dress. Long hair. Standing still. Classic ghost-story stuff.</p>
-          <p>Honestly, I never believed it. I had ridden through so many times it was almost routine. Riders hyped it up like an initiation — "if you ride long enough, sooner or later you'll see something." But every time I went? Nothing. No shadows. No figures. No strange sounds. Just roads, bends, and night air.</p>
-
-          <h2>The Night I Saw Two</h2>
-          <div class="atmosphere-prose">
-            <p>So one night, I rode through again. Faster this time. Road mostly empty. The kind of silence only late-night Singapore carries. Streetlights glowing orange. Trees moving slightly from the wind.</p>
-            <p>At first everything felt normal.</p>
-            <p class="pause">. . .</p>
-            <p>Then somewhere near the curvier stretch, I noticed something at the side of the road. A figure. Whitish. Standing near the bend. Not clear enough to fully make out — more like something my eyes caught for a split second while cornering.</p>
-            <p class="pause">. . .</p>
-            <p>But strangely, I didn't feel fear.</p>
-            <p class="emphasis">The feeling was calm. Almost protective. Like whatever it was, it wasn't there to harm anyone.</p>
-            <p>I slowed slightly after the bend. Then further ahead — another figure. Dark. Blackish. Nearer to the staircase area.</p>
-            <p class="pause">. . .</p>
-            <p>And the feeling from this one was completely different. Heavy. Cold. Not angry.</p>
-            <p class="emphasis">Just waiting.</p>
-          </div>
-
-          <h2>What the Difference Meant</h2>
-          <p>That was the part that disturbed me most. Not what I saw — but how completely different both presences felt from each other. One felt like something standing there to protect riders who still had time left. The other felt like something waiting for riders whose time was already up.</p>
-          <p>At that moment, every old biker story I'd ever laughed at came back. The fatal accidents. The roadside flowers. The riders who never came home. All of it suddenly felt like it had a different weight behind it.</p>
-          <p>I rolled off the throttle immediately. No more fast riding. No more trying to prove anything. For the first time in my life, I genuinely felt like the road was telling me to stop. So I did. I exited, headed home, and never rode Kent Ridge aggressively again after that night.</p>
-
-          <h2>Field Data</h2>
-          <div class="field-grid">
-            <div>Location</div><div>Kent Ridge Road — late night, mostly empty</div>
-            <div>Figure 1</div><div>Whitish, near the bend — feeling: calm, protective</div>
-            <div>Figure 2</div><div>Dark, near the staircase area — feeling: heavy, waiting</div>
-            <div>Rider response</div><div>Immediate throttle rolloff. Exited. Did not return aggressively.</div>
-            <div>Prior visits</div><div>Multiple — nothing seen previously. This was the first and only sighting.</div>
-          </div>
-
-          <p>Maybe it was fatigue. Maybe shadows from the streetlights. But till today, whenever people ask whether the Kent Ridge stories are real, I always give the same answer: "I don't know what I saw. But I know what I felt." And whatever that second presence was waiting for — I had no interest in becoming its reason for being there.</p>
-
-          <div class="signal-box">
-            <strong>// SIGNAL RECORDED:</strong> Two distinct presences at separate points along the same road. Completely different emotional signatures between them — one protective, one anticipatory. Rider compelled to stop. Has not ridden the stretch aggressively since.
-          </div>
-
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx006" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
-                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Two Figures At Kent Ridge</h4>
-                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Visual Encounter / Location-Based</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[KENT RIDGE HISTORY]</strong> The Kent Ridge area carries significant wartime history — the Battle of Pasir Panjang in 1942 resulted in heavy casualties along and around the ridge. Accounts of presences along the bends have circulated among Singapore's night riding community for decades, consistently describing two types of sightings near the same locations.</p>
-                <p><strong>[TWO-PRESENCE PATTERN]</strong> The specific distinction — one presence feeling protective and one feeling anticipatory of harm — appears across multiple independent accounts from different riders at different times. That this distinction is consistent, rather than simply generic fear, is notable.</p>
-                <p><strong>[THE ROAD ITSELF]</strong> Kent Ridge Road has been the site of multiple fatal accidents involving motorcycles. The bends are sharp, the road changes character at night, and the canopy reduces both visibility and ambient light. Whether the road is haunted or simply dangerous — both conclusions lead to the same recommendation: ride carefully and leave quickly.</p>
-              </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Sighting: Two figures, different locations, entirely different emotional signatures</li>
-                  <li>Corroborating accounts: Multiple across Singapore riding community</li>
-                  <li>Recommendation: Kent Ridge at night is not a proving ground. There is nothing to prove there.</li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx006', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ LOG 7: The Road That Rejected Us ══ -->
-      <div class="log-entry" style="display:none;">
-        <span class="tag">Unexplained Log #007</span>
-        <h1 class="entry-title">The Road That Rejected Us</h1>
-        <p class="lead">Some rides become memories. Some become lessons. And some feel like the road itself never wanted you there — and kept saying so, one breakdown at a time, until you finally listened.</p>
-
-        <div class="featured-image">
-          <div class="noise-overlay"></div>
-          <div class="img-watermark">⚠️</div>
-          <div class="featured-image-label">// SR-UNX-007 // Charity Convoy // Alor Setar</div>
-          <div class="corner-br"></div>
-        </div>
-
-        <div class="story-content">
-          <h2>The Purpose Behind the Trip</h2>
-          <p>This happened during one of our long-distance charity tours heading towards Laos — carrying funds and supplies for an orphanage. The purpose was good. The intention was right. But from the moment we entered Malaysia, nothing felt right.</p>
-
-          <h2>The Warnings That Kept Coming</h2>
-          <div class="atmosphere-prose">
-            <p>At first it was small things. My bike started developing RPM issues — random drops, unstable revs. We ended up dismantling and washing the carburettor by the roadside in the heat before continuing. Even after fixing it, the bike still didn't feel healthy.</p>
-            <p class="pause">. . .</p>
-            <p>Then my GPS charging died. The screen slowly dimmed while riding north. Back then GPS wasn't just convenience on long tours — it was confidence. Once the charging went, I suddenly felt blind on unfamiliar roads.</p>
-            <p>I remember staring at the dimming screen thinking: <em>this trip really doesn't want me here.</em></p>
-            <p class="pause">. . .</p>
-            <p>Still, we pushed on. Because riders always push on. You ignore discomfort. You ignore instincts. You convince yourself the destination matters more than the feeling.</p>
-          </div>
-
-          <h2>The Crash at Alor Setar</h2>
-          <div class="atmosphere-prose">
-            <p>Near Alor Setar, everything broke.</p>
-            <p>A fuel stop. Simple miscommunication. Someone moved unexpectedly. Another misread the direction out.</p>
-            <p>Then impact.</p>
-            <p class="pause">. . .</p>
-            <p>Crashes don't happen dramatically. There's no time to react. One second you're riding normally. The next second the road is beside your face.</p>
-            <p>I crashed hard. When I got up, my bike looked wounded — fairings deeply scratched, signal lights broken off, riding armor torn apart. Even my full-face helmet was heavily scratched.</p>
-            <p class="emphasis">I remember staring at the helmet longer than the bike. Because riders know what those scratches really mean.</p>
-            <p class="pause">. . .</p>
-            <p>I didn't shout. Didn't argue. Just took off my gloves and threw them on the ground out of frustration. Because at that moment I knew something invisible had already broken. Not the bike. Me.</p>
-          </div>
-
-          <h2>Turning Back</h2>
-          <p>Standing there at the roadside, I made the hardest decision of the entire journey. I withdrew. The others continued north towards Laos while I turned back alone towards Ipoh.</p>
-          <p>But the strange thing — after I withdrew, the trip still continued falling apart. One rider suffered a piston jam. Another self-skidded. One by one, the convoy kept getting hit. That was the moment the feeling fully settled: maybe the road never wanted us to complete this journey from the beginning. Not haunted. Not cursed in the movie sense. Just rejected. Like every warning had already been clearly given — the RPM drops, the failing GPS, the crash, the piston jam, the skid — each one a page of the same message, written in a language riders learn to read the hard way.</p>
-
-          <h2>The Silence After</h2>
-          <p>After the trip ended, the group went quiet. No arguments. No drama. The group chat became inactive. Nobody brought up the Laos trip again. No one discussed the breakdowns or the crashes or how wrong the entire journey had felt. It was like everyone silently agreed to leave it buried and never go back to it.</p>
-          <p>Till today, years later, I still occasionally wonder — what exactly was waiting further ahead, if I had never turned back?</p>
-
-          <div class="signal-box">
-            <strong>// SIGNAL RECORDED:</strong> Cascading mechanical failures across multiple bikes from convoy entry. Personal crash at midpoint. Continued failures after rider withdrawal. Entire group silently agreed never to revisit the incident. Instinct repeatedly overridden until the road forced a stop.
-          </div>
-
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx007" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
-                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Road That Rejected Us</h4>
-                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Cascading Failure / Convoy Incident</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[CASCADING FAILURE PATTERN]</strong> Multiple mechanical failures across different bikes, different brands, different maintenance histories — occurring sequentially across a single journey — is statistically unusual. The concentration and variety of failures here (carburettor, GPS, crash, piston jam, self-skid) points to something beyond normal wear.</p>
-                <p><strong>[INSTINCT SUPPRESSION]</strong> The pattern of recognising that something is wrong — and then overriding that recognition in favour of completing the goal — appears in almost every major incident account from long-distance riders. The instinct arrives early. The decision to suppress it is made consciously. The consequences arrive later.</p>
-                <p><strong>[THE SILENCE AFTER]</strong> Groups that go collectively quiet after a traumatic tour event — without argument, without formal acknowledgement — are exhibiting a known response. The silence itself is the agreement: this was something we don't have the language for, and naming it won't help anyone.</p>
-              </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Failures: Carburettor, GPS, crash, piston jam, self-skid — across multiple riders</li>
-                  <li>Instinct signals: Present from convoy entry. Consistently overridden.</li>
-                  <li>Recommendation: When every system is failing and the feeling hasn't left — turn back.</li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx007', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ LOG 8: Stay In The Light ══ -->
-      <div class="log-entry" style="display:none;">
-        <span class="tag">Unexplained Log #008</span>
-        <h1 class="entry-title">Stay In The Light</h1>
-        <p class="lead">He only asked one thing the entire ride. Not to slow down. Not to stop. Just: keep me inside the light. I still don't know what he saw in those mirrors.</p>
-
-        <div class="featured-image">
-          <div class="noise-overlay"></div>
-          <div class="img-watermark">💡</div>
-          <div class="featured-image-label">// SR-UNX-008 // Malaysia Dark Roads // Fog Light Escort</div>
-          <div class="corner-br"></div>
-        </div>
-
-        <div class="story-content">
-          <h2>The Darkness Singapore Riders Don't Prepare For</h2>
-          <p>One thing Singapore riders always notice when crossing into Malaysia for the first time is the darkness. Not fear — just darkness. In Singapore, almost every road is brightly lit. Expressways glow orange through the entire night. Even industrial areas have enough light to see clearly. Malaysia is different. Once you leave the bigger towns, some roads go completely black. No streetlamps. No buildings. No reflections. Only your headlights cutting through emptiness.</p>
-          <p>That night, a group of us planned a ride specifically for that kind of road. One rider insisted on joining even though he had difficulty seeing at night — in Singapore he was fine, but these roads were different. So I stayed directly in front of him, close enough for him to follow my rear blinkers and the glow from my fog lights.</p>
-
-          <h2>When His Pace Started Dropping</h2>
-          <div class="atmosphere-prose">
-            <p>At first everything was normal. Convoy maintained pace. Engines echoing through the dark.</p>
-            <p class="pause">. . .</p>
-            <p>Then slowly, I noticed his bike falling further behind. The gap kept increasing. I slowed and detached from the main group to ride beside him. Even through the helmet, his body language looked tense.</p>
-            <p>"What happened?"</p>
-            <p>He paused before replying quietly: <em>"Can you stay behind me instead?"</em></p>
-            <p class="pause">. . .</p>
-            <p>I told him my fog light was very bright — it would blind him from behind.</p>
-            <p>He immediately replied: "Doesn't matter."</p>
-            <p>Then after a few seconds: <em>"As long as I stay inside the light."</em></p>
-            <p class="pause">. . .</p>
-            <p>That sentence stayed in my head for years. His tone didn't sound like someone joking. It sounded desperate.</p>
-          </div>
-
-          <h2>What the Light Did</h2>
-          <div class="atmosphere-prose">
-            <p>I moved behind him without asking anything more. The moment my fog lights covered his bike from the rear, he became calmer immediately. Speed stabilised. Riding became smoother. Almost like he was trying to avoid leaving the light completely — like the boundary of that beam was the only safe boundary he had.</p>
-            <p class="pause">. . .</p>
-            <p>The rest of the journey passed quietly. Nobody discussed anything afterward. He never brought it up again. Not once.</p>
-            <p class="pause">. . .</p>
-            <p>Then sometime much later, I heard the reason from a mutual rider friend. Apparently during that dark stretch, he believed something was following extremely close behind his bike. Not another vehicle. Not another rider.</p>
-            <p class="emphasis">Something else.</p>
-            <p>He never described exactly what he saw. Only that every time he looked into his mirrors, the feeling became stronger. Close enough that he became terrified of crashing before making it back to Singapore.</p>
-          </div>
-
-          <h2>What I Still Think About</h2>
-          <p>Till today, I still don't know whether he actually saw something in those mirrors, or whether the darkness simply played tricks on an already anxious mind. Both explanations are possible. Both feel incomplete.</p>
-          <p>What I know is this: he never asked me to slow down, never asked to stop, never asked to turn back. Only one request the entire ride. Keep me inside the light. Said with the kind of quiet urgency you only use when you genuinely believe something is right behind you.</p>
-
-          <div class="signal-box">
-            <strong>// SIGNAL RECORDED:</strong> Rider experienced acute distress on dark road. Calm restored only when fog light covered him from behind. Believed something was following his bike closely. Never described what he saw. Never discussed it again.
-          </div>
-
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx008" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
-                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: Stay In The Light</h4>
-                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Third-Party Account / Dark Road Encounter</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[NIGHT RIDING AND PERCEPTION]</strong> Complete darkness dramatically alters spatial awareness and perceived threat. However, the specific fear of something following from directly behind — combined with immediate calm upon the fog light covering that space — suggests the rider was responding to something more specific than general unease.</p>
-                <p><strong>[THE BOUNDARY OF LIGHT]</strong> Across multiple Southeast Asian riding communities, accounts exist of presences that stay at the edge of a rider's light beam — following at the boundary, neither entering nor retreating. The request to "stay inside the light" maps closely to this pattern.</p>
-                <p><strong>[WHY HE NEVER TALKED ABOUT IT]</strong> Riders who experience something unexplained on the road often go quiet afterward — not from disbelief, but from a specific discomfort with describing what happened. The experience was real enough that discussing it feels like re-opening something better left closed.</p>
-              </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Rider affected: Third party — confirmed via mutual friend</li>
-                  <li>Resolution: Fog light coverage from behind. Immediate calm restored.</li>
-                  <li>Recommendation: On dark Malaysian roads, keep your group tight. Don't let anyone ride alone at the back.</li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx008', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ LOG 9: The Two Thailand Hotels ══ -->
-      <div class="log-entry" style="display:none;">
-        <span class="tag">Touring Log #001</span>
-        <h1 class="entry-title">The Two Hotels That Got Worse</h1>
-        <p class="lead">Long-distance touring teaches you that the cheapest hotels often leave the strongest memories. Thailand gave us two — each stranger than the last — and by the second one, nobody was pretending to be brave anymore.</p>
-
-        <div class="featured-image">
-          <div class="noise-overlay"></div>
-          <div class="img-watermark">🏚️</div>
-          <div class="featured-image-label">// SR-TOUR-001 // Thailand Touring // 380 Baht &amp; The Mountain</div>
-          <div class="corner-br"></div>
-        </div>
-
-        <div class="story-content">
-          <h2>The 380-Baht Hotel</h2>
-          <p>During long-distance touring, riders eventually learn one thing: the cheapest hotels create the strongest memories. This night came after an already draining stretch — we had been through an accident the day before, so everyone was running on empty. Body tired. Mind tired. Bikes dirty. Mood heavy. By the time we found a place, nobody cared about quality. 380 baht. Cheap enough that we accepted without thinking much.</p>
-          <div class="atmosphere-prose">
-            <p>At first glance, the place looked less like a hotel and more like an old army barrack. Long corridors. Plain walls. Dim lighting. Even climbing the stairs felt familiar in an uncomfortable way — it instantly reminded me of Tekong during NS.</p>
-            <p class="pause">. . .</p>
-            <p>The moment we entered the room, something felt wrong. Not dirty. Not obviously haunted-looking. Just wrong. The room was unusually large for such a cheap hotel. Too much empty space. That kind of silence where even your own footsteps sound unnaturally loud.</p>
-            <p>We switched on the TV immediately. Then all the room lights. Nobody suggested turning anything off afterward. That itself already said enough.</p>
-            <p class="pause">. . .</p>
-            <p>At one point I stepped outside alone for air. The corridor was dim and completely empty. No footsteps. No voices. Just the distant humming of old building lights.</p>
-            <p>And standing there, I suddenly had this overwhelming feeling that something was nearby. Not visible. Not dramatic. Just the strong instinct that I shouldn't stay outside too long.</p>
-            <p class="emphasis">I went straight back inside and closed the door.</p>
-            <p>That night, none of us switched off the lights. The TV stayed on until morning. And despite being physically exhausted, sleep never felt deep.</p>
-          </div>
-
-          <h2>The Mountain Hotel</h2>
-          <p>That 380-baht place was strange enough. But there was another hotel later in the same trip that turned out even worse — bad enough that all of us ended up sleeping together in the same room just to get through the night.</p>
-          <p>We didn't choose it because it looked good. We chose it because it was the nearest available place after riding past nightfall. And once night fully settles on those mountain roads in Thailand, everything changes. The route leading in was almost completely dark. No streetlamps. No shops. No proper signboards.</p>
-          <div class="atmosphere-prose">
-            <p>Even finding the hotel entrance was difficult. When we finally entered the compound, we couldn't immediately find the owner — he was sitting somewhere deeper inside the darkness with a few other guests. That alone already felt unsettling.</p>
-            <p class="pause">. . .</p>
-            <p>After some awkward communication, we were told only two rooms were left. But the rooms were separated far apart. One was located further inside the compound, deeper into the darkness. The other was nearer to a wooden fence near the entrance.</p>
-            <p>The moment we heard that, both of us made the same decision without discussion.</p>
-            <p class="emphasis">One room. Together. No point acting brave.</p>
-            <p class="pause">. . .</p>
-            <p>The room itself barely felt like a proper hotel. Old structure — concrete, wood panels, metal roofing. The kind where every movement creates sound. The TV was a CRT — huge fat back, tiny screen. But it became comforting. Not for watching. Just for noise. Something to push against the silence outside.</p>
-            <p class="pause">. . .</p>
-            <p>Then we discovered the toilet. To reach it, we had to lower our heads through a small gate-like opening, then step partially outside into darkness before reaching the toilet a few steps away. Beyond that — just wilderness. No proper walls. Just darkness and nature.</p>
-            <p class="emphasis">Nobody wanted to go alone.</p>
-            <p class="pause">. . .</p>
-            <p>I was knocked out from exhaustion and didn't hear anything that night. Only the next morning did my riding buddy tell me what happened.</p>
-            <p>Sometime very late, the electricity tripped. The room went dark. Then the old CRT turned to static — that loud, old-school crackling sound. He woke up, found the switch, restored power, then quickly turned the TV off.</p>
-            <p>And according to him — the moment the electricity came back on, everything suddenly felt normal again. No more strange atmosphere. No more uneasy feeling. Like whatever had been pressing against the room had decided to leave when the lights returned.</p>
-          </div>
-
-          <h2>What Both Hotels Had in Common</h2>
-          <p>Till today, I still don't know whether either experience was just exhaustion and unfamiliar surroundings, or something the walls of those places were holding from before we arrived. Both explanations feel possible. Both feel incomplete.</p>
-          <p>But one detail from the mountain hotel still sticks. Out of all the rooms available that night — neither of us chose the one deeper inside the darkness. We made that decision instantly, without discussion, without needing to explain it to each other. Some choices don't need reasoning. The instinct is fast enough on its own.</p>
-
-          <div class="field-grid">
-            <div>Hotel 1</div><div>380 baht — barrack-style, Thailand. Lights left on all night.</div>
-            <div>Hotel 2</div><div>Mountain area, Thailand — two rooms offered, both chose the same one immediately.</div>
-            <div>Incident</div><div>Power trip late at night. CRT static. Atmosphere normalised upon power restoration.</div>
-            <div>Decision</div><div>Shared room. TV on all night. Nobody suggested otherwise.</div>
-          </div>
-
-          <div class="signal-box">
-            <strong>// SIGNAL RECORDED:</strong> Two separate hotels on the same trip, both carrying sustained atmospheric unease. Second hotel: power trip, CRT static, sudden normalisation upon power return. Riders chose shared room without discussion. Deeper room never considered.
-          </div>
-
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx009" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
-                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Two Hotels That Got Worse</h4>
-                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Touring / Accommodation</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[380-BAHT HOTEL]</strong> Budget accommodation in Thailand's touring corridors often occupies repurposed structures. What is unusual is the sustained, inexplicable feeling of presence that multiple riders independently identified in the same room.</p>
-                <p><strong>[MOUNTAIN HOTEL POWER EVENT]</strong> A power trip followed by CRT static, followed by immediate atmospheric normalisation upon power restoration — appears in multiple accounts across Southeast Asian touring communities.</p>
-                <p><strong>[THE DEEPER ROOM]</strong> The instant, unanimous rejection of the room deeper inside the darkness — without discussion — is consistent with accounts where instinct overrides bravado. Both riders recognised the same risk and arrived at the same answer without needing to speak it aloud.</p>
-              </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Hotel 1: Sustained unease — nothing confirmed beyond the feeling</li>
-                  <li>Hotel 2: Confirmed power event + atmospheric shift + immediate normalisation</li>
-                  <li>Recommendation: If both riders independently choose not to go deeper — trust that.</li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx009', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ LOG 10: The Hotel That Felt Too Familiar ══ -->
-      <div class="log-entry" style="display:none;">
-        <span class="tag">Touring Log #002</span>
-        <h1 class="entry-title">The Hotel That Felt Too Familiar</h1>
-        <p class="lead">We arrived late. The compound looked almost abandoned. A woman appeared from the darkness without making a sound. And the moment I stepped into my room, I already knew where everything was — before I'd ever been there.</p>
-
-        <div class="featured-image">
-          <div class="noise-overlay"></div>
-          <div class="img-watermark">🏨</div>
-          <div class="featured-image-label">// SR-TOUR-002 // Thailand Touring // Familiarity Log</div>
-          <div class="corner-br"></div>
-        </div>
-
-        <div class="story-content">
-          <h2>Arriving Late</h2>
-          <p>We arrived much later than planned. By the time we entered the area, the roads were already empty. Most nearby shops had closed. The deeper we rode in, the quieter everything became — no passing traffic, no people sitting outside, not even the stray dogs that usually bark at incoming bikes.</p>
-          <p>The hotel was somewhere near the mountain area, chosen mainly because it was the nearest available place before nightfall made riding too dangerous. When we reached the entrance, the place looked almost abandoned. A few dim yellow lights. The reception area empty. We pressed the bell once. Then again. Still nothing. After almost twenty minutes of waiting in complete silence — the only sound the metallic ticking of our bikes cooling down — the atmosphere had already shifted.</p>
-
-          <h2>The Woman From the Darkness</h2>
-          <div class="atmosphere-prose">
-            <p>Not threatening. Just strangely still.</p>
-            <p class="pause">. . .</p>
-            <p>I remember standing there, looking deeper into the compound, when I suddenly felt something I still can't explain.</p>
-            <p class="emphasis">Familiarity.</p>
-            <p>Not the kind where you recognise a place from photos online. The uncomfortable kind — where your mind already knows the environment before you've explored it. Even before walking further in, I somehow knew there was another section behind the reception building. I knew the corridor on the left led toward the rooms. At the time I convinced myself it was just because roadside hotels share similar layouts.</p>
-            <p class="pause">. . .</p>
-            <p>Then, without any footsteps or doors opening, a woman appeared from somewhere deeper inside the compound. She didn't look surprised to see us waiting. No apology. No confusion. She simply asked whether we needed rooms — her voice calm, almost as if she had expected us to arrive.</p>
-          </div>
-
-          <h2>The Room I Somehow Already Knew</h2>
-          <div class="atmosphere-prose">
-            <p>She showed us a few available rooms. The one nearest to the carpark immediately caught my attention — slightly more expensive, but from the window I had a direct view of my bike below. As a rider, that matters more than room size sometimes. I took it without hesitation.</p>
-            <p class="pause">. . .</p>
-            <p>The strange feeling became stronger the moment I stepped inside. Again, not fear. The opposite.</p>
-            <p class="emphasis">Comfort. The room felt familiar in a way that made no sense.</p>
-            <p>I knew where the switches were before reaching for them. I placed my riding gear down naturally, like I had done it there before. Moving around the room felt automatic. No adjustment period. No "first-time" feeling. Just an overwhelming sense that I had returned somewhere, rather than arrived somewhere new.</p>
-            <p class="pause">. . .</p>
-            <p>The weirdest part is that nothing paranormal happened that night. No shadows. No strange noises. No sightings. Everything was peaceful. We slept well, woke up normally, and continued our journey the next morning without any issues.</p>
-          </div>
-
-          <h2>Why It Still Stays With Me</h2>
-          <p>Out of every hotel I've stayed at across all my touring trips, that is still the only place that never felt unfamiliar to me. Not even on arrival. Not even in the first few seconds.</p>
-          <p>I've tried to explain it rationally — similar layouts, exhaustion warping perception, pattern recognition from years of budget hotels. All possible. None of them fully account for knowing where the light switches were before I reached for them. Or for the settled, returned feeling that was there from the moment I stepped through the door.</p>
-          <p>Some places feel like you've been there before. This one felt like I had left something there and was coming back to collect it. I still don't know what that means. And honestly, I'm not sure I want to.</p>
-
-          <div class="signal-box">
-            <strong>// SIGNAL RECORDED:</strong> Strong spatial familiarity upon arrival at a never-visited location. Rider knew switch locations instinctively. No paranormal incident occurred. Feeling of return rather than arrival. Only hotel across all touring trips to produce this effect.
-          </div>
-
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx010" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
-                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Hotel That Felt Too Familiar</h4>
-                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Déjà Vu / Touring Encounter</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[SPATIAL FAMILIARITY]</strong> Standard déjà vu is brief and disorienting. What is described here is sustained, functional familiarity — accurate spatial knowledge of a never-visited location. Knowing where light switches are before reaching for them is not consistent with normal déjà vu. It suggests either forgotten prior exposure, or something else without a straightforward explanation.</p>
-                <p><strong>[THE WOMAN'S ARRIVAL]</strong> Appearing without footsteps or door sounds, showing no surprise after 20 minutes of unanswered bells, and speaking with the calm expectation of someone who knew guests were coming — individually explainable, together harder to dismiss.</p>
-                <p><strong>[WHY NOTHING HAPPENED]</strong> Not all unexplained experiences are threatening. Some locations carry a feeling of recognition that is unsettling precisely because it is comfortable. The discomfort comes from the impossibility of the recognition itself, not from any danger.</p>
-              </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Type: Sustained spatial familiarity — never visited location</li>
-                  <li>Threat level: None. Peaceful stay, normal departure.</li>
-                  <li>Classification: Unexplained — not hostile, not resolved.</li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx010', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ LOG 11: The Highway That Took Twice As Long ══ -->
-      <div class="log-entry" style="display:none;">
-        <span class="tag">Touring Log #003</span>
-        <h1 class="entry-title">The Highway That Took Twice As Long</h1>
-        <p class="lead">On the map, it was two hours. A straightforward highway between two towns. We spent almost four hours on that road — and there was always something ahead of us, just far enough that we could never reach it.</p>
-
-        <div class="featured-image">
-          <div class="noise-overlay"></div>
-          <div class="img-watermark">🌑</div>
-          <div class="featured-image-label">// SR-TOUR-003 // Nakhon Sawan – Phitsanulok // Thailand</div>
-          <div class="corner-br"></div>
-        </div>
-
-        <div class="story-content">
-          <h2>A Road That Should Have Been Simple</h2>
-          <p>I still remember that stretch between Nakhon Sawan and Phitsanulok. On the map it looked simple — around two hours on a major highway. At that point in the trip we had already covered much harder routes, so none of us expected that road to stay in our memories for years afterward. By the time we entered, night had already fully settled in. The kind of darkness where your headlights stop feeling useful beyond a certain distance. Beyond that beam was just empty black road stretching forward into nothing.</p>
-
-          <h2>What the Road Actually Was</h2>
-          <div class="atmosphere-prose">
-            <p>Technically a highway. Speed limit around 110. In reality, it didn't feel like one.</p>
-            <p>Only two lanes. Long stretches of subtle bends that never seemed to end — not enough to call them corners, just enough to stop you from relaxing. The road kept moving slightly in the dark, forcing your eyes and body to stay constantly alert.</p>
-            <p class="pause">. . .</p>
-            <p>Then came the dogs. Every few minutes, one would appear from the darkness and sprint directly across the road. Sometimes from the left shoulder. Sometimes from gaps we couldn't see. There were moments we genuinely rolled off the throttle expecting impact. After a while, our pace became slower and slower. Not because we wanted to — because the road was slowly draining confidence from us.</p>
-            <p class="pause">. . .</p>
-            <p>The scariest part wasn't the darkness. It was the side roads. Small hidden junctions from complete blackness, and every now and then a vehicle emerging without headlights — just a dark shape moving into the highway as if it had always been there.</p>
-          </div>
-
-          <h2>The Taillights We Could Never Reach</h2>
-          <div class="atmosphere-prose">
-            <p>At some point, we stopped trying to lead. Instead we began following larger vehicles ahead — pick-up trucks, vans, occasionally buses. Using their headlights and pace as a guide through the darkness.</p>
-            <p class="pause">. . .</p>
-            <p>But that became strange too. No matter how hard we tried to maintain distance, the vehicle in front always slowly pulled away. Not suddenly. Just enough that we could never comfortably keep up. Eventually the vehicle ahead would disappear completely into the dark.</p>
-            <p class="pause">. . .</p>
-            <p>Then, after some time alone on the road, another vehicle would appear ahead of us. And the cycle would repeat. A new pair of taillights. A new shadow to follow.</p>
-            <p class="emphasis">Then slowly disappearing again.</p>
-          </div>
-
-          <h2>What Actually Unsettles Me</h2>
-          <p>Even now, what unsettles me most isn't anything supernatural. It's the feeling that we never truly rode that stretch alone. There was always something ahead of us — just far enough that we could never reach it. And somehow, despite the route supposedly taking around two hours, we spent almost four hours on that road before finally arriving in Phitsanulok.</p>
-          <p>No explanation for the time. No memory of stopping. No detour. Just four hours on a two-hour road, always following something ahead that never waited for us to catch up.</p>
-
-          <div class="field-grid">
-            <div>Route</div><div>Nakhon Sawan to Phitsanulok, Thailand</div>
-            <div>Expected time</div><div>~2 hours</div>
-            <div>Actual time</div><div>~4 hours — no stops, no detour identified</div>
-            <div>Hazards</div><div>Dogs on road, unlit vehicles from side junctions</div>
-            <div>Pattern</div><div>Lead vehicle always pulled away. New taillights always appeared after.</div>
-            <div>Anomaly</div><div>~2 hours of time unaccounted for</div>
-          </div>
-
-          <div class="signal-box">
-            <strong>// SIGNAL RECORDED:</strong> ~2 hours of unaccounted time on a straightforward highway. Recurring pattern of lead vehicles pulling away and being replaced. Feeling of never riding alone — but never being able to reach whatever was ahead.
-          </div>
-
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx011" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
-                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Highway That Took Twice As Long</h4>
-                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Time Distortion / Thailand Highway</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[TIME LOSS ON THAI HIGHWAYS]</strong> Reports of significantly extended journey times on specific stretches of Thai highway — with no mechanical or navigational explanation — appear across long-distance touring communities in Southeast Asia. The stretch between Nakhon Sawan and Phitsanulok appears in several independent accounts.</p>
-                <p><strong>[THE VEHICLE PATTERN]</strong> A leading vehicle that consistently maintains an unclosable distance, disappears, and is replaced by another in a cycling pattern, is distinct from normal highway traffic behaviour.</p>
-                <p><strong>[ROAD DOGS]</strong> Stray dogs on Thai highways at night are a genuine, documented hazard — particularly on older inter-province routes. Their presence here is explainable. The time loss is not.</p>
-              </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Time unaccounted for: ~2 hours</li>
-                  <li>Detour or stop: None identified</li>
-                  <li>Recommendation: On night stretches through Thailand's inter-province highways — log your departure time. Pay attention to whether what's ahead is actually getting closer.</li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx011', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ LOG 12: Maybe Some Stories Don't Want To Be Written ══ -->
-      <div class="log-entry" style="display:none;">
-        <span class="tag">Personal Log #001</span>
-        <h1 class="entry-title">Maybe Some Stories Don't Want To Be Written</h1>
-        <p class="lead">There's something I noticed over the years. Every time I seriously try to write down the unexplained things I've seen or felt, something stops me. I'm not joking.</p>
-
-        <div class="featured-image">
-          <div class="noise-overlay"></div>
-          <div class="img-watermark">✍️</div>
-          <div class="featured-image-label">// SR-PERSONAL-002 // Writing Log // Late Night</div>
-          <div class="corner-br"></div>
-        </div>
-
-        <div class="story-content">
-          <h2>The Pattern I Keep Noticing</h2>
-          <p>Every time I seriously try to write down the unexplained things I've seen or felt over the years, something stops me. I've tried writing for True Singapore Ghost Stories before. Every time I start properly recalling the memories, something happens. Sudden distractions. Someone calling. Mood suddenly gone. Computer issues. Or I'll just stop halfway and completely forget about it for months — sometimes years. Then one random night I'll suddenly remember everything again. And when I finally decide: okay, tonight I'll finish writing it — something interrupts again.</p>
-
-          <h2>What's Happening Right Now</h2>
-          <div class="atmosphere-prose">
-            <p>Even while typing the stories earlier tonight, I suddenly felt cold.</p>
-            <p>Not normal cold.</p>
-            <p class="emphasis">The kind that slowly creeps into your body for no reason.</p>
-            <p>I'm wearing a thick winter jacket while typing this and I still feel it inside my arms and chest.</p>
-            <p class="pause">. . .</p>
-            <p>Maybe coincidence. Maybe I'm just tired. But every time I write these stories late at night, the atmosphere around me starts feeling different. Heavier. Too quiet. Like something is sitting nearby, reading along while I remember everything.</p>
-            <p>And honestly — I'd rather not know if that feeling is real or not.</p>
-          </div>
-
-          <h2>How It Started</h2>
-          <p>Since I was young, I've always been able to notice strange things. Not full horror-movie ghost sightings. More like shadows at the corner of my eye. Sudden feelings. Sensing something nearby before anything visible confirms it. Noticing things just before other people do.</p>
-          <p>After my accident in 2012, the "seeing" mostly stopped. But the feeling never fully disappeared. Even today, I still occasionally catch movements at the edge of my vision. When I turn to look properly, nothing is there.</p>
-          <p>I also spent years around spiritual things — tarot cards, superstitions, certain practices. Maybe that made me more sensitive to things most people tune out. Or maybe once you experience enough genuinely strange things in life, your brain simply becomes more alert to certain signals. I honestly don't know. And maybe I don't want to.</p>
-
-          <h2>What I Know</h2>
-          <p>All I know is this — every time I start writing these stories seriously, something always seems to notice. Whether that's my own mind working against me, or something else paying attention, I can't say.</p>
-          <p>If you're reading this late at night — especially if you found it through a search at some strange hour when you couldn't sleep — then maybe you already know what I mean. Some things don't like being remembered out loud. But some things need to be.</p>
-
-          <div class="signal-box">
-            <strong>// SIGNAL RECORDED:</strong> Repeated unexplained interruptions each time writing sessions begin. Physical cold during writing despite warm clothing. Sustained feeling of being observed. Pattern consistent across multiple years and multiple attempts.
-          </div>
-
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx012" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
-                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: Maybe Some Stories Don't Want To Be Written</h4>
-                <p class="text-sm text-gray-500 italic">Log Classification: Personal / Sensitivity / Pattern Recognition</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[WRITING INTERRUPTION PATTERN]</strong> The consistent failure to complete written accounts of unexplained experiences — across different environments, different devices, different time periods — is noted in accounts from people with long-term exposure to unexplained phenomena.</p>
-                <p><strong>[THE 2012 ACCIDENT]</strong> Traumatic events are frequently cited as a turning point in sensitivity to unexplained phenomena — either increasing it sharply, or partially closing it off. The partial reduction in "seeing" after the accident, with the feeling persisting, is a consistent pattern.</p>
-                <p><strong>[ON WRITING THESE LOGS]</strong> This site exists because these experiences happened and deserve to be recorded honestly. Not as entertainment. As documentation — the same way a field notes log records what was observed without requiring explanation. The fact that something doesn't want to be written is, itself, part of the record.</p>
-              </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Pattern duration: Multiple years</li>
-                  <li>Consistent elements: Cold, atmospheric shift, feeling of observation</li>
-                  <li>Status: Ongoing — these logs are the attempt to finish what keeps getting interrupted</li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx012', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ LOG 13: The First Time I Saw Something ══ -->
-      <div class="log-entry" style="display:none;">
-        <span class="tag">Personal Log #002</span>
-        <h1 class="entry-title">The First Time I Saw Something</h1>
-        <p class="lead">I was around six years old. High fever. Midnight. And an old woman standing near the kitchen who wasn't supposed to be there — and who disappeared the moment my mother switched the lights on properly.</p>
-
-        <div class="featured-image">
-          <div class="noise-overlay"></div>
-          <div class="img-watermark">👁️</div>
-          <div class="featured-image-label">// SR-PERSONAL-003 // Childhood // First Sighting</div>
-          <div class="corner-br"></div>
-        </div>
-
-        <div class="story-content">
-          <h2>The Night It Started</h2>
-          <p>My first unexplained experience happened when I was around six years old. At that age, I didn't even fully understand what fear was yet. I only knew something felt terribly wrong. That night, I was running a very high fever. Back then, medicine wasn't as instant as now — no quick syrup solving everything in minutes. I just lay in bed feeling extremely weak and uncomfortable. Sometime around midnight, I suddenly woke up.</p>
-
-          <h2>What I Woke Up To</h2>
-          <div class="atmosphere-prose">
-            <p>The first thing I noticed was the sound. A loud, high-pitched ringing. Not normal ringing. Sharp. Piercing. Continuous. The kind that makes your ears feel pressured from inside.</p>
-            <p class="pause">. . .</p>
-            <p>Then I opened my eyes. I remember seeing bright lights everywhere. That part still confuses me today — because I knew it was nighttime. But the whole house looked brightly lit. Not normal room lighting. Everything strangely pale and overexposed.</p>
-            <p>I looked for my parents. Couldn't find them.</p>
-            <p class="pause">. . .</p>
-            <p>Then I noticed someone standing near the kitchen area. An old woman. At first glance, she didn't look aggressive. But even as a child, every instinct inside me immediately said: <em>be careful.</em></p>
-            <p>Not the feeling where something looks scary. The feeling where something is simply wrong in a way your body recognises before your mind does.</p>
-            <p class="pause">. . .</p>
-            <p>I stared at her while the ringing in my ears kept getting louder. The strange pale light kept pressing down around everything. And somehow, even at six years old, I knew she wasn't supposed to be there.</p>
-            <p class="emphasis">I started screaming.</p>
-            <p>My mother rushed out. The moment she switched on the room lights properly, the old woman was gone. The strange brightness instantly became ordinary household light. The ringing in my ears continued for a while longer.</p>
-          </div>
-
-          <h2>Whether It Was Real</h2>
-          <p>Of course, as a child with a high fever, it could easily be dismissed as delirium. Fever hallucination. Exhaustion mixing dreams with reality. Those are all reasonable explanations. But till today, decades later, I still remember that night with unusual clarity. The lights. The ringing. The feeling. And especially the instinctive dread I felt when I saw that old woman standing silently in the kitchen — not doing anything, not moving. Just there.</p>
-          <p>Because that night became the beginning of something that followed me for years afterward. After it, I started noticing more things. Not all the time. Not always clearly. But enough that I eventually stopped dismissing every strange experience as coincidence.</p>
-          <p>And sometimes, even now, I still wonder — did the fever cause me to imagine something? Or did the fever simply lower whatever boundary usually keeps certain things out of sight?</p>
-
-          <div class="signal-box">
-            <strong>// SIGNAL RECORDED:</strong> High fever. Midnight. Unknown figure in kitchen — old woman, standing still. Anomalous whole-house brightness. High-pitched ringing in ears. Figure disappeared immediately upon room lights being switched on. Ringing persisted briefly afterward. First of many subsequent encounters.
-          </div>
-
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx013" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
-                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The First Time I Saw Something</h4>
-                <p class="text-sm text-gray-500 italic">Log Classification: Personal / Childhood Encounter / First Sighting</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[HIGH FEVER AND PERCEPTION]</strong> High fever in children is associated with hallucinations — but the specific details here (anomalous whole-house brightness, sustained tinnitus, instinctive rather than visual fear, immediate disappearance upon normal light) are not consistent with standard fever hallucination patterns, which tend to be fragmented rather than specific and structured.</p>
-                <p><strong>[THE RINGING]</strong> A sustained, high-pitched tone accompanying the sighting — and persisting after — appears in multiple accounts of unexplained visual encounters. Not consistently explained by fever-related auditory effects alone.</p>
-                <p><strong>[FIRST ENCOUNTER AS OPENING]</strong> Many accounts of long-term sensitivity trace back to a specific childhood incident. This one is notable for its clarity decades later, and for the pattern of experiences that followed.</p>
-              </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Age at incident: ~6 years old</li>
-                  <li>Context: High fever, midnight</li>
-                  <li>Figure: Old woman, kitchen, standing still — disappeared on normal light</li>
-                  <li>Classification: First encounter — followed by years of subsequent sensitivity</li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx013', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ LOG 14: The House With The Little Ghosts ══ -->
-      <div class="log-entry" style="display:none;">
-        <span class="tag">Personal Log #003</span>
-        <h1 class="entry-title">The House With The Little Ghosts</h1>
-        <p class="lead">The owner casually mentioned he took care of little ghosts. My mother told me years later that I used to play with them when I was home alone. I have almost no memory of it. Only the offerings I placed every day — KitKats and Vitagen — like it was the most normal thing in the world.</p>
-
-        <div class="featured-image">
-          <div class="noise-overlay"></div>
-          <div class="img-watermark">🏠</div>
-          <div class="featured-image-label">// SR-PERSONAL-004 // Childhood // Rental House</div>
-          <div class="corner-br"></div>
-        </div>
-
-        <div class="story-content">
-          <h2>The Memory That Won't Come Back</h2>
-          <p>There's one childhood memory I can never fully recall. Not because it's blurry. Because most of it feels missing. Back when I was around seven or eight years old, my family moved frequently between rental houses — our family business operated on short contracts, so shifting between places became normal. But there was one particular rental house that always stayed at the back of my mind. Not because of the house itself. Because of what the owner casually told my parents when we moved in. He said he took care of little ghosts. Back then, hearing adults say strange things wasn't uncommon. So as a child, I didn't think much about it at the time.</p>
-
-          <h2>What My Mother Told Me</h2>
-          <div class="atmosphere-prose">
-            <p>What unsettles me today is what my mother told me years afterward.</p>
-            <p>Apparently, whenever I was home alone in that house, I would play with them.</p>
-            <p class="pause">. . .</p>
-            <p>Till today, I honestly cannot remember what that means. No faces. No conversations. No visual memories. Nothing. Almost like that entire part of my childhood was locked away somewhere I can no longer reach.</p>
-            <p class="pause">. . .</p>
-            <p>The only thing I still remember clearly — was the instruction.</p>
-            <p>Every day, I was told to place KitKats and Vitagen somewhere inside the house.</p>
-            <p class="emphasis">And strangely, I never questioned it.</p>
-            <p>To me back then, it felt completely normal. Almost routine. Like feeding fish or watering plants. Just: put the snacks there. And I would do it, obediently, without any fear or hesitation.</p>
-          </div>
-
-          <h2>What Actually Disturbs Me Now</h2>
-          <p>That's the disturbing part when I think back on it today. Not the ghost story itself. But how natural the entire situation felt to a child. No fear. No panic. No feeling that anything was wrong. Just acceptance — as if the arrangement had always existed and I had simply been told my part in it.</p>
-          <p>Till today, I still don't know whether the owner genuinely believed something was living in that house, whether my childhood imagination created invisible companions, or whether the adults around me unknowingly shaped my memories into something they weren't.</p>
-          <p>But one detail quietly disturbs me every time I think about it. I cannot remember the playing at all. Not a single image. Not a single moment. Only the offerings. KitKats and Vitagen. Every single day. And the older I get, the stranger that missing memory feels — like something was deliberately taken out of reach, and the only proof it existed is the gap it left behind.</p>
-
-          <div class="signal-box">
-            <strong>// SIGNAL RECORDED:</strong> Childhood residence with confirmed occupant belief in resident spirits. Rider reportedly interacted with them — no memory of interactions retained. Daily offerings placed without fear or resistance. Memory of the "playing" entirely absent. Only the ritual remains.
-          </div>
-
-          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx014" class="hidden space-y-6 text-gray-300">
-              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
-                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The House With The Little Ghosts</h4>
-                <p class="text-sm text-gray-500 italic">Log Classification: Personal / Childhood / Selective Memory Loss</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[KUMAN THONG AND CHILD SPIRITS]</strong> The practice of taking care of little ghosts — specifically child spirits — exists across traditional belief systems in Singapore, Malaysia, and Thailand. Offerings of food and snacks are standard. The casualness with which the owner mentioned it, and the immediate integration of the practice into the child's routine, is consistent with households where this is simply a normal part of the living arrangement.</p>
-                <p><strong>[SELECTIVE MEMORY ABSENCE]</strong> Complete inability to recall specific interactions while clearly retaining surrounding details — the instructions, the offerings, the house — is not consistent with normal childhood memory decay. Normal forgetting is gradual and general. This suggests either natural dissociation, or a more deliberate process of memory limitation.</p>
-                <p><strong>[THE CHILD'S ACCEPTANCE]</strong> Children interacting with non-visible entities without fear — treating it as ordinary — is documented across multiple cultures. The absence of fear is not necessarily evidence that nothing was there. It may instead indicate that what was there presented itself in a way children found comfortable and adults found disturbing.</p>
-              </div>
-              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
-                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Age at incident: ~7–8 years old</li>
-                  <li>Occupant belief: Confirmed — owner stated directly</li>
-                  <li>Memory status: Interactions absent. Ritual remains. Gap unexplained.</li>
-                  <li>Classification: Incomplete record — not all logs can be fully recovered.</li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx014', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-  </div><!-- /log-container -->
+    </a>
 
     <hr class="section-rule" />
 
-    <!-- ── Navigation buttons ── -->
-    <div class="flex items-center justify-center gap-5 flex-wrap">
-      <button id="prevBtn" class="nav-btn"><span>◄ Previous Log</span></button>
-      <div class="page-counter">LOG <span id="current-page">01</span> / <span id="total-pages">14</span></div>
-      <button id="nextBtn" class="nav-btn"><span>Unlock Next ►</span></button>
+    <!-- Archive footer note -->
+    <div class="text-center space-y-3">
+      <p class="font-mono-tech text-gray-700 text-xs tracking-widest uppercase">// End of Documented Archive</p>
+      <p class="text-gray-600 text-sm" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">
+        More logs may be added. Not everything has been written down yet.<br/>
+        Some things, honestly, I'm still not sure I want to write.
+      </p>
     </div>
 
   </div>
@@ -1803,185 +592,71 @@
 <footer class="py-16 px-5 border-t border-white/5 mt-8">
   <div class="max-w-5xl mx-auto">
     <div class="flex flex-col items-center gap-6">
-
       <a href="/" class="flex items-center gap-3">
         <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 hover:scale-105 transition-all duration-300">
           <span class="font-mono-tech text-red-600 text-sm font-bold">SR</span>
         </div>
         <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
       </a>
-
-      <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">
-        Motorcycle Blogger / Ride Safe
-      </p>
-
+      <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
       <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
          class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
-        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors duration-300">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-            <polygon points="5 3 19 12 5 21 5 3"/>
-          </svg>
+        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         </div>
         <span class="font-mono-tech text-sm tracking-widest uppercase">Watch on YouTube</span>
       </a>
-
       <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
-      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">
-        &copy; 2026 Secret Reviewer. All rights reserved.
-      </p>
-
+      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
     </div>
   </div>
 </footer>
 
-<!-- ════ JAVASCRIPT ════ -->
 <script>
-  // ── Custom cursor ──
-  (function () {
-    var cursor = document.getElementById('cursor');
-    var ring   = document.getElementById('cursor-ring');
-    var mx = 0, my = 0, rx = 0, ry = 0;
-
-    document.addEventListener('mousemove', function (e) {
-      mx = e.clientX; my = e.clientY;
-      cursor.style.left = mx + 'px';
-      cursor.style.top  = my + 'px';
-    });
-    (function animRing() {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      ring.style.left = rx + 'px';
-      ring.style.top  = ry + 'px';
-      requestAnimationFrame(animRing);
-    })();
-    document.querySelectorAll('a, button').forEach(function (el) {
-      el.addEventListener('mouseenter', function () {
-        ring.style.width = '56px'; ring.style.height = '56px';
-        ring.style.borderColor = 'rgba(220,38,38,0.8)';
-      });
-      el.addEventListener('mouseleave', function () {
-        ring.style.width = '36px'; ring.style.height = '36px';
-        ring.style.borderColor = 'rgba(220,38,38,0.5)';
-      });
+  // Cursor
+  (function(){
+    var cursor=document.getElementById('cursor'), ring=document.getElementById('cursor-ring');
+    var mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+    (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+    document.querySelectorAll('a,button').forEach(function(el){
+      el.addEventListener('mouseenter',function(){ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(220,38,38,0.8)';});
+      el.addEventListener('mouseleave',function(){ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(220,38,38,0.5)';});
     });
   })();
 
-  // ── Progress bar ──
-  window.addEventListener('scroll', function () {
-    var scrollTop    = document.documentElement.scrollTop || document.body.scrollTop;
-    var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-    document.getElementById('progress-bar').style.width = pct + '%';
-  }, { passive: true });
+  // Progress bar
+  window.addEventListener('scroll',function(){
+    var st=document.documentElement.scrollTop||document.body.scrollTop;
+    var sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    document.getElementById('progress-bar').style.width=(sh>0?(st/sh)*100:0)+'%';
+  },{passive:true});
 
-  // ── Navbar scroll effect ──
-  window.addEventListener('scroll', function () {
-    var nav = document.getElementById('navbar');
-    if (window.scrollY > 20) nav.classList.add('nav-scrolled');
+  // Navbar scroll
+  window.addEventListener('scroll',function(){
+    var nav=document.getElementById('navbar');
+    if(window.scrollY>20)nav.classList.add('nav-scrolled');
     else nav.classList.remove('nav-scrolled');
-  }, { passive: true });
+  },{passive:true});
 
-  // ── Mobile menu toggle ──
-  document.getElementById('menu-toggle').addEventListener('click', function () {
-    var menu      = document.getElementById('mobile-menu');
-    var openIcon  = document.getElementById('menu-icon-open');
-    var closeIcon = document.getElementById('menu-icon-close');
-    var isOpen    = menu.style.maxHeight === '320px';
-    menu.style.maxHeight    = isOpen ? '0' : '320px';
-    menu.style.borderBottom = isOpen ? '' : '1px solid rgba(76,29,149,0.3)';
-    openIcon.style.display  = isOpen ? '' : 'none';
-    closeIcon.style.display = isOpen ? 'none' : '';
+  // Mobile menu
+  document.getElementById('menu-toggle').addEventListener('click',function(){
+    var menu=document.getElementById('mobile-menu');
+    var openIcon=document.getElementById('menu-icon-open');
+    var closeIcon=document.getElementById('menu-icon-close');
+    var isOpen=menu.style.maxHeight==='320px';
+    menu.style.maxHeight=isOpen?'0':'320px';
+    menu.style.borderBottom=isOpen?'':'1px solid rgba(76,29,149,0.3)';
+    openIcon.style.display=isOpen?'':'none';
+    closeIcon.style.display=isOpen?'none':'';
   });
-  document.querySelectorAll('.mobile-link').forEach(function (link) {
-    link.addEventListener('click', function () {
-      document.getElementById('mobile-menu').style.maxHeight = '0';
-      document.getElementById('menu-icon-open').style.display  = '';
-      document.getElementById('menu-icon-close').style.display = 'none';
+  document.querySelectorAll('.mobile-link').forEach(function(link){
+    link.addEventListener('click',function(){
+      document.getElementById('mobile-menu').style.maxHeight='0';
+      document.getElementById('menu-icon-open').style.display='';
+      document.getElementById('menu-icon-close').style.display='none';
     });
   });
-
-  // ── Scramble / decrypt effect ──
-  var scrambleChars = '░▒▓█▄▀■□▪▫ABCDEF0123456789$#@%';
-  function decryptText(button, originalText, callback) {
-    var iterations = 0;
-    button.classList.add('decrypting');
-    button.disabled = true;
-
-    var interval = setInterval(function () {
-      button.querySelector('span').innerText = originalText.split('').map(function (char, index) {
-        if (index < iterations) return originalText[index];
-        return char === ' ' ? ' ' : scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
-      }).join('');
-
-      if (iterations >= originalText.length) {
-        clearInterval(interval);
-        button.classList.remove('decrypting');
-        button.querySelector('span').innerText = originalText;
-        button.disabled = false;
-        callback();
-      }
-      iterations += 1 / 3;
-    }, 30);
-  }
-
-  // ── Log navigation ──
-  // totalPages is auto-calculated from the actual number of .log-entry divs —
-  // no hardcoded count needed. Adding new logs just works.
-  var logs        = document.querySelectorAll('.log-entry');
-  var nextBtn     = document.getElementById('nextBtn');
-  var prevBtn     = document.getElementById('prevBtn');
-  var currentPage = document.getElementById('current-page');
-  var totalPages  = document.getElementById('total-pages');
-  var currentLogIndex = 0;
-
-  totalPages.textContent = String(logs.length).padStart(2, '0');
-
-  function updateButtons() {
-    prevBtn.disabled = currentLogIndex === 0;
-    nextBtn.disabled = currentLogIndex === logs.length - 1;
-    currentPage.textContent = String(currentLogIndex + 1).padStart(2, '0');
-  }
-
-  function updateView(newIndex) {
-    logs.forEach(function (log) { log.style.display = 'none'; });
-    currentLogIndex = newIndex;
-    logs[currentLogIndex].style.display = 'block';
-    logs[currentLogIndex].style.animation = 'none';
-    logs[currentLogIndex].offsetHeight;
-    logs[currentLogIndex].style.animation = '';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    updateButtons();
-  }
-
-  nextBtn.addEventListener('click', function () {
-    if (currentLogIndex >= logs.length - 1) return;
-    var nextIndex = currentLogIndex + 1;
-    decryptText(nextBtn, 'Unlock Next ►', function () { updateView(nextIndex); });
-  });
-
-  prevBtn.addEventListener('click', function () {
-    if (currentLogIndex <= 0) return;
-    var prevIndex = currentLogIndex - 1;
-    decryptText(prevBtn, '◄ Previous Log', function () { updateView(prevIndex); });
-  });
-
-  updateView(0);
-
-  // ── Toggle intel / field notes ──
-  function toggleIntel(id, btn) {
-    var report = document.getElementById(id);
-    var isHidden = report.classList.contains('hidden');
-    if (isHidden) {
-      report.classList.remove('hidden');
-      btn.innerText = 'CLOSE FIELD NOTES';
-      report.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    } else {
-      report.classList.add('hidden');
-      btn.innerText = 'ACCESS FULL FIELD NOTES';
-    }
-  }
 </script>
-
 </body>
 </html>
