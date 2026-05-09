@@ -1,1 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="Tank bag and tail bag review for the Yamaha MT-03. Touring-tested motorcycle luggage setup from Singapore to Thailand without panniers or top box.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+ <title>Tank Bag & Tail Bag Review | Secret Reviewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Barlow Condensed', 'sans-serif'],
+            mono: ['"Share Tech Mono"', 'monospace'],
+            prose: ['"IBM Plex Sans"', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root {
+      --red: #dc2626;
+      --red-dim: rgba(220, 38, 38, 0.15);
+      --red-glow: rgba(220, 38, 38, 0.6);
+      --bg: #060606;
+      --surface: rgba(10, 10, 10, 0.85);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: #ececec;
+      font-family: 'Barlow Condensed', sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+      cursor: none;
+      line-height: 1.75;
+    }
+    .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+    .font-prose { font-family: 'IBM Plex Sans', sans-serif; }
 
+    #cursor {
+      position: fixed;
+      width: 12px; height: 12px;
+      background: var(--red);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+      mix-blend-mode: screen;
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(220,38,38,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+    }
+
+    @keyframes pulse-red {
+      0%,100% { box-shadow: 0 0 6px rgba(220,38,38,0.3); }
+      50%      { box-shadow: 0 0 28px rgba(220,38,38,0.8), 0 0 60px rgba(220,38,38,0.25); }
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.3; }
+    }
+    @keyframes scan {
+      from { top: -100%; }
+      to   { top: 100%; }
+    }
+    @keyframes folderOpen {
+      from { opacity: 0; transform: translateY(16px); filter: blur(4px); }
+      to   { opacity: 1; transform: translateY(0);  filter: blur(0); }
+    }
+    .glitch-wrap { position: relative; display: inline-block; }
+    .glitch-wrap::before, .glitch-wrap::after {
+      content: attr(data-text);
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    .glitch-wrap::before { color: #00ffff; animation: glitch-1 6s infinite step-start; opacity: 0.6; }
+    .glitch-wrap::after  { color: var(--red); animation: glitch-2 6s infinite step-start; opacity: 0.6; }
+    @keyframes glitch-1 {
+      0%,100% { clip-path: inset(0 0 98% 0);  transform: translate(-2px,0); }
+      20%     { clip-path: inset(20% 0 50% 0); transform: translate(2px,0); }
+      40%     { clip-path: inset(60% 0 20% 0); transform: translate(-2px,0); }
+      60%     { clip-path: inset(80% 0 5% 0);  transform: translate(2px,0); }
+      80%     { clip-path: inset(40% 0 60% 0); transform: translate(-2px,0); }
+    }
+    @keyframes glitch-2 {
+      0%,100% { clip-path: inset(50% 0 30% 0); transform: translate(2px,0);  color:#00ffff; }
+      25%     { clip-path: inset(10% 0 80% 0); transform: translate(-2px,0); }
+      50%     { clip-path: inset(70% 0 10% 0); transform: translate(2px,0);  color:var(--red); }
+      75%     { clip-path: inset(30% 0 50% 0); transform: translate(-2px,0); }
+    }
+    @keyframes borderFlash {
+      0%,100% { border-color: rgba(220,38,38,0.15); }
+      50%     { border-color: rgba(220,38,38,0.5); }
+    }
+
+    .animate-pulse-red     { animation: pulse-red 2.5s infinite; }
+    .animate-pulse-dot     { animation: pulse-dot 2s infinite; }
+    .animate-fade-slide-up { animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+    .animate-border-flash  { animation: borderFlash 3s infinite; }
+
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
+      pointer-events: none;
+      z-index: 9990;
+    }
+    body::after {
+      content: "";
+      position: fixed; top: -100%; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(rgba(220,38,38,0) 0%, rgba(220,38,38,0.04) 50%, rgba(220,38,38,0) 100%);
+      animation: scan 8s linear infinite;
+      pointer-events: none;
+      z-index: 9991;
+    }
+
+    #progress-bar {
+      height: 3px;
+      background: linear-gradient(90deg, #7f1d1d, #dc2626, #ff6666);
+      box-shadow: 0 0 12px rgba(220,38,38,0.9), 0 0 24px rgba(220,38,38,0.4);
+      width: 0%;
+      transition: width 0.08s ease-out;
+    }
+
+    #navbar { transition: all 0.4s ease; }
+    .nav-scrolled {
+      background: rgba(4,4,4,0.97) !important;
+      border-bottom-color: rgba(127,29,29,0.5) !important;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+
+    .story-content {
+      font-size: 1.15rem;
+      letter-spacing: 0.01em;
+      margin-bottom: 1.5rem;
+      color: #d0d0d0;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      line-height: 1.85;
+    }
+    .story-content p { margin: 0 0 1.6em 0; }
+    .story-content h2 {
+      color: var(--red);
+      margin-top: 52px;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 3px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .story-content h2::before { content: "—"; opacity: 0.4; }
+    .story-content h3 {
+      color: #fff;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 36px 0 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .story-content ul { list-style: none; padding: 0; margin: 0 0 1.6em 0; }
+    .story-content ul li {
+      position: relative;
+      padding-left: 22px;
+      margin-bottom: 14px;
+      color: #bbb;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+    .story-content ul li::before {
+      content: "▶";
+      position: absolute;
+      left: 0;
+      color: var(--red);
+      font-size: 0.6rem;
+      top: 6px;
+      opacity: 0.7;
+    }
+    .story-content strong { color: #fff; font-weight: 700; }
+
+    .lead {
+      font-size: 1.15rem;
+      color: #999;
+      margin-bottom: 40px;
+      border-left: 2px solid var(--red);
+      padding-left: 20px;
+      font-style: italic;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.8;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--red);
+      text-transform: uppercase;
+      border: 1px solid rgba(220,38,38,0.4);
+      padding: 5px 14px;
+      letter-spacing: 2px;
+      background: rgba(220,38,38,0.06);
+    }
+
+    .entry-title {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900;
+      margin: 22px 0 10px;
+      color: #fff;
+      line-height: 1.0;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    .featured-image {
+      width: 100%;
+      height: 420px;
+      background: linear-gradient(135deg, #0d0d0d 0%, #111 50%, #0a0a0a 100%);
+      border: 1px solid rgba(220,38,38,0.2);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      position: relative;
+      overflow: hidden;
+      margin: 32px 0;
+    }
+    .featured-image::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(220,38,38,0.015) 3px, rgba(220,38,38,0.015) 4px);
+      pointer-events: none;
+    }
+    .featured-image-label {
+      position: absolute;
+      bottom: 12px; left: 12px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: rgba(220,38,38,0.5);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .featured-image::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 40px; height: 40px;
+      border-top: 1px solid rgba(220,38,38,0.4);
+      border-left: 1px solid rgba(220,38,38,0.4);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .itinerary-grid {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 0;
+      background: rgba(10,10,10,0.7);
+      border: 1px solid rgba(220,38,38,0.15);
+      margin: 28px 0;
+      font-family: 'Share Tech Mono', monospace;
+      overflow: hidden;
+      animation: borderFlash 3s infinite;
+    }
+    .itinerary-grid > div {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.95rem;
+    }
+    .itinerary-grid > div:last-child,
+    .itinerary-grid > div:nth-last-child(2) { border-bottom: none; }
+    .itinerary-grid > div:nth-child(odd) {
+      color: var(--red);
+      font-weight: bold;
+      font-size: 0.9rem;
+      border-right: 1px solid rgba(220,38,38,0.1);
+      background: rgba(220,38,38,0.03);
+    }
+    .itinerary-grid > div:nth-child(even) { color: #999; }
+
+    .log-entry { animation: folderOpen 0.6s cubic-bezier(0.22,1,0.36,1) both; }
+
+    .decrypting {
+      color: #fff !important;
+      background: var(--red) !important;
+      letter-spacing: 4px !important;
+      text-shadow: 2px 0 #00fff9, -2px 0 #ff00c1;
+    }
+
+    .nav-btn {
+      background: transparent;
+      color: var(--red);
+      border: 1px solid rgba(220,38,38,0.5);
+      padding: 14px 28px;
+      font-family: 'Share Tech Mono', monospace;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--red);
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .nav-btn:hover::before  { transform: translateX(0); }
+    .nav-btn:hover { color: #fff; box-shadow: 0 0 20px rgba(220,38,38,0.35); }
+    .nav-btn span { position: relative; z-index: 1; }
+    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .nav-btn:disabled::before { display: none; }
+
+    .page-counter {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      color: #444;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      align-self: center;
+    }
+    .page-counter span { color: var(--red); }
+
+    .section-rule {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(220,38,38,0.3) 30%, rgba(220,38,38,0.3) 70%, transparent);
+      margin: 60px 0;
+    }
+
+    .breadcrumb {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-decoration: none;
+      margin-bottom: 32px;
+      transition: color 0.2s ease;
+    }
+    .breadcrumb:hover { color: var(--red); }
+    .breadcrumb svg { transition: transform 0.2s ease; }
+    .breadcrumb:hover svg { transform: translateX(-3px); }
+
+    [id^="full-intel-"] {
+      font-family: 'IBM Plex Sans', sans-serif !important;
+      font-size: 1.05rem !important;
+      line-height: 1.85 !important;
+      color: #c8c8c8 !important;
+      letter-spacing: 0.01em;
+    }
+    [id^="full-intel-"] p {
+      margin-bottom: 1.5em;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: #c8c8c8;
+    }
+    [id^="full-intel-"] strong { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; }
+    [id^="full-intel-"] h4 { font-family: 'Share Tech Mono', monospace; font-size: 0.95rem; letter-spacing: 2px; }
+    [id^="full-intel-"] h5 { font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; letter-spacing: 2px; }
+    [id^="full-intel-"] li { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.0rem; line-height: 1.8; margin-bottom: 6px; }
+    [id^="full-intel-"] .space-y-4 > p,
+    [id^="full-intel-"] .space-y-6 > p {
+      padding: 14px 18px;
+      border-left: 2px solid rgba(220,38,38,0.18);
+      background: rgba(255,255,255,0.015);
+      border-radius: 0 2px 2px 0;
+      line-height: 1.9;
+    }
+
+    .noise-overlay {
+      position: fixed; inset: 0;
+      opacity: 0.02;
+      pointer-events: none;
+      z-index: 9989;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px;
+    }
+
+    /* Shopping link block */
+    .shop-block {
+      background: rgba(10,10,10,0.8);
+      border: 1px solid rgba(220,38,38,0.2);
+      padding: 20px 22px;
+      margin: 28px 0;
+      animation: borderFlash 3s infinite;
+    }
+    .shop-block h5 {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--red);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin: 0 0 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 8px;
+    }
+    .shop-block ul { list-style: none; padding: 0; margin: 0; }
+    .shop-block ul li {
+      font-size: 0.95rem;
+      color: #555;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      font-family: 'Share Tech Mono', monospace;
+      font-style: italic;
+    }
+    .shop-block ul li::before { content: "> "; color: var(--red); opacity: 0.4; }
+    .shop-block ul li a {
+      color: var(--red);
+      text-decoration: none;
+      font-style: normal;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+    .shop-block ul li a:hover { opacity: 1; text-decoration: underline; }
+
+    /* Warning callout */
+    .warning-box {
+      background: rgba(220,38,38,0.06);
+      border: 1px solid rgba(220,38,38,0.3);
+      border-left: 3px solid var(--red);
+      padding: 14px 18px;
+      margin: 20px 0;
+      font-size: 0.95rem;
+      color: #bbb;
+      font-family: 'Share Tech Mono', monospace;
+    }
+    .warning-box strong { color: var(--red); }
+  </style>
+</head>
+<body>
+
+  <div class="noise-overlay"></div>
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <div class="fixed top-0 left-0 w-full z-[9999] bg-transparent" style="height:3px">
+    <div id="progress-bar"></div>
+  </div>
+
+  <!-- ════ NAVBAR ════ -->
+  <nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+    <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+      <a href="https://secret-reviewer.com" class="flex items-center gap-2 group">
+        <div class="w-7 h-7 border border-red-600 flex items-center justify-center group-hover:bg-red-600/20 transition-all duration-300">
+          <span class="text-red-500 text-xs font-mono-tech font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="/"   class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+        <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+        <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          YouTube
+        </a>
+       
+      </div>
+      <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+        <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
+      <div class="flex flex-col px-5 py-4 gap-4">
+        <a href="/"   class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a> <!-- homepage -->
+        <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+        <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          YouTube
+        </a>
+       
+      </div>
+    </div>
+  </nav>
+
+  <!-- ════ MAIN ════ -->
+  <main class="pt-28 pb-24 px-5">
+    <div class="max-w-3xl mx-auto">
+
+      <!-- Breadcrumb -->
+     <a href="/accessories/" class="breadcrumb">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Back to Accessories
+      </a>
+
+      <!-- Page header with glitch title -->
+      <div class="mb-12 animate-fade-slide-up">
+        <p class="font-mono-tech text-red-600/60 text-sm tracking-[0.4em] uppercase mb-4">// Classified Gear Intel // Field Tested</p>
+        <h1 class="text-5xl sm:text-7xl font-black uppercase leading-none tracking-tight text-white mb-4">
+          <span class="glitch-wrap" data-text="Motorcycle Charging System">Motorcycle Charging System</span>
+        </h1>
+        <p class="font-mono-tech text-gray-600 text-sm tracking-widest mt-4">
+          <span class="text-red-600 animate-pulse-dot inline-block w-2 h-2 rounded-full mr-2 align-middle"></span>
+          1 UNIT TESTED // TOURING // RIDER APPROVED
+        </p>
+      </div>
+
+      <hr class="section-rule" />
+
+      <!-- ════ LOG ENTRIES ════ -->
+     <div id="log-container">
+
+        <!-- ══ ENTRY 1: Charging Port ══ -->
+        <div class="log-entry" style="display:none;">
+          <span class="tag">Accessory Log #001</span>
+          <h1 class="entry-title">Motorcycle Charging System</h1>
+          <p class="lead">A power bank is not a solution. By the time you need it most, it won't keep up. Wiring a proper charging system into the bike is infrastructure — not optional.</p>
+
+          <div class="featured-image">
+            <div class="featured-image-label">// SR-ACC-002 // Electrical // Power System // Essential</div>
+            <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">🔋</div>
+          </div>
+
+          <div class="story-content">
+            <h2>The Problem I Learned the Hard Way</h2>
+            <p>On the Thailand tour, my iPhone went from 100% to 20% in a single riding day. Heat, active GPS, camera use, constant screen-on. I had a power bank. It didn't help. The physics are simple: under full GPS and screen load in Southeast Asian heat, a phone drains faster than a standard power bank can top it up.</p>
+            <p>The only real fix is power drawn directly from the alternator — a hardwired USB or wireless charging port that runs while the engine runs. Charge rate matches or exceeds drain. Problem solved permanently.</p>
+
+            <h2>What to Look For</h2>
+            <div class="itinerary-grid">
+              <div>Output</div><div>Quick Charge 3.0 or USB-C PD — 18W minimum to keep pace with GPS drain</div>
+              <div>Housing</div><div>IP65 waterproof rated — non-negotiable for exposed mounting positions</div>
+              <div>Circuit</div><div>Ignition-switched via auxiliary fuse box — auto on/off with key</div>
+              <div>Best Option</div><div>Wireless Qi charger built into phone mount — no cable, no connector wear</div>
+              <div>Cable Type</div><div>Short coiled USB if wired — absorbs vibration, doesn't flap at speed</div>
+              <div>Avoid</div><div>Always-on circuits — one forgotten plug overnight kills your battery</div>
+            </div>
+
+            <h2>Wireless vs Wired</h2>
+            <p>If budget allows, go wireless. A Qi wireless charger integrated into your RAM mount means zero cables. You dock the phone, it charges. No connector to wear out from 12 hours of vibration, no cable to snap in the wind at 110km/h.</p>
+            <p>If going wired, use a coiled cable. A long straight cable flapping at speed will eventually snap the Lightning or USB-C connector on your phone. This is not a theory — it happened to me on the return leg from Hatyai.</p>
+
+            <div class="warning-box">
+              <strong>// HEAT FACTOR:</strong> Phones throttle charge speed when they overheat. A RAM mount with airflow behind the phone — rather than flush against a fairing — keeps temperatures lower and charge rates higher. Small detail, big difference on a 10-hour day.
+            </div>
+
+            <h2>Where to Buy</h2>
+            <div class="shop-block">
+              <h5>// Shopping Links</h5>
+              <ul>
+                <li><a href="YOUR_SHOPEE_WIRELESS_LINK" target="_blank" rel="noopener noreferrer">Shopee — Wireless Motorcycle Charger Mount</a></li>
+                <li><a href="YOUR_SHOPEE_USB_LINK" target="_blank" rel="noopener noreferrer">Shopee — USB QC3.0 Motorcycle Socket</a></li>
+                <li><a href="YOUR_LAZADA_CABLE_LINK" target="_blank" rel="noopener noreferrer">Lazada — Coiled USB-C Cable (short)</a></li>
+              </ul>
+            </div>
+
+            <div class="mt-8 pt-8 border-t border-red-900/30">
+              <div id="full-intel-002" class="hidden space-y-6 text-gray-300">
+                <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
+                  <h4 class="text-red-500 font-bold uppercase mb-2">Field Notes: Charging System</h4>
+                  <p class="text-sm text-gray-500 italic">Classification: Electrical / Power Management // Day 1 Install</p>
+                </div>
+                <div class="space-y-4">
+                  <p><strong>[WIRING PROTOCOL]</strong> Always tap into an ignition-switched circuit through your auxiliary fuse box. This gives you clean, protected, independent power that automatically cuts when you turn the key off. Wiring directly to battery positive without a switched circuit means your charger runs overnight and can drain your battery by morning.</p>
+                  <p><strong>[FUSE SIZING]</strong> A QC3.0 USB charger draws around 2–3A. A wireless 15W charger draws around 1.5A. Fuse at 5A per circuit — gives headroom without being undersized. If you're running a charger and a dashcam on the same circuit, fuse at 10A and use heavier gauge wire.</p>
+                  <p><strong>[THAILAND LESSON]</strong> My phone hit 85°C surface temperature on a clear day in Chiang Mai with the screen on for navigation. At that temperature, iOS throttles charging to protect the battery. Keeping the phone off the fairing surface and in a vented mount dropped surface temps by roughly 15 degrees. Noticeable charge rate improvement.</p>
+                  <p><strong>[CAMERA DRAIN]</strong> If you're also running an action camera and a dashcam, budget your fuse box circuits carefully. Three devices running simultaneously can easily pull 8–10A. Plan your wiring before you install anything, not after.</p>
+                </div>
+                <div class="bg-black/40 p-4 border border-red-900/50">
+                  <h5 class="text-red-500 text-sm mb-3 underline text-center tracking-widest uppercase">Final Assessment</h5>
+                  <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                    <li>Rating: 9/10 — essential, loses a point only because install requires planning</li>
+                    <li>Cost: Low — quality wireless unit from $20–40 SGD</li>
+                    <li>Would Do Again: This is now installed before anything else on a new bike</li>
+                    <li>Recommended For: Every rider — commuter or tourer, no exceptions</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="flex justify-center mt-6">
+                <button onclick="toggleIntel('full-intel-002', this)" class="border border-red-500/30 text-red-500 px-6 py-2 text-sm font-mono hover:bg-red-600 hover:text-white transition-all">
+                  ACCESS FULL INTEL REPORT
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+      </div><!-- /log-container -->
+
+      <hr class="section-rule" />
+
+        <!-- Bottom navigation -->
+      <div class="flex items-center justify-between flex-wrap gap-4">
+
+  <a href="/accessories/tomtom-rider/" class="border border-red-500/30 text-red-600 px-6 py-3 font-mono-tech text-sm tracking-widest uppercase hover:bg-red-600/10 transition-all">
+    ◄ Back to TomTom Rider 550
+  </a>
+
+  <span class="font-mono-tech text-gray-700 text-xs tracking-widest uppercase">
+    Accessory 02 of 05
+  </span>
+
+  <a href="/accessories/ram-mount" class="border border-red-500/30 text-red-600 px-6 py-3 font-mono-tech text-sm tracking-widest uppercase hover:bg-red-600/10 transition-all">
+    Next: Ram Mount ►
+  </a>
+
+</div>
+    
+    
+  </main>
+
+  <!-- ════ FOOTER ════ -->
+  <footer class="py-16 px-5 border-t border-white/5">
+    <div class="max-w-5xl mx-auto">
+      <div class="flex flex-col items-center gap-6">
+        <a href="https://secret-reviewer.com" class="flex items-center gap-3 group">
+          <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+            <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+          </div>
+          <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+        </a>
+        <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+          <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors duration-300">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <span class="font-mono-tech text-xs tracking-widest uppercase">Watch on YouTube</span>
+        </a>
+
+        <div class="w-full max-w-sm h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      
+        <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ════ JAVASCRIPT ════ -->
+  <script>
+    (function () {
+      var cursor = document.getElementById('cursor');
+      var ring   = document.getElementById('cursor-ring');
+      var mx = 0, my = 0, rx = 0, ry = 0;
+      document.addEventListener('mousemove', function (e) {
+        mx = e.clientX; my = e.clientY;
+        cursor.style.left = mx + 'px';
+        cursor.style.top  = my + 'px';
+      });
+      (function animRing() {
+        rx += (mx - rx) * 0.12;
+        ry += (my - ry) * 0.12;
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+        requestAnimationFrame(animRing);
+      })();
+      document.querySelectorAll('a, button').forEach(function (el) {
+        el.addEventListener('mouseenter', function () {
+          ring.style.width = '56px'; ring.style.height = '56px';
+          ring.style.borderColor = 'rgba(220,38,38,0.8)';
+        });
+        el.addEventListener('mouseleave', function () {
+          ring.style.width = '36px'; ring.style.height = '36px';
+          ring.style.borderColor = 'rgba(220,38,38,0.5)';
+        });
+      });
+    })();
+
+    window.addEventListener('scroll', function () {
+      var scrollTop    = document.documentElement.scrollTop || document.body.scrollTop;
+      var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      document.getElementById('progress-bar').style.width = pct + '%';
+    }, { passive: true });
+
+    window.addEventListener('scroll', function () {
+      var nav = document.getElementById('navbar');
+      if (window.scrollY > 20) nav.classList.add('nav-scrolled');
+      else nav.classList.remove('nav-scrolled');
+    }, { passive: true });
+
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+      var menu      = document.getElementById('mobile-menu');
+      var openIcon  = document.getElementById('menu-icon-open');
+      var closeIcon = document.getElementById('menu-icon-close');
+      var isOpen    = menu.style.maxHeight === '320px';
+      menu.style.maxHeight    = isOpen ? '0' : '320px';
+      menu.style.borderBottom = isOpen ? '' : '1px solid rgba(127,29,29,0.3)';
+      openIcon.style.display  = isOpen ? '' : 'none';
+      closeIcon.style.display = isOpen ? 'none' : '';
+    });
+    document.querySelectorAll('.mobile-link').forEach(function (link) {
+      link.addEventListener('click', function () {
+        document.getElementById('mobile-menu').style.maxHeight = '0';
+        document.getElementById('menu-icon-open').style.display  = '';
+        document.getElementById('menu-icon-close').style.display = 'none';
+      });
+    });
+
+    var scrambleChars = 'ABCDEF0123456789/X$#@%';
+    function decryptText(button, originalText, callback) {
+      var iterations = 0;
+      button.classList.add('decrypting');
+      button.disabled = true;
+      var interval = setInterval(function () {
+        button.querySelector('span').innerText = originalText.split('').map(function (char, index) {
+          if (index < iterations) return originalText[index];
+          return char === ' ' ? ' ' : scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+        }).join('');
+        if (iterations >= originalText.length) {
+          clearInterval(interval);
+          button.classList.remove('decrypting');
+          button.querySelector('span').innerText = originalText;
+          button.disabled = false;
+          callback();
+        }
+        iterations += 1 / 3;
+      }, 30);
+    }
+
+  </script>
+
+</body>
+</html>
