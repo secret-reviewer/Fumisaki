@@ -228,6 +228,15 @@ Thailand Unexplained Rider Logs | Paranormal Encounters & Eerie Journeys | Secre
     .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
     .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
 
+    .load-more-style {
+      background:transparent; color:#f87171;
+      border:1px solid rgba(220,38,38,0.4);
+      font-family:'Share Tech Mono',monospace; font-size:0.72rem;
+      letter-spacing:2px; text-transform:uppercase; cursor:pointer;
+      padding:10px 22px; transition:background .25s,color .25s;
+    }
+    .load-more-style:hover { background:var(--red); color:#fff; }
+
     .signal-box {
       background:rgba(220,38,38,0.05); border:1px solid rgba(220,38,38,0.3);
       border-left:3px solid #dc2626; padding:14px 18px; margin:20px 0;
@@ -254,13 +263,6 @@ Thailand Unexplained Rider Logs | Paranormal Encounters & Eerie Journeys | Secre
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
       background-size:128px; animation:staticNoise 4s step-start infinite;
     }
-
-    /* Selection cards */
-    .sel-card:hover { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.04) !important; }
-    .sel-card:hover .sel-accent { background:#dc2626 !important; }
-    .sel-card:hover .sel-arrow { color:rgba(220,38,38,0.7) !important; }
-    .sel-card.sel-active { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.05) !important; }
-    .sel-card.sel-active .sel-accent { background:#dc2626 !important; }
 
     /* Breadcrumb */
     .breadcrumb {
@@ -360,93 +362,7 @@ Thailand Unexplained Rider Logs | Paranormal Encounters & Eerie Journeys | Secre
 
     <hr class="section-rule" />
 
-    <!-- SELECTION SCREEN -->
-    <div id="selection-screen">
-      <div class="font-mono-tech text-xs uppercase mb-5" style="color:#dc2626;letter-spacing:3px;display:flex;align-items:center;gap:10px;">
-        <span class="inline-block w-2 h-2 rounded-full" style="background:#dc2626;animation:pulse-dot 1.4s infinite;"></span>
-        Select a log to access
-      </div>
-
-      <div id="sel-cards" style="display:grid;gap:14px;">
-
-        <!-- Card 1 -->
-        <div class="sel-card" data-log="0" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
-          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log UNX-009</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
-          </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The Two Hotels That Got Worse</div>
-          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">Long-distance touring teaches you that the cheapest hotels often leave the strongest memories. Thailand gave us two — each stranger than the last — and by the second one, nobody was pretending to be brave anymore.</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Thailand</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Touring</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Atmosphere</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Power Event</span>
-            </div>
-            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="sel-card" data-log="1" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
-          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log UNX-010</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
-          </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The Hotel That Felt Too Familiar</div>
-          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">We arrived late. The compound looked almost abandoned. A woman appeared from the darkness without making a sound. And the moment I stepped into my room, I already knew where everything was — before I'd ever been there.</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Thailand</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Déjà Vu</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Spatial Familiarity</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Touring</span>
-            </div>
-            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="sel-card" data-log="2" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
-          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log UNX-011</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
-          </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The Highway That Took Twice As Long</div>
-          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">On the map, it was two hours. A straightforward highway between two towns. We spent almost four hours on that road — and there was always something ahead of us, just far enough that we could never reach it.</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Thailand</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Highway</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Time Loss</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Touring</span>
-            </div>
-            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
-          </div>
-        </div>
-
-        <!-- Locked card -->
-        <div style="background:rgba(10,10,10,0.5);border:1px solid rgba(220,38,38,0.07);padding:20px 22px;position:relative;opacity:0.4;pointer-events:none;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#444;letter-spacing:2px;">// Log UNX-???</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#dc2626;letter-spacing:1px;text-transform:uppercase;">Encrypted</span>
-          </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#333;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</div>
-          <div style="display:flex;gap:8px;">
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#2a2a2a;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;letter-spacing:1px;">&#9618;&#9618;&#9618;&#9618;&#9618;&#9618;</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#2a2a2a;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;letter-spacing:1px;">&#9618;&#9618;&#9618;&#9618;</span>
-          </div>
-        </div>
-
-      </div><!-- /sel-cards -->
-    </div><!-- /selection-screen -->
-
-    <!-- LOG READER (hidden until story selected) -->
-    <div id="log-reader" style="display:none;">
+    <!-- LOG ENTRIES -->
     <div id="log-container">
 
      <!-- ══ LOG 1: The Two Thailand Hotels ══ -->
@@ -518,7 +434,7 @@ Thailand Unexplained Rider Logs | Paranormal Encounters & Eerie Journeys | Secre
           </div>
 
           <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx009" class="space-y-6 text-gray-300">
+            <div id="full-intel-unx009" class="hidden space-y-6 text-gray-300">
               <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
                 <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Two Hotels That Got Worse</h4>
                 <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Touring / Accommodation</p>
@@ -537,6 +453,191 @@ Thailand Unexplained Rider Logs | Paranormal Encounters & Eerie Journeys | Secre
                 </ul>
               </div>
             </div>
+            <div class="flex justify-center mt-6">
+              <button onclick="toggleIntel('full-intel-unx009', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ LOG 2: The Hotel That Felt Too Familiar ══ -->
+      <div class="log-entry" style="display:none;">
+        <span class="tag">Touring Log #002</span>
+        <h1 class="entry-title">The Hotel That Felt Too Familiar</h1>
+        <p class="lead">We arrived late. The compound looked almost abandoned. A woman appeared from the darkness without making a sound. And the moment I stepped into my room, I already knew where everything was — before I'd ever been there.</p>
+
+        <div class="featured-image">
+          <div class="noise-overlay"></div>
+
+              <img 
+  src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778220264/familarhotel_pihhvj.png"
+  style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.72) saturate(0.85);"
+/>
+          
+          <div class="featured-image-label">// SR-TOUR-002 // Thailand Touring // Familiarity Log</div>
+          <div class="corner-br"></div>
+        </div>
+
+        <div class="story-content">
+          <h2>Arriving Late</h2>
+          <p>We arrived much later than planned. By the time we entered the area, the roads were already empty. Most nearby shops had closed. The deeper we rode in, the quieter everything became — no passing traffic, no people sitting outside, not even the stray dogs that usually bark at incoming bikes.</p>
+          <p>The hotel was somewhere near the mountain area, chosen mainly because it was the nearest available place before nightfall made riding too dangerous. When we reached the entrance, the place looked almost abandoned. A few dim yellow lights. The reception area empty. We pressed the bell once. Then again. Still nothing. After almost twenty minutes of waiting in complete silence — the only sound the metallic ticking of our bikes cooling down — the atmosphere had already shifted.</p>
+
+          <h2>The Woman From the Darkness</h2>
+          <div class="atmosphere-prose">
+            <p>Not threatening. Just strangely still.</p>
+            <p class="pause">. . .</p>
+            <p>I remember standing there, looking deeper into the compound, when I suddenly felt something I still can't explain.</p>
+            <p class="emphasis">Familiarity.</p>
+            <p>Not the kind where you recognise a place from photos online. The uncomfortable kind — where your mind already knows the environment before you've explored it. Even before walking further in, I somehow knew there was another section behind the reception building. I knew the corridor on the left led toward the rooms. At the time I convinced myself it was just because roadside hotels share similar layouts.</p>
+            <p class="pause">. . .</p>
+            <p>Then, without any footsteps or doors opening, a woman appeared from somewhere deeper inside the compound. She didn't look surprised to see us waiting. No apology. No confusion. She simply asked whether we needed rooms — her voice calm, almost as if she had expected us to arrive.</p>
+          </div>
+
+          <h2>The Room I Somehow Already Knew</h2>
+          <div class="atmosphere-prose">
+            <p>She showed us a few available rooms. The one nearest to the carpark immediately caught my attention — slightly more expensive, but from the window I had a direct view of my bike below. As a rider, that matters more than room size sometimes. I took it without hesitation.</p>
+            <p class="pause">. . .</p>
+            <p>The strange feeling became stronger the moment I stepped inside. Again, not fear. The opposite.</p>
+            <p class="emphasis">Comfort. The room felt familiar in a way that made no sense.</p>
+            <p>I knew where the switches were before reaching for them. I placed my riding gear down naturally, like I had done it there before. Moving around the room felt automatic. No adjustment period. No "first-time" feeling. Just an overwhelming sense that I had returned somewhere, rather than arrived somewhere new.</p>
+            <p class="pause">. . .</p>
+            <p>The weirdest part is that nothing paranormal happened that night. No shadows. No strange noises. No sightings. Everything was peaceful. We slept well, woke up normally, and continued our journey the next morning without any issues.</p>
+          </div>
+
+          <h2>Why It Still Stays With Me</h2>
+          <p>Out of every hotel I've stayed at across all my touring trips, that is still the only place that never felt unfamiliar to me. Not even on arrival. Not even in the first few seconds.</p>
+          <p>I've tried to explain it rationally — similar layouts, exhaustion warping perception, pattern recognition from years of budget hotels. All possible. None of them fully account for knowing where the light switches were before I reached for them. Or for the settled, returned feeling that was there from the moment I stepped through the door.</p>
+          <p>Some places feel like you've been there before. This one felt like I had left something there and was coming back to collect it. I still don't know what that means. And honestly, I'm not sure I want to.</p>
+
+          <div class="signal-box">
+            <strong>// SIGNAL RECORDED:</strong> Strong spatial familiarity upon arrival at a never-visited location. Rider knew switch locations instinctively. No paranormal incident occurred. Feeling of return rather than arrival. Only hotel across all touring trips to produce this effect.
+          </div>
+
+          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
+            <div id="full-intel-unx010" class="hidden space-y-6 text-gray-300">
+              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
+                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Hotel That Felt Too Familiar</h4>
+                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Déjà Vu / Touring Encounter</p>
+              </div>
+              <div class="space-y-4">
+                <p><strong>[SPATIAL FAMILIARITY]</strong> Standard déjà vu is brief and disorienting. What is described here is sustained, functional familiarity — accurate spatial knowledge of a never-visited location. Knowing where light switches are before reaching for them is not consistent with normal déjà vu. It suggests either forgotten prior exposure, or something else without a straightforward explanation.</p>
+                <p><strong>[THE WOMAN'S ARRIVAL]</strong> Appearing without footsteps or door sounds, showing no surprise after 20 minutes of unanswered bells, and speaking with the calm expectation of someone who knew guests were coming — individually explainable, together harder to dismiss.</p>
+                <p><strong>[WHY NOTHING HAPPENED]</strong> Not all unexplained experiences are threatening. Some locations carry a feeling of recognition that is unsettling precisely because it is comfortable. The discomfort comes from the impossibility of the recognition itself, not from any danger.</p>
+              </div>
+              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
+                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
+                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                  <li>Type: Sustained spatial familiarity — never visited location</li>
+                  <li>Threat level: None. Peaceful stay, normal departure.</li>
+                  <li>Classification: Unexplained — not hostile, not resolved.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex justify-center mt-6">
+              <button onclick="toggleIntel('full-intel-unx010', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ LOG 3: The Highway That Took Twice As Long ══ -->
+      <div class="log-entry" style="display:none;">
+        <span class="tag">Touring Log #003</span>
+        <h1 class="entry-title">The Highway That Took Twice As Long</h1>
+        <p class="lead">On the map, it was two hours. A straightforward highway between two towns. We spent almost four hours on that road — and there was always something ahead of us, just far enough that we could never reach it.</p>
+
+        <div class="featured-image">
+          <div class="noise-overlay"></div>
+
+           <img 
+  src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778220265/twiceaslong_fd7yb3.png"
+  style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.72) saturate(0.85);"
+/>
+          
+          <div class="featured-image-label">// SR-TOUR-003 // Nakhon Sawan – Phitsanulok // Thailand</div>
+          <div class="corner-br"></div>
+        </div>
+
+        <div class="story-content">
+          <h2>A Road That Should Have Been Simple</h2>
+          <p>I still remember that stretch between Nakhon Sawan and Phitsanulok. On the map it looked simple — around two hours on a major highway. At that point in the trip we had already covered much harder routes, so none of us expected that road to stay in our memories for years afterward. By the time we entered, night had already fully settled in. The kind of darkness where your headlights stop feeling useful beyond a certain distance. Beyond that beam was just empty black road stretching forward into nothing.</p>
+
+          <h2>What the Road Actually Was</h2>
+          <div class="atmosphere-prose">
+            <p>Technically a highway. Speed limit around 110. In reality, it didn't feel like one.</p>
+            <p>Only two lanes. Long stretches of subtle bends that never seemed to end — not enough to call them corners, just enough to stop you from relaxing. The road kept moving slightly in the dark, forcing your eyes and body to stay constantly alert.</p>
+            <p class="pause">. . .</p>
+            <p>Then came the dogs. Every few minutes, one would appear from the darkness and sprint directly across the road. Sometimes from the left shoulder. Sometimes from gaps we couldn't see. There were moments we genuinely rolled off the throttle expecting impact. After a while, our pace became slower and slower. Not because we wanted to — because the road was slowly draining confidence from us.</p>
+            <p class="pause">. . .</p>
+            <p>The scariest part wasn't the darkness. It was the side roads. Small hidden junctions from complete blackness, and every now and then a vehicle emerging without headlights — just a dark shape moving into the highway as if it had always been there.</p>
+          </div>
+
+          <h2>The Taillights We Could Never Reach</h2>
+          <div class="atmosphere-prose">
+            <p>At some point, we stopped trying to lead. Instead we began following larger vehicles ahead — pick-up trucks, vans, occasionally buses. Using their headlights and pace as a guide through the darkness.</p>
+            <p class="pause">. . .</p>
+            <p>But that became strange too. No matter how hard we tried to maintain distance, the vehicle in front always slowly pulled away. Not suddenly. Just enough that we could never comfortably keep up. Eventually the vehicle ahead would disappear completely into the dark.</p>
+            <p class="pause">. . .</p>
+            <p>Then, after some time alone on the road, another vehicle would appear ahead of us. And the cycle would repeat. A new pair of taillights. A new shadow to follow.</p>
+            <p class="emphasis">Then slowly disappearing again.</p>
+          </div>
+
+          <h2>What Actually Unsettles Me</h2>
+          <p>Even now, what unsettles me most isn't anything supernatural. It's the feeling that we never truly rode that stretch alone. There was always something ahead of us — just far enough that we could never reach it. And somehow, despite the route supposedly taking around two hours, we spent almost four hours on that road before finally arriving in Phitsanulok.</p>
+          <p>No explanation for the time. No memory of stopping. No detour. Just four hours on a two-hour road, always following something ahead that never waited for us to catch up.</p>
+
+          <div class="field-grid">
+            <div>Route</div><div>Nakhon Sawan to Phitsanulok, Thailand</div>
+            <div>Expected time</div><div>~2 hours</div>
+            <div>Actual time</div><div>~4 hours — no stops, no detour identified</div>
+            <div>Hazards</div><div>Dogs on road, unlit vehicles from side junctions</div>
+            <div>Pattern</div><div>Lead vehicle always pulled away. New taillights always appeared after.</div>
+            <div>Anomaly</div><div>~2 hours of time unaccounted for</div>
+          </div>
+
+          <div class="signal-box">
+            <strong>// SIGNAL RECORDED:</strong> ~2 hours of unaccounted time on a straightforward highway. Recurring pattern of lead vehicles pulling away and being replaced. Feeling of never riding alone — but never being able to reach whatever was ahead.
+          </div>
+
+          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
+            <div id="full-intel-unx011" class="hidden space-y-6 text-gray-300">
+              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
+                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Highway That Took Twice As Long</h4>
+                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Time Distortion / Thailand Highway</p>
+              </div>
+              <div class="space-y-4">
+                <p><strong>[TIME LOSS ON THAI HIGHWAYS]</strong> Reports of significantly extended journey times on specific stretches of Thai highway — with no mechanical or navigational explanation — appear across long-distance touring communities in Southeast Asia. The stretch between Nakhon Sawan and Phitsanulok appears in several independent accounts.</p>
+                <p><strong>[THE VEHICLE PATTERN]</strong> A leading vehicle that consistently maintains an unclosable distance, disappears, and is replaced by another in a cycling pattern, is distinct from normal highway traffic behaviour.</p>
+                <p><strong>[ROAD DOGS]</strong> Stray dogs on Thai highways at night are a genuine, documented hazard — particularly on older inter-province routes. Their presence here is explainable. The time loss is not.</p>
+              </div>
+              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
+                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
+                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                  <li>Time unaccounted for: ~2 hours</li>
+                  <li>Detour or stop: None identified</li>
+                  <li>Recommendation: On night stretches through Thailand's inter-province highways — log your departure time. Pay attention to whether what's ahead is actually getting closer.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex justify-center mt-6">
+              <button onclick="toggleIntel('full-intel-unx011', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div><!-- /log-container -->
+
+    <hr class="section-rule" />
+
+    <!-- Navigation -->
+    <div class="flex items-center justify-center gap-5 flex-wrap">
+      <button id="prevBtn" class="nav-btn"><span>◄ Previous Log</span></button>
+      <div class="page-counter">LOG <span id="current-page">01</span> / <span id="total-pages">03</span></div>
+      <button id="nextBtn" class="nav-btn"><span>Unlock Next ►</span></button>
+    </div>
 
     <div class="text-center mt-16">
       <a href="/unexplained/" class="font-mono-tech text-gray-600 text-xs tracking-widest uppercase hover:text-red-500 transition-colors duration-200">◄ Return to Unexplained Archive</a>
@@ -669,12 +770,20 @@ Thailand Unexplained Rider Logs | Paranormal Encounters & Eerie Journeys | Secre
     var prevIndex=currentLogIndex-1;
     decryptText(prevBtn,'◄ Previous Log',function(){updateView(prevIndex);});
   });
-  /* ── Selection screen ── */
-  function selectLog(el){
-    var logIndex=parseInt(el.getAttribute('data-log'));
-    document.getElementById('selection-screen').style.display='none';
-    document.getElementById('log-reader').style.display='block';
-    updateView(logIndex);
+
+  updateView(0);
+
+  function toggleIntel(id,btn){
+    var report=document.getElementById(id);
+    var isHidden=report.classList.contains('hidden');
+    if(isHidden){
+      report.classList.remove('hidden');
+      btn.innerText='CLOSE FIELD NOTES';
+      report.scrollIntoView({behavior:'smooth',block:'nearest'});
+    } else {
+      report.classList.add('hidden');
+      btn.innerText='ACCESS FULL FIELD NOTES';
+    }
   }
 </script>
 </body>
