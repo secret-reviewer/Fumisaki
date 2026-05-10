@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="Eerie hotel experiences, unexplained encounters, unsettling nights, strange sounds, sleep paralysis, paranormal stories, and mysterious rider logs recorded during motorcycle trips across Malaysia and Thailand.">
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>
+Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
+</title>
+
+<link rel="canonical" href="https://secret-reviewer.com/unexplained/hotel/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: {
+        sans: ['Barlow Condensed','sans-serif'],
+        mono: ['"Share Tech Mono"','monospace'],
+        prose: ['"IBM Plex Sans"','sans-serif'],
+      }}}
+    };
+  </script>
+  <style>
+    :root {
+      --red: #dc2626;
+      --red-dim: rgba(220,38,38,0.15);
+      --red-glow: rgba(220,38,38,0.6);
+      --bg: #060606;
+      --surface: rgba(10,10,10,0.85);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: #ececec;
+      font-family: 'Barlow Condensed', sans-serif;
+      margin: 0; overflow-x: hidden; cursor: none; line-height: 1.75;
+    }
+    .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+    .font-prose { font-family: 'IBM Plex Sans', sans-serif; }
+
+    #cursor {
+      position: fixed; width: 12px; height: 12px;
+      background: var(--red); border-radius: 50%;
+      pointer-events: none; z-index: 99999;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, opacity .2s; mix-blend-mode: screen;
+    }
+    #cursor-ring {
+      position: fixed; width: 36px; height: 36px;
+      border: 1px solid rgba(220,38,38,0.5); border-radius: 50%;
+      pointer-events: none; z-index: 99998;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, border-color .2s;
+    }
+
+    @keyframes flicker { 0%,18%,22%,25%,53%,57%,100%{opacity:1} 20%,24%,55%{opacity:0.3} }
+    @keyframes pulse-red { 0%,100%{box-shadow:0 0 6px rgba(220,38,38,0.3)} 50%{box-shadow:0 0 28px rgba(220,38,38,0.8),0 0 60px rgba(220,38,38,0.25)} }
+    @keyframes fadeSlideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    @keyframes scan { from{top:-100%} to{top:100%} }
+    @keyframes folderOpen { from{opacity:0;transform:translateY(16px);filter:blur(4px)} to{opacity:1;transform:translateY(0);filter:blur(0)} }
+    @keyframes glitch-1 { 0%,100%{clip-path:inset(0 0 98% 0);transform:translate(-2px,0)} 20%{clip-path:inset(20% 0 50% 0);transform:translate(2px,0)} 40%{clip-path:inset(60% 0 20% 0);transform:translate(-2px,0)} 60%{clip-path:inset(80% 0 5% 0);transform:translate(2px,0)} 80%{clip-path:inset(40% 0 60% 0);transform:translate(-2px,0)} }
+    @keyframes glitch-2 { 0%,100%{clip-path:inset(50% 0 30% 0);transform:translate(2px,0);color:#00ffff} 25%{clip-path:inset(10% 0 80% 0);transform:translate(-2px,0)} 50%{clip-path:inset(70% 0 10% 0);transform:translate(2px,0);color:var(--red)} 75%{clip-path:inset(30% 0 50% 0);transform:translate(-2px,0)} }
+    @keyframes borderFlash { 0%,100%{border-color:rgba(220,38,38,0.15)} 50%{border-color:rgba(220,38,38,0.5)} }
+    @keyframes staticNoise { 0%{opacity:.03} 25%{opacity:.05} 50%{opacity:.02} 75%{opacity:.06} 100%{opacity:.03} }
+    @keyframes breathe { 0%,100%{opacity:.04;transform:scale(1)} 50%{opacity:.07;transform:scale(1.02)} }
+
+    .animate-pulse-red { animation: pulse-red 2.5s infinite; }
+    .animate-pulse-dot { animation: pulse-dot 2s infinite; }
+    .animate-fade-slide-up { animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+
+    body::before {
+      content:""; position:fixed; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);
+      pointer-events:none; z-index:9990;
+    }
+    body::after {
+      content:""; position:fixed; top:-100%; left:0; width:100%; height:100%;
+      background:linear-gradient(rgba(220,38,38,0) 0%,rgba(220,38,38,0.03) 50%,rgba(220,38,38,0) 100%);
+      animation:scan 12s linear infinite; pointer-events:none; z-index:9991;
+    }
+
+    #progress-bar {
+      height:3px;
+      background:linear-gradient(90deg,#4c1d95,#dc2626,#f87171);
+      box-shadow:0 0 12px rgba(220,38,38,0.9),0 0 24px rgba(220,38,38,0.4);
+      width:0%; transition:width .08s ease-out;
+    }
+
+    #navbar { transition:background .4s,border-color .4s; }
+    .nav-scrolled {
+      background:rgba(4,4,4,0.96) !important;
+      border-bottom-color:rgba(76,29,149,0.4) !important;
+      backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    }
+
+    .story-content {
+      font-size:1.1rem; letter-spacing:0.01em; margin-bottom:1.5rem;
+      color:#d0d0d0; font-family:'Barlow Condensed',sans-serif;
+      font-weight:400; line-height:1.85;
+    }
+    .story-content p { margin:0 0 1.6em 0; }
+    .story-content h2 {
+      color:#f87171; margin-top:52px; text-transform:uppercase;
+      font-size:0.82rem; font-family:'Share Tech Mono',monospace;
+      letter-spacing:3px; border-bottom:1px solid rgba(255,255,255,0.05);
+      padding-bottom:10px; display:flex; align-items:center; gap:10px;
+    }
+    .story-content h2::before { content:"—"; opacity:0.4; }
+    .story-content h3 {
+      color:#fff; font-size:1.3rem; font-weight:700; margin:36px 0 12px;
+      text-transform:uppercase; letter-spacing:0.05em;
+    }
+    .story-content strong { color:#fff; font-weight:700; }
+
+    .lead {
+      font-size:1.15rem; color:#999; margin-bottom:40px;
+      border-left:2px solid #dc2626; padding-left:20px;
+      font-style:italic; font-family:'IBM Plex Sans',sans-serif;
+      font-weight:400; line-height:1.8;
+    }
+
+    .atmosphere-prose {
+      font-family:'IBM Plex Sans',sans-serif; font-size:1.05rem;
+      color:#aaa; line-height:2.1; letter-spacing:0.01em;
+    }
+    .atmosphere-prose p { margin:0 0 0.5em 0; }
+    .atmosphere-prose p.pause { color:#666; font-size:0.9rem; letter-spacing:0.2em; margin:1.4em 0; }
+    .atmosphere-prose p.emphasis { color:#e0e0e0; font-weight:500; }
+    .atmosphere-prose p.closing { color:#777; font-size:0.95rem; margin-top:2em; font-style:italic; }
+
+    .tag {
+      display:inline-block; font-family:'Share Tech Mono',monospace;
+      font-size:0.75rem; color:#f87171; text-transform:uppercase;
+      border:1px solid rgba(220,38,38,0.4); padding:5px 14px;
+      letter-spacing:2px; background:rgba(220,38,38,0.06);
+    }
+
+    .entry-title {
+      font-size:clamp(2.5rem,6vw,4rem); font-weight:900; margin:22px 0 10px;
+      color:#fff; line-height:1.0; text-transform:uppercase; letter-spacing:-0.02em;
+    }
+
+    .featured-image {
+      width:100%; height:420px;
+      background:linear-gradient(135deg,#06060a 0%,#0a080f 50%,#060609 100%);
+      border:1px solid rgba(220,38,38,0.2);
+      box-shadow:0 20px 60px rgba(0,0,0,0.7),0 0 60px rgba(220,38,38,0.04);
+      position:relative; overflow:hidden; margin:32px 0;
+    }
+    .featured-image::after {
+      content:''; position:absolute; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.012) 3px,rgba(220,38,38,0.012) 4px);
+      pointer-events:none;
+    }
+    .featured-image .img-watermark {
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      opacity:0.05; font-size:8rem; animation:breathe 6s ease-in-out infinite;
+    }
+    .featured-image-label {
+      position:absolute; bottom:12px; left:12px;
+      font-family:'Share Tech Mono',monospace; font-size:0.65rem;
+      color:rgba(220,38,38,0.5); letter-spacing:2px; text-transform:uppercase;
+    }
+    .featured-image::before {
+      content:''; position:absolute; top:0; left:0;
+      width:40px; height:40px;
+      border-top:1px solid rgba(220,38,38,0.4);
+      border-left:1px solid rgba(220,38,38,0.4);
+      pointer-events:none; z-index:2;
+    }
+    .featured-image .corner-br {
+      position:absolute; bottom:0; right:0;
+      width:40px; height:40px;
+      border-bottom:1px solid rgba(220,38,38,0.4);
+      border-right:1px solid rgba(220,38,38,0.4);
+      pointer-events:none; z-index:2;
+    }
+
+    .log-entry { animation:folderOpen 0.6s cubic-bezier(0.22,1,0.36,1) both; }
+
+    .decrypting {
+      color:#fff !important; background:var(--red) !important;
+      letter-spacing:4px !important;
+      text-shadow:2px 0 #00fff9,-2px 0 #ff00c1;
+    }
+
+    .nav-btn {
+      background:transparent; color:#f87171;
+      border:1px solid rgba(220,38,38,0.5); padding:14px 28px;
+      font-family:'Share Tech Mono',monospace; font-weight:900;
+      text-transform:uppercase; letter-spacing:2px; cursor:pointer;
+      transition:all .3s ease; font-size:0.78rem;
+      position:relative; overflow:hidden;
+    }
+    .nav-btn::before {
+      content:''; position:absolute; inset:0;
+      background:var(--red); transform:translateX(-100%);
+      transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .nav-btn:hover::before { transform:translateX(0); }
+    .nav-btn:hover { color:#fff; box-shadow:0 0 20px rgba(220,38,38,0.35); }
+    .nav-btn span { position:relative; z-index:1; }
+    .nav-btn:disabled { opacity:0.3; cursor:not-allowed; }
+    .nav-btn:disabled::before { display:none; }
+
+    .page-counter {
+      font-family:'Share Tech Mono',monospace; font-size:0.75rem;
+      color:#444; letter-spacing:3px; text-transform:uppercase; align-self:center;
+    }
+    .page-counter span { color:#f87171; }
+
+    .section-rule {
+      border:none; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(220,38,38,0.3),transparent);
+      margin:48px 0;
+    }
+
+    .glitch-wrap { position:relative; display:inline-block; }
+    .glitch-wrap::before, .glitch-wrap::after {
+      content:attr(data-text); position:absolute; top:0; left:0; width:100%; height:100%;
+    }
+    .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
+    .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
+
+    .signal-box {
+      background:rgba(220,38,38,0.05); border:1px solid rgba(220,38,38,0.3);
+      border-left:3px solid #dc2626; padding:14px 18px; margin:20px 0;
+      font-size:0.95rem; color:#bbb; font-family:'Share Tech Mono',monospace;
+    }
+    .signal-box strong { color:#f87171; }
+
+    .field-grid {
+      display:grid; grid-template-columns:140px 1fr; gap:0;
+      background:rgba(10,10,10,0.7); border:1px solid rgba(220,38,38,0.15);
+      margin:28px 0; font-family:'Share Tech Mono',monospace; overflow:hidden;
+      animation:borderFlash 3s infinite;
+    }
+    .field-grid > div { padding:12px 16px; border-bottom:1px solid rgba(255,255,255,0.04); font-size:0.85rem; }
+    .field-grid > div:last-child, .field-grid > div:nth-last-child(2) { border-bottom:none; }
+    .field-grid > div:nth-child(odd) {
+      color:#f87171; font-weight:bold; font-size:0.8rem;
+      border-right:1px solid rgba(220,38,38,0.1); background:rgba(220,38,38,0.03);
+    }
+    .field-grid > div:nth-child(even) { color:#999; }
+
+    .noise-overlay {
+      position:absolute; inset:0; opacity:.025; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size:128px; animation:staticNoise 4s step-start infinite;
+    }
+
+    /* Selection cards */
+    .sel-card:hover { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.04) !important; }
+    .sel-card:hover .sel-accent { background:#dc2626 !important; }
+    .sel-card:hover .sel-arrow { color:rgba(220,38,38,0.7) !important; }
+    .sel-card.sel-active { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.05) !important; }
+    .sel-card.sel-active .sel-accent { background:#dc2626 !important; }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      font-family:'Share Tech Mono',monospace; font-size:0.7rem;
+      color:#444; letter-spacing:2px; text-transform:uppercase;
+      display:flex; align-items:center; gap:8px; margin-bottom:28px;
+    }
+    .breadcrumb a { color:#555; text-decoration:none; transition:color .2s; }
+    .breadcrumb a:hover { color:#f87171; }
+    .breadcrumb span { color:#dc2626; opacity:0.5; }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="fixed top-0 left-0 w-full z-[9999]">
+  <div id="progress-bar"></div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+    <a href="/" class="flex items-center gap-2 group">
+      <div class="w-7 h-7 border border-red-600 flex items-center justify-center group-hover:bg-red-600/20 transition-all duration-300">
+        <span class="text-red-500 text-xs font-mono-tech font-bold">SR</span>
+      </div>
+      <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:.25em;">Secret Reviewer</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+      <a href="/unexplained/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Unexplained</a>
+      <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+    <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+      <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="md:hidden" style="max-height:0;overflow:hidden;transition:max-height .35s ease;background:rgba(4,4,4,0.99);backdrop-filter:blur(24px);">
+    <div class="flex flex-col px-5 py-4 gap-4">
+      <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+      <a href="/unexplained/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Unexplained</a>
+      <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="pt-28 pb-24 px-5">
+  <div class="max-w-3xl mx-auto">
+
+    <div class="breadcrumb">
+      <a href="/unexplained/">Unexplained Archive</a>
+      <span>▶</span>
+      <span style="color:#f87171;">Hotels</span>
+    </div>
+
+    <!-- Page header -->
+  <div class="mb-12 animate-fade-slide-up" style="position:relative;">
+  <div class="noise-overlay"></div>
+
+  <p class="font-mono-tech text-xs tracking-[0.4em] uppercase mb-4" style="color:rgba(167,139,250,0.6);">
+    // Unexplained Accommodation Logs
+  </p>
+
+  <h1 class="text-5xl sm:text-7xl font-black uppercase leading-none tracking-tight text-white mb-4">
+    <span class="glitch-wrap" data-text="HOTELS">Hotels</span>
+  </h1>
+
+  <p class="font-mono-tech text-gray-600 text-xs tracking-widest mt-4">
+    <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+   3 INCIDENT LOGS ARCHIVED // UNEXPLAINED STAY REPORTS
+  </p>
+
+  <p class="mt-5 text-gray-500 text-base leading-relaxed max-w-xl" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">
+    Hotels were built for people passing through.  
+    Some guests never feel like they truly left.  
+    Across different countries, riders report the same patterns — silent corridors, impossible sounds, disturbed sleep, and nights that feel strangely disconnected from reality.
+  </p>
+</div>
+
+    
+    <hr class="section-rule" />
+
+    <!-- SELECTION SCREEN -->
+    <div id="selection-screen">
+      <div class="font-mono-tech text-xs uppercase mb-5" style="color:#dc2626;letter-spacing:3px;display:flex;align-items:center;gap:10px;">
+        <span class="inline-block w-2 h-2 rounded-full" style="background:#dc2626;animation:pulse-dot 1.4s infinite;"></span>
+        Select a log to access
+      </div>
+
+      <div id="sel-cards" style="display:grid;gap:14px;">
+
+        <!-- Card 1 -->
+        <div class="sel-card" data-log="0" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log UNX-009</span>
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
+          </div>
+          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The Two Hotels That Got Worse</div>
+          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">Long-distance touring teaches you that the cheapest hotels often leave the strongest memories. Thailand gave us two — each stranger than the last — and by the second one, nobody was pretending to be brave anymore.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Thailand</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Touring</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Atmosphere</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Power Event</span>
+            </div>
+            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG ►</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="sel-card" data-log="1" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log UNX-010</span>
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
+          </div>
+          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The Hotel That Felt Too Familiar</div>
+          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">We arrived late. The compound looked almost abandoned. A woman appeared from the darkness without making a sound. And the moment I stepped into my room, I already knew where everything was — before I'd ever been there.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Thailand</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Déjà Vu</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Spatial Familiarity</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Touring</span>
+            </div>
+            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG ►</span>
+          </div>
+        </div>
+
+        <!-- Card 3: locked -->
+        <div style="background:rgba(10,10,10,0.5);border:1px solid rgba(220,38,38,0.07);padding:20px 22px;position:relative;opacity:0.4;pointer-events:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span class="font-mono-tech text-xs uppercase" style="color:#444;letter-spacing:2px;">// Log UNX-???</span>
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#dc2626;letter-spacing:1px;text-transform:uppercase;">Encrypted</span>
+          </div>
+          <div style="font-size:1.3rem;font-weight:700;color:#333;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">████████████████████</div>
+          <div style="display:flex;gap:8px;">
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#2a2a2a;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;letter-spacing:1px;">▒▒▒▒▒▒</span>
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#2a2a2a;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;letter-spacing:1px;">▒▒▒▒</span>
+          </div>
+        </div>
+
+      </div><!-- /sel-cards -->
+
+    </div><!-- /selection-screen -->
+
+    <!-- LOG READER (hidden until story selected) -->
+    <div id="log-reader" style="display:none;">
+    <div id="log-container">
+
+     <!-- ══ LOG 1: The Two Thailand Hotels ══ -->
+      <div class="log-entry" style="display:none;">
+        <span class="tag">Touring Log #001</span>
+        <h1 class="entry-title">The Two Hotels That Got Worse</h1>
+        <p class="lead">Long-distance touring teaches you that the cheapest hotels often leave the strongest memories. Thailand gave us two — each stranger than the last — and by the second one, nobody was pretending to be brave anymore.</p>
+
+        <div class="featured-image">
+          <div class="noise-overlay"></div>
+
+          <img 
+  src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778220270/twohotel_wopuyp.png"
+  style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.72) saturate(0.85);"
+/>
+          
+          <div class="featured-image-label">// SR-TOUR-001 // Thailand Touring // 380 Baht &amp; The Mountain</div>
+          <div class="corner-br"></div>
+        </div>
+
+        <div class="story-content">
+          <h2>The 380-Baht Hotel</h2>
+          <p>During long-distance touring, riders eventually learn one thing: the cheapest hotels create the strongest memories. This night came after an already draining stretch — we had been through an accident the day before, so everyone was running on empty. Body tired. Mind tired. Bikes dirty. Mood heavy. By the time we found a place, nobody cared about quality. 380 baht. Cheap enough that we accepted without thinking much.</p>
+          <div class="atmosphere-prose">
+            <p>At first glance, the place looked less like a hotel and more like an old army barrack. Long corridors. Plain walls. Dim lighting. Even climbing the stairs felt familiar in an uncomfortable way — it instantly reminded me of Tekong during NS.</p>
+            <p class="pause">. . .</p>
+            <p>The moment we entered the room, something felt wrong. Not dirty. Not obviously haunted-looking. Just wrong. The room was unusually large for such a cheap hotel. Too much empty space. That kind of silence where even your own footsteps sound unnaturally loud.</p>
+            <p>We switched on the TV immediately. Then all the room lights. Nobody suggested turning anything off afterward. That itself already said enough.</p>
+            <p class="pause">. . .</p>
+            <p>At one point I stepped outside alone for air. The corridor was dim and completely empty. No footsteps. No voices. Just the distant humming of old building lights.</p>
+            <p>And standing there, I suddenly had this overwhelming feeling that something was nearby. Not visible. Not dramatic. Just the strong instinct that I shouldn't stay outside too long.</p>
+            <p class="emphasis">I went straight back inside and closed the door.</p>
+            <p>That night, none of us switched off the lights. The TV stayed on until morning. And despite being physically exhausted, sleep never felt deep.</p>
+          </div>
+
+          <h2>The Mountain Hotel</h2>
+          <p>That 380-baht place was strange enough. But there was another hotel later in the same trip that turned out even worse — bad enough that all of us ended up sleeping together in the same room just to get through the night.</p>
+          <p>We didn't choose it because it looked good. We chose it because it was the nearest available place after riding past nightfall. And once night fully settles on those mountain roads in Thailand, everything changes. The route leading in was almost completely dark. No streetlamps. No shops. No proper signboards.</p>
+          <div class="atmosphere-prose">
+            <p>Even finding the hotel entrance was difficult. When we finally entered the compound, we couldn't immediately find the owner — he was sitting somewhere deeper inside the darkness with a few other guests. That alone already felt unsettling.</p>
+            <p class="pause">. . .</p>
+            <p>After some awkward communication, we were told only two rooms were left. But the rooms were separated far apart. One was located further inside the compound, deeper into the darkness. The other was nearer to a wooden fence near the entrance.</p>
+            <p>The moment we heard that, both of us made the same decision without discussion.</p>
+            <p class="emphasis">One room. Together. No point acting brave.</p>
+            <p class="pause">. . .</p>
+            <p>The room itself barely felt like a proper hotel. Old structure — concrete, wood panels, metal roofing. The kind where every movement creates sound. The TV was a CRT — huge fat back, tiny screen. But it became comforting. Not for watching. Just for noise. Something to push against the silence outside.</p>
+            <p class="pause">. . .</p>
+            <p>Then we discovered the toilet. To reach it, we had to lower our heads through a small gate-like opening, then step partially outside into darkness before reaching the toilet a few steps away. Beyond that — just wilderness. No proper walls. Just darkness and nature.</p>
+            <p class="emphasis">Nobody wanted to go alone.</p>
+            <p class="pause">. . .</p>
+            <p>I was knocked out from exhaustion and didn't hear anything that night. Only the next morning did my riding buddy tell me what happened.</p>
+            <p>Sometime very late, the electricity tripped. The room went dark. Then the old CRT turned to static — that loud, old-school crackling sound. He woke up, found the switch, restored power, then quickly turned the TV off.</p>
+            <p>And according to him — the moment the electricity came back on, everything suddenly felt normal again. No more strange atmosphere. No more uneasy feeling. Like whatever had been pressing against the room had decided to leave when the lights returned.</p>
+          </div>
+
+          <h2>What Both Hotels Had in Common</h2>
+          <p>Till today, I still don't know whether either experience was just exhaustion and unfamiliar surroundings, or something the walls of those places were holding from before we arrived. Both explanations feel possible. Both feel incomplete.</p>
+          <p>But one detail from the mountain hotel still sticks. Out of all the rooms available that night — neither of us chose the one deeper inside the darkness. We made that decision instantly, without discussion, without needing to explain it to each other. Some choices don't need reasoning. The instinct is fast enough on its own.</p>
+
+          <div class="field-grid">
+            <div>Hotel 1</div><div>380 baht — barrack-style, Thailand. Lights left on all night.</div>
+            <div>Hotel 2</div><div>Mountain area, Thailand — two rooms offered, both chose the same one immediately.</div>
+            <div>Incident</div><div>Power trip late at night. CRT static. Atmosphere normalised upon power restoration.</div>
+            <div>Decision</div><div>Shared room. TV on all night. Nobody suggested otherwise.</div>
+          </div>
+
+          <div class="signal-box">
+            <strong>// SIGNAL RECORDED:</strong> Two separate hotels on the same trip, both carrying sustained atmospheric unease. Second hotel: power trip, CRT static, sudden normalisation upon power return. Riders chose shared room without discussion. Deeper room never considered.
+          </div>
+
+          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
+            <div id="full-intel-unx009" class="space-y-6 text-gray-300">
+              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
+                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Two Hotels That Got Worse</h4>
+                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Touring / Accommodation</p>
+              </div>
+              <div class="space-y-4">
+                <p><strong>[380-BAHT HOTEL]</strong> Budget accommodation in Thailand's touring corridors often occupies repurposed structures. What is unusual is the sustained, inexplicable feeling of presence that multiple riders independently identified in the same room.</p>
+                <p><strong>[MOUNTAIN HOTEL POWER EVENT]</strong> A power trip followed by CRT static, followed by immediate atmospheric normalisation upon power restoration — appears in multiple accounts across Southeast Asian touring communities.</p>
+                <p><strong>[THE DEEPER ROOM]</strong> The instant, unanimous rejection of the room deeper inside the darkness — without discussion — is consistent with accounts where instinct overrides bravado. Both riders recognised the same risk and arrived at the same answer without needing to speak it aloud.</p>
+              </div>
+              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
+                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
+                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                  <li>Hotel 1: Sustained unease — nothing confirmed beyond the feeling</li>
+                  <li>Hotel 2: Confirmed power event + atmospheric shift + immediate normalisation</li>
+                  <li>Recommendation: If both riders independently choose not to go deeper — trust that.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ LOG 2: The Hotel That Felt Too Familiar ══ -->
+      <div class="log-entry" style="display:none;">
+        <span class="tag">Touring Log #002</span>
+        <h1 class="entry-title">The Hotel That Felt Too Familiar</h1>
+        <p class="lead">We arrived late. The compound looked almost abandoned. A woman appeared from the darkness without making a sound. And the moment I stepped into my room, I already knew where everything was — before I'd ever been there.</p>
+
+        <div class="featured-image">
+          <div class="noise-overlay"></div>
+
+      <img 
+  src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778220264/familarhotel_pihhvj.png"
+  style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.72) saturate(0.85);"
+/>
+          <div class="featured-image-label">// SR-TOUR-002 // Thailand Touring // Familiarity Log</div>
+          <div class="corner-br"></div>
+        </div>
+
+        <div class="story-content">
+          <h2>Arriving Late</h2>
+          <p>We arrived much later than planned. By the time we entered the area, the roads were already empty. Most nearby shops had closed. The deeper we rode in, the quieter everything became — no passing traffic, no people sitting outside, not even the stray dogs that usually bark at incoming bikes.</p>
+          <p>The hotel was somewhere near the mountain area, chosen mainly because it was the nearest available place before nightfall made riding too dangerous. When we reached the entrance, the place looked almost abandoned. A few dim yellow lights. The reception area empty. We pressed the bell once. Then again. Still nothing. After almost twenty minutes of waiting in complete silence — the only sound the metallic ticking of our bikes cooling down — the atmosphere had already shifted.</p>
+
+          <h2>The Woman From the Darkness</h2>
+          <div class="atmosphere-prose">
+            <p>Not threatening. Just strangely still.</p>
+            <p class="pause">. . .</p>
+            <p>I remember standing there, looking deeper into the compound, when I suddenly felt something I still can't explain.</p>
+            <p class="emphasis">Familiarity.</p>
+            <p>Not the kind where you recognise a place from photos online. The uncomfortable kind — where your mind already knows the environment before you've explored it. Even before walking further in, I somehow knew there was another section behind the reception building. I knew the corridor on the left led toward the rooms. At the time I convinced myself it was just because roadside hotels share similar layouts.</p>
+            <p class="pause">. . .</p>
+            <p>Then, without any footsteps or doors opening, a woman appeared from somewhere deeper inside the compound. She didn't look surprised to see us waiting. No apology. No confusion. She simply asked whether we needed rooms — her voice calm, almost as if she had expected us to arrive.</p>
+          </div>
+
+          <h2>The Room I Somehow Already Knew</h2>
+          <div class="atmosphere-prose">
+            <p>She showed us a few available rooms. The one nearest to the carpark immediately caught my attention — slightly more expensive, but from the window I had a direct view of my bike below. As a rider, that matters more than room size sometimes. I took it without hesitation.</p>
+            <p class="pause">. . .</p>
+            <p>The strange feeling became stronger the moment I stepped inside. Again, not fear. The opposite.</p>
+            <p class="emphasis">Comfort. The room felt familiar in a way that made no sense.</p>
+            <p>I knew where the switches were before reaching for them. I placed my riding gear down naturally, like I had done it there before. Moving around the room felt automatic. No adjustment period. No "first-time" feeling. Just an overwhelming sense that I had returned somewhere, rather than arrived somewhere new.</p>
+            <p class="pause">. . .</p>
+            <p>The weirdest part is that nothing paranormal happened that night. No shadows. No strange noises. No sightings. Everything was peaceful. We slept well, woke up normally, and continued our journey the next morning without any issues.</p>
+          </div>
+
+          <h2>Why It Still Stays With Me</h2>
+          <p>Out of every hotel I've stayed at across all my touring trips, that is still the only place that never felt unfamiliar to me. Not even on arrival. Not even in the first few seconds.</p>
+          <p>I've tried to explain it rationally — similar layouts, exhaustion warping perception, pattern recognition from years of budget hotels. All possible. None of them fully account for knowing where the light switches were before I reached for them. Or for the settled, returned feeling that was there from the moment I stepped through the door.</p>
+          <p>Some places feel like you've been there before. This one felt like I had left something there and was coming back to collect it. I still don't know what that means. And honestly, I'm not sure I want to.</p>
+
+          <div class="signal-box">
+            <strong>// SIGNAL RECORDED:</strong> Strong spatial familiarity upon arrival at a never-visited location. Rider knew switch locations instinctively. No paranormal incident occurred. Feeling of return rather than arrival. Only hotel across all touring trips to produce this effect.
+          </div>
+
+          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
+            <div id="full-intel-unx010" class="space-y-6 text-gray-300">
+              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
+                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Hotel That Felt Too Familiar</h4>
+                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Déjà Vu / Touring Encounter</p>
+              </div>
+              <div class="space-y-4">
+                <p><strong>[SPATIAL FAMILIARITY]</strong> Standard déjà vu is brief and disorienting. What is described here is sustained, functional familiarity — accurate spatial knowledge of a never-visited location. Knowing where light switches are before reaching for them is not consistent with normal déjà vu. It suggests either forgotten prior exposure, or something else without a straightforward explanation.</p>
+                <p><strong>[THE WOMAN'S ARRIVAL]</strong> Appearing without footsteps or door sounds, showing no surprise after 20 minutes of unanswered bells, and speaking with the calm expectation of someone who knew guests were coming — individually explainable, together harder to dismiss.</p>
+                <p><strong>[WHY NOTHING HAPPENED]</strong> Not all unexplained experiences are threatening. Some locations carry a feeling of recognition that is unsettling precisely because it is comfortable. The discomfort comes from the impossibility of the recognition itself, not from any danger.</p>
+              </div>
+              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
+                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
+                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                  <li>Type: Sustained spatial familiarity — never visited location</li>
+                  <li>Threat level: None. Peaceful stay, normal departure.</li>
+                  <li>Classification: Unexplained — not hostile, not resolved.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div><!-- /log-container -->
+
+    <hr class="section-rule" />
+
+    <!-- Navigation -->
+    <div class="flex items-center justify-center gap-5 flex-wrap">
+      <button id="prevBtn" class="nav-btn"><span>◄ Previous Log</span></button>
+      <div class="page-counter">LOG <span id="current-page">01</span> / <span id="total-pages">03</span></div>
+      <button id="nextBtn" class="nav-btn"><span>Unlock Next ►</span></button>
+    </div>
+
+    <div class="text-center mt-16">
+      <a href="/unexplained/" class="font-mono-tech text-gray-600 text-xs tracking-widest uppercase hover:text-red-500 transition-colors duration-200">◄ Return to Unexplained Archive</a>
+    </div>
+
+    </div><!-- /log-reader -->
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="py-16 px-5 border-t border-white/5 mt-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex flex-col items-center gap-6">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 hover:scale-105 transition-all duration-300">
+          <span class="font-mono-tech text-red-600 text-sm font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+      </a>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors duration-300">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="font-mono-tech text-sm tracking-widest uppercase">Watch on YouTube</span>
+      </a>
+      <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ── Cursor ── */
+  (function(){
+    var cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+    var mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+    (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+    document.querySelectorAll('a,button').forEach(function(el){
+      el.addEventListener('mouseenter',function(){ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(220,38,38,0.8)';});
+      el.addEventListener('mouseleave',function(){ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(220,38,38,0.5)';});
+    });
+  })();
+
+  /* ── Progress bar + navbar ── */
+  window.addEventListener('scroll',function(){
+    var st=document.documentElement.scrollTop||document.body.scrollTop;
+    var sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    document.getElementById('progress-bar').style.width=(sh>0?(st/sh)*100:0)+'%';
+  },{passive:true});
+  window.addEventListener('scroll',function(){
+    var nav=document.getElementById('navbar');
+    if(window.scrollY>20)nav.classList.add('nav-scrolled');
+    else nav.classList.remove('nav-scrolled');
+  },{passive:true});
+
+  /* ── Mobile menu ── */
+  document.getElementById('menu-toggle').addEventListener('click',function(){
+    var menu=document.getElementById('mobile-menu');
+    var openIcon=document.getElementById('menu-icon-open');
+    var closeIcon=document.getElementById('menu-icon-close');
+    var isOpen=menu.style.maxHeight==='320px';
+    menu.style.maxHeight=isOpen?'0':'320px';
+    menu.style.borderBottom=isOpen?'':'1px solid rgba(76,29,149,0.3)';
+    openIcon.style.display=isOpen?'':'none';
+    closeIcon.style.display=isOpen?'none':'';
+  });
+  document.querySelectorAll('.mobile-link').forEach(function(link){
+    link.addEventListener('click',function(){
+      document.getElementById('mobile-menu').style.maxHeight='0';
+      document.getElementById('menu-icon-open').style.display='';
+      document.getElementById('menu-icon-close').style.display='none';
+    });
+  });
+
+  /* ── Scramble / decrypt ── */
+  var scrambleChars='░▒▓█▄▀■□▪▫ABCDEF0123456789$#@%';
+  function decryptText(button,originalText,callback){
+    var iterations=0;
+    button.classList.add('decrypting');
+    button.disabled=true;
+    var interval=setInterval(function(){
+      button.querySelector('span').innerText=originalText.split('').map(function(char,index){
+        if(index<iterations)return originalText[index];
+        return char===' '?' ':scrambleChars[Math.floor(Math.random()*scrambleChars.length)];
+      }).join('');
+      if(iterations>=originalText.length){
+        clearInterval(interval);
+        button.classList.remove('decrypting');
+        button.querySelector('span').innerText=originalText;
+        button.disabled=false;
+        callback();
+      }
+      iterations+=1/3;
+    },30);
+  }
+
+  /* ── Log pagination ── */
+  var logs=document.querySelectorAll('.log-entry');
+  var nextBtn=document.getElementById('nextBtn');
+  var prevBtn=document.getElementById('prevBtn');
+  var currentPage=document.getElementById('current-page');
+  var totalPages=document.getElementById('total-pages');
+  var currentLogIndex=0;
+
+  totalPages.textContent=String(logs.length).padStart(2,'0');
+
+  function updateButtons(){
+    prevBtn.disabled=currentLogIndex===0;
+    nextBtn.disabled=currentLogIndex===logs.length-1;
+    currentPage.textContent=String(currentLogIndex+1).padStart(2,'0');
+  }
+
+  function updateView(newIndex){
+    logs.forEach(function(log){log.style.display='none';});
+    currentLogIndex=newIndex;
+    logs[currentLogIndex].style.display='block';
+    logs[currentLogIndex].style.animation='none';
+    logs[currentLogIndex].offsetHeight;
+    logs[currentLogIndex].style.animation='';
+    window.scrollTo({top:0,behavior:'smooth'});
+    updateButtons();
+  }
+
+  nextBtn.addEventListener('click',function(){
+    if(currentLogIndex>=logs.length-1)return;
+    var nextIndex=currentLogIndex+1;
+    decryptText(nextBtn,'Unlock Next ►',function(){updateView(nextIndex);});
+  });
+  prevBtn.addEventListener('click',function(){
+    if(currentLogIndex<=0)return;
+    var prevIndex=currentLogIndex-1;
+    decryptText(prevBtn,'◄ Previous Log',function(){updateView(prevIndex);});
+  });
+
+  /* ── Selection screen ── */
+  function selectLog(el){
+    var logIndex=parseInt(el.getAttribute('data-log'));
+    document.getElementById('selection-screen').style.display='none';
+    document.getElementById('log-reader').style.display='block';
+    updateView(logIndex);
+  }
+
+</script>
+</body>
+</html>
