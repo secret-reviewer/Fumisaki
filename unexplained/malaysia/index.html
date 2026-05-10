@@ -228,6 +228,15 @@ Malaysia Unexplained Rider Logs | Paranormal Night Rides & Strange Encounters | 
     .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
     .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
 
+    .load-more-style {
+      background:transparent; color:#f87171;
+      border:1px solid rgba(220,38,38,0.4);
+      font-family:'Share Tech Mono',monospace; font-size:0.72rem;
+      letter-spacing:2px; text-transform:uppercase; cursor:pointer;
+      padding:10px 22px; transition:background .25s,color .25s;
+    }
+    .load-more-style:hover { background:var(--red); color:#fff; }
+
     .signal-box {
       background:rgba(220,38,38,0.05); border:1px solid rgba(220,38,38,0.3);
       border-left:3px solid #dc2626; padding:14px 18px; margin:20px 0;
@@ -254,13 +263,6 @@ Malaysia Unexplained Rider Logs | Paranormal Night Rides & Strange Encounters | 
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
       background-size:128px; animation:staticNoise 4s step-start infinite;
     }
-
-    /* Selection cards */
-    .sel-card:hover { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.04) !important; }
-    .sel-card:hover .sel-accent { background:#dc2626 !important; }
-    .sel-card:hover .sel-arrow { color:rgba(220,38,38,0.7) !important; }
-    .sel-card.sel-active { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.05) !important; }
-    .sel-card.sel-active .sel-accent { background:#dc2626 !important; }
 
     /* Breadcrumb */
     .breadcrumb {
@@ -352,93 +354,7 @@ Malaysia Unexplained Rider Logs | Paranormal Night Rides & Strange Encounters | 
 
     <hr class="section-rule" />
 
-    <!-- SELECTION SCREEN -->
-    <div id="selection-screen">
-      <div class="font-mono-tech text-xs uppercase mb-5" style="color:#dc2626;letter-spacing:3px;display:flex;align-items:center;gap:10px;">
-        <span class="inline-block w-2 h-2 rounded-full" style="background:#dc2626;animation:pulse-dot 1.4s infinite;"></span>
-        Select a log to access
-      </div>
-
-      <div id="sel-cards" style="display:grid;gap:14px;">
-
-        <!-- Card 1 -->
-        <div class="sel-card" data-log="0" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
-          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log MY-001</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
-          </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The Route That Wouldn't End</div>
-          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">Two riders. A Nokia 6280 with a map app. A biker ahead whose gap never once closed. And a road that kept going — past where it should have stopped.</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Malaysia</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Night Ride</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Time Loss</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Unknown Rider</span>
-            </div>
-            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="sel-card" data-log="1" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
-          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log MY-002</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
-          </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The Road That Rejected Us</div>
-          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">A charity convoy to Laos. Cascading failures from the first hour — carburettor, GPS, a crash, a seized piston. One by one, the road was telling us something. Some of us listened.</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Malaysia</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Convoy</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Mechanical Failure</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Touring</span>
-            </div>
-            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="sel-card" data-log="2" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
-          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log MY-003</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
-          </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">Stay In The Light</div>
-          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">He only asked one thing the entire ride. Keep me inside the light. I was riding the sweep position. I kept him in the beam. I still don't know what he saw in those mirrors.</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Malaysia</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Night Convoy</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Presence</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Interior Roads</span>
-            </div>
-            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
-          </div>
-        </div>
-
-        <!-- Locked card -->
-        <div style="background:rgba(10,10,10,0.5);border:1px solid rgba(220,38,38,0.07);padding:20px 22px;position:relative;opacity:0.4;pointer-events:none;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#444;letter-spacing:2px;">// Log UNX-???</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#dc2626;letter-spacing:1px;text-transform:uppercase;">Encrypted</span>
-          </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#333;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</div>
-          <div style="display:flex;gap:8px;">
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#2a2a2a;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;letter-spacing:1px;">&#9618;&#9618;&#9618;&#9618;&#9618;&#9618;</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#2a2a2a;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;letter-spacing:1px;">&#9618;&#9618;&#9618;&#9618;</span>
-          </div>
-        </div>
-
-      </div><!-- /sel-cards -->
-    </div><!-- /selection-screen -->
-
-    <!-- LOG READER (hidden until story selected) -->
-    <div id="log-reader" style="display:none;">
+    <!-- LOG ENTRIES -->
     <div id="log-container">
 
       <!-- LOG 1: The Route That Wouldn't End -->
@@ -501,7 +417,7 @@ Malaysia Unexplained Rider Logs | Paranormal Night Rides & Strange Encounters | 
           </div>
 
           <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-my001" class="space-y-6 text-gray-300">
+            <div id="full-intel-my001" class="hidden space-y-6 text-gray-300">
               <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08);border-color:#dc2626;">
                 <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Route That Wouldn't End</h4>
                 <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Time Distortion / Road Encounter</p>
@@ -521,6 +437,199 @@ Malaysia Unexplained Rider Logs | Paranormal Night Rides & Strange Encounters | 
                 </ul>
               </div>
             </div>
+            <div class="flex justify-center mt-6">
+              <button onclick="toggleIntel('full-intel-my001', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOG 2: The Road That Rejected Us -->
+      <div class="log-entry" style="display:none;">
+        <span class="tag">Unexplained Log #MY-002</span>
+        <h1 class="entry-title">The Road That Rejected Us</h1>
+        <p class="lead">A charity convoy to Laos. Cascading failures from the first hour — carburettor, GPS, a crash, a seized piston. One by one, the road was telling us something. Some of us listened.</p>
+
+        <div class="featured-image">
+          <div class="noise-overlay"></div>
+
+<img 
+  src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778220267/rejectus_bhvxwh.png"
+  style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.72) saturate(0.85);"
+/>
+          <div class="featured-image-label">// SR-UNX-MY002 // Convoy Route // Malaysia-Thailand Border</div>
+          <div class="corner-br"></div>
+          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(220,38,38,0.06) 0%,transparent 70%);pointer-events:none;"></div>
+        </div>
+
+        <div class="story-content">
+          <h2>Context</h2>
+          <p>This was a charity run — a convoy of about fifteen bikes, organised, with a route planned in advance and a support vehicle. The goal was to ride up through Thailand and into Laos, delivering donations. Proper planning. Experienced riders. Nothing casual about it.</p>
+          <p>I was not on this run. This is a documented account from a rider who was — someone I know well, who doesn't exaggerate and doesn't dramatise. He told me this when we got coffee after he came back, and he still sounded unsettled when he said it.</p>
+
+          <h2>What Happened</h2>
+          <div class="atmosphere-prose">
+            <p>Before they'd cleared Johor, one bike had a carburettor issue. They fixed it at a roadside shop and lost an hour.</p>
+            <p>Before they crossed into Kedah, the GPS lead unit stopped working. They reorganised and continued on paper maps.</p>
+            <p class="pause">. . .</p>
+            <p>Just after the Thailand border crossing, one rider went down. Not at speed — a slow corner, wet patch of road, bike just slid out. He was okay. Bruised. But the bike needed attention and they lost more time.</p>
+            <p>Somewhere in southern Thailand, another bike seized. Piston. Completely gone. That rider was done for the trip. He had to arrange transport home.</p>
+            <p>By now the convoy was half a day behind schedule and morale was low. They held a discussion at a rest stop. Some riders said they should continue. Others said — and this is the part the account focuses on — that something didn't want them to go.</p>
+            <p class="pause">. . .</p>
+            <p>They voted. The majority chose to continue. Three riders chose not to, citing mechanical concerns on their own bikes. Those three turned around.</p>
+            <p class="emphasis">The remaining convoy reached their next waypoint that evening, where a flash flood warning was issued for the exact stretch of road they were planning to ride the following morning.</p>
+            <p class="pause">. . .</p>
+            <p>They detoured. Made it to Laos eventually. The convoy completed the mission.</p>
+            <p>But the rider telling me this kept returning to the same point: the failures had been cascading in a way that felt less like bad luck and more like something trying to stop the clock. Carburettor, GPS, crash, seizure. Each one just serious enough to delay. None serious enough to end it for everyone — just enough to slow them down, scatter their momentum, make them question.</p>
+            <p class="closing">He said: "If we'd been on time, we'd have been on that road in the morning." He said it quietly. He didn't say it like it was a ghost story. He said it like a data point he hadn't finished processing yet.</p>
+          </div>
+
+          <h2>Field Data</h2>
+          <div class="field-grid">
+            <div>Convoy size</div><div>~15 riders at start, support vehicle</div>
+            <div>Objective</div><div>Charity run to Laos</div>
+            <div>Failures</div><div>Carburettor / GPS / crash (low speed) / piston seizure — all different bikes</div>
+            <div>Timing</div><div>Each failure pushed ETA by hours; cumulative delay ~6–8 hours</div>
+            <div>Outcome</div><div>Detour avoided flash flood zone. Mission completed.</div>
+            <div>Source</div><div>First-hand account from known rider — no embellishment, reluctant teller</div>
+          </div>
+
+          <h2>Rider's Note</h2>
+          <p>I've had runs where things just go wrong. One bad day can look exactly like this — mechanical failures happen, riders go down. I'm not going to say this was definitely something more than a bad run.</p>
+          <p>What I will say is: if you're on a ride and things start cascading, and you get that feeling — that particular feeling — it is worth sitting down for five minutes and asking whether the road wants you on it. Not for supernatural reasons. Just as a discipline. As a rider, that kind of honest self-check is never wasted time.</p>
+          <p>This convoy completed the mission. Nobody died. The flood happened where it happened, and they weren't on that road when it did. Whether that means anything — I'll leave that to the reader.</p>
+
+          <div class="signal-box">
+            <strong>// SIGNAL RECORDED:</strong> Four independent mechanical failures across different bikes in sequence. Flash flood confirmed on planned route. Riders who were delayed were not present at the affected location.
+          </div>
+
+          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
+            <div id="full-intel-my002" class="hidden space-y-6 text-gray-300">
+              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08);border-color:#dc2626;">
+                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Road That Rejected Us</h4>
+                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Cascading Failure / Third-Party Account</p>
+              </div>
+              <div class="space-y-4">
+                <p><strong>[CASCADING FAILURE PATTERN]</strong> In isolation, any one of these failures is unremarkable. A carburettor issue on a long run happens. A GPS dying happens. A rider going down happens. What is unusual is the sequence — each failure targeting a different system, a different bike, with no shared cause, and each timed to delay rather than stop.</p>
+                <p><strong>[THE THREE WHO TURNED BACK]</strong> The three riders who chose not to continue cited mechanical concerns. Their bikes showed no issues during the post-run check at home. This is consistent with a feeling — a hesitation — rather than a concrete problem. Whether that instinct was information or anxiety is impossible to say from outside.</p>
+                <p><strong>[WEATHER DATA]</strong> Flash flood warning for the segment was issued the evening of the rest stop. The convoy's original timeline would have placed them on that road during peak flood conditions the following morning. Weather data is objective. What caused the delay to align with it is not.</p>
+              </div>
+              <div class="p-4 border" style="background:rgba(0,0,0,0.4);border-color:rgba(220,38,38,0.3);">
+                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
+                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                  <li>Source reliability: High — first-hand, unsolicited, reluctant recounting</li>
+                  <li>Cross-listed: Night Ride Encounters // Personal Logs (instinct-as-warning pattern)</li>
+                  <li>Statistical probability of failure sequence: Not assessed — too many variables</li>
+                  <li>Classification: Inconclusive — protective or coincidental? Both readings are valid.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex justify-center mt-6">
+              <button onclick="toggleIntel('full-intel-my002', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOG 3: Stay In The Light -->
+      <div class="log-entry" style="display:none;">
+        <span class="tag">Unexplained Log #MY-003</span>
+        <h1 class="entry-title">Stay In The Light</h1>
+        <p class="lead">He only asked one thing the entire ride. Keep me inside the light. I was riding the sweep position. I kept him in the beam. I still don't know what he saw in those mirrors.</p>
+
+        <div class="featured-image">
+          <div class="noise-overlay"></div>
+
+<img 
+  src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778220266/inlight_c1rmwl.png"
+  style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.72) saturate(0.85);"
+/>
+          <div class="featured-image-label">// SR-UNX-MY003 // Night Convoy // Malaysia Interior</div>
+          <div class="corner-br"></div>
+          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(220,38,38,0.06) 0%,transparent 70%);pointer-events:none;"></div>
+        </div>
+
+        <div class="story-content">
+          <h2>Context</h2>
+          <p>This was a small group night run. Three bikes — myself at the rear sweep, the friend I'll call L in the middle, and another rider up front. We'd done runs together before, nothing unusual about the dynamic. L was an experienced rider, calm, not the type to spook easily.</p>
+          <p>We were about two hours into a night ride through the interior of Pahang — proper dark road, no streetlights, jungle on both sides. The kind of road where you keep your headlights aimed well and your distance sensible.</p>
+
+          <h2>What Happened</h2>
+          <div class="atmosphere-prose">
+            <p>Roughly halfway through the interior stretch, L's pace dropped slightly. Not dangerously — he just settled at a slightly slower speed than the front rider, which pulled a gap. I closed up from the rear to keep the three of us visible to each other.</p>
+            <p>After about ten minutes of this, L came onto the intercom. His voice was flat. Controlled. He said:</p>
+            <p class="emphasis">"Keep your headlights on me. Don't let me out of your beam."</p>
+            <p>I said okay and moved closer. I kept him lit — my headlight fully illuminating the rear of his bike, his jacket, his helmet. He didn't say anything more.</p>
+            <p class="pause">. . .</p>
+            <p>We rode like that for close to forty-five minutes. Me behind him at maybe fifteen metres, headlights full on his back. The front rider had pulled ahead but checked in on the radio periodically. Nobody else said much.</p>
+            <p>When we cleared the interior stretch and hit the lit outskirts of the next town, L's pace came back up. He pulled into the first petrol station and we all stopped.</p>
+            <p>I asked him what happened.</p>
+            <p class="pause">. . .</p>
+            <p>He took a while before answering. Then he said he'd been seeing things in his mirrors. Not the road behind him — something at the edge of the beam, in the dark just outside the reach of the headlights. He said it had been following. Keeping pace. Just outside the lit area.</p>
+            <p>He said: "As long as your light was on me, it stayed back."</p>
+            <p class="emphasis">He didn't describe what it looked like. He said he hadn't wanted to look long enough to find out.</p>
+            <p class="pause">. . .</p>
+            <p>I had been staring at his back the entire time. I'd seen nothing. The road behind us — from my angle — had been empty.</p>
+            <p class="closing">I don't know what L saw. He's never brought it up again. I've never asked. Some things, you leave at the petrol station.</p>
+          </div>
+
+          <h2>Field Data</h2>
+          <div class="field-grid">
+            <div>Route</div><div>Interior Pahang — unlit jungle road, approx 80km stretch</div>
+            <div>Riders</div><div>3 — front, middle (L), rear sweep (SR)</div>
+            <div>Duration of incident</div><div>~45 minutes of maintained lit formation</div>
+            <div>Communication</div><div>Intercom — L's voice described as flat, controlled</div>
+            <div>Observation (L)</div><div>Something at edge of headlight beam, pacing the bike. Did not describe shape.</div>
+            <div>Observation (SR)</div><div>Road behind: empty. Nothing seen from rear sweep position.</div>
+          </div>
+
+          <h2>Rider's Note</h2>
+          <p>The thing about riding sweep is that you see everything behind the group. It's your job. I was watching that road the entire time. I saw nothing.</p>
+          <p>I'm not saying L didn't see something. His reaction was too measured for it to be nothing — experienced riders don't ask you to keep them in the light for forty-five minutes over a vague feeling. He saw something specific enough to want it kept at distance, specific enough to know that light was keeping it there.</p>
+          <p>The practical note, if there is one: in convoy, keep your formation tight on unlit interior roads. Keep the person ahead of you lit. Whether that's for safety, for visibility, or for something else — it costs nothing and it works.</p>
+
+          <div class="signal-box">
+            <strong>// SIGNAL RECORDED:</strong> Rider L reported a presence tracking his bike at the edge of the headlight beam for ~45 minutes. Rider at rear sweep position reports road behind as clear for the same duration. Formation maintained; no incident.
+          </div>
+
+          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
+            <div id="full-intel-my003" class="hidden space-y-6 text-gray-300">
+              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08);border-color:#dc2626;">
+                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: Stay In The Light</h4>
+                <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Road Encounter / Protective Behaviour</p>
+              </div>
+              <div class="space-y-4">
+                <p><strong>[THE LIGHT AS BOUNDARY]</strong> The belief that light — physical, moving light — acts as a boundary against certain presences is documented across Malay, Thai, and Indigenous Orang Asli traditions. The specific instruction not to let a rider outside the beam is consistent with this belief in a practical, protective sense.</p>
+                <p><strong>[MIRROR SIGHTINGS]</strong> A rider's mirrors show a limited, distorted view of what is behind and to the sides. If something was tracking the bike at the edge of the headlight cone — not quite behind, not quite alongside — it would be visible in the mirror from L's position and invisible to the rider directly behind, whose headlight would wash out the very area in question.</p>
+                <p><strong>[L'S BEHAVIOUR]</strong> No panic. No sudden acceleration. No loss of control. A measured request, followed by maintenance of pace and formation. This is the response of someone who understood the rules of the situation. Wherever he learned them — that is its own question.</p>
+              </div>
+              <div class="p-4 border" style="background:rgba(0,0,0,0.4);border-color:rgba(220,38,38,0.3);">
+                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
+                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                  <li>Witness corroboration: Partial — SR confirms behaviour, not cause</li>
+                  <li>Duration: ~45 minutes. No mechanical issues. No incident.</li>
+                  <li>Cross-listed: Night Ride Encounters // Personal Logs (sensitivity / awareness pattern)</li>
+                  <li>Classification: Single-witness anomaly — unverifiable but behaviourally consistent</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex justify-center mt-6">
+              <button onclick="toggleIntel('full-intel-my003', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /log-container -->
+
+    <hr class="section-rule" />
+
+    <!-- Navigation -->
+    <div class="flex items-center justify-center gap-5 flex-wrap">
+      <button id="prevBtn" class="nav-btn"><span>◄ Previous Log</span></button>
+      <div class="page-counter">LOG <span id="current-page">01</span> / <span id="total-pages">03</span></div>
+      <button id="nextBtn" class="nav-btn"><span>Unlock Next ►</span></button>
+    </div>
 
     <div class="text-center mt-16">
       <a href="/unexplained/" class="font-mono-tech text-gray-600 text-xs tracking-widest uppercase hover:text-red-500 transition-colors duration-200">◄ Return to Unexplained Archive</a>
@@ -653,12 +762,20 @@ Malaysia Unexplained Rider Logs | Paranormal Night Rides & Strange Encounters | 
     var prevIndex=currentLogIndex-1;
     decryptText(prevBtn,'◄ Previous Log',function(){updateView(prevIndex);});
   });
-  /* ── Selection screen ── */
-  function selectLog(el){
-    var logIndex=parseInt(el.getAttribute('data-log'));
-    document.getElementById('selection-screen').style.display='none';
-    document.getElementById('log-reader').style.display='block';
-    updateView(logIndex);
+
+  updateView(0);
+
+  function toggleIntel(id,btn){
+    var report=document.getElementById(id);
+    var isHidden=report.classList.contains('hidden');
+    if(isHidden){
+      report.classList.remove('hidden');
+      btn.innerText='CLOSE FIELD NOTES';
+      report.scrollIntoView({behavior:'smooth',block:'nearest'});
+    } else {
+      report.classList.add('hidden');
+      btn.innerText='ACCESS FULL FIELD NOTES';
+    }
   }
 </script>
 </body>
