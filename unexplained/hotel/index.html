@@ -228,15 +228,6 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
     .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
     .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
 
-    .load-more-style {
-      background:transparent; color:#f87171;
-      border:1px solid rgba(220,38,38,0.4);
-      font-family:'Share Tech Mono',monospace; font-size:0.72rem;
-      letter-spacing:2px; text-transform:uppercase; cursor:pointer;
-      padding:10px 22px; transition:background .25s,color .25s;
-    }
-    .load-more-style:hover { background:var(--red); color:#fff; }
-
     .signal-box {
       background:rgba(220,38,38,0.05); border:1px solid rgba(220,38,38,0.3);
       border-left:3px solid #dc2626; padding:14px 18px; margin:20px 0;
@@ -263,6 +254,13 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
       background-size:128px; animation:staticNoise 4s step-start infinite;
     }
+
+    /* Selection cards */
+    .sel-card:hover { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.04) !important; }
+    .sel-card:hover .sel-accent { background:#dc2626 !important; }
+    .sel-card:hover .sel-arrow { color:rgba(220,38,38,0.7) !important; }
+    .sel-card.sel-active { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.05) !important; }
+    .sel-card.sel-active .sel-accent { background:#dc2626 !important; }
 
     /* Breadcrumb */
     .breadcrumb {
@@ -333,7 +331,7 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
     <div class="breadcrumb">
       <a href="/unexplained/">Unexplained Archive</a>
       <span>▶</span>
-      <span style="color:#f87171;">Hotels/span>
+      <span style="color:#f87171;">Hotels</span>
     </div>
 
     <!-- Page header -->
@@ -363,7 +361,74 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
     
     <hr class="section-rule" />
 
-    <!-- LOG ENTRIES -->
+    <!-- SELECTION SCREEN -->
+    <div id="selection-screen">
+      <div class="font-mono-tech text-xs uppercase mb-5" style="color:#dc2626;letter-spacing:3px;display:flex;align-items:center;gap:10px;">
+        <span class="inline-block w-2 h-2 rounded-full" style="background:#dc2626;animation:pulse-dot 1.4s infinite;"></span>
+        Select a log to access
+      </div>
+
+      <div id="sel-cards" style="display:grid;gap:14px;">
+
+        <!-- Card 1 -->
+        <div class="sel-card" data-log="0" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log UNX-009</span>
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
+          </div>
+          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The Two Hotels That Got Worse</div>
+          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">Long-distance touring teaches you that the cheapest hotels often leave the strongest memories. Thailand gave us two — each stranger than the last — and by the second one, nobody was pretending to be brave anymore.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Thailand</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Touring</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Atmosphere</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Power Event</span>
+            </div>
+            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG ►</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="sel-card" data-log="1" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log UNX-010</span>
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
+          </div>
+          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The Hotel That Felt Too Familiar</div>
+          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">We arrived late. The compound looked almost abandoned. A woman appeared from the darkness without making a sound. And the moment I stepped into my room, I already knew where everything was — before I'd ever been there.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Thailand</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Déjà Vu</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Spatial Familiarity</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Touring</span>
+            </div>
+            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG ►</span>
+          </div>
+        </div>
+
+        <!-- Card 3: locked -->
+        <div style="background:rgba(10,10,10,0.5);border:1px solid rgba(220,38,38,0.07);padding:20px 22px;position:relative;opacity:0.4;pointer-events:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span class="font-mono-tech text-xs uppercase" style="color:#444;letter-spacing:2px;">// Log UNX-???</span>
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#dc2626;letter-spacing:1px;text-transform:uppercase;">Encrypted</span>
+          </div>
+          <div style="font-size:1.3rem;font-weight:700;color:#333;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">████████████████████</div>
+          <div style="display:flex;gap:8px;">
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#2a2a2a;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;letter-spacing:1px;">▒▒▒▒▒▒</span>
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#2a2a2a;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;letter-spacing:1px;">▒▒▒▒</span>
+          </div>
+        </div>
+
+      </div><!-- /sel-cards -->
+
+    </div><!-- /selection-screen -->
+
+    <!-- LOG READER (hidden until story selected) -->
+    <div id="log-reader" style="display:none;">
     <div id="log-container">
 
      <!-- ══ LOG 1: The Two Thailand Hotels ══ -->
@@ -435,7 +500,7 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
           </div>
 
           <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx009" class="hidden space-y-6 text-gray-300">
+            <div id="full-intel-unx009" class="space-y-6 text-gray-300">
               <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
                 <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Two Hotels That Got Worse</h4>
                 <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Touring / Accommodation</p>
@@ -453,9 +518,6 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
                   <li>Recommendation: If both riders independently choose not to go deeper — trust that.</li>
                 </ul>
               </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx009', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
             </div>
           </div>
         </div>
@@ -515,7 +577,7 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
           </div>
 
           <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx010" class="hidden space-y-6 text-gray-300">
+            <div id="full-intel-unx010" class="space-y-6 text-gray-300">
               <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
                 <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Hotel That Felt Too Familiar</h4>
                 <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Déjà Vu / Touring Encounter</p>
@@ -533,9 +595,6 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
                   <li>Classification: Unexplained — not hostile, not resolved.</li>
                 </ul>
               </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx010', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
             </div>
           </div>
         </div>
@@ -556,6 +615,8 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
     <div class="text-center mt-16">
       <a href="/unexplained/" class="font-mono-tech text-gray-600 text-xs tracking-widest uppercase hover:text-red-500 transition-colors duration-200">◄ Return to Unexplained Archive</a>
     </div>
+
+    </div><!-- /log-reader -->
 
   </div>
 </main>
@@ -585,6 +646,7 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
 </footer>
 
 <script>
+  /* ── Cursor ── */
   (function(){
     var cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
     var mx=0,my=0,rx=0,ry=0;
@@ -596,18 +658,19 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
     });
   })();
 
+  /* ── Progress bar + navbar ── */
   window.addEventListener('scroll',function(){
     var st=document.documentElement.scrollTop||document.body.scrollTop;
     var sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
     document.getElementById('progress-bar').style.width=(sh>0?(st/sh)*100:0)+'%';
   },{passive:true});
-
   window.addEventListener('scroll',function(){
     var nav=document.getElementById('navbar');
     if(window.scrollY>20)nav.classList.add('nav-scrolled');
     else nav.classList.remove('nav-scrolled');
   },{passive:true});
 
+  /* ── Mobile menu ── */
   document.getElementById('menu-toggle').addEventListener('click',function(){
     var menu=document.getElementById('mobile-menu');
     var openIcon=document.getElementById('menu-icon-open');
@@ -626,6 +689,7 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
     });
   });
 
+  /* ── Scramble / decrypt ── */
   var scrambleChars='░▒▓█▄▀■□▪▫ABCDEF0123456789$#@%';
   function decryptText(button,originalText,callback){
     var iterations=0;
@@ -647,6 +711,7 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
     },30);
   }
 
+  /* ── Log pagination ── */
   var logs=document.querySelectorAll('.log-entry');
   var nextBtn=document.getElementById('nextBtn');
   var prevBtn=document.getElementById('prevBtn');
@@ -678,27 +743,20 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
     var nextIndex=currentLogIndex+1;
     decryptText(nextBtn,'Unlock Next ►',function(){updateView(nextIndex);});
   });
-
   prevBtn.addEventListener('click',function(){
     if(currentLogIndex<=0)return;
     var prevIndex=currentLogIndex-1;
     decryptText(prevBtn,'◄ Previous Log',function(){updateView(prevIndex);});
   });
 
-  updateView(0);
-
-  function toggleIntel(id,btn){
-    var report=document.getElementById(id);
-    var isHidden=report.classList.contains('hidden');
-    if(isHidden){
-      report.classList.remove('hidden');
-      btn.innerText='CLOSE FIELD NOTES';
-      report.scrollIntoView({behavior:'smooth',block:'nearest'});
-    } else {
-      report.classList.add('hidden');
-      btn.innerText='ACCESS FULL FIELD NOTES';
-    }
+  /* ── Selection screen ── */
+  function selectLog(el){
+    var logIndex=parseInt(el.getAttribute('data-log'));
+    document.getElementById('selection-screen').style.display='none';
+    document.getElementById('log-reader').style.display='block';
+    updateView(logIndex);
   }
+
 </script>
 </body>
 </html>
