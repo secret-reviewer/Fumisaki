@@ -3,31 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SR Lab | Secret Reviewer</title>
+  <title>SR Lab // DIY Mod Logs | Secret Reviewer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Barlow Condensed', 'sans-serif'],
-            mono: ['"Share Tech Mono"', 'monospace'],
-            prose: ['"IBM Plex Sans"', 'sans-serif'],
-          },
-        },
-      },
+      theme: { extend: { fontFamily: {
+        sans: ['Barlow Condensed','sans-serif'],
+        mono: ['"Share Tech Mono"','monospace'],
+        prose: ['"IBM Plex Sans"','sans-serif'],
+      }}}
     };
   </script>
   <style>
     :root {
       --red: #dc2626;
-      --red-dim: rgba(220, 38, 38, 0.15);
-      --red-glow: rgba(220, 38, 38, 0.6);
+      --red-dim: rgba(220,38,38,0.15);
+      --red-glow: rgba(220,38,38,0.6);
       --bg: #060606;
-      --surface: rgba(10, 10, 10, 0.85);
     }
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -35,1205 +30,736 @@
       background-color: var(--bg);
       color: #ececec;
       font-family: 'Barlow Condensed', sans-serif;
-      margin: 0;
-      overflow-x: hidden;
-      cursor: none;
-      line-height: 1.75;
+      margin: 0; overflow-x: hidden; cursor: none; line-height: 1.75;
     }
     .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
-    .font-prose { font-family: 'IBM Plex Sans', sans-serif; }
 
+    /* Cursor */
     #cursor {
-      position: fixed;
-      width: 12px; height: 12px;
-      background: var(--red);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 99999;
-      transform: translate(-50%, -50%);
-      transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
-      mix-blend-mode: screen;
+      position: fixed; width: 12px; height: 12px;
+      background: var(--red); border-radius: 50%;
+      pointer-events: none; z-index: 99999;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s; mix-blend-mode: screen;
     }
     #cursor-ring {
-      position: fixed;
-      width: 36px; height: 36px;
-      border: 1px solid rgba(220,38,38,0.5);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 99998;
-      transform: translate(-50%, -50%);
-      transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+      position: fixed; width: 36px; height: 36px;
+      border: 1px solid rgba(220,38,38,0.5); border-radius: 50%;
+      pointer-events: none; z-index: 99998;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, border-color .2s;
     }
 
-    @keyframes pulse-red {
-      0%,100% { box-shadow: 0 0 6px rgba(220,38,38,0.3); }
-      50%      { box-shadow: 0 0 28px rgba(220,38,38,0.8), 0 0 60px rgba(220,38,38,0.25); }
-    }
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse-dot {
-      0%,100% { opacity: 1; }
-      50%      { opacity: 0.3; }
-    }
-    @keyframes scan {
-      from { top: -100%; }
-      to   { top: 100%; }
-    }
-    @keyframes folderOpen {
-      from { opacity: 0; transform: translateY(16px); filter: blur(4px); }
-      to   { opacity: 1; transform: translateY(0);  filter: blur(0); }
-    }
-    .glitch-wrap { position: relative; display: inline-block; }
-    .glitch-wrap::before, .glitch-wrap::after {
-      content: attr(data-text);
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
-    }
-    .glitch-wrap::before { color: #00ffff; animation: glitch-1 6s infinite step-start; opacity: 0.6; }
-    .glitch-wrap::after  { color: var(--red); animation: glitch-2 6s infinite step-start; opacity: 0.6; }
-    @keyframes glitch-1 {
-      0%,100% { clip-path: inset(0 0 98% 0);  transform: translate(-2px,0); }
-      20%     { clip-path: inset(20% 0 50% 0); transform: translate(2px,0); }
-      40%     { clip-path: inset(60% 0 20% 0); transform: translate(-2px,0); }
-      60%     { clip-path: inset(80% 0 5% 0);  transform: translate(2px,0); }
-      80%     { clip-path: inset(40% 0 60% 0); transform: translate(-2px,0); }
-    }
-    @keyframes glitch-2 {
-      0%,100% { clip-path: inset(50% 0 30% 0); transform: translate(2px,0);  color:#00ffff; }
-      25%     { clip-path: inset(10% 0 80% 0); transform: translate(-2px,0); }
-      50%     { clip-path: inset(70% 0 10% 0); transform: translate(2px,0);  color:var(--red); }
-      75%     { clip-path: inset(30% 0 50% 0); transform: translate(-2px,0); }
-    }
-    @keyframes borderFlash {
-      0%,100% { border-color: rgba(220,38,38,0.15); }
-      50%     { border-color: rgba(220,38,38,0.5); }
-    }
+    /* Animations */
+    @keyframes scan { from{top:-100%} to{top:100%} }
+    @keyframes fadeSlideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse-red { 0%,100%{box-shadow:0 0 6px rgba(220,38,38,0.3)} 50%{box-shadow:0 0 28px rgba(220,38,38,0.8),0 0 60px rgba(220,38,38,0.25)} }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    @keyframes staticNoise { 0%{opacity:.03} 25%{opacity:.05} 50%{opacity:.02} 75%{opacity:.06} 100%{opacity:.03} }
+    @keyframes glitch-1 { 0%,100%{clip-path:inset(0 0 98% 0);transform:translate(-2px,0)} 20%{clip-path:inset(20% 0 50% 0);transform:translate(2px,0)} 40%{clip-path:inset(60% 0 20% 0);transform:translate(-2px,0)} 60%{clip-path:inset(80% 0 5% 0);transform:translate(2px,0)} 80%{clip-path:inset(40% 0 60% 0);transform:translate(-2px,0)} }
+    @keyframes glitch-2 { 0%,100%{clip-path:inset(50% 0 30% 0);transform:translate(2px,0);color:#00ffff} 25%{clip-path:inset(10% 0 80% 0);transform:translate(-2px,0)} 50%{clip-path:inset(70% 0 10% 0);transform:translate(2px,0);color:var(--red)} 75%{clip-path:inset(30% 0 50% 0);transform:translate(-2px,0)} }
+    @keyframes cardReveal { from{opacity:0;transform:translateY(20px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)} }
 
-    .animate-pulse-red     { animation: pulse-red 2.5s infinite; }
-    .animate-pulse-dot     { animation: pulse-dot 2s infinite; }
     .animate-fade-slide-up { animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
-    .animate-border-flash  { animation: borderFlash 3s infinite; }
+    .animate-pulse-red { animation: pulse-red 2.5s infinite; }
 
+    /* CRT scanlines */
     body::before {
-      content: "";
-      position: fixed; inset: 0;
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
-      pointer-events: none;
-      z-index: 9990;
+      content:""; position:fixed; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);
+      pointer-events:none; z-index:9990;
     }
+    /* Red sweep */
     body::after {
-      content: "";
-      position: fixed; top: -100%; left: 0;
-      width: 100%; height: 100%;
-      background: linear-gradient(rgba(220,38,38,0) 0%, rgba(220,38,38,0.04) 50%, rgba(220,38,38,0) 100%);
-      animation: scan 8s linear infinite;
-      pointer-events: none;
-      z-index: 9991;
+      content:""; position:fixed; top:-100%; left:0; width:100%; height:100%;
+      background:linear-gradient(rgba(220,38,38,0) 0%,rgba(220,38,38,0.03) 50%,rgba(220,38,38,0) 100%);
+      animation:scan 12s linear infinite; pointer-events:none; z-index:9991;
     }
 
+    /* Progress bar */
     #progress-bar {
-      height: 3px;
-      background: linear-gradient(90deg, #7f1d1d, #dc2626, #ff6666);
-      box-shadow: 0 0 12px rgba(220,38,38,0.9), 0 0 24px rgba(220,38,38,0.4);
-      width: 0%;
-      transition: width 0.08s ease-out;
+      height:3px;
+      background:linear-gradient(90deg,#7f1d1d,#dc2626,#f87171);
+      box-shadow:0 0 12px rgba(220,38,38,0.9),0 0 24px rgba(220,38,38,0.4);
+      width:0%; transition:width .08s ease-out;
     }
 
-    #navbar { transition: all 0.4s ease; }
+    /* Navbar */
+    #navbar { transition:background .4s,border-color .4s; }
     .nav-scrolled {
-      background: rgba(4,4,4,0.97) !important;
-      border-bottom-color: rgba(127,29,29,0.5) !important;
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      background:rgba(4,4,4,0.96) !important;
+      border-bottom-color:rgba(127,29,29,0.4) !important;
+      backdrop-filter:blur(20px);
     }
 
-    .story-content {
-      font-size: 1.15rem;
-      letter-spacing: 0.01em;
-      margin-bottom: 1.5rem;
-      color: #d0d0d0;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 400;
-      line-height: 1.85;
+    /* Glitch title */
+    .glitch-wrap { position:relative; display:inline-block; }
+    .glitch-wrap::before, .glitch-wrap::after {
+      content:attr(data-text); position:absolute; top:0; left:0; width:100%; height:100%;
     }
-    .story-content p { margin: 0 0 1.6em 0; }
-    .story-content h2 {
-      color: var(--red);
-      margin-top: 52px;
-      text-transform: uppercase;
-      font-size: 0.95rem;
-      font-family: 'Share Tech Mono', monospace;
-      letter-spacing: 3px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      padding-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .story-content h2::before { content: "—"; opacity: 0.4; }
-    .story-content h3 {
-      color: #fff;
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin: 36px 0 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .story-content ul { list-style: none; padding: 0; margin: 0 0 1.6em 0; }
-    .story-content ul li {
-      position: relative;
-      padding-left: 22px;
-      margin-bottom: 14px;
-      color: #bbb;
-      font-size: 1.1rem;
-      line-height: 1.8;
-    }
-    .story-content ul li::before {
-      content: "▶";
-      position: absolute;
-      left: 0;
-      color: var(--red);
-      font-size: 0.6rem;
-      top: 6px;
-      opacity: 0.7;
-    }
-    .story-content strong { color: #fff; font-weight: 700; }
+    .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
+    .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
 
-    .lead {
-      font-size: 1.15rem;
-      color: #999;
-      margin-bottom: 40px;
-      border-left: 2px solid var(--red);
-      padding-left: 20px;
-      font-style: italic;
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-weight: 400;
-      line-height: 1.8;
-    }
-
-    .tag {
-      display: inline-block;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.85rem;
-      color: var(--red);
-      text-transform: uppercase;
-      border: 1px solid rgba(220,38,38,0.4);
-      padding: 5px 14px;
-      letter-spacing: 2px;
-      background: rgba(220,38,38,0.06);
-    }
-
-    .entry-title {
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      font-weight: 900;
-      margin: 22px 0 10px;
-      color: #fff;
-      line-height: 1.0;
-      text-transform: uppercase;
-      letter-spacing: -0.02em;
-    }
-
-    .featured-image {
-      width: 100%;
-      height: 420px;
-      background: linear-gradient(135deg, #0d0d0d 0%, #111 50%, #0a0a0a 100%);
-      border: 1px solid rgba(220,38,38,0.2);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-      position: relative;
-      overflow: hidden;
-      margin: 32px 0;
-    }
-    .featured-image::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(220,38,38,0.015) 3px, rgba(220,38,38,0.015) 4px);
-      pointer-events: none;
-    }
-    .featured-image-label {
-      position: absolute;
-      bottom: 12px; left: 12px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.75rem;
-      color: rgba(220,38,38,0.5);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    .featured-image::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 40px; height: 40px;
-      border-top: 1px solid rgba(220,38,38,0.4);
-      border-left: 1px solid rgba(220,38,38,0.4);
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    .itinerary-grid {
-      display: grid;
-      grid-template-columns: 140px 1fr;
-      gap: 0;
-      background: rgba(10,10,10,0.7);
-      border: 1px solid rgba(220,38,38,0.15);
-      margin: 28px 0;
-      font-family: 'Share Tech Mono', monospace;
-      overflow: hidden;
-      animation: borderFlash 3s infinite;
-    }
-    .itinerary-grid > div {
-      padding: 12px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      font-size: 0.95rem;
-    }
-    .itinerary-grid > div:last-child,
-    .itinerary-grid > div:nth-last-child(2) { border-bottom: none; }
-    .itinerary-grid > div:nth-child(odd) {
-      color: var(--red);
-      font-weight: bold;
-      font-size: 0.9rem;
-      border-right: 1px solid rgba(220,38,38,0.1);
-      background: rgba(220,38,38,0.03);
-    }
-    .itinerary-grid > div:nth-child(even) { color: #999; }
-
-    .log-entry { animation: folderOpen 0.6s cubic-bezier(0.22,1,0.36,1) both; }
-
-    .decrypting {
-      color: #fff !important;
-      background: var(--red) !important;
-      letter-spacing: 4px !important;
-      text-shadow: 2px 0 #00fff9, -2px 0 #ff00c1;
-    }
-
-    .nav-btn {
-      background: transparent;
-      color: var(--red);
-      border: 1px solid rgba(220,38,38,0.5);
-      padding: 14px 28px;
-      font-family: 'Share Tech Mono', monospace;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 0.9rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .nav-btn::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: var(--red);
-      transform: translateX(-100%);
-      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-    }
-    .nav-btn:hover::before  { transform: translateX(0); }
-    .nav-btn:hover { color: #fff; box-shadow: 0 0 20px rgba(220,38,38,0.35); }
-    .nav-btn span { position: relative; z-index: 1; }
-    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-    .nav-btn:disabled::before { display: none; }
-
-    .page-counter {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.85rem;
-      color: #444;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      align-self: center;
-    }
-    .page-counter span { color: var(--red); }
-
+    /* Section rule */
     .section-rule {
-      border: none;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(220,38,38,0.3) 30%, rgba(220,38,38,0.3) 70%, transparent);
-      margin: 60px 0;
+      border:none; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(220,38,38,0.3),transparent);
+      margin:48px 0;
     }
 
-    .breadcrumb {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.85rem;
-      color: #555;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      text-decoration: none;
-      margin-bottom: 32px;
-      transition: color 0.2s ease;
-    }
-    .breadcrumb:hover { color: var(--red); }
-    .breadcrumb svg { transition: transform 0.2s ease; }
-    .breadcrumb:hover svg { transform: translateX(-3px); }
-
-    [id^="full-intel-"] {
-      font-family: 'IBM Plex Sans', sans-serif !important;
-      font-size: 1.05rem !important;
-      line-height: 1.85 !important;
-      color: #c8c8c8 !important;
-      letter-spacing: 0.01em;
-    }
-    [id^="full-intel-"] p {
-      margin-bottom: 1.5em;
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 1.05rem;
-      line-height: 1.85;
-      color: #c8c8c8;
-    }
-    [id^="full-intel-"] strong { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; }
-    [id^="full-intel-"] h4 { font-family: 'Share Tech Mono', monospace; font-size: 0.95rem; letter-spacing: 2px; }
-    [id^="full-intel-"] h5 { font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; letter-spacing: 2px; }
-    [id^="full-intel-"] li { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.0rem; line-height: 1.8; margin-bottom: 6px; }
-    [id^="full-intel-"] .space-y-4 > p,
-    [id^="full-intel-"] .space-y-6 > p {
-      padding: 14px 18px;
-      border-left: 2px solid rgba(220,38,38,0.18);
-      background: rgba(255,255,255,0.015);
-      border-radius: 0 2px 2px 0;
-      line-height: 1.9;
-    }
-
+    /* Noise overlay */
     .noise-overlay {
-      position: fixed; inset: 0;
-      opacity: 0.02;
-      pointer-events: none;
-      z-index: 9989;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-      background-size: 128px;
+      position:absolute; inset:0; opacity:.025; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size:128px; animation:staticNoise 4s step-start infinite;
     }
 
-    .shop-block {
-      background: rgba(10,10,10,0.8);
-      border: 1px solid rgba(220,38,38,0.2);
-      padding: 20px 22px;
-      margin: 28px 0;
-      animation: borderFlash 3s infinite;
-    }
-    .shop-block h5 {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.85rem;
-      color: var(--red);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin: 0 0 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      padding-bottom: 8px;
-    }
-    .shop-block ul { list-style: none; padding: 0; margin: 0; }
-    .shop-block ul li {
-      font-size: 0.95rem;
-      color: #555;
-      padding: 7px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.03);
-      font-family: 'Share Tech Mono', monospace;
-      font-style: italic;
-    }
-    .shop-block ul li::before { content: "> "; color: var(--red); opacity: 0.4; }
-    .shop-block ul li a {
-      color: var(--red);
+    /* ── Section cards — identical to accessories.html ── */
+    .section-card {
+      position: relative;
+      border: 1px solid rgba(220,38,38,0.18);
+      background: rgba(10,10,10,0.9);
+      overflow: hidden;
+      transition: border-color 0.35s, transform 0.35s, box-shadow 0.35s;
+      animation: cardReveal 0.6s cubic-bezier(0.22,1,0.36,1) both;
       text-decoration: none;
-      font-style: normal;
-      opacity: 0.85;
-      transition: opacity 0.2s;
+      display: block;
     }
-    .shop-block ul li a:hover { opacity: 1; text-decoration: underline; }
+    .section-card:hover {
+      border-color: rgba(220,38,38,0.55);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 30px rgba(220,38,38,0.08);
+    }
+    .section-card::before {
+      content:''; position:absolute; top:0; left:0;
+      width:36px; height:36px;
+      border-top:1px solid rgba(220,38,38,0.5);
+      border-left:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .section-card::after {
+      content:''; position:absolute; bottom:0; right:0;
+      width:36px; height:36px;
+      border-bottom:1px solid rgba(220,38,38,0.5);
+      border-right:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .section-card .card-bg {
+      position:absolute; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.008) 3px,rgba(220,38,38,0.008) 4px);
+      pointer-events:none;
+    }
+    .section-card .card-glow {
+      position:absolute; inset:0; pointer-events:none;
+      opacity:0; transition:opacity 0.4s;
+    }
+    .section-card:hover .card-glow { opacity:1; }
 
-    .warning-box {
-      background: rgba(220,38,38,0.06);
-      border: 1px solid rgba(220,38,38,0.3);
-      border-left: 3px solid var(--red);
-      padding: 14px 18px;
-      margin: 20px 0;
-      font-size: 0.95rem;
-      color: #bbb;
-      font-family: 'Share Tech Mono', monospace;
+    /* Log badge */
+    .log-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.72rem; letter-spacing:2px;
+      color:#f87171; border:1px solid rgba(220,38,38,0.35);
+      background:rgba(220,38,38,0.07);
+      padding:4px 12px; text-transform:uppercase;
     }
-    .warning-box strong { color: var(--red); }
 
-    /* Tool checklist grid */
-    .tool-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin: 28px 0;
+    /* Preview snippet */
+    .preview-snippet {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#777; line-height:1.75;
+      font-style:italic;
+      border-left:2px solid rgba(220,38,38,0.3);
+      padding-left:14px; margin:0;
     }
-    @media (max-width: 600px) { .tool-grid { grid-template-columns: 1fr; } }
-    .tool-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      background: rgba(220,38,38,0.04);
-      border: 1px solid rgba(220,38,38,0.12);
-      padding: 12px 14px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.88rem;
-      color: #aaa;
-      transition: border-color 0.2s;
-    }
-    .tool-item:hover { border-color: rgba(220,38,38,0.35); color: #ddd; }
-    .tool-item-icon { color: var(--red); opacity: 0.7; flex-shrink: 0; margin-top: 1px; }
-    .tool-item-label { line-height: 1.5; }
-    .tool-item-label strong { display: block; color: #ccc; font-size: 0.9rem; margin-bottom: 2px; }
-    .tool-item-label span { color: #666; font-size: 0.8rem; }
 
-    /* Comfort items row */
-    .comfort-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin: 20px 0;
+    /* Access button */
+    .access-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.72rem; letter-spacing:2px; text-transform:uppercase;
+      color:#f87171; border:1px solid rgba(220,38,38,0.4);
+      padding:10px 20px; background:transparent;
+      transition:background .25s, color .25s, box-shadow .25s;
+      text-decoration:none;
     }
-    .comfort-badge {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.8rem;
-      color: #555;
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 6px 14px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+    .access-btn:hover {
+      background:var(--red); color:#fff;
+      box-shadow:0 0 20px rgba(220,38,38,0.35);
     }
-    .comfort-badge span { color: var(--red); margin-right: 6px; }
+
+    /* Log preview rows */
+    .log-preview {
+      border-bottom:1px solid rgba(255,255,255,0.04);
+      padding:14px 0;
+    }
+    .log-preview:last-child { border-bottom:none; }
+    .log-preview-title {
+      font-size:1rem; font-weight:700; color:#e0e0e0;
+      text-transform:uppercase; letter-spacing:0.03em;
+      margin:0 0 5px 0; line-height:1.2;
+    }
+
+    /* Stats bar */
+    .stat-item {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.7rem; color:#444; letter-spacing:2px;
+      text-transform:uppercase; display:flex; flex-direction:column; gap:4px;
+    }
+    .stat-item span { color:#f87171; font-size:1.4rem; font-weight:700; letter-spacing:-1px; }
+
+    /* Signal line */
+    .signal-line {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.68rem; color:rgba(220,38,38,0.4);
+      letter-spacing:2px; text-transform:uppercase;
+      display:flex; align-items:center; gap:8px;
+    }
+    .signal-line::before {
+      content:''; display:block; width:24px; height:1px;
+      background:rgba(220,38,38,0.4); flex-shrink:0;
+    }
+
+    /* Difficulty pips */
+    .diff-pips { display:flex; gap:3px; align-items:center; }
+    .diff-pip { width:7px; height:7px; border:1px solid rgba(220,38,38,0.25); }
+    .diff-pip.on { background:var(--red); border-color:var(--red); }
+
+    /* Delay utilities */
+    .delay-1{animation-delay:.05s} .delay-2{animation-delay:.10s}
+    .delay-3{animation-delay:.15s} .delay-4{animation-delay:.20s}
+    .delay-5{animation-delay:.25s} .delay-6{animation-delay:.30s}
+    .delay-7{animation-delay:.35s}
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display:inline-flex; align-items:center; gap:8px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.85rem; color:#555; text-transform:uppercase;
+      letter-spacing:2px; text-decoration:none; margin-bottom:32px;
+      transition:color .2s;
+    }
+    .breadcrumb:hover { color:var(--red); }
+    .breadcrumb svg { transition:transform .2s; }
+    .breadcrumb:hover svg { transform:translateX(-3px); }
   </style>
 </head>
 <body>
 
-  <div class="noise-overlay"></div>
-  <div id="cursor"></div>
-  <div id="cursor-ring"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-  <div class="fixed top-0 left-0 w-full z-[9999] bg-transparent" style="height:3px">
-    <div id="progress-bar"></div>
+<div class="fixed top-0 left-0 w-full z-[9999]">
+  <div id="progress-bar"></div>
+</div>
+
+<!-- ════ NAVBAR ════ -->
+<nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+    <a href="/" class="flex items-center gap-3 group">
+      <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+        <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+      </div>
+      <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+      <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+      <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+    <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+      <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
   </div>
-
-  <!-- ════ NAVBAR ════ -->
-  <nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
-    <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
-      <a href="/" class="flex items-center gap-3 group">
-        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
-          <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
-        </div>
-        <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+  <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
+    <div class="flex flex-col px-5 py-4 gap-4">
+      <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+      <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+      <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
       </a>
-      <div class="hidden md:flex items-center gap-8">
-        <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
-        <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
-        <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
-        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
-           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          YouTube
-        </a>
-      </div>
-      <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
-        <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-        <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
-          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
     </div>
-    <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
-      <div class="flex flex-col px-5 py-4 gap-4">
-        <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
-        <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
-        <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
-        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
-           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          YouTube
-        </a>
-      </div>
+  </div>
+</nav>
+
+<!-- ════ MAIN ════ -->
+<main class="pt-28 pb-24 px-5">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Breadcrumb -->
+    <a href="/" class="breadcrumb">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Back to Home
+    </a>
+
+    <!-- Page header -->
+    <div class="mb-14 animate-fade-slide-up" style="position:relative;">
+      <div class="noise-overlay"></div>
+      <p class="font-mono-tech text-xs tracking-[0.4em] uppercase mb-4" style="color:rgba(220,38,38,0.5);">// Secret Reviewer's Lab — Hands-On DIY Mods // Tested on a Real Bike</p>
+      <h1 class="font-black uppercase leading-none tracking-tight text-white mb-4" style="font-size:clamp(3.5rem,10vw,6rem);">
+        <span class="glitch-wrap" data-text="SR LAB">SR LAB</span>
+      </h1>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-widest mt-4">
+        <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+        7 MODS DOCUMENTED // REAL TOOLS USED // ZERO WORKSHOP FEES
+      </p>
+      <p class="mt-5 text-gray-500 text-base leading-relaxed max-w-2xl" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">
+        Every mod here was done by hand on my own MT-03. No sponsored builds, no workshop shortcuts. If a mod is in the lab, it's been tested in Singapore traffic and out on tour. The write-up tells you exactly what to buy, what to watch out for, and what I'd do differently next time.
+      </p>
     </div>
-  </nav>
 
-  <!-- ════ MAIN ════ -->
-  <main class="pt-28 pb-24 px-5">
-    <div class="max-w-3xl mx-auto">
+    <!-- Stats bar -->
+    <div class="flex gap-10 mb-14 pl-1">
+      <div class="stat-item"><span>7</span>Mods Filed</div>
+      <div class="stat-item"><span>10+</span>Yrs Wrenching</div>
+      <div class="stat-item"><span>$0</span>Workshop Fees</div>
+      <div class="stat-item"><span>0</span>Sponsored</div>
+    </div>
 
-      <!-- Breadcrumb -->
-      <a href="/" class="breadcrumb">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
-        </svg>
-        Back to Intel / SR Lab
+    <hr class="section-rule" />
+
+    <!-- ════ 2-COLUMN CARD GRID — cards 1–6 ════ -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+
+      <!-- ── CARD 1: DIY Setup ── -->
+      <a href="/sr-lab/diy/" class="section-card delay-1">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 20% 20%, rgba(220,38,38,0.06) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
+        <div class="relative h-52 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950 flex items-center justify-center">
+           <img 
+    src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778431246/Screenshot_2026-05-11_at_12.39.08_AM_zkk8em.png"
+    alt="DIY Setup"
+    class="absolute inset-0 w-full h-full object-cover opacity-40"
+  />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-LAB-001 // Foundation // Tools</div>
+        </div>
+        <div class="p-6 relative z-10">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <div class="signal-line mb-2">Foundation // Start Here</div>
+              <h2 class="text-2xl font-black uppercase text-white tracking-tight leading-none">The DIY<br/>Setup</h2>
+            </div>
+            <div class="flex flex-col items-end gap-1 mt-1">
+              <div class="diff-pips">
+                <div class="diff-pip on"></div><div class="diff-pip"></div>
+                <div class="diff-pip"></div><div class="diff-pip"></div><div class="diff-pip"></div>
+              </div>
+              <span class="font-mono-tech text-xs" style="color:rgba(220,38,38,0.35);letter-spacing:1px;">DIFFICULTY</span>
+            </div>
+          </div>
+          <div class="space-y-0 mb-5">
+            <div class="log-preview">
+              <p class="log-preview-title">Home Garage Kit</p>
+              <p class="preview-snippet">Allen keys, crimpers, heat shrink butt terminals — and two specific material upgrades most riders get wrong. The list you need before you touch the bike.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">On-Bike Emergency Bag</p>
+              <p class="preview-snippet">Always on the bike. Tyre plugs, spare fuses, cable ties. The kit that gets you home at 11PM on the roadside without waiting for a tow.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              Log #001
+            </span>
+            <span class="access-btn">Open Lab File ▶</span>
+          </div>
+        </div>
       </a>
 
-      <!-- Page header -->
-      <div class="mb-12 animate-fade-slide-up">
-        <p class="font-mono-tech text-red-600/60 text-sm tracking-[0.4em] uppercase mb-4">// DIY Mod Log // Hands-On Tested</p>
-        <h1 class="text-5xl sm:text-7xl font-black uppercase leading-none tracking-tight text-white mb-4">
-          <span class="glitch-wrap" data-text="SR Lab">SR Lab</span>
-        </h1>
-        <p class="font-mono-tech text-gray-600 text-sm tracking-widest mt-4">
-          <span class="text-red-600 animate-pulse-dot inline-block w-2 h-2 rounded-full mr-2 align-middle"></span>
-          7 LOGS FILED // REAL TOOLS USED // RIDER-MECHANIC APPROVED
-        </p>
+      <!-- ── CARD 2: K&N Air Filter ── -->
+      <a href="/sr-lab/k&n/" class="section-card delay-2">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 80% 20%, rgba(220,38,38,0.06) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
+        <div class="relative h-52 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950 flex items-center justify-center">
+           <img 
+    src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778431246/Screenshot_2026-05-11_at_12.39.18_AM_cgpldx.png"
+    alt="DIY Setup"
+    class="absolute inset-0 w-full h-full object-cover opacity-40"
+  />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-LAB-002 // Engine // Air Intake</div>
+        </div>
+        <div class="p-6 relative z-10">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <div class="signal-line mb-2">Engine // Drop-In Upgrade</div>
+              <h2 class="text-2xl font-black uppercase text-white tracking-tight leading-none">K&amp;N Air Filter<br/>Upgrade</h2>
+            </div>
+            <div class="flex flex-col items-end gap-1 mt-1">
+              <div class="diff-pips">
+                <div class="diff-pip on"></div><div class="diff-pip"></div>
+                <div class="diff-pip"></div><div class="diff-pip"></div><div class="diff-pip"></div>
+              </div>
+              <span class="font-mono-tech text-xs" style="color:rgba(220,38,38,0.35);letter-spacing:1px;">DIFFICULTY</span>
+            </div>
+          </div>
+          <div class="space-y-0 mb-5">
+            <div class="log-preview">
+              <p class="log-preview-title">Never Replace It Again</p>
+              <p class="preview-snippet">Cotton gauze, oiled. Flows better than stock paper. When dirty: clean and re-oil — don't bin it. One purchase for the life of the filter if you maintain it right.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">The Over-Oil Warning</p>
+              <p class="preview-snippet">Apply filter oil sparingly after each clean. Too much migrates downstream and contaminates the sensor. Two light passes — not one heavy soak. Most people get this wrong first time.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              Log #002 
+            </span>
+            <span class="access-btn">Open Lab File ▶</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ── CARD 3: Fast Throttle ── -->
+      <a href="/sr-lab/fast-throttle/" class="section-card delay-3">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 20% 80%, rgba(220,38,38,0.06) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
+        <div class="relative h-52 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950 flex items-center justify-center">
+           <img 
+    src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778431247/Screenshot_2026-05-11_at_12.39.27_AM_wsu2hq.png"
+    alt="DIY Setup"
+    class="absolute inset-0 w-full h-full object-cover opacity-40"
+  />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-LAB-003 // Controls // Throttle</div>
+        </div>
+        <div class="p-6 relative z-10">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <div class="signal-line mb-2">Controls // 2B / 2A / Class 2</div>
+              <h2 class="text-2xl font-black uppercase text-white tracking-tight leading-none">Fast Throttle<br/>Mod</h2>
+            </div>
+            <div class="flex flex-col items-end gap-1 mt-1">
+              <div class="diff-pips">
+                <div class="diff-pip on"></div><div class="diff-pip on"></div>
+                <div class="diff-pip"></div><div class="diff-pip"></div><div class="diff-pip"></div>
+              </div>
+              <span class="font-mono-tech text-xs" style="color:rgba(220,38,38,0.35);letter-spacing:1px;">DIFFICULTY</span>
+            </div>
+          </div>
+          <div class="space-y-0 mb-5">
+            <div class="log-preview">
+              <p class="log-preview-title">Less Wrist. More Response.</p>
+              <p class="preview-snippet">A 70° fast throttle tube cuts the stock rotation angle from 100–120°. The bike reacts sharper, the wrist fatigues less on long highway runs. Works on every class.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">The Return Spring Test — Non-Negotiable</p>
+              <p class="preview-snippet">Engine on. Full lock left, full lock right. Throttle must snap to idle instantly both ways. If it sticks even slightly — stop. Re-route the cable before you move anywhere.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              Log #003 
+            </span>
+            <span class="access-btn">Open Lab File ▶</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ── CARD 4: Bike Camera ── -->
+      <a href="/sr-lab/onboard-cam/" class="section-card delay-4">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 80% 80%, rgba(220,38,38,0.06) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
+        <div class="relative h-52 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950 flex items-center justify-center">
+           <img 
+    src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778431252/Screenshot_2026-05-11_at_12.38.57_AM_nxle95.png"
+    alt="DIY Setup"
+    class="absolute inset-0 w-full h-full object-cover opacity-40"
+  />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-LAB-004 // Safety // Onboard Cam</div>
+        </div>
+        <div class="p-6 relative z-10">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <div class="signal-line mb-2">Safety // Evidence // Do This First</div>
+              <h2 class="text-2xl font-black uppercase text-white tracking-tight leading-none">Bike Camera<br/>Installation</h2>
+            </div>
+            <div class="flex flex-col items-end gap-1 mt-1">
+              <div class="diff-pips">
+                <div class="diff-pip on"></div><div class="diff-pip on"></div>
+                <div class="diff-pip on"></div><div class="diff-pip"></div><div class="diff-pip"></div>
+              </div>
+              <span class="font-mono-tech text-xs" style="color:rgba(220,38,38,0.35);letter-spacing:1px;">DIFFICULTY</span>
+            </div>
+          </div>
+          <div class="space-y-0 mb-5">
+            <div class="log-preview">
+              <p class="log-preview-title">Hardwired. Clean. Always On.</p>
+              <p class="preview-snippet">Front and rear wired to an ignition-switched circuit. Powers up with the key, loop records continuously. The footage is there when you need it — you don't manage anything.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">Get a High-Endurance SD Card</p>
+              <p class="preview-snippet">Regular cards die fast from constant write cycles. Dashcam-rated, Class 10 minimum. A camera that's silently been recording to a dead card is worse than no camera at all.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              Log #004
+            </span>
+            <span class="access-btn">Open Lab File ▶</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ── CARD 5: Volt Meter ── -->
+      <a href="/sr-lab/vmeter/" class="section-card delay-5">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 20% 20%, rgba(220,38,38,0.06) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
+        <div class="relative h-52 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950 flex items-center justify-center">
+            <img 
+    src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778431251/Screenshot_2026-05-11_at_12.38.47_AM_o1sm38.png"
+    alt="DIY Setup"
+    class="absolute inset-0 w-full h-full object-cover opacity-40"
+  />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-LAB-005 // Electrical // Diagnostics</div>
+        </div>
+        <div class="p-6 relative z-10">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <div class="signal-line mb-2">Electrical // Quick Win</div>
+              <h2 class="text-2xl font-black uppercase text-white tracking-tight leading-none">Volt Meter<br/>Installation</h2>
+            </div>
+            <div class="flex flex-col items-end gap-1 mt-1">
+              <div class="diff-pips">
+                <div class="diff-pip on"></div><div class="diff-pip"></div>
+                <div class="diff-pip"></div><div class="diff-pip"></div><div class="diff-pip"></div>
+              </div>
+              <span class="font-mono-tech text-xs" style="color:rgba(220,38,38,0.35);letter-spacing:1px;">DIFFICULTY</span>
+            </div>
+          </div>
+          <div class="space-y-0 mb-5">
+            <div class="log-preview">
+              <p class="log-preview-title">Under $5. Under an Hour.</p>
+              <p class="preview-snippet">Real-time battery voltage on the dash. At idle: 12.5–13V. Engine running: 13.5–14.5V. Anything outside that range, you know before it becomes a problem on the roadside.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">Wire It Ignition-Switched</p>
+              <p class="preview-snippet">Tap a circuit that cuts with the key. A meter drawing continuously from the battery overnight defeats the entire purpose of installing it.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              Log #005
+            </span>
+            <span class="access-btn">Open Lab File ▶</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ── CARD 6: Hazard Light ── -->
+      <a href="/sr-lab/hazard/" class="section-card delay-6">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 80% 20%, rgba(220,38,38,0.06) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
+        <div class="relative h-52 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950 flex items-center justify-center">
+            <img 
+    src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778431249/Screenshot_2026-05-11_at_12.38.37_AM_uyuiyu.png"
+    alt="DIY Setup"
+    class="absolute inset-0 w-full h-full object-cover opacity-40"
+  />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-LAB-006 // Electrical // Safety</div>
+        </div>
+        <div class="p-6 relative z-10">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <div class="signal-line mb-2">Electrical // Relay Mod</div>
+              <h2 class="text-2xl font-black uppercase text-white tracking-tight leading-none">Hazard Light<br/>Mod</h2>
+            </div>
+            <div class="flex flex-col items-end gap-1 mt-1">
+              <div class="diff-pips">
+                <div class="diff-pip on"></div><div class="diff-pip on"></div>
+                <div class="diff-pip on"></div><div class="diff-pip"></div><div class="diff-pip"></div>
+              </div>
+              <span class="font-mono-tech text-xs" style="color:rgba(220,38,38,0.35);letter-spacing:1px;">DIFFICULTY</span>
+            </div>
+          </div>
+          <div class="space-y-0 mb-5">
+            <div class="log-preview">
+              <p class="log-preview-title">What the Workshop Wanted Hundreds For</p>
+              <p class="preview-snippet">A relay, a switch, some wire — both indicators flash simultaneously. Parts cost: under $15. The gap between what a workshop quotes and what it actually costs pushed me deep into DIY.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">Always Wire Through a Relay</p>
+              <p class="preview-snippet">Don't splice directly into the indicator wires. The relay isolates your circuit from the factory wiring and protects the OEM flasher relay from overload. No relay — no mod.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              Log #006
+            </span>
+            <span class="access-btn">Open Lab File ▶</span>
+          </div>
+        </div>
+      </a>
+
+    </div><!-- /grid -->
+
+    <!-- ── CARD 7: Fuse Box — full-width feature card ── -->
+    <a href="/sr-lab/fuse-box/" class="section-card delay-7">
+      <div class="card-bg"></div>
+      <div class="card-glow" style="background:radial-gradient(ellipse 50% 80% at 50% 50%, rgba(220,38,38,0.05) 0%, transparent 70%);"></div>
+      <div class="noise-overlay"></div>
+
+      <div class="relative h-56 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950 flex items-center justify-center">
+         <img 
+    src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778431248/Screenshot_2026-05-11_at_12.38.24_AM_iecmef.png"
+    alt="DIY Setup"
+    class="absolute inset-0 w-full h-full object-cover opacity-40"
+  />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent"></div>
+        <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-LAB-007 // Electrical // Foundation // Do This First</div>
       </div>
 
-      <hr class="section-rule" />
-
-      <!-- ════ LOG ENTRIES ════ -->
-      <div id="log-container">
-
-        <!-- ══ LOG 1: DIY Tools Setup ══ -->
-        <div class="log-entry">
-          <span class="tag">DIY Log #001</span>
-          <h1 class="entry-title">The DIY Setup</h1>
-          <p class="lead">Before you touch anything on the bike, you need the right tools. Not workshop-grade, not bargain-bin. The specific stuff that actually makes roadside and home garage work go smoothly — including what to always carry.</p>
-
-          <div class="featured-image">
-            <div class="featured-image-label">// SR-DIY-001 // Tools // Home Garage + On-Bike Kit</div>
-            <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">🔧</div>
+      <div class="p-7 relative z-10">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+          <div class="flex-1">
+            <div class="signal-line mb-3">Electrical // The Right Foundation</div>
+            <h2 class="text-3xl font-black uppercase text-white tracking-tight leading-none mb-4">Auxiliary<br/>Fuse Box Install</h2>
+            <p class="text-gray-500 text-sm leading-relaxed mb-5" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;max-width:480px;">
+              One clean feed from the battery. Multiple independent fused circuits — camera, volt meter, USB charger, hazard mod, all protected separately. This is what every electrical add-on should be wired through. Do this before any other electrical work and everything downstream becomes cleaner, faster, and easier to fix.
+            </p>
           </div>
-
-          <div class="story-content">
-
-            <h2>Home Session Kit</h2>
-            <p>These are the tools that live in my garage setup. Everything that comes out when it's time to wrench. The chair and speaker aren't a joke — a comfortable DIY session is one where you don't rush, and rushing is how mistakes happen.</p>
-
-            <div class="tool-grid">
-              <div class="tool-item">
-                <span class="tool-item-icon">▶</span>
-                <div class="tool-item-label">
-                  <strong>Allen Key Set (Hex)</strong>
-                  <span>Full metric set — L-shape will do. MT-03 uses M5/M6/M8 most often.</span>
-                </div>
-              </div>
-              <div class="tool-item">
-                <span class="tool-item-icon">▶</span>
-                <div class="tool-item-label">
-                  <strong>Screwdrivers — +/−</strong>
-                  <span>Standard Phillips and flathead. try till you get the correct sizing.</span>
-                </div>
-              </div>
-              <div class="tool-item">
-                <span class="tool-item-icon">▶</span>
-                <div class="tool-item-label">
-                  <strong>Heat Shrink Butt Terminals</strong>
-                  <span>Upgraded from plain heat shrink. Adhesive-lined butt connectors seal the join — plain heat shrink tears open if the wire twists or pulls at a bad angle.</span>
-                </div>
-              </div>
-              <div class="tool-item">
-                <span class="tool-item-icon">▶</span>
-                <div class="tool-item-label">
-                  <strong>Self-Amalgamating Tape</strong>
-                  <span>Upgraded from black electrical tape. After a year or two of SE Asian heat, standard tape peels off with minimal pull. Self-amalgamating tape fuses to itself — no adhesive to degrade.</span>
-                </div>
-              </div>
-              <div class="tool-item">
-                <span class="tool-item-icon">▶</span>
-                <div class="tool-item-label">
-                  <strong>Multimeter or Test Pen</strong>
-                  <span>Essential for any electrical work. Test continuity before and after every splice. Optional if you are experienced enough</span>
-                </div>
-              </div>
-              <div class="tool-item">
-                <span class="tool-item-icon">▶</span>
-                <div class="tool-item-label">
-                  <strong>Wire Stripper / Crimper Combo</strong>
-                  <span>Clean strip, solid crimp. Avoid pliers-as-crimper — the connection will fail under vibration. Highly recommended,</span>
-                </div>
-              </div>
-              <div class="tool-item">
-                <span class="tool-item-icon">▶</span>
-                <div class="tool-item-label">
-                  <strong>Heat Gun or Just lighter</strong>
-                  <span>Shrinks terminals properly and evenly. A lighter works but slight chance of over burnt.</span>
-                </div>
-              </div>
-              <div class="tool-item">
-                <span class="tool-item-icon">▶</span>
-                <div class="tool-item-label">
-                  <strong>Torque Wrench (small) For first timers</strong>
-                  <span>For anything structural. Over-torquing plastic fairing bolts is a common beginner mistake that cracks the boss.</span>
-                </div>
-              </div>
-              <div class="tool-item">
-                <span class="tool-item-icon">▶</span>
-                <div class="tool-item-label">
-                  <strong>Cable Ties</strong>
-                  <span>Cable ties for permanent routing, tie up anything that drop or lost a screw for that, a must, non-negotiable.</span>
-                </div>
-              </div>
-              <div class="tool-item">
-                <span class="tool-item-icon">▶</span>
-                <div class="tool-item-label">
-                  <strong>Panel Removal Pry Tools (for faring bikes/Scooter)</strong>
-                  <span>Plastic trim levers — prevents scratching fairings when popping clips.</span>
-                </div>
-              </div>
+          <div class="md:w-72 flex-shrink-0 space-y-0">
+            <div class="log-preview">
+              <p class="log-preview-title">One Main Fuse. Many Clean Circuits.</p>
+              <p class="preview-snippet">A single 12AWG feed, master-fused within 30cm of the battery. Everything downstream gets its own slot. One thing blows — only that circuit goes dark. Nothing else affected.</p>
             </div>
-
-            <div class="comfort-row">
-              <div class="comfort-badge"><span>+</span>Low Chair</div>
-              <div class="comfort-badge"><span>+</span>Bluetooth Speaker</div>
-              <div class="comfort-badge"><span>+</span>Good Lighting</div>
-              <div class="comfort-badge"><span>+</span>Cold Drink</div>
+            <div class="log-preview">
+              <p class="log-preview-title">Label Every Slot at Install Time</p>
+              <p class="preview-snippet">Six months from now you will not remember which circuit is which. Label before you button everything up. Future-you will be grateful at the next troubleshoot session.</p>
             </div>
-
-            <div class="warning-box">
-              <strong>// THE UPGRADE RULE:</strong> Two materials in this kit are deliberate upgrades over what most people buy. Heat shrink butt terminals over plain heat shrink — because a plain shrink tube over a twisted splice can split open if the wire moves wrong. Self-amalgamating insulation tape over standard black tape — because standard tape loses its adhesive in Singapore heat within a year or two and peels off with barely any pull. Spend slightly more once, do it right permanently.
-            </div>
-
-            <h2>On-Bike Tool Bag — Always Carried</h2>
-            <p>This is the separate kit that lives on the bike at all times, packed small and tight. The goal is to be able to do basic checks and handle the most common roadside issues without waiting for a tow.</p>
-
-            <div class="itinerary-grid">
-              <div>Allen Keys</div><div>Compact fold-out set — covers 90% of the bike's fasteners</div>
-              <div>+/− Screwdrivers</div><div>Stubby combination driver — one tool, both heads</div>
-              <div>Adjustable Spanner</div><div>Small size — for axle nuts, brake caliper bolts in an emergency</div>
-              <div>Tyre Plugs</div><div>String plug kit — gets you mobile after a puncture + go to a petrol station for pump.</div>
-              <div>Spare Fuses</div><div>Assorted mini-blade — match your bike's spec. Live without music; don't live without lights.</div>
-              <div>Electrical Tape</div><div>Small roll for emergency wrapping — not a permanent fix, buys you time</div>
-              <div>Cable Ties</div><div>5–10 assorted — universal fix for almost anything that's loose</div>
-              <div>Nitrile Gloves or wet wipes</div><div>Pack of 4 or a pack of wet wipes — roadside work without covered hands is messy and slippery</div>
-            </div>
-
-            <div class="warning-box">
-              <strong>// PACK LOGIC:</strong> The on-bike bag is not a full toolkit — it's a get-home kit. Everything in it is chosen for the specific question: what breaks most often, and what do I need to deal with it on the roadside at 11PM? Tyre plugs and fuses answer 80% of that question.
-            </div>
-
-            <h2>Where to Source</h2>
-            <div class="shop-block">
-              <h5>// Shopping Links</h5>
-              <ul>
-                <li><a href="hhttps://shopee.sg/product/45084413/9168273951?exp_group=rollout&gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMRoz0ZUjQw0QlRa--FjB0AKnHQPF7xv4DyGj9-GQwqn4zSdB6gztmw7ebmtsZs9FPJxlVqctc57WUE3IRqmNpcGhlcnRleHTEjwAAAAziq-f9JZnzIFUK00eR0Bup39eupSjWbTFNeKwdh9xn0my9ZvTHr2w7Ft65MS_bAipKGXv3_-yaSk9JeBfCT_KYf_Ys1fwOWjratMvoKQFpAj9FBDWe6sGQ6E9yFm1wQpoXe0ugT8Lrybm-vB2z60NmXmwDusinLVD8Hh2ClpcpC6AhmL4AV_S-__UE&mmp_pid=an_14389500003&uls_trackid=55hveli100kj&utm_campaign=id_xXX5gS89vr&utm_content=----&utm_medium=affiliates&utm_source=an_14389500003&utm_term=eu6iovvi2euw7">Shopee — Heat Shrink Butt Connectors (adhesive-lined)</a></li>
-                <li><a href="https://shopee.sg/product/460985015/48156875984">Shopee — Self-Amalgamating Insulation Tape</a></li>
-                <li><a href="https://shopee.sg/product/1006220784/41752190507"> Shopee — Wire Stripper &amp; Crimper <a href="https://shopee.sg/product/413366199/14874658444"></a></li>
-                <li><a href="https://shopee.sg/product/1006220784/25975186565">Shopee — Motorcycle Tyre Plug </a></li>
-              </ul>
-            </div>
-
-            <div class="mt-8 pt-8 border-t border-red-900/30">
-              <div id="full-intel-d001" class="hidden space-y-6 text-gray-300">
-                <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
-                  <h4 class="text-red-500 font-bold uppercase mb-2">Field Notes: DIY Tool Setup</h4>
-                  <p class="text-sm text-gray-500 italic">Classification: Tools / Garage Setup + On-Bike Kit // Permanent Reference</p>
-                </div>
-                <div class="space-y-4">
-                  <p><strong>[ON JIS SCREWS]</strong> Most Japanese motorcycle screws are JIS (Japanese Industrial Standard), not Phillips. A Phillips driver in a JIS screw works — until it doesn't. JIS drivers have a slightly different tip angle that engages the recess more cleanly. Using Phillips on JIS long-term rounds the head. A JIS #2 is the most common size on a Yamaha.</p>
-                  <p><strong>[ON BUTT TERMINALS]</strong> The adhesive-lined heat shrink butt connector does two things plain heat shrink can't: it mechanically crimps the wire join and then seals it with adhesive when heated. A twist-and-cover-with-heat-shrink splice is not a proper electrical connection — it's a contact point held together by hope. Vibration loosens it over time. A crimped butt terminal doesn't.</p>
-                  <p><strong>[ON THE COMFORT SETUP]</strong> The chair and speaker are not optional extras. A standing DIY session gets rushed. A rushed session produces mistakes — wires connected in the wrong order, clips left unplugged, bolts torqued by feel. Sit down, put on something to listen to, take your time. The bike doesn't go anywhere faster if you're stressed.</p>
-                  <p><strong>[ON THE ON-BIKE BAG]</strong> The on-bike bag earns its keep on every long ride. Keep it under 1kg total packed — it should be invisible while riding. Review the contents before every major tour: fuses degrade, CO₂ inflators expire, tyre plug strings dry out. Refresh annually or after use.</p>
-                </div>
-                <div class="bg-black/40 p-4 border border-red-900/50">
-                  <h5 class="text-red-500 text-sm mb-3 underline text-center tracking-widest uppercase">Final Assessment</h5>
-                  <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                    <li>Investment: One-time — tools last years if you buy decent quality</li>
-                    <li>Most Important Items: Heat shrink butt terminals, self-amalgamating tape, multimeter</li>
-                    <li>On-Bike Bag Priority: Tyre plugs + CO₂ first. Everything else second.</li>
-                    <li>Mindset: The right tools make DIY enjoyable. The wrong tools make it a fight.</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="flex justify-center mt-6">
-                <button onclick="toggleIntel('full-intel-d001', this)" class="border border-red-500/30 text-red-500 px-6 py-2 text-sm font-mono hover:bg-red-600 hover:text-white transition-all">
-                  ACCESS FULL INTEL REPORT
-                </button>
-              </div>
+            <div class="log-preview">
+              <p class="log-preview-title">The Mod I Should Have Done First</p>
+              <p class="preview-snippet">Did the hazard mod and volt meter with direct taps. Made a mess. Retrofitted the fuse box and rewired everything. Every mod after it was cleaner. Should have been Log #001.</p>
             </div>
           </div>
         </div>
-
-        <!-- ══ LOG 2: K&N Air Filter ══ -->
-        <div class="log-entry" style="display:none;">
-          <span class="tag">DIY Log #002</span>
-          <h1 class="entry-title">K&amp;N Air Filter Upgrade</h1>
-          <p class="lead">The stock paper filter does the job. The K&amp;N does it better, flows more, and never needs replacing — just cleaning. One upgrade that pays for itself over time and gives the engine room to breathe.</p>
-
-          <div class="featured-image">
-            <div class="featured-image-label">// SR-DIY-002 // Engine // Air Intake // Reusable Performance Filter</div>
-            <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">🌬️</div>
-          </div>
-
-          <div class="story-content">
-            <h2>Why Replace the Stock Filter</h2>
-            <p>The OEM air filter on the MT-03 is a paper element — it does its job but it's a consumable. Replace it at every service interval, or it starts restricting airflow as it loads up with dust and debris. In Singapore's humidity and general road grime, it clogs faster than the service manual assumes.</p>
-            <p>The K&amp;N is a cotton gauze filter oiled to capture particles. It flows better than paper across all RPM ranges, and when it's dirty, you clean and re-oil it — you don't throw it away. One filter, indefinite service life if maintained correctly.</p>
-
-            <h2>Spec Comparison</h2>
-            <div class="itinerary-grid">
-              <div>Material</div><div>Cotton gauze, oiled — vs OEM paper element</div>
-              <div>Airflow</div><div>Higher than stock — measurable improvement in mid-range throttle response</div>
-              <div>Service</div><div>Clean and re-oil every 50,000km or when visibly dirty — not a throw-away</div>
-              <div>Fit</div><div>Drop-in replacement — same dimensions as OEM, no airbox modification needed</div>
-              <div>Filter Oil</div><div>K&amp;N filter oil required after cleaning — do not run dry or with generic oil</div>
-              <div>Cost Over Time</div><div>More expensive upfront; cheaper than buying OEM replacements every service</div>
-            </div>
-
-            <h2>What You Actually Feel</h2>
-            <p>The throttle response between 4,000–8,000 RPM is noticeably crisper after the swap. It's not a power figure you'll see on a dyno sheet for a small-displacement engine — it's a feel change. The engine pulls cleaner through the mid-range, and the intake note changes slightly.</p>
-            <p>On the MT-03, no ECU map change is needed for the K&amp;N drop-in. The fuelling doesn't go lean enough to cause issues on the stock tune. If you're running an aftermarket exhaust simultaneously, that's a different conversation.</p>
-
-            <div class="warning-box">
-              <strong>// CRITICAL — DO NOT OVER-OIL:</strong> After cleaning, apply K&amp;N filter oil sparingly. Over-oiling is a real issue — excess oil migrates downstream and can contaminate the MAF sensor if your bike has one. Apply, let it wick in for 20 minutes, apply a second light pass only if any grey cotton shows through.
-            </div>
-
-            <h2>Installation Notes</h2>
-            <div class="itinerary-grid">
-              <div>Tools Needed</div><div>Allen key set, flathead screwdriver — airbox access on MT-03 is straightforward</div>
-              <div>Time Required</div><div>20–30 minutes first time, 10 minutes after you've done it once</div>
-              <div>Gasket Check</div><div>Inspect airbox seal when the filter is out — replace if cracked or compressed flat</div>
-              <div>Orientation</div><div>Note airflow direction arrow on filter — install reversed and it doesn't work</div>
-              <div>After Install</div><div>Start engine, check for no intake noise abnormalities. First ride will feel noticeably different.</div>
-            </div>
-
-            <h2>Where to Buy</h2>
-            <div class="shop-block">
-              <h5>// Shopping Links</h5>
-              <ul>
-                <li><a href="YOUR_SHOPEE_KN_LINK" target="_blank" rel="noopener noreferrer">Shopee — K&amp;N Drop-In Filter (MT-03 spec)</a></li>
-                <li><a href="YOUR_LAZADA_KN_LINK" target="_blank" rel="noopener noreferrer">Lazada — K&amp;N Air Filter MT-03 / R3</a></li>
-                <li><a href="YOUR_SHOPEE_KN_OIL_LINK" target="_blank" rel="noopener noreferrer">Shopee — K&amp;N Filter Care Kit (cleaner + oil)</a></li>
-              </ul>
-            </div>
-
-            <div class="mt-8 pt-8 border-t border-red-900/30">
-              <div id="full-intel-d002" class="hidden space-y-6 text-gray-300">
-                <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
-                  <h4 class="text-red-500 font-bold uppercase mb-2">Field Notes: K&amp;N Air Filter</h4>
-                  <p class="text-sm text-gray-500 italic">Classification: Engine / Intake // Drop-In Upgrade // Reusable</p>
-                </div>
-                <div class="space-y-4">
-                  <p><strong>[CLEANING PROTOCOL]</strong> K&amp;N sells a two-step cleaner and oil kit. Apply cleaner, let it soak for 10 minutes, rinse from clean side to dirty side with low-pressure water. Do not use high-pressure spray — it damages the cotton gauze. Let it air dry completely — 24 hours minimum — before re-oiling. Do not heat-dry or force-dry with compressed air.</p>
-                  <p><strong>[ON THE FEEL DIFFERENCE]</strong> Stock paper filters progressively restrict airflow as they load up between service intervals. The difference you feel after installing a K&amp;N isn't just the K&amp;N — it's also partly because the previous paper filter was probably half-clogged. The K&amp;N maintains that open feel consistently because you clean it before it restricts.</p>
-                  <p><strong>[SINGAPORE CONDITIONS]</strong> Urban grime, construction dust, and humidity mean the filter loads up faster than the 50,000km cleaning interval suggests. In Singapore, inspect the K&amp;N every 10,000–15,000km. It's a 2-minute visual check — pull it out, hold it up to light, if you can't see through it clearly, it's time to clean.</p>
-                  <p><strong>[EXHAUST PAIRING]</strong> If you're running a free-flow exhaust (Akrapovic, Yoshimura, etc.) alongside the K&amp;N, the combined airflow increase may lean out the fuelling noticeably. In that case an autotune or ECU flash is worth considering. On stock exhaust, the drop-in K&amp;N alone is safe on the stock map.</p>
-                </div>
-                <div class="bg-black/40 p-4 border border-red-900/50">
-                  <h5 class="text-red-500 text-sm mb-3 underline text-center tracking-widest uppercase">Final Assessment</h5>
-                  <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                    <li>Rating: 9/10 — drop-in, real feel difference, pays for itself</li>
-                    <li>Difficulty: Easy — 30 minutes, basic tools, no specialist knowledge</li>
-                    <li>Would Buy Again: Already running it — no reason to go back to paper</li>
-                    <li>Recommended For: Any MT-03/R3 owner as a first performance mod</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="flex justify-center mt-6">
-                <button onclick="toggleIntel('full-intel-d002', this)" class="border border-red-500/30 text-red-500 px-6 py-2 text-sm font-mono hover:bg-red-600 hover:text-white transition-all">
-                  ACCESS FULL INTEL REPORT
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ══ LOG 3: Fast Throttle ══ -->
-        <div class="log-entry" style="display:none;">
-          <span class="tag">DIY Log #003</span>
-          <h1 class="entry-title">Fast Throttle Mod</h1>
-          <p class="lead">Too much slack in the throttle tube makes the bike feel lazy and unresponsive — especially on smaller displacement machines. A fast throttle shortens the rotation needed for full input. More control, less wrist effort, sharper response. Required for every class.</p>
-
-          <div class="featured-image">
-            <div class="featured-image-label">// SR-DIY-003 // Controls // Throttle // 2B / 2A / Class 2</div>
-            <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
-            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">⚡</div>
-          </div>
-
-          <div class="story-content">
-            <h2>The Problem With Excessive Slack</h2>
-            <p>Every stock throttle tube has a rotation angle — the amount of wrist roll needed to go from fully closed to fully open. On most 2B and 2A machines, this is calibrated conservatively: a large rotation angle means the throttle is harder to crack open aggressively by accident, which makes sense for a new rider.</p>
-            <p>After you have a few years of experience, that same large rotation angle becomes friction. Your wrist has to travel further to get the same input, which slows your response time in corners and makes smooth maintenance throttle more tiring on long rides. A fast throttle reduces that rotation angle — less wrist travel for the same throttle opening.</p>
-
-            <h2>Who Actually Needs This</h2>
-            <div class="itinerary-grid">
-              <div>2B Class</div><div>Stock throttle slack is noticeable — fast throttle makes the bike feel alive vs sluggish</div>
-              <div>2A Class</div><div>More power means more reliance on precise throttle control — a fast tube helps significantly</div>
-              <div>Class 2</div><div>Some bigger displacement bikes still ship with excessive slack — check yours before assuming it's fine</div>
-              <div>Touring</div><div>Reduced wrist travel means less fatigue on long throttle-hold highway sections</div>
-              <div>Urban</div><div>Quicker response in stop-start traffic — less lag between input and engine reaction</div>
-            </div>
-
-            <h2>What to Look For</h2>
-            <p>Fast throttle kits are sold by rotation angle — common options are 60°, 70°, and 90° versus a typical stock 100°–120°. A 70° tube is a solid starting point: responsive without being twitchy. A 60° on a 2B machine can feel aggressive until you're fully adapted.</p>
-            <p>Make sure the kit includes the correct diameter throttle tube for your bar size (usually 22mm) and the matching cable end caps for your throttle cable. Incorrect fitment causes binding, which is a serious safety issue.</p>
-
-            <div class="warning-box">
-              <strong>// SAFETY FIRST — CABLE CHECK:</strong> After installation, check throttle return at full lock in both directions. Turn handlebars to full left lock and full right lock while at idle — the throttle must snap fully closed under spring return alone. If it sticks, binds, or hesitates to return, the cable routing is wrong. Do not ride until this is confirmed.
-            </div>
-
-            <h2>Installation Notes</h2>
-            <div class="itinerary-grid">
-              <div>Tools</div><div>Allen keys, Phillips screwdriver, cable lube spray</div>
-              <div>Time</div><div>30–45 minutes — cable end routing is the fiddly part</div>
-              <div>Throttle Body</div><div>Lube the tube inner bore before installing — prevents sticky return</div>
-              <div>Cable Slack</div><div>Set 2–3mm freeplay at the throttle tube after install — not too tight, not sloppy</div>
-              <div>Test Protocol</div><div>Full lock left, full lock right, engine on — must return to idle instantly both ways</div>
-              <div>Break-In</div><div>First few rides the new tube feels different — give it 200km before judging the feel</div>
-            </div>
-
-            <h2>Where to Buy</h2>
-            <div class="shop-block">
-              <h5>// Shopping Links</h5>
-              <ul>
-                <li><a href="YOUR_SHOPEE_FAST_THROTTLE_LINK" target="_blank" rel="noopener noreferrer">Shopee — Fast Throttle Tube 70° (22mm)</a></li>
-                <li><a href="YOUR_LAZADA_FAST_THROTTLE_LINK" target="_blank" rel="noopener noreferrer">Lazada — Quick Action Throttle Kit</a></li>
-                <li><a href="YOUR_SHOPEE_CABLE_LUBE_LINK" target="_blank" rel="noopener noreferrer">Shopee — Cable Lubricant Spray</a></li>
-              </ul>
-            </div>
-
-            <div class="mt-8 pt-8 border-t border-red-900/30">
-              <div id="full-intel-d003" class="hidden space-y-6 text-gray-300">
-                <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
-                  <h4 class="text-red-500 font-bold uppercase mb-2">Field Notes: Fast Throttle</h4>
-                  <p class="text-sm text-gray-500 italic">Classification: Controls / Throttle Mod // Safety-Critical Install</p>
-                </div>
-                <div class="space-y-4">
-                  <p><strong>[ON ROTATION ANGLES]</strong> A 70° fast throttle means full throttle travel from closed to open in 70 degrees of wrist rotation. Stock is typically 100–120°. The difference sounds small — it isn't. The muscle memory adaptation takes about a week of daily riding. During that week, be conservative with your throttle inputs until the new range feels natural.</p>
-                  <p><strong>[THE RETURN SPRING TEST]</strong> This is the one thing you absolutely cannot skip. Engine on, at idle, turn the bars to full left lock and hold for 3 seconds — idle should be completely stable. Repeat for full right lock. If idle rises at any point, the throttle cable is holding the slide open. Stop, re-route the cable. This is not optional. A throttle that doesn't return is a crash waiting to happen.</p>
-                  <p><strong>[ON SMALLER BIKES]</strong> On 2B machines specifically — MT-03, R3, CBR300R, Z300 class — the stock throttle slack is sometimes disproportionately large relative to the bike's power output. These aren't powerful bikes, so Yamaha and Honda calibrate the throttle to be very progressive. The fast throttle makes them feel punchy in a way the stock setup doesn't, without actually adding power. It's a feel upgrade that changes how you ride the bike.</p>
-                  <p><strong>[CABLE FREEPLAY]</strong> After install, set cable freeplay at the adjuster — typically 2–3mm of slack at the tube before the cable begins to lift the slide. Too tight means the throttle is always partially open, which risks an idle that won't drop when you close the throttle. Too loose and you have dead movement before the bike responds.</p>
-                </div>
-                <div class="bg-black/40 p-4 border border-red-900/50">
-                  <h5 class="text-red-500 text-sm mb-3 underline text-center tracking-widest uppercase">Final Assessment</h5>
-                  <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                    <li>Rating: 9/10 — one of the highest impact mods for the cost</li>
-                    <li>Difficulty: Medium — cable routing needs care, safety checks are non-negotiable</li>
-                    <li>Applies To: Every class — 2B, 2A, Class 2. Check your stock throttle first.</li>
-                    <li>Recommended For: Any experienced rider frustrated by a lazy, slow-responding throttle</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="flex justify-center mt-6">
-                <button onclick="toggleIntel('full-intel-d003', this)" class="border border-red-500/30 text-red-500 px-6 py-2 text-sm font-mono hover:bg-red-600 hover:text-white transition-all">
-                  ACCESS FULL INTEL REPORT
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-          <!-- ══ LOG 4: Bike Camera Installation ══ -->
-      <div class="log-entry">
-        <span class="tag">DIY Log Entry #004</span>
-        <h1 class="entry-title">Bike Camera Installation</h1>
-        <p class="lead">Eyes on the road — and behind you. Installing a front and rear camera on the bike is one of the most underrated safety upgrades you can do. Here's the full breakdown.</p>
-
-        <div class="featured-image" id="img-004">
-          <div class="featured-image-label">// SR-DIY-004 // Camera Mod // Rider Safety</div>
-          <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
-          <!-- Camera icon watermark -->
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">📷</div>
-        </div>
-
-        <div class="story-content">
-          <h2>Why I Installed a Camera</h2>
-          <p>After witnessing a few close calls on the road and hearing stories from fellow riders who got into disputes with no evidence to back them up, I decided it was time. A camera doesn't prevent accidents — but it protects you when the unexpected happens. Evidence is everything.</p>
-
-          <h3>The Install Process</h3>
-          <div class="steps-grid">
-            <div>Step 1</div><div>Choose mounting points — handlebar clamp for front, rear grab bar for back cam</div>
-            <div>Step 2</div><div>Route power wire through the fairings to the fuse box — clean and hidden</div>
-            <div>Step 3</div><div>Tap into an ignition-switched circuit so camera powers on/off with bike</div>
-            <div>Step 4</div><div>Angle calibration — ensure both lenses cover the correct field of view</div>
-            <div>Step 5</div><div>Test ride and review footage for vibration, glare, and coverage blind spots</div>
-          </div>
-
-          <h2>Parts & Tools Used</h2>
-          <div class="parts-list">
-            <h5>// Bill of Materials</h5>
-            <ul>
-              <li>Front + rear action cameras (or dedicated bike cam unit)</li>
-              <li>RAM mount or aluminium handlebar clamp</li>
-              <li>Mini USB/hardwire kit with low-profile fuse tap</li>
-              <li>Zip ties, heat shrink tubing, electrical tape</li>
-              <li>Micro SD cards (high endurance, Class 10 minimum)</li>
-            </ul>
-          </div>
-
-          <div class="warning-box">
-            <strong>// PRO TIP:</strong> Use a high-endurance SD card rated for dash cam use. Regular cards die fast from the constant write cycles. Don't cheap out here.
-          </div>
-
-          <h2>Key Takeaways</h2>
-          <p>The install took about 3 hours, most of which was routing the cables neatly through the fairings. The result looks clean and the camera boots up the moment you turn the key. Loop recording means you never have to manually manage footage — and if something happens, the file is there waiting.</p>
-          <p>Total investment: Well worth every dollar. Peace of mind on every ride.</p>
-
-          <div class="mt-8 pt-8 border-t border-red-900/30">
-            <div id="full-intel-diy004" class="hidden space-y-6 text-gray-300">
-              <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
-                <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Field Notes: Camera Install</h4>
-                <p class="text-sm text-gray-500 italic">Mod Classification: Safety / Evidence</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[WIRING]</strong> The hardest part is routing the wire without cutting fairings. Take time to find existing grommets and cable runs. The fuse box tap is clean — no cutting of factory wires needed.</p>
-                <p><strong>[MOUNT CHOICE]</strong> RAM mounts are pricey but vibration-dampened. Generic clamps work but expect jello footage at higher RPMs. Invest in quality mounts if the camera is a priority.</p>
-                <p><strong>[REAR CAM]</strong> Rear camera angle is critical. Aim too high and you film the sky. Too low and you lose the following traffic. Spend time getting this right before buttoning everything up.</p>
-              </div>
-              <div class="bg-black/40 p-4 border border-red-900/50">
-                <h5 class="text-red-500 text-sm mb-3 underline text-center tracking-widest uppercase">FINAL ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Difficulty: 3/5 — Mainly the wiring routing</li>
-                  <li>Time Required: ~3 hours</li>
-                  <li>Would Recommend: Absolutely, Day 1 mod</li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-diy004', this)" class="load-more-style">
-                ACCESS FULL INTEL REPORT
-              </button>
-            </div>
-          </div>
+        <div class="flex items-center justify-between mt-4 pt-4 border-t" style="border-color:rgba(255,255,255,0.05);">
+          <span class="log-badge">
+            <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+            Log #007 // Do This First
+          </span>
+          <span class="access-btn">Open Lab File ▶</span>
         </div>
       </div>
+    </a>
 
-      <!-- ══ LOG 5: Volt Meter ══ -->
-      <div class="log-entry" style="display:none;">
-        <span class="tag">DIY Log Entry #005</span>
-        <h1 class="entry-title">Volt Meter Installation</h1>
-        <p class="lead">Know your bike's electrical health at a glance. A volt meter is one of the cheapest, most useful mods you can do — and it takes less than an hour to install.</p>
+    <hr class="section-rule" />
 
-        <div class="featured-image" id="img-003">
-          <div class="featured-image-label">// SR-DIY-005 // Electrical Mod // Diagnostics</div>
-          <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;font-size:8rem;">⚡</div>
-        </div>
-
-        <div class="story-content">
-          <h2>Why You Need One</h2>
-          <p>A weak or failing battery is one of the most common reasons a bike doesn't start. A volt meter gives you a real-time readout of your battery voltage — so you can catch issues before they leave you stranded. At idle, you should see around 12.5–13V. With engine running and charging, expect 13.5–14.5V. Anything outside that range, you know to investigate.</p>
-
-          <h3>Installation Steps</h3>
-          <div class="steps-grid">
-            <div>Step 1</div><div>Source a mini waterproof volt meter with LED display (under $5 online)</div>
-            <div>Step 2</div><div>Identify a clean mounting spot visible while riding — handlebar or dash area</div>
-            <div>Step 3</div><div>Connect red wire to positive 12V source (ignition-switched preferred)</div>
-            <div>Step 4</div><div>Connect black wire to chassis ground — any bare metal bolt point</div>
-            <div>Step 5</div><div>Secure with double-sided tape or small bracket. Power up and verify reading</div>
-          </div>
-
-          <h2>Parts Required</h2>
-          <div class="parts-list">
-            <h5>// Bill of Materials</h5>
-            <ul>
-              <li>Mini waterproof 12V volt meter display (LED, 3-wire)</li>
-              <li>2x ring terminals or spade connectors</li>
-              <li>Short lengths of 18AWG wire (red and black)</li>
-              <li>Heat shrink tubing</li>
-              <li>Double-sided mounting tape or bracket</li>
-            </ul>
-          </div>
-
-          <div class="warning-box">
-            <strong>// PRO TIP:</strong> Tap into an ignition-switched circuit so the meter turns off with the bike. Leaving it on battery all the time will slowly drain your cells overnight.
-          </div>
-
-          <h2>Key Takeaways</h2>
-          <p>Total cost: Under $5. Total install time: 30–45 minutes. This mod has saved me from an unexpected dead battery more than once. You can see at a glance if your stator is charging correctly, if your battery is dropping at idle, or if something is drawing too much current.</p>
-          <p>Small mod. Big peace of mind.</p>
-
-          <div class="mt-8 pt-8 border-t border-red-900/30">
-            <div id="full-intel-diy003" class="hidden space-y-6 text-gray-300">
-              <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
-                <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Field Notes: Volt Meter</h4>
-                <p class="text-sm text-gray-500 italic">Mod Classification: Electrical / Diagnostics</p>
-              </div>
-              <div class="space-y-4">
-                <p><strong>[CALIBRATION]</strong> Most cheap volt meters are accurate to within ±0.1V. Good enough for a bike. Cross-reference against a known-good multimeter when first installed to confirm accuracy.</p>
-                <p><strong>[READINGS GUIDE]</strong> 12.0–12.5V (engine off) = battery healthy at rest. Below 12.0V at rest = battery struggling. 13.5–14.5V (engine running) = charging system healthy. Below 13V while running = stator or regulator issue.</p>
-                <p><strong>[WEATHERPROOFING]</strong> Make sure your meter is rated IP65 or better if it's exposed to rain. Wrap all connections in self-amalgamating tape for long-term reliability.</p>
-              </div>
-              <div class="bg-black/40 p-4 border border-red-900/50">
-                <h5 class="text-red-500 text-sm mb-3 underline text-center tracking-widest uppercase">FINAL ASSESSMENT</h5>
-                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
-                  <li>Difficulty: 1/5 — Easiest mod on the list</li>
-                  <li>Time Required: ~45 minutes</li>
-                  <li>Would Recommend: 100%, everyone should have one</li>
-                </ul>
-              </div>
-            </div>
-         
-            </div>
-          </div>
-        </div>
-      </div>
-
-   
-      </div><!-- /log-container -->
-  
-      <hr class="section-rule" />
-
-      <div class="flex items-center justify-center gap-5 flex-wrap">
-        <button id="prevBtn" class="nav-btn"><span>◄ Previous Log</span></button>
-        <div class="page-counter">LOG <span id="current-page">01</span> / <span id="total-pages">04</span></div>
-        <button id="nextBtn" class="nav-btn"><span>Decrypt Next ►</span></button>
-      </div>
+    <!-- Archive footer note -->
+    <div class="text-center space-y-3">
+      <p class="font-mono-tech text-gray-700 text-xs tracking-widest uppercase">// End of SR Lab Archive — v1.0</p>
+      <p class="text-gray-600 text-sm" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">
+        More mods will be added as they get properly documented.<br/>
+        If it hasn't been done on a real bike with real tools, it doesn't make this list.
+      </p>
+    </div>
 
   </div>
-  </main>
+</main>
 
-  <!-- ════ FOOTER ════ -->
-  <footer class="py-16 px-5 border-t border-white/5">
-    <div class="max-w-5xl mx-auto">
-      <div class="flex flex-col items-center gap-6">
-        <a href="https://secret-reviewer.com" class="flex items-center gap-3 group">
-          <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
-            <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
-          </div>
-          <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
-        </a>
-        <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
-        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
-           class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
-          <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors duration-300">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          </div>
-          <span class="font-mono-tech text-xs tracking-widest uppercase">Watch on YouTube</span>
-        </a>
-        <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-        <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
-      </div>
+<!-- ════ FOOTER ════ -->
+<footer class="py-16 px-5 border-t border-white/5 mt-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex flex-col items-center gap-6">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 hover:scale-105 transition-all duration-300">
+          <span class="font-mono-tech text-red-600 text-sm font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+      </a>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="font-mono-tech text-sm tracking-widest uppercase">Watch on YouTube</span>
+      </a>
+      <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
     </div>
-  </footer>
+  </div>
+</footer>
 
-  <!-- ════ JAVASCRIPT ════ -->
-  <script>
-    (function () {
-      var cursor = document.getElementById('cursor');
-      var ring   = document.getElementById('cursor-ring');
-      var mx = 0, my = 0, rx = 0, ry = 0;
-      document.addEventListener('mousemove', function (e) {
-        mx = e.clientX; my = e.clientY;
-        cursor.style.left = mx + 'px';
-        cursor.style.top  = my + 'px';
-      });
-      (function animRing() {
-        rx += (mx - rx) * 0.12;
-        ry += (my - ry) * 0.12;
-        ring.style.left = rx + 'px';
-        ring.style.top  = ry + 'px';
-        requestAnimationFrame(animRing);
-      })();
-      document.querySelectorAll('a, button').forEach(function (el) {
-        el.addEventListener('mouseenter', function () {
-          ring.style.width = '56px'; ring.style.height = '56px';
-          ring.style.borderColor = 'rgba(220,38,38,0.8)';
-        });
-        el.addEventListener('mouseleave', function () {
-          ring.style.width = '36px'; ring.style.height = '36px';
-          ring.style.borderColor = 'rgba(220,38,38,0.5)';
-        });
-      });
-    })();
-
-    window.addEventListener('scroll', function () {
-      var scrollTop    = document.documentElement.scrollTop || document.body.scrollTop;
-      var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-      document.getElementById('progress-bar').style.width = pct + '%';
-    }, { passive: true });
-
-    window.addEventListener('scroll', function () {
-      var nav = document.getElementById('navbar');
-      if (window.scrollY > 20) nav.classList.add('nav-scrolled');
-      else nav.classList.remove('nav-scrolled');
-    }, { passive: true });
-
-    document.getElementById('menu-toggle').addEventListener('click', function () {
-      var menu      = document.getElementById('mobile-menu');
-      var openIcon  = document.getElementById('menu-icon-open');
-      var closeIcon = document.getElementById('menu-icon-close');
-      var isOpen    = menu.style.maxHeight === '320px';
-      menu.style.maxHeight    = isOpen ? '0' : '320px';
-      menu.style.borderBottom = isOpen ? '' : '1px solid rgba(127,29,29,0.3)';
-      openIcon.style.display  = isOpen ? '' : 'none';
-      closeIcon.style.display = isOpen ? 'none' : '';
+<script>
+  // Cursor
+  (function(){
+    var cursor=document.getElementById('cursor'), ring=document.getElementById('cursor-ring');
+    var mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+    (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+    document.querySelectorAll('a,button').forEach(function(el){
+      el.addEventListener('mouseenter',function(){ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(220,38,38,0.8)';});
+      el.addEventListener('mouseleave',function(){ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(220,38,38,0.5)';});
     });
-    document.querySelectorAll('.mobile-link').forEach(function (link) {
-      link.addEventListener('click', function () {
-        document.getElementById('mobile-menu').style.maxHeight = '0';
-        document.getElementById('menu-icon-open').style.display  = '';
-        document.getElementById('menu-icon-close').style.display = 'none';
-      });
+  })();
+
+  // Progress bar
+  window.addEventListener('scroll',function(){
+    var st=document.documentElement.scrollTop||document.body.scrollTop;
+    var sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    document.getElementById('progress-bar').style.width=(sh>0?(st/sh)*100:0)+'%';
+  },{passive:true});
+
+  // Navbar scroll
+  window.addEventListener('scroll',function(){
+    var nav=document.getElementById('navbar');
+    if(window.scrollY>20)nav.classList.add('nav-scrolled');
+    else nav.classList.remove('nav-scrolled');
+  },{passive:true});
+
+  // Mobile menu
+  document.getElementById('menu-toggle').addEventListener('click',function(){
+    var menu=document.getElementById('mobile-menu');
+    var openIcon=document.getElementById('menu-icon-open');
+    var closeIcon=document.getElementById('menu-icon-close');
+    var isOpen=menu.style.maxHeight==='320px';
+    menu.style.maxHeight=isOpen?'0':'320px';
+    menu.style.borderBottom=isOpen?'':'1px solid rgba(127,29,29,0.3)';
+    openIcon.style.display=isOpen?'':'none';
+    closeIcon.style.display=isOpen?'none':'';
+  });
+  document.querySelectorAll('.mobile-link').forEach(function(link){
+    link.addEventListener('click',function(){
+      document.getElementById('mobile-menu').style.maxHeight='0';
+      document.getElementById('menu-icon-open').style.display='';
+      document.getElementById('menu-icon-close').style.display='none';
     });
-
-    var scrambleChars = 'ABCDEF0123456789/X$#@%';
-    function decryptText(button, originalText, callback) {
-      var iterations = 0;
-      button.classList.add('decrypting');
-      button.disabled = true;
-      var interval = setInterval(function () {
-        button.querySelector('span').innerText = originalText.split('').map(function (char, index) {
-          if (index < iterations) return originalText[index];
-          return char === ' ' ? ' ' : scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
-        }).join('');
-        if (iterations >= originalText.length) {
-          clearInterval(interval);
-          button.classList.remove('decrypting');
-          button.querySelector('span').innerText = originalText;
-          button.disabled = false;
-          callback();
-        }
-        iterations += 1 / 3;
-      }, 30);
-    }
-
-    var logs        = document.querySelectorAll('.log-entry');
-    var nextBtn     = document.getElementById('nextBtn');
-    var prevBtn     = document.getElementById('prevBtn');
-    var currentPage = document.getElementById('current-page');
-    var totalPages  = document.getElementById('total-pages');
-    var currentLogIndex = 0;
-
-    totalPages.textContent = String(logs.length).padStart(2, '0');
-
-    function updateButtons() {
-      prevBtn.disabled = currentLogIndex === 0;
-      nextBtn.disabled = currentLogIndex === logs.length - 1;
-      currentPage.textContent = String(currentLogIndex + 1).padStart(2, '0');
-    }
-
-    function updateView(newIndex) {
-      logs.forEach(function (log) { log.style.display = 'none'; });
-      currentLogIndex = newIndex;
-      logs[currentLogIndex].style.display = 'block';
-      logs[currentLogIndex].style.animation = 'none';
-      logs[currentLogIndex].offsetHeight;
-      logs[currentLogIndex].style.animation = '';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      updateButtons();
-    }
-
-    nextBtn.addEventListener('click', function () {
-      if (currentLogIndex >= logs.length - 1) return;
-      var nextIndex = currentLogIndex + 1;
-      decryptText(nextBtn, 'Decrypt Next ►', function () { updateView(nextIndex); });
-    });
-
-    prevBtn.addEventListener('click', function () {
-      if (currentLogIndex <= 0) return;
-      var prevIndex = currentLogIndex - 1;
-      decryptText(prevBtn, '◄ Previous Log', function () { updateView(prevIndex); });
-    });
-
-    updateView(0);
-
-    // ── Toggle intel report ──
-    function toggleIntel(id, btn) {
-      var report  = document.getElementById(id);
-      var isHidden = report.classList.contains('hidden');
-      if (isHidden) {
-        report.classList.remove('hidden');
-        btn.innerText = 'CLOSE INTEL REPORT';
-        report.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      } else {
-        report.classList.add('hidden');
-        btn.innerText = 'ACCESS FULL INTEL REPORT';
-      }
-    }
-
-
-
-    
-  </script>
-
+  });
+</script>
 </body>
 </html>
