@@ -228,6 +228,15 @@ Personal Unexplained Encounters | Paranormal & Eerie Real-Life Stories | Secret 
     .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
     .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
 
+    .load-more-style {
+      background:transparent; color:#f87171;
+      border:1px solid rgba(220,38,38,0.4);
+      font-family:'Share Tech Mono',monospace; font-size:0.72rem;
+      letter-spacing:2px; text-transform:uppercase; cursor:pointer;
+      padding:10px 22px; transition:background .25s,color .25s;
+    }
+    .load-more-style:hover { background:var(--red); color:#fff; }
+
     .signal-box {
       background:rgba(220,38,38,0.05); border:1px solid rgba(220,38,38,0.3);
       border-left:3px solid #dc2626; padding:14px 18px; margin:20px 0;
@@ -254,13 +263,6 @@ Personal Unexplained Encounters | Paranormal & Eerie Real-Life Stories | Secret 
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
       background-size:128px; animation:staticNoise 4s step-start infinite;
     }
-
-    /* Selection cards */
-    .sel-card:hover { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.04) !important; }
-    .sel-card:hover .sel-accent { background:#dc2626 !important; }
-    .sel-card:hover .sel-arrow { color:rgba(220,38,38,0.7) !important; }
-    .sel-card.sel-active { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.05) !important; }
-    .sel-card.sel-active .sel-accent { background:#dc2626 !important; }
 
     /* Breadcrumb */
     .breadcrumb {
@@ -360,93 +362,7 @@ Personal Unexplained Encounters | Paranormal & Eerie Real-Life Stories | Secret 
 
     <hr class="section-rule" />
 
-    <!-- SELECTION SCREEN -->
-    <div id="selection-screen">
-      <div class="font-mono-tech text-xs uppercase mb-5" style="color:#dc2626;letter-spacing:3px;display:flex;align-items:center;gap:10px;">
-        <span class="inline-block w-2 h-2 rounded-full" style="background:#dc2626;animation:pulse-dot 1.4s infinite;"></span>
-        Select a log to access
-      </div>
-
-      <div id="sel-cards" style="display:grid;gap:14px;">
-
-        <!-- Card 1 -->
-        <div class="sel-card" data-log="0" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
-          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log PERSONAL-001</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
-          </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The First Time I Saw Something</div>
-          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">I was around six years old. High fever. Midnight. And an old woman standing near the kitchen who wasn't supposed to be there — and who disappeared the moment my mother switched the lights on properly.</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Childhood</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Sighting</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Fever</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Home</span>
-            </div>
-            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="sel-card" data-log="1" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
-          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log PERSONAL-002</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
-          </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The House With The Little Ghosts</div>
-          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">The owner casually mentioned he took care of little ghosts. My mother told me years later that I used to play with them when I was home alone. I have almost no memory of it.</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Childhood</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Rental House</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Spirits</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Personal</span>
-            </div>
-            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="sel-card" data-log="2" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
-          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log PERSONAL-003</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
-          </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">Maybe Some Stories Don't Want To Be Written</div>
-          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">There's something I noticed over the years. Every time I seriously try to write down the unexplained things I've seen or felt, something stops me. I'm not joking.</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Writing Log</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Late Night</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Interference</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Personal</span>
-            </div>
-            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
-          </div>
-        </div>
-
-        <!-- Locked card -->
-        <div style="background:rgba(10,10,10,0.5);border:1px solid rgba(220,38,38,0.07);padding:20px 22px;position:relative;opacity:0.4;pointer-events:none;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#444;letter-spacing:2px;">// Log UNX-???</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#dc2626;letter-spacing:1px;text-transform:uppercase;">Encrypted</span>
-          </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#333;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</div>
-          <div style="display:flex;gap:8px;">
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#2a2a2a;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;letter-spacing:1px;">&#9618;&#9618;&#9618;&#9618;&#9618;&#9618;</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#2a2a2a;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;letter-spacing:1px;">&#9618;&#9618;&#9618;&#9618;</span>
-          </div>
-        </div>
-
-      </div><!-- /sel-cards -->
-    </div><!-- /selection-screen -->
-
-    <!-- LOG READER (hidden until story selected) -->
-    <div id="log-reader" style="display:none;">
+    <!-- LOG ENTRIES -->
     <div id="log-container">
 
        <!-- ══ LOG 1: The First Time I Saw Something ══ -->
@@ -497,7 +413,7 @@ Personal Unexplained Encounters | Paranormal & Eerie Real-Life Stories | Secret 
           </div>
 
           <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx013" class="space-y-6 text-gray-300">
+            <div id="full-intel-unx013" class="hidden space-y-6 text-gray-300">
               <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
                 <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The First Time I Saw Something</h4>
                 <p class="text-sm text-gray-500 italic">Log Classification: Personal / Childhood Encounter / First Sighting</p>
@@ -517,6 +433,168 @@ Personal Unexplained Encounters | Paranormal & Eerie Real-Life Stories | Secret 
                 </ul>
               </div>
             </div>
+            <div class="flex justify-center mt-6">
+              <button onclick="toggleIntel('full-intel-unx013', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ LOG 2: The House With The Little Ghosts ══ -->
+      <div class="log-entry" style="display:none;">
+        <span class="tag">Personal Log #002</span>
+        <h1 class="entry-title">The House With The Little Ghosts</h1>
+        <p class="lead">The owner casually mentioned he took care of little ghosts. My mother told me years later that I used to play with them when I was home alone. I have almost no memory of it. Only the offerings I placed every day — KitKats and Vitagen — like it was the most normal thing in the world.</p>
+
+        <div class="featured-image">
+          <div class="noise-overlay"></div>
+
+   <img 
+  src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778220266/littleghost_c0cfjt.png"
+  style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.72) saturate(0.85);"
+/>
+          <div class="featured-image-label">// SR-PERSONAL-002 // Childhood // Rental House</div>
+          <div class="corner-br"></div>
+        </div>
+
+        <div class="story-content">
+          <h2>The Memory That Won't Come Back</h2>
+          <p>There's one childhood memory I can never fully recall. Not because it's blurry. Because most of it feels missing. Back when I was around seven or eight years old, my family moved frequently between rental houses — our family business operated on short contracts, so shifting between places became normal. But there was one particular rental house that always stayed at the back of my mind. Not because of the house itself. Because of what the owner casually told my parents when we moved in. He said he took care of little ghosts. Back then, hearing adults say strange things wasn't uncommon. So as a child, I didn't think much about it at the time.</p>
+
+          <h2>What My Mother Told Me</h2>
+          <div class="atmosphere-prose">
+            <p>What unsettles me today is what my mother told me years afterward.</p>
+            <p>Apparently, whenever I was home alone in that house, I would play with them.</p>
+            <p class="pause">. . .</p>
+            <p>Till today, I honestly cannot remember what that means. No faces. No conversations. No visual memories. Nothing. Almost like that entire part of my childhood was locked away somewhere I can no longer reach.</p>
+            <p class="pause">. . .</p>
+            <p>The only thing I still remember clearly — was the instruction.</p>
+            <p>Every day, I was told to place KitKats and Vitagen somewhere inside the house.</p>
+            <p class="emphasis">And strangely, I never questioned it.</p>
+            <p>To me back then, it felt completely normal. Almost routine. Like feeding fish or watering plants. Just: put the snacks there. And I would do it, obediently, without any fear or hesitation.</p>
+          </div>
+
+          <h2>What Actually Disturbs Me Now</h2>
+          <p>That's the disturbing part when I think back on it today. Not the ghost story itself. But how natural the entire situation felt to a child. No fear. No panic. No feeling that anything was wrong. Just acceptance — as if the arrangement had always existed and I had simply been told my part in it.</p>
+          <p>Till today, I still don't know whether the owner genuinely believed something was living in that house, whether my childhood imagination created invisible companions, or whether the adults around me unknowingly shaped my memories into something they weren't.</p>
+          <p>But one detail quietly disturbs me every time I think about it. I cannot remember the playing at all. Not a single image. Not a single moment. Only the offerings. KitKats and Vitagen. Every single day. And the older I get, the stranger that missing memory feels — like something was deliberately taken out of reach, and the only proof it existed is the gap it left behind.</p>
+
+          <div class="signal-box">
+            <strong>// SIGNAL RECORDED:</strong> Childhood residence with confirmed occupant belief in resident spirits. Rider reportedly interacted with them — no memory of interactions retained. Daily offerings placed without fear or resistance. Memory of the "playing" entirely absent. Only the ritual remains.
+          </div>
+
+          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
+            <div id="full-intel-unx014" class="hidden space-y-6 text-gray-300">
+              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
+                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The House With The Little Ghosts</h4>
+                <p class="text-sm text-gray-500 italic">Log Classification: Personal / Childhood / Selective Memory Loss</p>
+              </div>
+              <div class="space-y-4">
+                <p><strong>[KUMAN THONG AND CHILD SPIRITS]</strong> The practice of taking care of little ghosts — specifically child spirits — exists across traditional belief systems in Singapore, Malaysia, and Thailand. Offerings of food and snacks are standard. The casualness with which the owner mentioned it, and the immediate integration of the practice into the child's routine, is consistent with households where this is simply a normal part of the living arrangement.</p>
+                <p><strong>[SELECTIVE MEMORY ABSENCE]</strong> Complete inability to recall specific interactions while clearly retaining surrounding details — the instructions, the offerings, the house — is not consistent with normal childhood memory decay. Normal forgetting is gradual and general. This suggests either natural dissociation, or a more deliberate process of memory limitation.</p>
+                <p><strong>[THE CHILD'S ACCEPTANCE]</strong> Children interacting with non-visible entities without fear — treating it as ordinary — is documented across multiple cultures. The absence of fear is not necessarily evidence that nothing was there. It may instead indicate that what was there presented itself in a way children found comfortable and adults found disturbing.</p>
+              </div>
+              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
+                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
+                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                  <li>Age at incident: ~7–8 years old</li>
+                  <li>Occupant belief: Confirmed — owner stated directly</li>
+                  <li>Memory status: Interactions absent. Ritual remains. Gap unexplained.</li>
+                  <li>Classification: Incomplete record — not all logs can be fully recovered.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex justify-center mt-6">
+              <button onclick="toggleIntel('full-intel-unx014', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+ <!-- ══ LOG 3: Maybe Some Stories Don't Want To Be Written ══ -->
+      <div class="log-entry" style="display:none;">
+        <span class="tag">Personal Log #003</span>
+        <h1 class="entry-title">Maybe Some Stories Don't Want To Be Written</h1>
+        <p class="lead">There's something I noticed over the years. Every time I seriously try to write down the unexplained things I've seen or felt, something stops me. I'm not joking.</p>
+
+        <div class="featured-image">
+          <div class="noise-overlay"></div>
+
+             <img 
+  src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778220266/doesntwant_pvmbws.png"
+  style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.72) saturate(0.85);"
+/>
+          <div class="featured-image-label">// SR-PERSONAL-003 // Writing Log // Late Night</div>
+          <div class="corner-br"></div>
+        </div>
+
+        <div class="story-content">
+          <h2>The Pattern I Keep Noticing</h2>
+          <p>Every time I seriously try to write down the unexplained things I've seen or felt over the years, something stops me. I've tried writing for True Singapore Ghost Stories before. Every time I start properly recalling the memories, something happens. Sudden distractions. Someone calling. Mood suddenly gone. Computer issues. Or I'll just stop halfway and completely forget about it for months — sometimes years. Then one random night I'll suddenly remember everything again. And when I finally decide: okay, tonight I'll finish writing it — something interrupts again.</p>
+
+          <h2>What's Happening Right Now</h2>
+          <div class="atmosphere-prose">
+            <p>Even while typing the stories earlier tonight, I suddenly felt cold.</p>
+            <p>Not normal cold.</p>
+            <p class="emphasis">The kind that slowly creeps into your body for no reason.</p>
+            <p>I'm wearing a thick winter jacket while typing this and I still feel it inside my arms and chest.</p>
+            <p class="pause">. . .</p>
+            <p>Maybe coincidence. Maybe I'm just tired. But every time I write these stories late at night, the atmosphere around me starts feeling different. Heavier. Too quiet. Like something is sitting nearby, reading along while I remember everything.</p>
+            <p>And honestly — I'd rather not know if that feeling is real or not.</p>
+          </div>
+
+          <h2>How It Started</h2>
+          <p>Since I was young, I've always been able to notice strange things. Not full horror-movie ghost sightings. More like shadows at the corner of my eye. Sudden feelings. Sensing something nearby before anything visible confirms it. Noticing things just before other people do.</p>
+          <p>After my accident in 2012, the "seeing" mostly stopped. But the feeling never fully disappeared. Even today, I still occasionally catch movements at the edge of my vision. When I turn to look properly, nothing is there.</p>
+          <p>I also spent years around spiritual things — tarot cards, superstitions, certain practices. Maybe that made me more sensitive to things most people tune out. Or maybe once you experience enough genuinely strange things in life, your brain simply becomes more alert to certain signals. I honestly don't know. And maybe I don't want to.</p>
+
+          <h2>What I Know</h2>
+          <p>All I know is this — every time I start writing these stories seriously, something always seems to notice. Whether that's my own mind working against me, or something else paying attention, I can't say.</p>
+          <p>If you're reading this late at night — especially if you found it through a search at some strange hour when you couldn't sleep — then maybe you already know what I mean. Some things don't like being remembered out loud. But some things need to be.</p>
+
+          <div class="signal-box">
+            <strong>// SIGNAL RECORDED:</strong> Repeated unexplained interruptions each time writing sessions begin. Physical cold during writing despite warm clothing. Sustained feeling of being observed. Pattern consistent across multiple years and multiple attempts.
+          </div>
+
+          <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
+            <div id="full-intel-unx012" class="hidden space-y-6 text-gray-300">
+              <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
+                <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: Maybe Some Stories Don't Want To Be Written</h4>
+                <p class="text-sm text-gray-500 italic">Log Classification: Personal / Sensitivity / Pattern Recognition</p>
+              </div>
+              <div class="space-y-4">
+                <p><strong>[WRITING INTERRUPTION PATTERN]</strong> The consistent failure to complete written accounts of unexplained experiences — across different environments, different devices, different time periods — is noted in accounts from people with long-term exposure to unexplained phenomena.</p>
+                <p><strong>[THE 2012 ACCIDENT]</strong> Traumatic events are frequently cited as a turning point in sensitivity to unexplained phenomena — either increasing it sharply, or partially closing it off. The partial reduction in "seeing" after the accident, with the feeling persisting, is a consistent pattern.</p>
+                <p><strong>[ON WRITING THESE LOGS]</strong> This site exists because these experiences happened and deserve to be recorded honestly. Not as entertainment. As documentation — the same way a field notes log records what was observed without requiring explanation. The fact that something doesn't want to be written is, itself, part of the record.</p>
+              </div>
+              <div class="p-4 border" style="background:rgba(0,0,0,0.4); border-color:rgba(220,38,38,0.3);">
+                <h5 class="text-sm mb-3 underline text-center tracking-widest uppercase" style="color:#f87171;">INCIDENT ASSESSMENT</h5>
+                <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                  <li>Pattern duration: Multiple years</li>
+                  <li>Consistent elements: Cold, atmospheric shift, feeling of observation</li>
+                  <li>Status: Ongoing — these logs are the attempt to finish what keeps getting interrupted</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex justify-center mt-6">
+              <button onclick="toggleIntel('full-intel-unx012', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+
+    </div><!-- /log-container -->
+
+    <hr class="section-rule" />
+
+    <!-- Navigation -->
+    <div class="flex items-center justify-center gap-5 flex-wrap">
+      <button id="prevBtn" class="nav-btn"><span>◄ Previous Log</span></button>
+      <div class="page-counter">LOG <span id="current-page">01</span> / <span id="total-pages">03</span></div>
+      <button id="nextBtn" class="nav-btn"><span>Unlock Next ►</span></button>
+    </div>
 
     <div class="text-center mt-16">
       <a href="/unexplained/" class="font-mono-tech text-gray-600 text-xs tracking-widest uppercase hover:text-red-500 transition-colors duration-200">◄ Return to Unexplained Archive</a>
@@ -649,12 +727,20 @@ Personal Unexplained Encounters | Paranormal & Eerie Real-Life Stories | Secret 
     var prevIndex=currentLogIndex-1;
     decryptText(prevBtn,'◄ Previous Log',function(){updateView(prevIndex);});
   });
-  /* ── Selection screen ── */
-  function selectLog(el){
-    var logIndex=parseInt(el.getAttribute('data-log'));
-    document.getElementById('selection-screen').style.display='none';
-    document.getElementById('log-reader').style.display='block';
-    updateView(logIndex);
+
+  updateView(0);
+
+  function toggleIntel(id,btn){
+    var report=document.getElementById(id);
+    var isHidden=report.classList.contains('hidden');
+    if(isHidden){
+      report.classList.remove('hidden');
+      btn.innerText='CLOSE FIELD NOTES';
+      report.scrollIntoView({behavior:'smooth',block:'nearest'});
+    } else {
+      report.classList.add('hidden');
+      btn.innerText='ACCESS FULL FIELD NOTES';
+    }
   }
 </script>
 </body>
