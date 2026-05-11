@@ -501,6 +501,20 @@
     [id^="full-intel-"] .bg-red-950\/20 {
       padding: 16px 20px;
     }
+
+    /* Selection screen */
+    .sel-card:hover { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.04) !important; }
+    .sel-card:hover .sel-accent { background:#dc2626 !important; }
+    .sel-card:hover .sel-arrow { color:rgba(220,38,38,0.8) !important; }
+    @keyframes entryFadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes signalFlicker { 0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:0.2} 94%{opacity:1} 97%{opacity:0.4} 98%{opacity:1} }
+    .sel-briefing-line { opacity:0; animation: entryFadeUp 0.5s ease forwards; }
+    .sel-transmission { font-family:'Share Tech Mono',monospace; font-size:0.65rem; letter-spacing:3px; text-transform:uppercase; color:#444; animation: signalFlicker 4s infinite; }
+    .sel-card-lead { font-family:'IBM Plex Sans',sans-serif; font-size:0.88rem; color:#888; line-height:1.7; font-style:italic; border-left:2px solid rgba(220,38,38,0.3); padding-left:12px; margin:10px 0 14px; }
+    .sel-divider { border:none; height:1px; background:linear-gradient(90deg,transparent,rgba(220,38,38,0.25) 30%,rgba(220,38,38,0.25) 70%,transparent); margin:28px 0; }
+    .sel-warning-bar { font-family:'Share Tech Mono',monospace; font-size:0.62rem; letter-spacing:2px; text-transform:uppercase; color:rgba(220,38,38,0.5); border:1px solid rgba(220,38,38,0.15); background:rgba(220,38,38,0.04); padding:8px 14px; display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+    .sel-incident-type { font-family:'Share Tech Mono',monospace; font-size:0.58rem; letter-spacing:2px; color:#555; text-transform:uppercase; margin-bottom:6px; }
+
   </style>
 </head>
 <body>
@@ -593,11 +607,126 @@
 
       <hr class="section-rule" />
 
-      <!-- Log container -->
-      <div id="log-container">
+
+    <!-- SELECTION SCREEN -->
+    <div id="selection-screen">
+
+      <div style="margin-bottom:24px;">
+        <div class="sel-transmission" style="margin-bottom:6px;">TRANSMISSION: THAILAND RIDE LOGS</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:#333;letter-spacing:2px;text-transform:uppercase;">18.7883° N, 98.9853° E — CHIANG MAI</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:6px;color:rgba(220,38,38,0.6);">
+            <span style="width:6px;height:6px;background:#dc2626;border-radius:50%;display:inline-block;animation:pulse-dot 1.2s infinite;"></span>
+            SIGNAL ACTIVE
+          </div>
+        </div>
+      </div>
+
+      <div class="sel-warning-bar"><span style="color:#dc2626;">&#9888;</span>WARNING: THAILAND ROAD CONDITIONS AND SINGAPORE ROADS ARE TOTALLY DIFFERENT BEASTS.</div>
+
+      <div style="margin-bottom:28px;padding:20px 22px;background:rgba(5,5,5,0.8);border:1px solid rgba(255,255,255,0.04);border-left:2px solid rgba(220,38,38,0.3);display:flex;flex-direction:column;gap:10px;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(220,38,38,0.5);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;">// FIELD BRIEFING — SR-TH-RIDE</div>
+        <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.1s;">You are accessing the Thailand Rider Logs.</p>
+        <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.2s;">Three documented trips across different eras — the early pioneer run, the Hatyai circuit, and the 6,000km northern redemption that tested everything: tyres, nerves, finances, and the idea that you can plan a trip and have it go to plan.</p>
+        <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.3s;">Thailand riding is not for the unprepared. Monsoon flooding, 1,864-corner mountain passes, 3rd-class train hops, accidents with local vehicles, and budget hotels that no guide will ever rate — all of it documented as it happened.</p>
+        <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.4s;">Choose a log. Read it before you plan your own trip north.</p>
+      </div>
+
+      <hr class="sel-divider" />
+
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#dc2626;letter-spacing:3px;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+        <span style="width:6px;height:6px;background:#dc2626;border-radius:50%;display:inline-block;animation:pulse-dot 1.4s infinite;"></span>
+        3 LOGS AVAILABLE — SELECT TO ENTER
+      </div>
+
+      <div style="display:grid;gap:14px;">
+
+        <div class="sel-card" data-log="0" onclick="selectLog(this)"
+          style="background:rgba(8,8,8,0.9);border:1px solid rgba(220,38,38,0.15);padding:22px 24px;cursor:pointer;position:relative;transition:border-color .3s,background .3s;animation:entryFadeUp 0.5s ease 0.15s both;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .3s;" class="sel-accent"></div>
+          <div class="sel-incident-type">TRIP TYPE: NORTHERN EXPEDITION</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#f87171;letter-spacing:2px;text-transform:uppercase;">// Log SR-TH-003</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#333;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">Documented</span>
+          </div>
+          <div style="font-size:1.25rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.02em;font-family:'Barlow Condensed',sans-serif;line-height:1.15;margin-bottom:2px;">2023: The 6,000km Redemption</div>
+          <div class="sel-card-lead">Returning to Thailand over a decade later. Mechanical failures, flat tyres, an 8,000 Baht accident, 1,864 corners on Doi Inthanon, and a 3rd-class train from Bangkok to Hatyai. All of it documented.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:4px;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Thailand</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">2023</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Chiang Mai</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Touring</span>
+            </div>
+            <span class="sel-arrow" style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .3s;white-space:nowrap;">ENTER LOG &#9658;</span>
+          </div>
+        </div>
+        <div class="sel-card" data-log="1" onclick="selectLog(this)"
+          style="background:rgba(8,8,8,0.9);border:1px solid rgba(220,38,38,0.15);padding:22px 24px;cursor:pointer;position:relative;transition:border-color .3s,background .3s;animation:entryFadeUp 0.5s ease 0.30s both;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .3s;" class="sel-accent"></div>
+          <div class="sel-incident-type">TRIP TYPE: MULTI-COUNTRY EXPEDITION</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#f87171;letter-spacing:2px;text-transform:uppercase;">// Log SR-TH-002</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#333;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">Documented</span>
+          </div>
+          <div style="font-size:1.25rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.02em;font-family:'Barlow Condensed',sans-serif;line-height:1.15;margin-bottom:2px;">The 14-Day Rush: Laos & MHS</div>
+          <div class="sel-card-lead">A charity convoy pushing all the way to Laos. Cascading mechanical failures from day one. By the time the group turned back, the road had already made its point.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:4px;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Thailand</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Laos</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Mae Hong Son</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Convoy</span>
+            </div>
+            <span class="sel-arrow" style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .3s;white-space:nowrap;">ENTER LOG &#9658;</span>
+          </div>
+        </div>
+        <div class="sel-card" data-log="2" onclick="selectLog(this)"
+          style="background:rgba(8,8,8,0.9);border:1px solid rgba(220,38,38,0.15);padding:22px 24px;cursor:pointer;position:relative;transition:border-color .3s,background .3s;animation:entryFadeUp 0.5s ease 0.45s both;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .3s;" class="sel-accent"></div>
+          <div class="sel-incident-type">TRIP TYPE: PIONEER RUN</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#f87171;letter-spacing:2px;text-transform:uppercase;">// Log SR-TH-001</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#333;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">Documented</span>
+          </div>
+          <div style="font-size:1.25rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.02em;font-family:'Barlow Condensed',sans-serif;line-height:1.15;margin-bottom:2px;">Malaysia &#10132; Thailand: The Hatyai Run</div>
+          <div class="sel-card-lead">The first Thailand trip. Hatyai and back — short by later standards, but this was where it started. Before the 6,000km run. Before the accidents and train hops. Before any of it became normal.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:4px;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Malaysia</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Thailand</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Hatyai</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">First Run</span>
+            </div>
+            <span class="sel-arrow" style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .3s;white-space:nowrap;">ENTER LOG &#9658;</span>
+          </div>
+        </div>
+
+        <div style="background:rgba(8,8,8,0.6);border:1px solid rgba(220,38,38,0.07);padding:22px 24px;opacity:0.35;pointer-events:none;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#dc2626;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">TRIP TYPE: &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</div>
+          <div style="font-size:1.25rem;font-weight:800;color:#2a2a2a;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:6px;">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</div>
+          <div style="display:flex;gap:6px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#1e1e1e;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;">&#9618;&#9618;&#9618;&#9618;&#9618;&#9618;</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#1e1e1e;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;">&#9618;&#9618;&#9618;&#9618;</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:32px;padding-top:20px;border-top:1px solid rgba(220,38,38,0.1);display:flex;justify-content:center;">
+        <a href="/overseas/" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#444;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:color .2s;"
+           onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='#444'">
+          &#9668; Return to Overseas
+        </a>
+      </div>
+
+    </div><!-- /selection-screen -->
+
+    <!-- LOG READER -->
+    <div id="log-reader" style="display:none;">
+    <div id="log-container">
 
         <!-- ══ TRIP 1: Entry #003 ══ -->
-        <div class="log-entry">
+        <div class="log-entry" style="display:none;">
           <span class="tag">Rider Log Entry #003</span>
           <h1 class="entry-title">2023: The 6,000km Redemption</h1>
           <p class="lead">Returning to Thailand over a decade later. From mechanical failures and flat tires to train-hopping through the heart of the country.</p>
@@ -644,7 +773,7 @@
         <!-- START OF DETAILED LOG -->
 <div class="mt-8 pt-8 border-t border-red-900/30">
     <!-- The Hidden Content Section -->
-    <div id="full-intel-003" class="hidden space-y-6 text-gray-300">
+    <div id="full-intel-003" class="space-y-6 text-gray-300">
         <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
             <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Mission Log: 6,000KM Redemption</h4>
             <p class="text-sm text-gray-500 italic">Unredacted field notes restoration...</p>
@@ -878,11 +1007,6 @@ The Feeling: No drama, no rush—just a clean, steady return. After everything�
     </div>
 
     <!-- The Toggle Button -->
-    <div class="flex justify-center mt-6">
-        <button onclick="toggleIntel('full-intel-003', this)" class="load-more-style py-2 px-6 text-sm">
-            ACCESS FULL INTEL REPORT
-        </button>
-    </div>
 </div>
 <!-- END OF DETAILED LOG -->
 
@@ -935,7 +1059,7 @@ The Feeling: No drama, no rush—just a clean, steady return. After everything�
             </ul>
 
             <div class="mt-8 pt-8 border-t border-red-900/30">
-    <div id="full-intel-002" class="hidden space-y-6 text-gray-300">
+    <div id="full-intel-002" class="space-y-6 text-gray-300">
         <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
             <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Mission Log: Laos & MHS Loop</h4>
             <p class="text-sm text-gray-500 italic">Timeline: 2013 - Extraction intel from Troopers who cleared it</p>
@@ -959,12 +1083,6 @@ The Feeling: No drama, no rush—just a clean, steady return. After everything�
                 <li>Vibe: 100% Grit, 0% Comfort</li>
             </ul>
         </div>
-    </div>
-
-    <div class="flex justify-center mt-6">
-        <button onclick="toggleIntel('full-intel-002', this)" class="border border-red-500/30 text-red-500 px-6 py-2 text-sm font-mono hover:bg-red-600 hover:text-white transition-all">
-            ACCESS FULL INTEL REPORT
-        </button>
     </div>
 </div>
 
@@ -1011,7 +1129,7 @@ The Feeling: No drama, no rush—just a clean, steady return. After everything�
 
             <div class="mt-8 pt-8 border-t border-red-900/30">
     <!-- Hidden Content Section -->
-    <div id="full-intel-001" class="hidden space-y-6 text-gray-300">
+    <div id="full-intel-001" class="space-y-6 text-gray-300">
         <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
             <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Mission Log: Hatyai Proving Ground</h4>
             <p class="text-sm text-gray-500 italic">Timeline: The Foundation Run</p>
@@ -1031,18 +1149,14 @@ The Feeling: No drama, no rush—just a clean, steady return. After everything�
     </div>
 
     <!-- Toggle Button -->
-    <div class="flex justify-center mt-6">
-        <button onclick="toggleIntel('full-intel-001', this)" class="border border-red-500/30 text-red-500 px-6 py-2 text-sm font-mono hover:bg-red-600 hover:text-white transition-all">
-            ACCESS FULL INTEL REPORT
-        </button>
-    </div>
 </div>
 
 
           </div>
         </div>
 
-      </div><!-- /log-container -->
+
+    </div><!-- /log-container -->
 
       <hr class="section-rule" />
 
@@ -1054,7 +1168,21 @@ The Feeling: No drama, no rush—just a clean, steady return. After everything�
       </div>
 
     </div>
-  </main>
+  
+<div style="margin-top:48px;padding-top:20px;border-top:1px solid rgba(220,38,38,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+      <button onclick="backToSelection()" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#444;letter-spacing:2px;text-transform:uppercase;background:transparent;border:none;cursor:pointer;padding:0;transition:color .2s;"
+         onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='#444'">
+        &#9668; Back to Thailand Rides
+      </button>
+      <a href="/overseas/" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#333;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:color .2s;"
+         onmouseover="this.style.color='#555'" onmouseout="this.style.color='#333'">
+        Overseas Hub &#9658;
+      </a>
+    </div>
+
+    </div><!-- /log-reader -->
+  </div>
+</main>
 
   <!-- ════ FOOTER (matches index) ════ -->
   <footer class="py-16 px-5 border-t border-white/5">
@@ -1171,74 +1299,67 @@ The Feeling: No drama, no rush—just a clean, steady return. After everything�
     }
 
     // ── Log navigation ──
-    var logs        = document.querySelectorAll('.log-entry');
-    var nextBtn     = document.getElementById('nextBtn');
-    var prevBtn     = document.getElementById('prevBtn');
-    var currentPage = document.getElementById('current-page');
-    var totalPages  = document.getElementById('total-pages');
-    var currentLogIndex = 0;
 
-    totalPages.textContent = String(logs.length).padStart(2, '0');
+  /* ── Selection screen ── */
+  var logsInited = false;
+  var logs, nextBtn, prevBtn, currentPage, totalPages, currentLogIndex;
 
-    function updateButtons() {
-      prevBtn.disabled = currentLogIndex === 0;
-      nextBtn.disabled = currentLogIndex === logs.length - 1;
-      currentPage.textContent = String(currentLogIndex + 1).padStart(2, '0');
-    }
+  function initReader(){
+    if(logsInited) return;
+    logsInited = true;
+    logs = document.querySelectorAll('.log-entry');
+    nextBtn = document.getElementById('nextBtn');
+    prevBtn = document.getElementById('prevBtn');
+    currentPage = document.getElementById('current-page');
+    totalPages = document.getElementById('total-pages');
+    currentLogIndex = 0;
+    totalPages.textContent = String(logs.length).padStart(2,'0');
 
-    function updateView(newIndex) {
-      logs.forEach(function (log) { log.style.display = 'none'; });
-      currentLogIndex = newIndex;
-      logs[currentLogIndex].style.display = 'block';
-      // Re-trigger animation
-      logs[currentLogIndex].style.animation = 'none';
-      logs[currentLogIndex].offsetHeight; // reflow
-      logs[currentLogIndex].style.animation = '';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      updateButtons();
-    }
-
-    nextBtn.addEventListener('click', function () {
-      if (currentLogIndex >= logs.length - 1) return;
-      var nextIndex = currentLogIndex + 1;
-      decryptText(nextBtn, 'Decrypt Next ►', function () { updateView(nextIndex); });
+    nextBtn.addEventListener('click',function(){
+      if(currentLogIndex>=logs.length-1)return;
+      var nextIndex=currentLogIndex+1;
+      decryptText(nextBtn,'Decrypt Next ►',function(){updateView(nextIndex);});
     });
-
-    prevBtn.addEventListener('click', function () {
-      if (currentLogIndex <= 0) return;
-      var prevIndex = currentLogIndex - 1;
-      decryptText(prevBtn, '◄ Previous File', function () { updateView(prevIndex); });
+    prevBtn.addEventListener('click',function(){
+      if(currentLogIndex<=0)return;
+      var prevIndex=currentLogIndex-1;
+      decryptText(prevBtn,'◄ Previous File',function(){updateView(prevIndex);});
     });
+  }
 
-    // Initialise
-    updateView(0);
+  function updateButtons(){
+    prevBtn.disabled=currentLogIndex===0;
+    nextBtn.disabled=currentLogIndex===logs.length-1;
+    currentPage.textContent=String(currentLogIndex+1).padStart(2,'0');
+  }
 
-    function toggleIntel(id, btn) {
-    const report = document.getElementById(id);
-    const isHidden = report.classList.contains('hidden');
-    
-    if (isHidden) {
-        report.classList.remove('hidden');
-        btn.innerText = 'CLOSE INTEL REPORT';
-        // Auto-break long field note paragraphs at timestamp markers
-        report.querySelectorAll('p').forEach(function(p) {
-          var html = p.innerHTML;
-          // Split at HRS: or at line breaks within the paragraph
-          html = html.replace(/(\d{4} HRS:)/g, '<br><span class="intel-timestamp">$1</span>');
-          // Add paragraph breaks at newlines
-          html = html.replace(/\n/g, '</p><p>');
-          p.innerHTML = html;
-        });
-        // Smooth scroll so the user sees the start of the new text
-        report.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    } else {
-        report.classList.add('hidden');
-        btn.innerText = 'ACCESS FULL INTEL REPORT';
-    }
-}
+  function updateView(newIndex){
+    logs.forEach(function(log){log.style.display='none';});
+    currentLogIndex=newIndex;
+    logs[currentLogIndex].style.display='block';
+    logs[currentLogIndex].style.animation='none';
+    logs[currentLogIndex].offsetHeight;
+    logs[currentLogIndex].style.animation='';
+    window.scrollTo({top:0,behavior:'smooth'});
+    updateButtons();
+  }
 
+  function selectLog(el){
+    var logIndex=parseInt(el.getAttribute('data-log'));
+    document.getElementById('selection-screen').style.display='none';
+    document.getElementById('log-reader').style.display='block';
+    initReader();
+    updateView(logIndex);
+  }
+
+  function backToSelection(){
+    document.getElementById('log-reader').style.display='none';
+    document.getElementById('selection-screen').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
 
   </script>
+
 
 </body>
 </html>
