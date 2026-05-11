@@ -228,14 +228,6 @@ Night Ride Logs | Eerie Motorcycle Rides & Unexplained Encounters | Secret Revie
     .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
     .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
 
-    .load-more-style {
-      background:transparent; color:#f87171;
-      border:1px solid rgba(220,38,38,0.4);
-      font-family:'Share Tech Mono',monospace; font-size:0.72rem;
-      letter-spacing:2px; text-transform:uppercase; cursor:pointer;
-      padding:10px 22px; transition:background .25s,color .25s;
-    }
-    .load-more-style:hover { background:var(--red); color:#fff; }
 
     .signal-box {
       background:rgba(220,38,38,0.05); border:1px solid rgba(220,38,38,0.3);
@@ -263,6 +255,13 @@ Night Ride Logs | Eerie Motorcycle Rides & Unexplained Encounters | Secret Revie
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
       background-size:128px; animation:staticNoise 4s step-start infinite;
     }
+
+    /* Selection cards */
+    .sel-card:hover { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.04) !important; }
+    .sel-card:hover .sel-accent { background:#dc2626 !important; }
+    .sel-card:hover .sel-arrow { color:rgba(220,38,38,0.7) !important; }
+    .sel-card.sel-active { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.05) !important; }
+    .sel-card.sel-active .sel-accent { background:#dc2626 !important; }
 
     /* Breadcrumb */
     .breadcrumb {
@@ -361,11 +360,90 @@ Night Ride Logs | Eerie Motorcycle Rides & Unexplained Encounters | Secret Revie
 
     <hr class="section-rule" />
 
-    <!-- LOG ENTRIES -->
+    <!-- SELECTION SCREEN -->
+    <div id="selection-screen">
+      <div class="font-mono-tech text-xs uppercase mb-5" style="color:#dc2626;letter-spacing:3px;display:flex;align-items:center;gap:10px;">
+        <span class="inline-block w-2 h-2 rounded-full" style="background:#dc2626;animation:pulse-dot 1.4s infinite;"></span>
+        Select a log to access
+      </div>
+      <div id="sel-cards" style="display:grid;gap:14px;">
+
+        <div class="sel-card" data-log="0" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log UNX-003</span>
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
+          </div>
+          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The Sudden Passenger</div>
+          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">It was past midnight. The roads were empty. I was riding alone — or at least, I thought I was. The pillion stand was down. I hadn't noticed.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Singapore</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Midnight</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Solo Ride</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Pillion</span>
+            </div>
+            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
+          </div>
+        </div>
+        <div class="sel-card" data-log="1" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log UNX-002</span>
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
+          </div>
+          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The Angel That Brought Me Home</div>
+          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">Micro-sleep on a bike is a death sentence. Most riders who've hit that wall will tell you about the accidents that followed. I didn't get an accident. I got something else.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Singapore</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Long Haul</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Guardian</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Micro-sleep</span>
+            </div>
+            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
+          </div>
+        </div>
+        <div class="sel-card" data-log="2" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log UNX-005</span>
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
+          </div>
+          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The Night I Ended The Ride Early</div>
+          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">Every Friday night for years, I organised a meetup. No registration, no planning — just riders. But this particular night, both the road and my wife were trying to tell me the same thing at the same time.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Singapore</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Friday Convoy</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Warning</span>
+              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Instinct</span>
+            </div>
+            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
+          </div>
+        </div>
+
+        <!-- Locked card -->
+        <div style="background:rgba(10,10,10,0.5);border:1px solid rgba(220,38,38,0.07);padding:20px 22px;position:relative;opacity:0.4;pointer-events:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span class="font-mono-tech text-xs uppercase" style="color:#444;letter-spacing:2px;">// Log UNX-???</span>
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#dc2626;letter-spacing:1px;text-transform:uppercase;">Encrypted</span>
+          </div>
+          <div style="font-size:1.3rem;font-weight:700;color:#333;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</div>
+          <div style="display:flex;gap:8px;">
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#2a2a2a;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;">&#9618;&#9618;&#9618;&#9618;&#9618;&#9618;</span>
+            <span class="font-mono-tech" style="font-size:0.6rem;color:#2a2a2a;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;">&#9618;&#9618;&#9618;&#9618;</span>
+          </div>
+        </div>
+      </div><!-- /sel-cards -->
+    </div><!-- /selection-screen -->
+
+    <!-- LOG READER -->
+    <div id="log-reader" style="display:none;">
     <div id="log-container">
 
         <!-- ══ LOG 1: The Sudden Passenger ══ -->
-      <div class="log-entry">
+      <div class="log-entry" style="display:none;">
         <span class="tag">Unexplained Log #003</span>
         <h1 class="entry-title">The Sudden Passenger</h1>
         <p class="lead">It was past midnight. The roads were empty. I was riding alone — or at least, I thought I was. The pillion stand was down. I hadn't noticed.</p>
@@ -433,7 +511,7 @@ Night Ride Logs | Eerie Motorcycle Rides & Unexplained Encounters | Secret Revie
           </div>
 
           <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx003" class="hidden space-y-6 text-gray-300">
+            <div id="full-intel-unx003" class="space-y-6 text-gray-300">
               <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
                 <h4 class="font-bold uppercase mb-2" style="color:#f87171; /* lighter red accent */">Additional Field Notes: The Sudden Passenger</h4>
                 <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Mechanical Anomaly / Road Encounter</p>
@@ -451,11 +529,6 @@ Night Ride Logs | Eerie Motorcycle Rides & Unexplained Encounters | Secret Revie
                   <li>Resolution method: Verbal + physical (pillion stand folded)</li>
                 </ul>
               </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx003', this)" class="load-more-style">
-                ACCESS FULL FIELD NOTES
-              </button>
             </div>
           </div>
         </div>
@@ -532,7 +605,7 @@ Night Ride Logs | Eerie Motorcycle Rides & Unexplained Encounters | Secret Revie
           <p>Rest when the road tells you to. And if something ever keeps you upright when you shouldn't be — say thank you.</p>
 
           <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx002" class="hidden space-y-6 text-gray-300">
+            <div id="full-intel-unx002" class="space-y-6 text-gray-300">
               <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
                 <h4 class="font-bold uppercase mb-2" style="color:#f87171; /* lighter red accent */">Additional Field Notes: The Angel That Brought Me Home</h4>
                 <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Protective Encounter / Long Distance</p>
@@ -550,11 +623,6 @@ Night Ride Logs | Eerie Motorcycle Rides & Unexplained Encounters | Secret Revie
                   <li>Actual outcome: Safe arrival, no incident</li>
                 </ul>
               </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx002', this)" class="load-more-style">
-                ACCESS FULL FIELD NOTES
-              </button>
             </div>
           </div>
         </div>
@@ -624,7 +692,7 @@ Night Ride Logs | Eerie Motorcycle Rides & Unexplained Encounters | Secret Revie
           </div>
 
           <div class="mt-8 pt-8 border-t" style="border-color:rgba(220,38,38,0.2);">
-            <div id="full-intel-unx005" class="hidden space-y-6 text-gray-300">
+            <div id="full-intel-unx005" class="space-y-6 text-gray-300">
               <div class="p-4 border-l-2 mb-6" style="background:rgba(220,38,38,0.08); border-color:#dc2626;">
                 <h4 class="font-bold uppercase mb-2" style="color:#f87171;">Additional Field Notes: The Night I Ended The Ride Early</h4>
                 <p class="text-sm text-gray-500 italic">Log Classification: Unexplained / Premonition / Fatal Incident</p>
@@ -643,9 +711,6 @@ Night Ride Logs | Eerie Motorcycle Rides & Unexplained Encounters | Secret Revie
                   <li>Recommendation: When the road tells you to go home — go home.</li>
                 </ul>
               </div>
-            </div>
-            <div class="flex justify-center mt-6">
-              <button onclick="toggleIntel('full-intel-unx005', this)" class="load-more-style">ACCESS FULL FIELD NOTES</button>
             </div>
           </div>
         </div>
@@ -668,6 +733,7 @@ Night Ride Logs | Eerie Motorcycle Rides & Unexplained Encounters | Secret Revie
       <a href="/unexplained/" class="font-mono-tech text-gray-600 text-xs tracking-widest uppercase hover:text-red-500 transition-colors duration-200">◄ Return to Unexplained Archive</a>
     </div>
 
+    </div><!-- /log-reader -->
   </div>
 </main>
 
@@ -758,14 +824,33 @@ Night Ride Logs | Eerie Motorcycle Rides & Unexplained Encounters | Secret Revie
     },30);
   }
 
-  var logs=document.querySelectorAll('.log-entry');
-  var nextBtn=document.getElementById('nextBtn');
-  var prevBtn=document.getElementById('prevBtn');
-  var currentPage=document.getElementById('current-page');
-  var totalPages=document.getElementById('total-pages');
-  var currentLogIndex=0;
+  /* ── Selection screen ── */
+  var logsInited = false;
+  var logs, nextBtn, prevBtn, currentPage, totalPages, currentLogIndex;
 
-  totalPages.textContent=String(logs.length).padStart(2,'0');
+  function initReader(){
+    if(logsInited) return;
+    logsInited = true;
+    logs = document.querySelectorAll('.log-entry');
+    nextBtn = document.getElementById('nextBtn');
+    prevBtn = document.getElementById('prevBtn');
+    currentPage = document.getElementById('current-page');
+    totalPages = document.getElementById('total-pages');
+    currentLogIndex = 0;
+    totalPages.textContent = String(logs.length).padStart(2,'0');
+
+    nextBtn.addEventListener('click',function(){
+      if(currentLogIndex>=logs.length-1)return;
+      var nextIndex=currentLogIndex+1;
+      decryptText(nextBtn,'Unlock Next ►',function(){updateView(nextIndex);});
+    });
+
+    prevBtn.addEventListener('click',function(){
+      if(currentLogIndex<=0)return;
+      var prevIndex=currentLogIndex-1;
+      decryptText(prevBtn,'◄ Previous Log',function(){updateView(prevIndex);});
+    });
+  }
 
   function updateButtons(){
     prevBtn.disabled=currentLogIndex===0;
@@ -784,32 +869,14 @@ Night Ride Logs | Eerie Motorcycle Rides & Unexplained Encounters | Secret Revie
     updateButtons();
   }
 
-  nextBtn.addEventListener('click',function(){
-    if(currentLogIndex>=logs.length-1)return;
-    var nextIndex=currentLogIndex+1;
-    decryptText(nextBtn,'Unlock Next ►',function(){updateView(nextIndex);});
-  });
-
-  prevBtn.addEventListener('click',function(){
-    if(currentLogIndex<=0)return;
-    var prevIndex=currentLogIndex-1;
-    decryptText(prevBtn,'◄ Previous Log',function(){updateView(prevIndex);});
-  });
-
-  updateView(0);
-
-  function toggleIntel(id,btn){
-    var report=document.getElementById(id);
-    var isHidden=report.classList.contains('hidden');
-    if(isHidden){
-      report.classList.remove('hidden');
-      btn.innerText='CLOSE FIELD NOTES';
-      report.scrollIntoView({behavior:'smooth',block:'nearest'});
-    } else {
-      report.classList.add('hidden');
-      btn.innerText='ACCESS FULL FIELD NOTES';
-    }
+  function selectLog(el){
+    var logIndex=parseInt(el.getAttribute('data-log'));
+    document.getElementById('selection-screen').style.display='none';
+    document.getElementById('log-reader').style.display='block';
+    initReader();
+    updateView(logIndex);
   }
+
 </script>
 </body>
 </html>
