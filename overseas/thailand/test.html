@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta name="description" content="Motorcycle rides from Singapore to Thailand featuring Thailand touring routes, food stops, rider experiences, road conditions, hotel stays, night riding, and real-world travel stories from weekend cross-border journeys.">
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>
+Singapore to Thailand Motorcycle Ride | Thailand Touring Experience | Secret Reviewer
+</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Barlow Condensed', 'sans-serif'],
+            mono: ['"Share Tech Mono"', 'monospace'],
+            prose: ['"IBM Plex Sans"', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    /* ── CSS Variables (identical to index) ── */
+    :root {
+      --red: #dc2626;
+      --red-dim: rgba(220, 38, 38, 0.15);
+      --red-glow: rgba(220, 38, 38, 0.6);
+      --bg: #060606;
+      --surface: rgba(10, 10, 10, 0.85);
+    }
+
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: #ececec;
+      font-family: 'Barlow Condensed', sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+      cursor: none;
+      line-height: 1.75;
+    }
+    .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+    .font-prose { font-family: 'IBM Plex Sans', sans-serif; }
+
+    /* ── Custom Cursor (identical to index) ── */
+    #cursor {
+      position: fixed;
+      width: 12px; height: 12px;
+      background: var(--red);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+      mix-blend-mode: screen;
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(220,38,38,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+    }
+
+    /* ── Animations (identical to index) ── */
+    @keyframes flicker {
+      0%,18%,22%,25%,53%,57%,100% { opacity: 1; }
+      20%,24%,55% { opacity: 0.3; }
+    }
+    @keyframes pulse-red {
+      0%,100% { box-shadow: 0 0 6px rgba(220,38,38,0.3); }
+      50%      { box-shadow: 0 0 28px rgba(220,38,38,0.8), 0 0 60px rgba(220,38,38,0.25); }
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.3; }
+    }
+    @keyframes scan {
+      from { top: -100%; }
+      to   { top: 100%; }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes folderOpen {
+      from { opacity: 0; transform: translateY(16px); filter: blur(4px); }
+      to   { opacity: 1; transform: translateY(0);  filter: blur(0); }
+    }
+    /* ── Glitch title ── */
+    .glitch-wrap { position: relative; display: inline-block; }
+    .glitch-wrap::before, .glitch-wrap::after {
+      content: attr(data-text);
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    .glitch-wrap::before { color: #00ffff; animation: glitch-1 6s infinite step-start; opacity: 0.6; }
+    .glitch-wrap::after  { color: var(--red); animation: glitch-2 6s infinite step-start; opacity: 0.6; }
+
+    @keyframes glitch-1 {
+      0%,100% { clip-path: inset(0 0 98% 0);  transform: translate(-2px,0); }
+      20%     { clip-path: inset(20% 0 50% 0); transform: translate(2px,0); }
+      40%     { clip-path: inset(60% 0 20% 0); transform: translate(-2px,0); }
+      60%     { clip-path: inset(80% 0 5% 0);  transform: translate(2px,0); }
+      80%     { clip-path: inset(40% 0 60% 0); transform: translate(-2px,0); }
+    }
+    @keyframes glitch-2 {
+      0%,100% { clip-path: inset(50% 0 30% 0); transform: translate(2px,0);  color:#00ffff; }
+      25%     { clip-path: inset(10% 0 80% 0); transform: translate(-2px,0); }
+      50%     { clip-path: inset(70% 0 10% 0); transform: translate(2px,0);  color:var(--red); }
+      75%     { clip-path: inset(30% 0 50% 0); transform: translate(-2px,0); }
+    }
+    @keyframes borderFlash {
+      0%,100% { border-color: rgba(220,38,38,0.15); }
+      50%     { border-color: rgba(220,38,38,0.5); }
+    }
+
+    .animate-pulse-red    { animation: pulse-red 2.5s infinite; }
+    .animate-pulse-dot    { animation: pulse-dot 2s infinite; }
+    .animate-fade-slide-up{ animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+    .animate-border-flash { animation: borderFlash 3s infinite; }
+
+    /* ── CRT scanlines + sweep (identical to index) ── */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
+      pointer-events: none;
+      z-index: 9990;
+    }
+    body::after {
+      content: "";
+      position: fixed; top: -100%; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(rgba(220,38,38,0) 0%, rgba(220,38,38,0.04) 50%, rgba(220,38,38,0) 100%);
+      animation: scan 8s linear infinite;
+      pointer-events: none;
+      z-index: 9991;
+    }
+
+    /* ── Progress bar ── */
+    #progress-bar {
+      height: 3px;
+      background: linear-gradient(90deg, #7f1d1d, #dc2626, #ff6666);
+      box-shadow: 0 0 12px rgba(220,38,38,0.9), 0 0 24px rgba(220,38,38,0.4);
+      width: 0%;
+      transition: width 0.08s ease-out;
+    }
+
+    /* ── Navbar (matches index exactly) ── */
+    #navbar { transition: all 0.4s ease; }
+    .nav-scrolled {
+      background: rgba(4,4,4,0.97) !important;
+      border-bottom-color: rgba(127,29,29,0.5) !important;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+
+    /* ── Story content typography ── */
+    .story-content {
+      font-size: 1.15rem;
+      letter-spacing: 0.01em;
+      margin-bottom: 1.5rem;
+      color: #d0d0d0;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 400;
+      line-height: 1.85;
+    }
+    .story-content p { margin: 0 0 1.6em 0; }
+    .story-content h2 {
+      color: var(--red);
+      margin-top: 52px;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 3px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .story-content h2::before { content: "—"; opacity: 0.4; }
+    .story-content h3 {
+      color: #fff;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 36px 0 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .story-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.6em 0;
+    }
+    .story-content ul li {
+      position: relative;
+      padding-left: 22px;
+      margin-bottom: 14px;
+      color: #bbb;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+    .story-content ul li::before {
+      content: "▶";
+      position: absolute;
+      left: 0;
+      color: var(--red);
+      font-size: 0.6rem;
+      top: 6px;
+      opacity: 0.7;
+    }
+    .story-content strong { color: #fff; font-weight: 700; }
+
+    /* ── Lead paragraph ── */
+    .lead {
+      font-size: 1.15rem;
+      color: #999;
+      margin-bottom: 40px;
+      border-left: 2px solid var(--red);
+      padding-left: 20px;
+      font-style: italic;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.8;
+    }
+
+    /* ── Tag pill ── */
+    .tag {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--red);
+      text-transform: uppercase;
+      border: 1px solid rgba(220,38,38,0.4);
+      padding: 5px 14px;
+      letter-spacing: 2px;
+      background: rgba(220,38,38,0.06);
+    }
+
+    /* ── Entry title ── */
+    .entry-title {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900;
+      margin: 22px 0 10px;
+      color: #fff;
+      line-height: 1.0;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    /* ── Featured image placeholder ── */
+    .featured-image {
+      width: 100%;
+      height: 420px;
+      background: linear-gradient(135deg, #0d0d0d 0%, #111 50%, #0a0a0a 100%);
+      border: 1px solid rgba(220,38,38,0.2);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      position: relative;
+      overflow: hidden;
+      margin: 32px 0;
+    }
+    .featured-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 3px,
+        rgba(220,38,38,0.015) 3px, rgba(220,38,38,0.015) 4px
+      );
+      pointer-events: none;
+    }
+    /* Image label overlay */
+    .featured-image-label {
+      position: absolute;
+      bottom: 12px; left: 12px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: rgba(220,38,38,0.5);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    /* Red corner accents on image */
+    .featured-image::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 40px; height: 40px;
+      border-top: 1px solid rgba(220,38,38,0.4);
+      border-left: 1px solid rgba(220,38,38,0.4);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* ── Itinerary grid ── */
+    .itinerary-grid {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 0;
+      background: rgba(10,10,10,0.7);
+      border: 1px solid rgba(220,38,38,0.15);
+      margin: 28px 0;
+      font-family: 'Share Tech Mono', monospace;
+      overflow: hidden;
+      animation: borderFlash 3s infinite;
+    }
+    .itinerary-grid > div {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.95rem;
+    }
+    .itinerary-grid > div:last-child,
+    .itinerary-grid > div:nth-last-child(2) { border-bottom: none; }
+    .itinerary-grid > div:nth-child(odd) {
+      color: var(--red);
+      font-weight: bold;
+      font-size: 0.9rem;
+      border-right: 1px solid rgba(220,38,38,0.1);
+      background: rgba(220,38,38,0.03);
+    }
+    .itinerary-grid > div:nth-child(even) {
+      color: #999;
+    }
+
+    /* ── Log entry animation ── */
+    .log-entry { animation: folderOpen 0.6s cubic-bezier(0.22,1,0.36,1) both; }
+
+    /* ── Decrypt scramble effect ── */
+    .decrypting {
+      color: #fff !important;
+      background: var(--red) !important;
+      letter-spacing: 4px !important;
+      text-shadow: 2px 0 #00fff9, -2px 0 #ff00c1;
+    }
+
+    /* ── Nav buttons ── */
+    .nav-btn {
+      background: transparent;
+      color: var(--red);
+      border: 1px solid rgba(220,38,38,0.5);
+      padding: 14px 28px;
+      font-family: 'Share Tech Mono', monospace;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--red);
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .nav-btn:hover::before  { transform: translateX(0); }
+    .nav-btn:hover { color: #fff; box-shadow: 0 0 20px rgba(220,38,38,0.35); }
+    .nav-btn span { position: relative; z-index: 1; }
+    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .nav-btn:disabled::before { display: none; }
+
+    /* ── Page counter ── */
+    .page-counter {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      color: #444;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      align-self: center;
+    }
+    .page-counter span { color: var(--red); }
+
+    /* ── Section dividers ── */
+    .section-rule {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(220,38,38,0.3) 30%, rgba(220,38,38,0.3) 70%, transparent);
+      margin: 60px 0;
+    }
+
+    /* ── Back breadcrumb ── */
+    .breadcrumb {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-decoration: none;
+      margin-bottom: 32px;
+      transition: color 0.2s ease;
+    }
+    .breadcrumb:hover { color: var(--red); }
+    .breadcrumb svg { transition: transform 0.2s ease; }
+    .breadcrumb:hover svg { transform: translateX(-3px); }
+
+    /* ── Intel / Full Report expanded panels ── */
+    [id^="full-intel-"] {
+      font-family: 'IBM Plex Sans', sans-serif !important;
+      font-size: 1.05rem !important;
+      line-height: 1.85 !important;
+      color: #c8c8c8 !important;
+      letter-spacing: 0.01em;
+    }
+    [id^="full-intel-"] p {
+      margin-bottom: 1.5em;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: #c8c8c8;
+    }
+    [id^="full-intel-"] strong {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 600;
+    }
+    [id^="full-intel-"] h4 {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+    }
+    [id^="full-intel-"] h5 {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+    }
+    [id^="full-intel-"] li {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1.0rem;
+      line-height: 1.8;
+      margin-bottom: 6px;
+    }
+    [id^="full-intel-"] .text-s {
+      font-size: 0.85rem !important;
+    }
+
+    /* ── Noise texture ── */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      opacity: 0.02;
+      pointer-events: none;
+      z-index: 9989;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px;
+    }
+
+    /* ── Global text-s override: was implicit ~10-11px, now 13px minimum ── */
+    .text-s {
+      font-size: 0.9rem !important;
+    }
+
+    /* ── Nav link sizes ── */
+    nav a.text-s, nav span.text-s { font-size: 0.9rem !important; }
+
+    /* ── Classification header ── */
+    .classify-bar {
+      font-size: 0.85rem;
+      letter-spacing: 0.3em;
+    }
+
+    /* ── Intel timestamp markers ── */
+    .intel-timestamp {
+      display: inline-block;
+      color: var(--red);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      margin-top: 0.6em;
+      opacity: 0.85;
+    }
+
+    /* ── Intel panel day-block spacing ── */
+    [id^="full-intel-"] .space-y-4 > p,
+    [id^="full-intel-"] .space-y-6 > p {
+      padding: 14px 18px;
+      border-left: 2px solid rgba(220,38,38,0.18);
+      background: rgba(255,255,255,0.015);
+      border-radius: 0 2px 2px 0;
+      line-height: 1.9;
+    }
+
+    /* ── Intel header box ── */
+    [id^="full-intel-"] .bg-red-950\/20 {
+      padding: 16px 20px;
+    }
+
+    /* Selection screen */
+    .sel-card:hover { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.04) !important; }
+    .sel-card:hover .sel-accent { background:#dc2626 !important; }
+    .sel-card:hover .sel-arrow { color:rgba(220,38,38,0.8) !important; }
+    @keyframes entryFadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes signalFlicker { 0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:0.2} 94%{opacity:1} 97%{opacity:0.4} 98%{opacity:1} }
+    .sel-briefing-line { opacity:0; animation: entryFadeUp 0.5s ease forwards; }
+    .sel-transmission { font-family:'Share Tech Mono',monospace; font-size:0.65rem; letter-spacing:3px; text-transform:uppercase; color:#444; animation: signalFlicker 4s infinite; }
+    .sel-card-lead { font-family:'IBM Plex Sans',sans-serif; font-size:0.88rem; color:#888; line-height:1.7; font-style:italic; border-left:2px solid rgba(220,38,38,0.3); padding-left:12px; margin:10px 0 14px; }
+    .sel-divider { border:none; height:1px; background:linear-gradient(90deg,transparent,rgba(220,38,38,0.25) 30%,rgba(220,38,38,0.25) 70%,transparent); margin:28px 0; }
+    .sel-warning-bar { font-family:'Share Tech Mono',monospace; font-size:0.62rem; letter-spacing:2px; text-transform:uppercase; color:rgba(220,38,38,0.5); border:1px solid rgba(220,38,38,0.15); background:rgba(220,38,38,0.04); padding:8px 14px; display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+    .sel-incident-type { font-family:'Share Tech Mono',monospace; font-size:0.58rem; letter-spacing:2px; color:#555; text-transform:uppercase; margin-bottom:6px; }
+
+  </style>
+</head>
+<body>
+
+  <!-- Noise overlay -->
+  <div class="noise-overlay"></div>
+
+  <!-- Custom cursor -->
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- ════ PROGRESS BAR ════ -->
+  <div class="fixed top-0 left-0 w-full z-[9999] bg-transparent" style="height:3px">
+    <div id="progress-bar"></div>
+  </div>
+
+  <!-- ════ NAVBAR (matches index) ════ -->
+  <nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+    <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2 group"> <!-- homepage -->
+        <div class="w-7 h-7 border border-red-600 flex items-center justify-center group-hover:bg-red-600/20 transition-all duration-300">
+          <span class="text-red-500 text-xs font-mono-tech font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+      </a>
+
+      <!-- Desktop links -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="/"   class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a> <!-- homepage -->
+        <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+        <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          YouTube
+        </a>
+      </div>
+
+      <!-- Mobile toggle -->
+      <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+        <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
+      <div class="flex flex-col px-5 py-4 gap-4">
+        <a href="/"   class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a> <!-- homepage -->
+        <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+        <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          YouTube
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ════ MAIN CONTENT ════ -->
+  <main class="pt-28 pb-24 px-5">
+    <div class="max-w-3xl mx-auto">
+
+      <!-- Breadcrumb -->
+      <a href="/overseas/" class="breadcrumb"> <!-- homepage -->
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Back to Intel / Rider Logs
+      </a>
+
+      <!-- Page header with glitch title -->
+      <div class="mb-12 animate-fade-slide-up">
+        <p class="font-mono-tech text-red-600/60 text-sm tracking-[0.4em] uppercase mb-4">// Classified Trip Intel // Active Log</p>
+        <h1 class="text-5xl sm:text-7xl font-black uppercase leading-none tracking-tight text-white mb-4">
+          <span class="glitch-wrap" data-text="Thailand LOGS">Thailand LOGS</span>
+        </h1>
+        <p class="font-mono-tech text-gray-600 text-sm tracking-widest mt-4">
+          <span class="text-red-600 animate-pulse-dot inline-block w-2 h-2 rounded-full mr-2 align-middle"></span>
+          3 TRIPS DOCUMENTED // FIELD TESTED // SOLO & GROUP
+        </p>
+      </div>
+
+      <hr class="section-rule" />
+
+
+    <!-- SELECTION SCREEN -->
+    <div id="selection-screen">
+
+      <div style="margin-bottom:24px;">
+        <div class="sel-transmission" style="margin-bottom:6px;">TRANSMISSION: THAILAND RIDE LOGS</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:#333;letter-spacing:2px;text-transform:uppercase;">18.7883° N, 98.9853° E — CHIANG MAI</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:6px;color:rgba(220,38,38,0.6);">
+            <span style="width:6px;height:6px;background:#dc2626;border-radius:50%;display:inline-block;animation:pulse-dot 1.2s infinite;"></span>
+            SIGNAL ACTIVE
+          </div>
+        </div>
+      </div>
+
+      <div class="sel-warning-bar"><span style="color:#dc2626;">&#9888;</span>WARNING: THAILAND ROAD CONDITIONS AND SINGAPORE ROADS ARE TOTALLY DIFFERENT BEASTS.</div>
+
+      <div style="margin-bottom:28px;padding:20px 22px;background:rgba(5,5,5,0.8);border:1px solid rgba(255,255,255,0.04);border-left:2px solid rgba(220,38,38,0.3);display:flex;flex-direction:column;gap:10px;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(220,38,38,0.5);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;">// FIELD BRIEFING — SR-TH-RIDE</div>
+        <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.1s;">You are accessing the Thailand Rider Logs.</p>
+        <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.2s;">Three documented trips across different eras — the early pioneer run, the Hatyai circuit, and the 6,000km northern Endurance Ride that tested everything: tyres, nerves, finances, and the idea that you can plan a trip and have it go to plan.</p>
+        <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.3s;">Thailand riding is not for the unprepared. Monsoon flooding, 1,864-corner mountain passes, 3rd-class train hops, accidents with local vehicles, and budget hotels that no guide will ever rate — all of it documented as it happened.</p>
+        <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.4s;">Choose a log. Read it before you plan your own trip north.</p>
+      </div>
+
+      <hr class="sel-divider" />
+
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#dc2626;letter-spacing:3px;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+        <span style="width:6px;height:6px;background:#dc2626;border-radius:50%;display:inline-block;animation:pulse-dot 1.4s infinite;"></span>
+        3 LOGS AVAILABLE — SELECT TO ENTER
+      </div>
+
+      <div style="display:grid;gap:14px;">
+
+        <div class="sel-card" data-log="0" onclick="selectLog(this)"
+          style="background:rgba(8,8,8,0.9);border:1px solid rgba(220,38,38,0.15);padding:22px 24px;cursor:pointer;position:relative;transition:border-color .3s,background .3s;animation:entryFadeUp 0.5s ease 0.15s both;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .3s;" class="sel-accent"></div>
+          <div class="sel-incident-type">TRIP TYPE: NORTHERN EXPEDITION</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#f87171;letter-spacing:2px;text-transform:uppercase;">// Log SR-TH-003</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#333;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">Documented</span>
+          </div>
+          <div style="font-size:1.25rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.02em;font-family:'Barlow Condensed',sans-serif;line-height:1.15;margin-bottom:2px;">2023: The 6,000km Endurance Ride</div>
+          <div class="sel-card-lead">Returning to Thailand over a decade later. Mechanical failures, flat tyres, an 8,000 Baht accident, 1,864 corners on Doi Inthanon, and a 3rd-class train from Bangkok to Hatyai. All of it documented.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:4px;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Thailand</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">2023</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Chiang Mai</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Touring</span>
+            </div>
+            <span class="sel-arrow" style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .3s;white-space:nowrap;">ENTER LOG &#9658;</span>
+          </div>
+        </div>
+        <div class="sel-card" data-log="1" onclick="selectLog(this)"
+          style="background:rgba(8,8,8,0.9);border:1px solid rgba(220,38,38,0.15);padding:22px 24px;cursor:pointer;position:relative;transition:border-color .3s,background .3s;animation:entryFadeUp 0.5s ease 0.30s both;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .3s;" class="sel-accent"></div>
+          <div class="sel-incident-type">TRIP TYPE: MULTI-COUNTRY EXPEDITION</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#f87171;letter-spacing:2px;text-transform:uppercase;">// Log SR-TH-002</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#333;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">Documented</span>
+          </div>
+          <div style="font-size:1.25rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.02em;font-family:'Barlow Condensed',sans-serif;line-height:1.15;margin-bottom:2px;">The 14-Day Rush: Laos & MHS</div>
+          <div class="sel-card-lead">A charity convoy pushing all the way to Laos. Cascading mechanical failures from day one. By the time the group turned back, the road had already made its point.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:4px;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Thailand</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Laos</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Mae Hong Son</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Convoy</span>
+            </div>
+            <span class="sel-arrow" style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .3s;white-space:nowrap;">ENTER LOG &#9658;</span>
+          </div>
+        </div>
+        <div class="sel-card" data-log="2" onclick="selectLog(this)"
+          style="background:rgba(8,8,8,0.9);border:1px solid rgba(220,38,38,0.15);padding:22px 24px;cursor:pointer;position:relative;transition:border-color .3s,background .3s;animation:entryFadeUp 0.5s ease 0.45s both;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .3s;" class="sel-accent"></div>
+          <div class="sel-incident-type">TRIP TYPE: PIONEER RUN</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#f87171;letter-spacing:2px;text-transform:uppercase;">// Log SR-TH-001</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#333;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">Documented</span>
+          </div>
+          <div style="font-size:1.25rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.02em;font-family:'Barlow Condensed',sans-serif;line-height:1.15;margin-bottom:2px;">Singapore &#10132; Thailand: The Hatyai Run</div>
+          <div class="sel-card-lead">The first Thailand trip. Hatyai and back — short by later standards, but this was where it started. Before the 6,000km run. Before the accidents and train hops. Before any of it became normal.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:4px;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Malaysia</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Thailand</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Hatyai</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">First Run</span>
+            </div>
+            <span class="sel-arrow" style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .3s;white-space:nowrap;">ENTER LOG &#9658;</span>
+          </div>
+        </div>
+
+        <div style="background:rgba(8,8,8,0.6);border:1px solid rgba(220,38,38,0.07);padding:22px 24px;opacity:0.35;pointer-events:none;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#dc2626;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">TRIP TYPE: &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</div>
+          <div style="font-size:1.25rem;font-weight:800;color:#2a2a2a;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:6px;">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</div>
+          <div style="display:flex;gap:6px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#1e1e1e;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;">&#9618;&#9618;&#9618;&#9618;&#9618;&#9618;</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#1e1e1e;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;">&#9618;&#9618;&#9618;&#9618;</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:32px;padding-top:20px;border-top:1px solid rgba(220,38,38,0.1);display:flex;justify-content:center;">
+        <a href="/overseas/" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#444;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:color .2s;"
+           onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='#444'">
+          &#9668; Return to Overseas
+        </a>
+      </div>
+
+    </div><!-- /selection-screen -->
+
+    <!-- LOG READER -->
+    <div id="log-reader" style="display:none;">
+    <div id="log-container">
+
+        <!-- ══ TRIP 1: Entry #003 ══ -->
+        <div class="log-entry" style="display:none;">
+          <span class="tag">Rider Log Entry #003</span>
+          <h1 class="entry-title">2023: The 6,000km Endurance Ride</h1>
+          <p class="lead">Returning to Thailand over a decade later. From mechanical failures and flat tires to train-hopping through the heart of the country.</p>
+
+          <div class="featured-image" id="img-003">
+            <img
+  src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778480192/Screenshot_2026-05-11_at_2.15.14_PM_ypevfh.png"
+  alt="Thailand Ride"
+  style="
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  "
+>
+            <div class="featured-image-label">// SR-003 // Field Operation // 2023</div>
+            <!-- Corner accent bottom-right -->
+            <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
+          </div>
+
+          <div class="story-content">
+            <h2>The 12-Day Survival Log</h2>
+            <div class="itinerary-grid">
+              <div>Day 1–2</div><div>SG ➔ Hatyai ➔ Chumphon (Battling tire leaks & overheating)</div>
+              <div>Day 3</div><div>Chumphon ➔ Bang Yai (Accident with local car; 8k Baht damage)</div>
+              <div>Day 4–5</div><div>Bang Yai ➔ Phitsanulok ➔ Chiang Mai (Exhaustion sets in)</div>
+              <div>Day 6</div><div>Chiang Mai Rest Day (Full bike service & Khao Soy)</div>
+              <div>Day 7</div><div>Chiang Mai ➔ Mae Hong Son (Doi Inthanon 1000-corner grind)</div>
+              <div>Day 8</div><div>MHS ➔ Pai (1864 Corners Certification & Stargazing)</div>
+              <div>Day 9–10</div><div>Pai ➔ Chiang Mai ➔ BKK (Train-hop from hell: 3rd Class)</div>
+              <div>Day 11–12</div><div>Hatyai ➔ Ipoh ➔ Home (The final push back to SG)</div>
+            </div>
+
+            <h2>The "Shag" Reality</h2>
+            <p>This trip was a test of patience. We faced tire leaks in Chumphon, a minor accident in Bang Yai that cost us 8,000 Baht (reminder: buy COMPREHENSIVE insurance), and the sheer physical toll of Doi Inthanon's 45-degree slopes.</p>
+            <p>One of the most intense moments was the return leg via the Thai State Railway. We took 3rd Class from Bangkok to Hatyai — no aircon, bugs flying through open windows, and doors that never close. It wasn't sleep; it was a 15-hour survival exercise.</p>
+
+            <h2>Hard-Earned Lessons</h2>
+            <h3>1. The KL Traffic Breakdown</h3>
+            <p>We learned the hard way that traffic jams are convoy killers. Near KL, our formation shattered — the lead pushed ahead while a rider was cut off by traffic. <strong>The nightmare scenario:</strong> that rider had no GPS. Never leave a buddy blind. If the chain breaks, the lead must find a shoulder and wait.</p>
+
+            <h3>2. The "Rubber Band" Rule</h3>
+            <p>Convoy riding is a link system. If you lose sight of the bike behind you in your mirrors, you are going too fast. Slow down to bring the group back together. Mirrors are for safety, not just for show.</p>
+
+            <h3>3. Navigation Independence</h3>
+            <p>Relying 100% on the leader is a mistake. Every rider should have a phone mount and a pre-loaded map. If the group splits in a chaotic city environment, everyone needs to know how to reach the next regroup point safely.</p>
+
+            <h3>4. Digital Nomads on Wheels</h3>
+            <p>If you're a content creator, get a <strong>FAST</strong> SD card reader. Spending 8 hours overnight transferring footage on a slow reader is a mistake you only make once. Also, install a wireless phone charger — GPS drains batteries faster than you think.</p>
+
+            <h2>Closing Thoughts</h2>
+            <p>6,000km later, we made it back. From the waterfalls of Wachirathan to the night markets of Pai, the journey was worth every drop of sweat and every Baht spent. But remember: the road condition in Thailand and the NSH are totally different beasts. Ride defensively!.</p>
+          
+        <!-- START OF DETAILED LOG -->
+<div class="mt-8 pt-8 border-t border-red-900/30">
+    <!-- The Hidden Content Section -->
+    <div id="full-intel-003" class="space-y-6 text-gray-300">
+        <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
+            <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Mission Log: 6,000KM Endurance Ride</h4>
+            <p class="text-sm text-gray-500 italic">Unredacted field notes restoration...</p>
+        </div>
+
+        <p><strong class="text-red-500">[DAY 1 - THE PUSH TO HATYAI]</strong> 0100 HRS: Final gear inspection. Discovered that even with a Class 2A machine, storage is a finite resource. Forced to "redact" several items last minute to save weight. <br><br>
+0330 HRS: WHEELS UP. Departed HQ for the Woodland Checkpoint. The air was cool, but the tension was high. <br><br>
+0400 HRS: REFUEL ALPHA (Petronas Senai). Formation expanded to 4 units. <br><br>
+0415 HRS: TACTICAL DELAY. One operative suffered GI distress (stomach issues), forcing an unplanned 30-minute halt. The schedule was already slipping. <br><br>
+0730 HRS: Rations stop at Dengkil R&R. Minimal rest; the objective was the border. <br><br>
+1000 HRS: CRITICAL MECHANICAL FAILURE. <br><br>
+The Incident: Unit reported Engine refused to start Initial field diagnosis: Potential oil leak, lack of Engine oil from visual checks.<br><br>
+The Panic: Emergency procurement of engine oil from a nearby station. (Ridding at road side in oppsite direction) <br><br>
+The Truth: Reached a workshop at Hatyai only to discover 8 litres of oil had been pumped into the gearbox in total. The engine wasn't broken; just overheat + it was drowning. We drained the excess and prayed no permanent seals were blown. <br><br>
+1615 HRS: Reached Bukit Kayu Hitam. Successfully navigated the insurance kiosks. <br><br>
+1705 HRS: SADAO BORDER CROSSING. Entry into Thailand confirmed. Double-stamping protocol (Passport + Vehicle) completed without incident. <br><br>
+1800 HRS: Reached Golden Crown Hotel (Hatyai). <br><br>
+Intel: No hot water due to heater maintenance. After 15 hours in the saddle, a cold shower was a brutal reminder that the "Redemption" had truly begun. <br><br></p>
+        
+        <p><strong class="text-red-500">[DAY 2 - THE "HALF-WHEEL" PONDING]</strong> 0700 HRS: Awakening in Hatyai. The sky was compromised—steady drizzle and grey cover. <br><br>
+0900 HRS: EQUIPMENT FAILURE. Detected a significant pressure drop in the rear tyre of one unit. <br><br>
+Field Diagnostic: 60-minute delay for a full puncture sweep. Result: Negative. No nails or tears found. <br><br>
+Action: Pressurised to 30 PSI and initiated a "monitor-while-riding" protocol. <br><br>
+1315 HRS: Route 41, Phatthalung. Encountered severe environmental hazards. <br><br>
+Terrain Intel: Heavy monsoon "ponding." Water depth reached half-wheel height (approx. 30-40cm). <br><br>
+Tactical Maneuver: Formation slowed to 40km/h to avoid engine hydro-lock. High mental stress as the road surface was completely invisible beneath the flood. <br><br>
+1600 HRS: COMMUNICATIONS BLACKOUT. GPS seems to linked us with another similar name hotel. The formation became "lost" in rural sectors, forcing a fallback to a random 7-11 to regroup and manually recalibrate the route. <br><br>
+1940 HRS: Reached Chumphon Tesco Lotus. <br><br>
+Technical Intel: The flood crossing had stripped the chain of all lubricant. Chain noise was critical. <br><br>
+Procurement: Secured emergency chain wax/lube to prevent link seizure. <br><br>
+2030 HRS: Check-in: @Night Hotel, Chumphon. <br><br>
+Operative Status: Soaked, exhausted, and wary of the "Phantom Leak" that continued to plague the rear tyre. <br><br>
+</p>
+
+        <p><strong class="text-red-500">[DAY 3 - THE 8,000 BAHT ACCIDENT]</strong> 0700 HRS: Heavy precipitation detected. Operation resumed under wet-weather gear. <br><br>
+0930 HRS: EQUIPMENT FAILURE. Third detected pressure drop in the same rear unit. The "Phantom Leak" persists. <br><br>
+1015 HRS: CRITICAL NEAR-MISS. A local van breached a red-light intersection at high speed. <br><br>
+Tactical Assessment: Both units narrowly avoided a side-impact collision. <br><br>
+Note: Operatives were too mentally drained to even retrieve the dashcam footage. A total "shag" moment. <br><br>
+1040 HRS: Technical intervention at "Stepupchumphon" workshop. <br><br>
+The Discovery: A 2mm nail was found embedded in the tread. <br><br>
+Repair: Applied an internal patch and performed a rim/chain scrub. Cost: 15 SGD. <br><br>
+1700 HRS: OPERATIONAL ACCIDENT. <br><br>
+The Incident: Collision with a local civilian vehicle. <br><br>
+Legal Intel: Thai compulsory insurance is for "Death Only." It does not cover vehicle damage. <br><br>
+Negotiation: Civilian refused cash and insisted on insurance adjusters. Total 2-hour delay. Initial damage quote: 13,000 Baht. Negotiated settlement: 8,000 Baht for bumper replacement. <br><br>
+2200 HRS: Final Extraction to Rita Homeplace (Bang Yai). <br><br>
+Language Barrier: Every hotel was booked. Used a local civilian to translate and secure the last two available rooms. Total exhaustion reached. <br><br> </p>
+
+        <p><strong class="text-red-500">[DAY 4 -THE AYUTTHAYA DETOUR & THE "CHEAPEST" BARRACKS]</strong>0830 HRS: Awakening at Rita Homeplace. Operative report: Sleep quality was poor. <br><br>
+1045 HRS: Logistics completed; bikes fully loaded for the northern ascent. <br><br>
+1100 HRS: TECHNICAL EMERGENCY. Chain tension was compromised. Forced stop at a local workshop adjacent to the guesthouse. Cost: 40–50 Baht for a high-speed tighten. <br><br>
+1330 HRS: Reached Ayutthaya. A last-minute tactical decision was made to divert here since it was on the primary route. <br><br>
+1400 HRS: Rations at Jet & Cookrat. This was a "flashback" moment—the last time I visited this specific spot was over 10 years ago. The road changes, but the food stays the same. <br><br>
+1550 HRS: Fuel stop at In Buri – Namtan. Exhaustion levels were climbing rapidly; several petrol stops were performed but not documented due to "shag" factor. <br><br>
+1700 HRS: COMMAND DECISION. We debated terminating the day at Nakhon Sawan. After a brief rest, the formation decided to "push on" to Phitsanulok. <br><br>
+2000 HRS: Check-in: Lithai Hotel. <br><br>
+Intel: The cheapest stay of the mission at 380 Baht. <br><br>
+The Reality: No lifts. The long, sterile corridors gave off major Singapore Army Camp vibes. It wasn't a holiday; it was a deployment. <br><br>
+2050 HRS: Final rations at the Phitsanulok Night Market before a total blackout. <br><br> </p>
+
+        <p><strong class="text-red-500">[DAY 5 – FATIGUE PROTOCOL & CM EXTRACTION]</strong>0830 HRS: Breakfast at Lithai Hotel (fried rice). Quick fuel-up for both rider and machine. <br><br>
+0930 HRS: Roll-out from Phitsanulok. Objective: Reach Chiang Mai safely before nightfall. Chiang Rai route officially aborted due to team exhaustion. <br><br>
+1130 HRS: Uttaradit sector. Fuel stop and unexpected link-up with Bangkok-based Thai riders. Short interaction—morale boost despite fatigue. <br><br>
+1330 HRS: Tactical halt at Toob Ka Tang (mountain café). Scenic position, decent recovery stop. Notable, but later overshadowed by Chiang Mai surroundings. <br><br>
+1535 HRS: Lamphun sector (Pa Sak). Refuel and final push phase initiated. Rider condition: Drained, operating on discipline over energy. <br><br>
+1715 HRS: Arrival at Chiang Mai City. Check-in at CM Night Boutique Hotel. <br><br>
+Intel: Elevator malfunction—manual ascent required to 4th floor. High fatigue + gear load = final physical challenge of the day. <br><br>
+1730 HRS: Logistics operation. Riding gear cleaned manually. Additional laundry outsourced (charged per KG, 24-hour turnaround). <br><br>
+1820 HRS: Equipment scare. Helmet left unattended on another bike. Rapid recovery executed—item secured. Stress spike followed by immediate relief. <br><br>
+1830 HRS: Movement to Chiang Mai Night Bazaar. Low-intensity walk, decompression phase initiated. <br><br>
+2100 HRS: End-of-day status. Mission shift declared: From endurance riding → recovery mode. Primary objective for next phase: Rest, reset, and prepare for Chiang Mai exploration. <br><br> </p>
+    
+        <p><strong class="text-red-500">[DAY 6- THE CHIANG MAI RECOVERY & SERVICE]</strong>1000 HRS: Operation resumed. Breakfast at Khao Soy Maesai. Even for a "Classified" mission, you wait for the best—30-minute queue for the famous noodles. <br><br>
+1145 HRS: TECHNICAL MAINTENANCE. Reached Yamaha Chiangmai Club. Total 3-hour downtime for mandatory service. <br><br>
+Intel: Performed full Engine Oil and Oil Filter replacement. <br><br>
+Cost Analysis (2,356 Baht): <br><br>
+Premium Yamalube x3 (2.2L total): 2,010 Baht <br><br>
+Oil Filter: 231 Baht <br><br>
+Gasket: 15 Baht <br><br>
+Labour: 100 Baht (Highly efficient). <br><br>
+1215 HRS: While the units were being serviced, took a local transport (taxi) to the Silver Temple for spiritual protocols and blessings. <br><br>
+1350 HRS: Units retrieved. Tactical movement to Rider's Corner—a legendary landmark for the SEA riding community. Lunch was served here. <br><br>
+1500 HRS: Final food objective: Neng Earthen Jar Roast Pork. A mandatory stop for any operative with a taste for local tradition. <br><br>
+1630 HRS: Tactical split. Formation dissolved as operatives pursued individual objectives. <br><br>
+1650 HRS: Recon mission to Chiang Mai Airport area. Procurement of chain lube and wax at a local Mr. DIY to maintain exterior integrity. <br><br>
+1930 HRS: Maintenance Phase 2. Reached Klean Car Wash (DIY). <br><br>
+Intel: Spent less than 25 Baht per bike. 1 Baht per 1-minute cycle of Shampoo/Water/Blower. <br><br>
+2200 HRS: Returned to base. Prepared for the high-altitude assault on the Mae Hong Son loop. <br><br>
+ </p>
+
+        <p><strong class="text-red-500">[DAY 7 - THE VERTICAL ASSAULT (DOI INTHANON)]</strong> 0915 HRS: Extraction from Chiang Mai base. Final check of brake pads and coolant levels before the ascent. <br><br>
+1030 HRS: Commencement of the climb via Route 1009. <br><br>
+1145 HRS: Reached Wachirathan Waterfall. Tactical pause for photography and environment appreciation. Overstayed by 60 minutes—a decision that would later compromise our arrival time in MHS. <br><br>
+1330 HRS: ALTITUDE PEAK. Reached the summit of Doi Inthanon. <br><br>
+Intel: Highest vehicle-accessible point in Thailand. <br><br>
+Elevation: 2,565m Above Sea Level. <br><br>
+Atmospherics: Rapid temperature drop. Oxygen levels lower; bikes felt a slight loss in throttle response due to altitude. <br><br>
+1500 HRS: Descent and detour via Route 1192, 1088, and 1263. <br><br>
+Terrain Intel: Extremely "shag" route. Gradients measured at 45–50 degree slopes. <br><br>
+Mechanical Stress: Constant 1st and 2nd gear operation. Engine temperatures spiked on the climb; heavy brake fade risks on the descent. <br><br>
+1700 HRS: CRITICAL TIME MANAGEMENT. Daylight began to fade. The winding mountain passes became high-risk zones due to zero street lighting and potential wildlife/gravel patches. <br><br>
+1840 HRS: Mission aborted 66km short of the original extraction point (Piya Guesthouse). <br><br>
+1900 HRS: Emergency check-in at the nearest available shelter to avoid night-riding in the "1,000 corners" sector. Exhaustion levels: Maximal. <br><br> </p>
+
+        <p><strong class="text-red-500">[DAY 8 - THE 1864 CORNER CERTIFICATION]</strong> 0915 HRS: Extraction from the mountain guesthouse. Physical status: Lingering fatigue from the Doi Inthanon assault, but spirits were high. <br><br>
+1130 HRS: Reached the Chamber of Commerce, Mae Hong Son. <br><br>
+Objective: Procurement of the Official 1864 Corners Certificate. <br><br>
+Intel: This is the "Rider’s Diploma." After the 45-degree gradients we faced on Day 7, the official 1864 count felt like a conservative estimate. <br><br>
+1345 HRS: Reached Ban Jabo. This sector presented the most significant braking challenge of the mission. <br><br>
+Terrain Intel: Vertical drops measured at 50 to 60-degree downward slopes. <br><br>
+Tactical Maneuver: Constant downshifting to 1st and 2nd gear. Used heavy engine braking to prevent brake fluid boiling. Kept descent speeds under 50km/h for survival. <br><br>
+1630 HRS: Check-in: Pai Kiang Fa Resort. <br><br>
+Environmental Report: High-tier lodging. The contrast between the grueling road and the resort comfort was sharp. <br><br>
+1900 HRS: Reconnaissance of Pai Walking Street. Rations and local immersion before the final northern exit. <br><br>
+</p>
+
+        <p><strong class="text-red-500">[DAY 9 - THE TRAIN]</strong> 0600 HRS: Woke up early to catch the sunrise in Chiang Mai, but the mist and fog were too thick—visibility completely gone. We waited it out at the highest building until 0730, but by then the sky was just bright… the moment already passed. <br><br>
+0815 HRS: Loaded up the bikes and prepped to move out. Energy level: calm, but slightly drained. <br><br>
+1100 HRS: Reached Chiang Mai Railway Station. <br><br>
+The Stress: No sleeper class available. Got hit with the classic “wait and see.” Not the most comforting words when you're planning logistics with bikes involved. <br><br>
+1200 HRS: Finally got the call—tickets secured. Relief. Bikes redirected to the “Parcels Office” for cargo handling. <br><br>
+The Bike Logistics: <br><br>
+Motorcycle and box are shipped separately, both charged individually. Pricing depends on engine class and weight. <br><br>
+Intel for others: <br><br>
+2B: 500–900 Baht <br><br>
+2A: 600–1100 Baht <br><br>
+Class 2: 800–1400 Baht <br><br>
+Advice: Prepare around 2.5k Baht to be safe. Extra buffer = less stress. <br><br>
+1215 HRS: Checked in our tail bags and jackets at the holding area. Important reminder—don’t forget to collect before boarding. <br><br>
+1230 HRS: Breakfast run… again at 7-Eleven 😂 Simple, fast, reliable. <br><br>
+1400 HRS: Headed back to the parcel section. Staff needed the bike key to move it into the cargo loading zone. <br><br>
+1415 HRS: Watched my bike get loaded into the cargo section. <br><br>
+Pro-tip: Slip the workers some “coffee money” (20–50 Baht). Small gesture, but it goes a long way. You won’t know who’s handling your bike later—better to keep everyone on your side. <br><br>
+1430 HRS: Lunch break at Coffee de Train café. Finally slowed things down a bit. <br><br>
+1530 HRS: Another 7-Eleven run—grabbed snacks just in case hunger hits mid-journey. <br><br>
+1630 HRS: Boarded the train and started locating our seats. Settling in. <br><br>
+1700 HRS: Our bikes were already on the way to Bangkok… while we were still sitting there waiting for departure. That feeling hit a bit—like the trip is slowly coming to an end. <br><br>
+1840 HRS: Dinner served onboard. Nothing fancy, but it does the job. <br><br>
+1905 HRS: Seats converted into beds. Transition into rest mode. <br><br>
+0000 HRS: Knocked out. End of the day. <br><br> </p>
+        
+        <p><strong class="text-red-500">[DAY 10- THE BANGKOK SCRAMBLE]</strong> 0600 HRS: Awake. Still running on low rest, but schedule doesn’t wait. <br><br>
+
+0630 HRS: Arrival at Krung Thep Aphiwat Central Terminal. <br><br>
+
+0700 HRS: Toilet break + intel gathering. <br><br>
+The Situation: This place is massive—end to end easily 10 minutes walk. We were given three different directions for bike collection. Strategy: Start nearest, work outward. <br><br>
+Outcome: Of course… the furthest one was correct. Estimated 30-minute walk (without baggage). Taxi required. <br><br>
+
+0730 HRS: Tried flagging taxis. Multiple rejections—drivers insisted “very near.” Reality says otherwise. <br><br>
+
+0800 HRS: Finally booked a taxi. Driver had no choice but to send us to the correct location. <br><br>
+
+0815 HRS: Visual confirmed—our bikes, freshly unloaded. That instant relief feeling hits hard. <br><br>
+
+0830 HRS: Began next logistics phase—shipping bikes to Hat Yai. <br><br>
+Additional parcels packed (jackets, tail bags). Downsized to one backpack for train ride. Fresh clothes separated for quick access. <br><br>
+
+0915 HRS: Rode to Bang Sue Junction helmet-less. <br><br>
+Reason: Helmets already shipped with cargo boxes. Not ideal, but no choice. Short distance, controlled risk. <br><br>
+
+0930 HRS: Bought train tickets. <br><br>
+Decision: 3rd Class. <br><br>
+Immediate regret: Activated. <br><br>
+
+1000 HRS: Combined breakfast + lunch at the station. Fuel up before the long ride. <br><br>
+
+1230 HRS: Quick wash-up. Last proper refresh before boarding. <br><br>
+
+1300 HRS: Boarded train. First impression: Still manageable… just hot—no aircon. A small fan sits about 1–1.5m away, barely helping. <br><br>
+
+ENVIRONMENTAL REPORT: <br><br>
+
+* Windows fully open → bugs, flies, insects all invited in. <br><br>
+* Noise level: High. Open windows + track noise = constant roar. <br><br>
+* Doors: Permanently open. Safety level questionable—one wrong move and it’s game over. <br><br>
+* Smoking: Happens near toilet area. No doors to contain it. If closed, passengers complain due to heat. <br><br>
+* Toilet & basin: Directly in front of us. Worst seat location possible. <br><br>
+* Space: Almost zero legroom. Need to coordinate leg placement with opposite passenger just to sit properly. <br><br>
+
+SLEEP STATUS: <br><br>
+Nearly impossible to rest. Only managed to sleep around 0400 HRS after passengers in front got off. <br><br>
+Actual rest: 1–2 hours max. More like a forced nap than sleep 😂 <br><br>
+
+0400 HRS: Knocked out. End of endurance phase. <br><br>
+</p>
+        
+        <p><strong class="text-red-500">[DAY 11 - THE 3RD CLASS SURVIVAL EXERCISE]</strong>0630 HRS: Arrival at Hat Yai Railway Station. End of rail phase. <br><br>
+0700 HRS: Shower + reset. Feeling refreshed—confidence level high. Thought: “Maybe can push all the way to Genting.” (Overconfidence detected 😅) <br><br>
+0710 HRS: Visual on bikes—spotted just across the tracks. No need for search operation. Cargo (box + parcels) arrived shortly after (10–15 min). Smooth recovery. <br><br>
+0745 HRS: Bikes fully loaded. Riding gear on. Departure initiated. <br><br>
+0900 HRS: Reached Sadao Checkpoint. <br><br>
+0930 HRS: 7-Eleven stop… again 😂 Quick breakfast and hydration before border crossing. <br><br>
+POST-BORDER MOVEMENT: <br><br>
+Entered Malaysia. Multiple untracked stops—Changlun sector + random 7-Eleven + several R&R breaks. Strategy became simple: See rest stop → go in → hydrate. Body clearly managing fatigue on the move. <br><br>
+1307 HRS: Expressway phase. <br><br>
+Critical Status: Drowsiness hit hard. Micro-sleep episodes while riding. Immediate stops executed to reassess plan. Safety priority triggered. <br><br>
+1537 HRS: Reached Semanggol. Lunch at KFC while conducting hotel search for Ipoh. <br><br>
+Situation: All hotels showing FULL. Pressure building. <br><br>
+1700 HRS: Arrival at Ipoh. Began physical hotel search—checked at least 5 locations. All rejected: Fully booked. Morale dropping. <br><br>
+1800 HRS: Secured room at Times Inn Hotel. <br><br>
+Cost: RM100. Mission status: Stabilised. <br><br>
+1900 HRS: Settled in. Short walk around area. Yes… another 7-Eleven run for water 😂 <br><br>
+2000 HRS: Dinner at a ramen spot. First proper sit-down meal after a long, messy day. <br><br>
+2200 HRS: Received email—Thailand drone permit approved. <br><br>
+Timing: Completely useless. Already exited Thailand. Classic 😂 <br><br>
+2300 HRS: Knocked out cold. End of day. <br><br> </p> 
+
+        <p><strong class="text-red-500">[DAY 12 - THE FINAL EXTRACTION (IPOH TO SG)]</strong>0800 HRS: Wake-up call. Began light packing and consolidation. Cleared out unnecessary items—reduced load for final leg. <br><br>
+0900 HRS: Breakfast at a local coffeeshop in Ipoh. <br><br>
+The Vibe: Comfort food hits different. Taste felt close to Singapore—simple, familiar, solid start to the day. <br><br>
+1030 HRS: Roll-out initiated. Final ride home begins. <br><br>
+1200 HRS: Reached Tapah R&R. Quick stop—stretch, hydrate, reset. <br><br>
+1430 HRS: Dengkil R&R. Continued hydration cycle. Body holding up, rhythm steady. <br><br>
+1700 HRS: Pagoh R&R. Final major stop before Johor stretch. Energy stable, focus maintained. <br><br>
+1900 HRS: Fuel stop at Shell Station Jalan Pasir Pelangi. Last top-up before crossing the finish line. <br><br>
+2000 HRS: Home. <br><br>
+Mission complete. Engine off. Silence. <br><br>
+The Feeling: No drama, no rush—just a clean, steady return. After everything… this quiet ending hits the hardest. <br><br> </p>
+
+
+       <div class="bg-black/40 p-4 border border-red-900/50">
+            <h5 class="text-red-500 text-sm mb-3 underline text-center tracking-widest uppercase">FINAL DEBRIEF</h5>
+            <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                <li>Total Cost: ~S$2,600</li>
+                <li>Distance: 6,000km+</li>
+                <li>Regret: Slow SD card reader (8hrs vs 1hr transfer)</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- The Toggle Button -->
+</div>
+<!-- END OF DETAILED LOG -->
+
+        
+        
+        </div>
+        </div>
+
+        <!-- ══ TRIP 2: Entry #002 ══ -->
+        <div class="log-entry" style="display:none;">
+          <span class="tag">Rider Log Entry #002</span>
+          <h1 class="entry-title">The 14-Day Rush: Laos & MHS</h1>
+          <p class="lead">A "touch-and-go" mission across four borders. 14 days of field-camp intensity, winding Laos mountain passes, and the brutal reality of the road.</p>
+
+          <div class="featured-image" id="img-002">
+
+           <img
+  src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778480190/Screenshot_2026-05-11_at_2.14.58_PM_iv7luo.png"
+  alt="Thailand Ride"
+  style="
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  "
+>
+            
+            <div class="featured-image-label">// SR-002 // Field Operation // 2013</div>
+            <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
+          </div>
+
+          <div class="story-content">
+            <h2>The Impossible Ambition</h2>
+            <p>In June 2013, we planned a trip that wasn't for the faint-hearted. The objective: SG ➔ Malaysia ➔ Thailand ➔ Laos ➔ Mae Hong Son ➔ SG. A 14-day loop where rest was a luxury and the schedule was "very rush."</p>
+
+            <h3>The Plan (The 4,000km+ Grind)</h3>
+            <div class="itinerary-grid">
+              <div>Day 1–2</div><div>SG to Hatyai Border</div>
+              <div>Day 3</div><div>Hatyai to Hua Hin (760km)</div>
+              <div>Day 4–6</div><div>Hua Hin to Nong Khai (TH) ➔ Vang Vieng (Laos)</div>
+              <div>Day 7–8</div><div>Plains of Jars ➔ Luang Prabang ➔ China Border</div>
+              <div>Day 9–11</div><div>Chiang Mai ➔ Pai ➔ Mae Hong Son (1864 Corners)</div>
+              <div>Day 12–14</div><div>Tak ➔ Bangkok ➔ Night Train ➔ KL ➔ SG</div>
+            </div>
+
+            <h2>Rider Requirements</h2>
+            <p>To survive this, I set strict rules. Riders had to be "troopers" — capable of fixing punctures, riding at night, ignoring the weather, and staying mentally sharp despite 14 days of "no sleep" feelings. No "young and dangerous" attitudes; only the disciplined would survive.</p>
+
+            <h2>The Reality Check: Day 2</h2>
+            <p>The trip was cursed from the start. My bike struggled with RPM issues, requiring a carb wash on the roadside. My GPS charging failed, leaving me blind. But the real blow came near Alor Setar.</p>
+            <p>A communication breakdown during a fuel stop led to a collision. I crashed hard. Fairings scratched, signal lights snapped, and my armor was torn. My helmet — expensive full-face — scratched. I didn't hit the rider; I threw my gloves in frustration, knowing the physical and mental damage was done.</p>
+
+            <h2>Lessons from the Asphalt</h2>
+            <p>The mission was noble — we were carrying funds and goodies for an orphanage in Laos — but the road had other plans. I had to make the hardest call: <strong>Withdraw.</strong></p>
+            <p>While the rest pushed on, I retreated to Ipoh, battling nightmares and technical failures. It was a humbling reminder that on a long tour, your gear and your group's communication are the only things keeping you out of the ditch.</p>
+
+            <h3>Key Takeaways</h3>
+            <ul>
+              <li><strong>Group Dynamics:</strong> Rear-view mirrors aren't for display; they are lifelines. If you can't see your buddies, you shouldn't be leading.</li>
+              <li><strong>Mental Health:</strong> A crash doesn't just break the bike; it breaks the spirit. Know when to turn back.</li>
+              <li><strong>Brotherhood:</strong> Deepest thanks to the buddy in Ipoh who opened his home when I was at my lowest.</li>
+            </ul>
+
+            <div class="mt-8 pt-8 border-t border-red-900/30">
+    <div id="full-intel-002" class="space-y-6 text-gray-300">
+        <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
+            <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Mission Log: Laos & MHS Loop</h4>
+            <p class="text-sm text-gray-500 italic">Timeline: 2013 - Extraction intel from Troopers who cleared it</p>
+        </div>
+
+        <div class="space-y-4">
+            <p><strong>[LAOS BORDER] THE ROUTE 13 STRUGGLE:</strong> Entry into Laos via the Northern crossing. Route 13 North was a technical nightmare of potholes and unpaved dust tracks. Average speed dropped to 30km/h.</p>
+            
+            <p><strong>[CHARITY MISSION] THE ORPHANAGE RUN:</strong> Delivered essential supplies and rations to the local orphanage. Carrying heavy loads across dirt trails was physically draining but the primary mission objective.</p>
+            
+            <p><strong>[MHS LOOP] THE WITHDRAWAL:</strong> Abandon and reroute back to Singapore due to Laos accident.</p>
+            
+            <p><strong>[RETREAT] THE FULL TROOPS WITHDRAWAL:</strong> Final tactical pause in Bangkok This is where the troopers separated ways from there and slowly made their way back or stay at Bangkok to rest.</p>
+        </div>
+
+        <div class="bg-black/40 p-4 border border-red-900/50">
+            <h5 class="text-red-500 text-sm mb-3 underline text-center tracking-widest uppercase">TECHNICAL INTEL</h5>
+            <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                <li>Border Docs: Carnet de Passage (CDP) verified</li>
+                <li>Bike Status: Heavy dust ingress in air filters</li>
+                <li>Vibe: 100% Grit, 0% Comfort</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+          </div>
+        </div>
+
+        <!-- ══ TRIP 3: Entry #001 ══ -->
+        <div class="log-entry" style="display:none;">
+          <span class="tag">Rider Log Entry #001</span>
+          <h1 class="entry-title">Singapore ➔ Thailand: The Hatyai Run</h1>
+          <p class="lead">Back in 2012, crossing the border on two wheels was more than just a trip — it was a rite of passage. Here is the breakdown of the 4-day grind.</p>
+
+          <div class="featured-image" id="img-001">
+
+               <img
+  src="https://res.cloudinary.com/dwwz04x1n/image/upload/q_auto/f_auto/v1778480189/Screenshot_2026-05-11_at_2.14.50_PM_k00evi.png"
+  alt="Thailand Ride"
+  style="
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  "
+>
+           
+            <div class="featured-image-label">// SR-001 // Field Operation // 2012</div>
+            <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
+          </div>
+
+          <div class="story-content">
+            <h2>The Mission Timeline</h2>
+
+            <h3>Day 1: The Midnight Roll-out</h3>
+            <p>A group of riders met at West Coast McDonald's at 2:00 AM to send us off. By 3:15 AM, the engines roared to life and we bid goodbyes until next meetup. The riders heading to Hatyai maintained a steady 90–100 km/h pace across the North-South Highway. By 5:00 PM, we hit the Sadao border. Exhausted but hyped, we settled in for the night.</p>
+
+            <h3>Day 2: Local Customisation</h3>
+            <p>No riding today. We hit the town in Tuk-Tuks. This was the day for the bike to get some rest and custom Thailand number plates made. We capped it off with legendary local massages.</p>
+
+            <h3>Day 3: Coastal Exploration</h3>
+            <p>Rode out to Ko Yo in Songkhla. The scenery was breathtaking — a stark contrast to the concrete jungle of Singapore. The "Old Hatyai" vibes were strong.</p>
+
+            <h3>Day 4: The Rain & The Return</h3>
+            <p>Nature decided to test us. We left at 10:00 AM under a massive downpour. It didn't stop. With full rain gear on, we pushed through, finally reaching Singapore around midnight.</p>
+
+            <h2>Essential Kit List</h2>
+            <ul>
+              <li><strong>Self-Sufficiency:</strong> Tyre repair kits (with gas), spare spark plugs, and clutch cables.</li>
+              <li><strong>Security:</strong> 1-meter heavy-duty chain and disc locks. You can't "guard" a bike 24/7.</li>
+              <li><strong>Pure Grit:</strong> Waterproof bags and wind-proof lighters for those roadside breaks.</li>
+            </ul>
+
+            <h2>Rider's Reflections</h2>
+            <p>Singapore and the NSH are two completely different worlds. On this trip, we faced everything: from bombing scares (that turned out to be a loud short circuit) to dodging micro-sleep on the return leg.</p>
+            <p>Whether you're on a Class 2 monster or a 2B KRR, the road treats everyone the same. Expect the unexpected — because things usually don't go your way, and that's where the fun is.</p>
+
+            <div class="mt-8 pt-8 border-t border-red-900/30">
+    <!-- Hidden Content Section -->
+    <div id="full-intel-001" class="space-y-6 text-gray-300">
+        <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
+            <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Mission Log: Hatyai Proving Ground</h4>
+            <p class="text-sm text-gray-500 italic">Timeline: The Foundation Run</p>
+        </div>
+
+        <div class="space-y-4">
+            <p><strong>[OBJECTIVE]</strong> To establish a reliable route from SG to Southern Thailand and test the endurance of the primary unit under load.</p>
+            
+            <p><strong>[BORDER PROTOCOL]</strong> Sadao crossing was clear. Verified that having a dedicated folder for vehicle logs and insurance saves 20 minutes of processing time.</p>
+            
+            <p><strong>[FIELD NOTES]</strong> Hatyai served as the perfect testing ground. Technical issues were minimal, but the heat management of the riding gear was identified as a secondary concern for future long-range missions.</p>
+        </div>
+
+        <div class="bg-black/40 p-4 border border-red-900/50 text-center">
+            <p class="text-sm text-red-700 uppercase tracking-widest">Core Mission Data Verified // No Incidents Reported</p>
+        </div>
+    </div>
+
+    <!-- Toggle Button -->
+</div>
+
+
+          </div>
+        </div>
+
+
+    </div><!-- /log-container -->
+
+      <hr class="section-rule" />
+
+      <!-- ── Navigation buttons ── -->
+      <div class="flex items-center justify-center gap-5 flex-wrap">
+        <button id="prevBtn" class="nav-btn"><span>◄ Previous File</span></button>
+        <div class="page-counter">FILE <span id="current-page">01</span> / <span id="total-pages">03</span></div>
+        <button id="nextBtn" class="nav-btn"><span>Decrypt Next ►</span></button>
+      </div>
+
+    </div>
+  
+<div style="margin-top:48px;padding-top:20px;border-top:1px solid rgba(220,38,38,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+      <button onclick="backToSelection()" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#444;letter-spacing:2px;text-transform:uppercase;background:transparent;border:none;cursor:pointer;padding:0;transition:color .2s;"
+         onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='#444'">
+        &#9668; Back to Thailand Rides
+      </button>
+      <a href="/overseas/" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#333;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:color .2s;"
+         onmouseover="this.style.color='#555'" onmouseout="this.style.color='#333'">
+        Overseas Hub &#9658;
+      </a>
+    </div>
+
+    </div><!-- /log-reader -->
+  </div>
+</main>
+
+  <!-- ════ FOOTER (matches index) ════ -->
+  <footer class="py-16 px-5 border-t border-white/5">
+    <div class="max-w-5xl mx-auto">
+      <div class="flex flex-col items-center gap-6">
+        <a href="/" class="flex items-center gap-3 group"> <!-- homepage -->
+          <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+            <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+          </div>
+          <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+        </a>
+        <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+        <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+           class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+          <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors duration-300">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <span class="font-mono-tech text-xs tracking-widest uppercase">Watch on YouTube</span>
+        </a>
+        <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+        <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ════ JAVASCRIPT ════ -->
+  <script>
+    // ── Custom cursor (identical to index) ──
+    (function () {
+      var cursor = document.getElementById('cursor');
+      var ring   = document.getElementById('cursor-ring');
+      var mx = 0, my = 0, rx = 0, ry = 0;
+
+      document.addEventListener('mousemove', function (e) {
+        mx = e.clientX; my = e.clientY;
+        cursor.style.left = mx + 'px';
+        cursor.style.top  = my + 'px';
+      });
+      (function animRing() {
+        rx += (mx - rx) * 0.12;
+        ry += (my - ry) * 0.12;
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+        requestAnimationFrame(animRing);
+      })();
+      document.querySelectorAll('a, button').forEach(function (el) {
+        el.addEventListener('mouseenter', function () {
+          ring.style.width = '56px'; ring.style.height = '56px';
+          ring.style.borderColor = 'rgba(220,38,38,0.8)';
+        });
+        el.addEventListener('mouseleave', function () {
+          ring.style.width = '36px'; ring.style.height = '36px';
+          ring.style.borderColor = 'rgba(220,38,38,0.5)';
+        });
+      });
+    })();
+
+    // ── Progress bar ──
+    window.addEventListener('scroll', function () {
+      var scrollTop    = document.documentElement.scrollTop || document.body.scrollTop;
+      var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      document.getElementById('progress-bar').style.width = pct + '%';
+    }, { passive: true });
+
+    // ── Navbar scroll effect ──
+    window.addEventListener('scroll', function () {
+      var nav = document.getElementById('navbar');
+      if (window.scrollY > 20) nav.classList.add('nav-scrolled');
+      else nav.classList.remove('nav-scrolled');
+    }, { passive: true });
+
+    // ── Mobile menu toggle ──
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+      var menu      = document.getElementById('mobile-menu');
+      var openIcon  = document.getElementById('menu-icon-open');
+      var closeIcon = document.getElementById('menu-icon-close');
+      var isOpen    = menu.style.maxHeight === '320px';
+      menu.style.maxHeight    = isOpen ? '0' : '320px';
+      menu.style.borderBottom = isOpen ? '' : '1px solid rgba(127,29,29,0.3)';
+      openIcon.style.display  = isOpen ? '' : 'none';
+      closeIcon.style.display = isOpen ? 'none' : '';
+    });
+    document.querySelectorAll('.mobile-link').forEach(function (link) {
+      link.addEventListener('click', function () {
+        document.getElementById('mobile-menu').style.maxHeight = '0';
+        document.getElementById('menu-icon-open').style.display  = '';
+        document.getElementById('menu-icon-close').style.display = 'none';
+      });
+    });
+
+    // ── Scramble / decrypt effect ──
+    var scrambleChars = 'ABCDEF0123456789/X$#@%';
+    function decryptText(button, originalText, callback) {
+      var iterations = 0;
+      button.classList.add('decrypting');
+      button.disabled = true;
+
+      var interval = setInterval(function () {
+        button.querySelector('span').innerText = originalText.split('').map(function (char, index) {
+          if (index < iterations) return originalText[index];
+          return char === ' ' ? ' ' : scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+        }).join('');
+
+        if (iterations >= originalText.length) {
+          clearInterval(interval);
+          button.classList.remove('decrypting');
+          button.querySelector('span').innerText = originalText;
+          button.disabled = false;
+          callback();
+        }
+        iterations += 1 / 3;
+      }, 30);
+    }
+
+    // ── Log navigation ──
+
+  /* ── Selection screen ── */
+  var logsInited = false;
+  var logs, nextBtn, prevBtn, currentPage, totalPages, currentLogIndex;
+
+  function initReader(){
+    if(logsInited) return;
+    logsInited = true;
+    logs = document.querySelectorAll('.log-entry');
+    nextBtn = document.getElementById('nextBtn');
+    prevBtn = document.getElementById('prevBtn');
+    currentPage = document.getElementById('current-page');
+    totalPages = document.getElementById('total-pages');
+    currentLogIndex = 0;
+    totalPages.textContent = String(logs.length).padStart(2,'0');
+
+    nextBtn.addEventListener('click',function(){
+      if(currentLogIndex>=logs.length-1)return;
+      var nextIndex=currentLogIndex+1;
+      decryptText(nextBtn,'Decrypt Next ►',function(){updateView(nextIndex);});
+    });
+    prevBtn.addEventListener('click',function(){
+      if(currentLogIndex<=0)return;
+      var prevIndex=currentLogIndex-1;
+      decryptText(prevBtn,'◄ Previous File',function(){updateView(prevIndex);});
+    });
+  }
+
+  function updateButtons(){
+    prevBtn.disabled=currentLogIndex===0;
+    nextBtn.disabled=currentLogIndex===logs.length-1;
+    currentPage.textContent=String(currentLogIndex+1).padStart(2,'0');
+  }
+
+  function updateView(newIndex){
+    logs.forEach(function(log){log.style.display='none';});
+    currentLogIndex=newIndex;
+    logs[currentLogIndex].style.display='block';
+    logs[currentLogIndex].style.animation='none';
+    logs[currentLogIndex].offsetHeight;
+    logs[currentLogIndex].style.animation='';
+    window.scrollTo({top:0,behavior:'smooth'});
+    updateButtons();
+  }
+
+  function selectLog(el){
+    var logIndex=parseInt(el.getAttribute('data-log'));
+    document.getElementById('selection-screen').style.display='none';
+    document.getElementById('log-reader').style.display='block';
+    initReader();
+    updateView(logIndex);
+  }
+
+  function backToSelection(){
+    document.getElementById('log-reader').style.display='none';
+    document.getElementById('selection-screen').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  </script>
+
+
+</body>
+</html>
