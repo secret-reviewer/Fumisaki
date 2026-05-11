@@ -375,6 +375,20 @@ Singapore to Malacca Motorcycle Ride | Malaysia Touring Experience | Secret Revi
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
       background-size: 128px;
     }
+
+    /* Selection screen */
+    .sel-card:hover { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.04) !important; }
+    .sel-card:hover .sel-accent { background:#dc2626 !important; }
+    .sel-card:hover .sel-arrow { color:rgba(220,38,38,0.8) !important; }
+    @keyframes entryFadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes signalFlicker { 0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:0.2} 94%{opacity:1} 97%{opacity:0.4} 98%{opacity:1} }
+    .sel-briefing-line { opacity:0; animation: entryFadeUp 0.5s ease forwards; }
+    .sel-transmission { font-family:'Share Tech Mono',monospace; font-size:0.65rem; letter-spacing:3px; text-transform:uppercase; color:#444; animation: signalFlicker 4s infinite; }
+    .sel-card-lead { font-family:'IBM Plex Sans',sans-serif; font-size:0.88rem; color:#888; line-height:1.7; font-style:italic; border-left:2px solid rgba(220,38,38,0.3); padding-left:12px; margin:10px 0 14px; }
+    .sel-divider { border:none; height:1px; background:linear-gradient(90deg,transparent,rgba(220,38,38,0.25) 30%,rgba(220,38,38,0.25) 70%,transparent); margin:28px 0; }
+    .sel-warning-bar { font-family:'Share Tech Mono',monospace; font-size:0.62rem; letter-spacing:2px; text-transform:uppercase; color:rgba(220,38,38,0.5); border:1px solid rgba(220,38,38,0.15); background:rgba(220,38,38,0.04); padding:8px 14px; display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+    .sel-incident-type { font-family:'Share Tech Mono',monospace; font-size:0.58rem; letter-spacing:2px; color:#555; text-transform:uppercase; margin-bottom:6px; }
+
   </style>
 </head>
 <body>
@@ -458,10 +472,106 @@ Singapore to Malacca Motorcycle Ride | Malaysia Touring Experience | Secret Revi
 
       <hr class="section-rule" />
 
-      <div id="log-container">
+
+    <!-- SELECTION SCREEN -->
+    <div id="selection-screen">
+
+      <div style="margin-bottom:24px;">
+        <div class="sel-transmission" style="margin-bottom:6px;">TRANSMISSION: MALAYSIA RIDE LOGS</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:#333;letter-spacing:2px;text-transform:uppercase;">2.1896° N, 102.2501° E — MALACCA</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:6px;color:rgba(220,38,38,0.6);">
+            <span style="width:6px;height:6px;background:#dc2626;border-radius:50%;display:inline-block;animation:pulse-dot 1.2s infinite;"></span>
+            SIGNAL ACTIVE
+          </div>
+        </div>
+      </div>
+
+      <div class="sel-warning-bar"><span style="color:#dc2626;">&#9888;</span>WARNING: THESE TRIPS WERE REAL. SOME MOMENTS STILL FEEL CLOSER THAN THEY SHOULD.</div>
+
+      <div style="margin-bottom:28px;padding:20px 22px;background:rgba(5,5,5,0.8);border:1px solid rgba(255,255,255,0.04);border-left:2px solid rgba(220,38,38,0.3);display:flex;flex-direction:column;gap:10px;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(220,38,38,0.5);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;">// FIELD BRIEFING — SR-MY-RIDE</div>
+        <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.1s;">You are accessing the Malaysia Rider Logs.</p>
+        <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.2s;">Two trips. Same destination. Different eras. The first was a group of five riders in 2011 — before GPS mounts, before route apps, before anyone thought to document it properly. The second was 2022, the first time the border opened after COVID shut everything down.</p>
+        <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.3s;">One is about what a group ride used to feel like. The other is about what it felt like to finally leave again.</p>
+        <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.4s;">Pick a log. Read it in full.</p>
+      </div>
+
+      <hr class="sel-divider" />
+
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#dc2626;letter-spacing:3px;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+        <span style="width:6px;height:6px;background:#dc2626;border-radius:50%;display:inline-block;animation:pulse-dot 1.4s infinite;"></span>
+        2 LOGS AVAILABLE — SELECT TO ENTER
+      </div>
+
+      <div style="display:grid;gap:14px;">
+
+        <div class="sel-card" data-log="0" onclick="selectLog(this)"
+          style="background:rgba(8,8,8,0.9);border:1px solid rgba(220,38,38,0.15);padding:22px 24px;cursor:pointer;position:relative;transition:border-color .3s,background .3s;animation:entryFadeUp 0.5s ease 0.15s both;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .3s;" class="sel-accent"></div>
+          <div class="sel-incident-type">TRIP TYPE: GROUP CONVOY</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#f87171;letter-spacing:2px;text-transform:uppercase;">// Log SR-MY-001</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#333;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">Documented</span>
+          </div>
+          <div style="font-size:1.25rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.02em;font-family:'Barlow Condensed',sans-serif;line-height:1.15;margin-bottom:2px;">Malacca: The OG Run</div>
+          <div class="sel-card-lead">Five bikes. Five riders. A mix of machines, a mix of personalities, and one shared destination. This was 2011 — before group rides had Instagram captions and route planning apps. You just went.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:4px;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Malaysia</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">2011</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Group Ride</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Malacca</span>
+            </div>
+            <span class="sel-arrow" style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .3s;white-space:nowrap;">ENTER LOG &#9658;</span>
+          </div>
+        </div>
+        <div class="sel-card" data-log="1" onclick="selectLog(this)"
+          style="background:rgba(8,8,8,0.9);border:1px solid rgba(220,38,38,0.15);padding:22px 24px;cursor:pointer;position:relative;transition:border-color .3s,background .3s;animation:entryFadeUp 0.5s ease 0.30s both;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .3s;" class="sel-accent"></div>
+          <div class="sel-incident-type">TRIP TYPE: CROSS-BORDER RETURN</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#f87171;letter-spacing:2px;text-transform:uppercase;">// Log SR-MY-002</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#333;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">Documented</span>
+          </div>
+          <div style="font-size:1.25rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.02em;font-family:'Barlow Condensed',sans-serif;line-height:1.15;margin-bottom:2px;">Malacca 2022: First Cross-Border After COVID</div>
+          <div class="sel-card-lead">2022 felt different. Borders finally reopened. Me, my younger brother on his motorcycle, and my younger sister in the car — our first proper long-distance ride and drive together after the world stopped.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:4px;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Malaysia</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">2022</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Post-COVID</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Family</span>
+            </div>
+            <span class="sel-arrow" style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .3s;white-space:nowrap;">ENTER LOG &#9658;</span>
+          </div>
+        </div>
+
+        <div style="background:rgba(8,8,8,0.6);border:1px solid rgba(220,38,38,0.07);padding:22px 24px;opacity:0.35;pointer-events:none;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#dc2626;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">TRIP TYPE: &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</div>
+          <div style="font-size:1.25rem;font-weight:800;color:#2a2a2a;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:6px;">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</div>
+          <div style="display:flex;gap:6px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#1e1e1e;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;">&#9618;&#9618;&#9618;&#9618;&#9618;&#9618;</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#1e1e1e;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;">&#9618;&#9618;&#9618;&#9618;</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:32px;padding-top:20px;border-top:1px solid rgba(220,38,38,0.1);display:flex;justify-content:center;">
+        <a href="/overseas/" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#444;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:color .2s;"
+           onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='#444'">
+          &#9668; Return to Overseas
+        </a>
+      </div>
+
+    </div><!-- /selection-screen -->
+
+    <!-- LOG READER -->
+    <div id="log-reader" style="display:none;">
+    <div id="log-container">
 
         <!-- ══ ENTRY #001 ══ -->
-        <div class="log-entry">
+        <div class="log-entry" style="display:none;">
 
           <span class="tag">Rider Log Entry #001</span>
           <h1 class="entry-title">Malacca: The OG Run</h1>
@@ -570,7 +680,7 @@ Singapore to Malacca Motorcycle Ride | Malaysia Touring Experience | Secret Revi
 
             <!-- FULL INTEL PANEL -->
             <div class="mt-8 pt-8 border-t border-red-900/30">
-              <div id="full-intel-001" class="hidden space-y-6 text-gray-300">
+              <div id="full-intel-001" class="space-y-6 text-gray-300">
                 <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
                   <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Field Log: Malacca Group Ride</h4>
                   <p class="text-sm text-gray-500 italic">2011 // 5 Riders // Singapore → Malacca → Singapore // 2 Days 1 Night</p>
@@ -609,19 +719,108 @@ End of operation.</p>
                   </ul>
                 </div>
               </div>
-
-              <div class="flex justify-center mt-6">
-                <button onclick="toggleIntel('full-intel-001', this)" class="border border-red-500/30 text-red-500 px-6 py-2 text-sm font-mono hover:bg-red-600 hover:text-white transition-all">
-                  ACCESS FULL INTEL REPORT
-                </button>
-              </div>
             </div>
             <!-- END INTEL PANEL -->
 
           </div>
         </div><!-- /log-entry -->
 
-      </div><!-- /log-container -->
+        <!-- ENTRY 002: Malacca 2022 -->
+        <div class="log-entry" style="display:none;">
+          <span class="tag">Rider Log Entry #002</span>
+          <h1 class="entry-title">Malacca 2022: First Cross-Border After COVID</h1>
+          <p class="lead">2022 felt different. Borders finally reopened and for the first time in what felt like forever, we left Singapore behind — me, my younger brother on his motorcycle, and my younger sister driving alongside us. Our first proper long-distance ride and drive together.</p>
+
+          <div class="featured-image">
+            <div class="featured-image-label">// SR-RIDE-002 // Malacca, Malaysia // 2022</div>
+            <div style="position:absolute;bottom:0;right:0;width:40px;height:40px;border-bottom:1px solid rgba(220,38,38,0.4);border-right:1px solid rgba(220,38,38,0.4);pointer-events:none;z-index:2;"></div>
+          </div>
+
+          <div class="story-content">
+
+            <h2>Context — Why This Trip Mattered</h2>
+            <p>This was not some high-speed touring trip or luxury vacation. Borders had just reopened after the long COVID shutdown, and the simple act of crossing into Malaysia again felt strangely emotional. Even the usual checkpoint process felt exciting — because for so long, travelling was something everyone had taken for granted without thinking about it.</p>
+            <p>My younger brother was still relatively new to longer rides. This became a milestone trip for him. For my younger sister, it was also one of her first longer-distance drives out of Singapore. Three people, two modes of transport, one destination.</p>
+
+            <h2>The Trip In Brief</h2>
+            <div class="itinerary-grid">
+              <div>Duration</div><div>2 Days 1 Night</div>
+              <div>Destination</div><div>Malacca City</div>
+              <div>Team</div><div>1 motorcycle (younger brother) + 1 car (younger sister) + Secret Reviewer</div>
+              <div>Route</div><div>Singapore &#10132; Woodlands Causeway &#10132; North-South Highway &#10132; Malacca</div>
+              <div>Distance</div><div>~360km total (roughly 180km each way)</div>
+              <div>Highlights</div><div>Rotating observation tower &middot; Lok Lok at McQuek's &middot; Ice kacang at Jonker</div>
+            </div>
+
+            <h2>The Ride Up</h2>
+            <p>The journey itself was surprisingly smooth. Traffic was manageable, weather stayed cooperative, and the ride north felt calm rather than tiring. Instead of rushing, we took our time and simply enjoyed the freedom of moving again.</p>
+            <p>Having both a motorcycle and a car in the same convoy means constant communication — the bike is more flexible but the car dictates rest stop timing. It worked. Everyone arrived in one piece and in good spirits.</p>
+
+            <h2>Arriving in Malacca</h2>
+            <p>Once we reached Malacca the atmosphere immediately felt slower and more relaxed compared to Singapore. The streets around Jonker Walk were lively again after COVID restrictions eased. Tourists were slowly returning, shops reopening, and there was this feeling the city was waking back up. We checked in, rested briefly, then headed out to explore on foot.</p>
+
+            <h2>The Chicken Rice Ball Failure</h2>
+            <p>One of the first things we wanted to do was try the famous chicken rice ball shop near the Jonker Street entrance. It was closed. A little disappointing after travelling all that way with it in mind — but honestly it became part of the trip memory itself.</p>
+            <p>Instead of forcing another plan, we wandered and ended up getting ice kacang from the famous dessert stall outside Jonker Street. Under the heat, after all the walking, that cold bowl tasted better than expected. Sometimes the failed plan becomes the more memorable part.</p>
+
+            <div class="callout-quote">Sometimes failed plans become the more memorable parts of travelling.</div>
+
+            <h2>The Rotating Tower</h2>
+            <p>One memorable moment was the rotating observation tower in Malacca. Sitting inside while slowly rotating upward to the highest point gave us a full panoramic view of the city. Nothing extreme, nothing adrenaline-filled — but peaceful. From above, Malacca looked calm, colourful, and nostalgic in a way that is hard to explain. For a short moment, everything felt slow again.</p>
+
+            <h2>Dinner — Lok Lok at McQuek's Satay Celup</h2>
+            <p>At night we ended the day with lok lok and satay celup at McQuek's. The place was crowded, lively, slightly chaotic — exactly the atmosphere that makes Malaysian food experiences memorable. Picking skewers together, waiting for the broth, talking nonsense after an entire day outside. Those simple moments became the highlight of the trip. No expensive restaurant needed.</p>
+
+            <h2>Heading Home</h2>
+            <p>The trip was only 2D1N but it felt refreshing enough to reset the mind. Before returning to Singapore, we bought Ramly burgers back for the family — one of those mandatory Malaysia traditions that somehow always happens. The ride home felt much easier. Confidence had increased, everyone relaxed more, and the first long-distance nervousness had completely disappeared.</p>
+
+            <h2>Why This Ride Matters</h2>
+            <p>This trip was not about luxury, speed, or major attractions. It was memorable because it marked the return of freedom after COVID — and the first proper long-distance experience shared between two siblings still building their confidence on the road. One motorcycle, one car, one simple overnight adventure across the border. No major problems. No dramatic stories. Just a peaceful trip that quietly became special over time.</p>
+
+            <div class="mt-8 pt-8 border-t border-red-900/30">
+              <div id="full-intel-002" class="space-y-6 text-gray-300">
+                <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
+                  <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Field Log: Malacca 2022</h4>
+                  <p class="text-sm text-gray-500 italic">2022 // Post-COVID // Singapore &#10132; Malacca &#10132; Singapore // 2D1N</p>
+                </div>
+                <div class="space-y-4">
+                  <p><strong class="text-red-500">[DAY 1 — THE RETURN]</strong>
+Morning departure from Singapore. Woodlands Causeway — the crossing that hadn't happened in years due to the pandemic. Even the standard checkpoint process felt different. You notice things you'd stopped noticing. The flag on the Malaysian side. The language shift on the signboards. The air.<br><br>
+Convoy: one motorcycle (younger brother, relatively new to long-distance), one car (younger sister, one of her first long drives out of Singapore), both moving together with communication kept open throughout. The bike can filter and move faster, but on this trip nobody rushed. This was about the experience, not the pace.<br><br>
+North-South Highway northbound — approximately 180km, roughly 5 hours with stops. Weather cooperative. Traffic manageable. Check-in on arrival, brief rest, then out on foot to explore before the city wound down.<br><br>
+Jonker Walk: first stop was the famous chicken rice ball shop — closed. Redirected without much debate. Ended up at the ice kacang stall. Cold bowl, hot weather, good company. Better than expected.<br><br>
+Rotating tower: slow ascent, full panorama. Malacca from above is surprisingly colourful. Leisurely afternoon — Jonker Street shops, small streets, no fixed agenda.<br><br>
+Dinner: McQuek's Satay Celup. Crowded and loud in the best way. Lok lok picked by everyone, broth bubbling, conversation easy. A meal that cost almost nothing and worked completely.<br><br>
+Night: checked in, rested, everything secure.</p>
+
+                  <p><strong class="text-red-500">[DAY 2 — HOME]</strong>
+Morning — relaxed. No hard deadline, just aim to leave by mid-morning to get home before dark.<br><br>
+Pre-departure: mandatory Ramly burger procurement. For the family back home. This step is not optional — it's tradition.<br><br>
+Southbound: same route reversed. North-South Highway south, Woodlands Causeway crossing, Singapore. The return always has a different quality from the outbound — less anticipation, more reflection. Both motorcycle and car made it without incident.<br><br>
+Confidence assessment: younger brother, post-trip, noticeably more settled on long-distance riding. First proper highway run completed. First cross-border run completed. The nervousness from Day 1 morning was completely gone by Day 2 evening — which is exactly what these trips are supposed to do.<br><br>
+End of operation. Everyone home. Ramly burgers delivered.</p>
+                </div>
+                <div class="bg-black/40 p-4 border border-red-900/50">
+                  <h5 class="text-red-500 text-sm mb-3 underline text-center tracking-widest uppercase">RIDE DEBRIEF</h5>
+                  <ul class="list-disc list-inside space-y-2 text-sm text-gray-400">
+                    <li>Year: 2022</li>
+                    <li>Context: First cross-border trip post-COVID border reopening</li>
+                    <li>Team: Secret Reviewer + younger brother (motorcycle) + younger sister (car)</li>
+                    <li>Route: Woodlands &#10132; North-South Highway &#10132; Malacca</li>
+                    <li>Distance: ~360km total</li>
+                    <li>Highlights: Ice kacang at Jonker, rotating tower, McQuek's Satay Celup</li>
+                    <li>Chicken rice ball shop: closed. Part of the memory now.</li>
+                    <li>Would repeat: Yes</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div><!-- /log-entry -->
+
+
+    </div><!-- /log-container -->
 
       <hr class="section-rule" />
 
@@ -632,7 +831,21 @@ End of operation.</p>
       </div>
 
     </div>
-  </main>
+  
+<div style="margin-top:48px;padding-top:20px;border-top:1px solid rgba(220,38,38,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+      <button onclick="backToSelection()" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#444;letter-spacing:2px;text-transform:uppercase;background:transparent;border:none;cursor:pointer;padding:0;transition:color .2s;"
+         onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='#444'">
+        &#9668; Back to Malaysia Rides
+      </button>
+      <a href="/overseas/" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#333;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:color .2s;"
+         onmouseover="this.style.color='#555'" onmouseout="this.style.color='#333'">
+        Overseas Hub &#9658;
+      </a>
+    </div>
+
+    </div><!-- /log-reader -->
+  </div>
+</main>
 
   <!-- ════ FOOTER ════ -->
   <footer class="py-16 px-5 border-t border-white/5">
@@ -736,57 +949,66 @@ End of operation.</p>
       }, 30);
     }
 
-    var logs = document.querySelectorAll('.log-entry');
-    var nextBtn = document.getElementById('nextBtn');
-    var prevBtn = document.getElementById('prevBtn');
-    var currentPage = document.getElementById('current-page');
-    var totalPages  = document.getElementById('total-pages');
-    var currentLogIndex = 0;
-    totalPages.textContent = String(logs.length).padStart(2, '0');
 
-    function updateButtons() {
-      prevBtn.disabled = currentLogIndex === 0;
-      nextBtn.disabled = currentLogIndex === logs.length - 1;
-      currentPage.textContent = String(currentLogIndex + 1).padStart(2, '0');
-    }
-    function updateView(newIndex) {
-      logs.forEach(function (log) { log.style.display = 'none'; });
-      currentLogIndex = newIndex;
-      logs[currentLogIndex].style.display = 'block';
-      logs[currentLogIndex].style.animation = 'none';
-      logs[currentLogIndex].offsetHeight;
-      logs[currentLogIndex].style.animation = '';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      updateButtons();
-    }
-    nextBtn.addEventListener('click', function () {
-      if (currentLogIndex >= logs.length - 1) return;
-      decryptText(nextBtn, 'Decrypt Next ►', function () { updateView(currentLogIndex + 1); });
-    });
-    prevBtn.addEventListener('click', function () {
-      if (currentLogIndex <= 0) return;
-      decryptText(prevBtn, '◄ Previous File', function () { updateView(currentLogIndex - 1); });
-    });
-    updateView(0);
+  /* ── Selection screen ── */
+  var logsInited = false;
+  var logs, nextBtn, prevBtn, currentPage, totalPages, currentLogIndex;
 
-    function toggleIntel(id, btn) {
-      var report = document.getElementById(id);
-      var isHidden = report.classList.contains('hidden');
-      if (isHidden) {
-        report.classList.remove('hidden');
-        btn.innerText = 'CLOSE INTEL REPORT';
-        report.querySelectorAll('p').forEach(function (p) {
-          var html = p.innerHTML;
-          html = html.replace(/(\[DAY \d+[^\]]*\])/g, '<span class="intel-timestamp">$1</span><br>');
-          p.innerHTML = html;
-        });
-        report.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      } else {
-        report.classList.add('hidden');
-        btn.innerText = 'ACCESS FULL INTEL REPORT';
-      }
-    }
+  function initReader(){
+    if(logsInited) return;
+    logsInited = true;
+    logs = document.querySelectorAll('.log-entry');
+    nextBtn = document.getElementById('nextBtn');
+    prevBtn = document.getElementById('prevBtn');
+    currentPage = document.getElementById('current-page');
+    totalPages = document.getElementById('total-pages');
+    currentLogIndex = 0;
+    totalPages.textContent = String(logs.length).padStart(2,'0');
+
+    nextBtn.addEventListener('click',function(){
+      if(currentLogIndex>=logs.length-1)return;
+      var nextIndex=currentLogIndex+1;
+      decryptText(nextBtn,'Decrypt Next ►',function(){updateView(nextIndex);});
+    });
+    prevBtn.addEventListener('click',function(){
+      if(currentLogIndex<=0)return;
+      var prevIndex=currentLogIndex-1;
+      decryptText(prevBtn,'◄ Previous File',function(){updateView(prevIndex);});
+    });
+  }
+
+  function updateButtons(){
+    prevBtn.disabled=currentLogIndex===0;
+    nextBtn.disabled=currentLogIndex===logs.length-1;
+    currentPage.textContent=String(currentLogIndex+1).padStart(2,'0');
+  }
+
+  function updateView(newIndex){
+    logs.forEach(function(log){log.style.display='none';});
+    currentLogIndex=newIndex;
+    logs[currentLogIndex].style.display='block';
+    logs[currentLogIndex].style.animation='none';
+    logs[currentLogIndex].offsetHeight;
+    logs[currentLogIndex].style.animation='';
+    window.scrollTo({top:0,behavior:'smooth'});
+    updateButtons();
+  }
+
+  function selectLog(el){
+    var logIndex=parseInt(el.getAttribute('data-log'));
+    document.getElementById('selection-screen').style.display='none';
+    document.getElementById('log-reader').style.display='block';
+    initReader();
+    updateView(logIndex);
+  }
+
+  function backToSelection(){
+    document.getElementById('log-reader').style.display='none';
+    document.getElementById('selection-screen').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
   </script>
+
 
 </body>
 </html>
