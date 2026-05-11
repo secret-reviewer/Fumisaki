@@ -712,14 +712,33 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
   }
 
   /* ── Log pagination ── */
-  var logs=document.querySelectorAll('.log-entry');
-  var nextBtn=document.getElementById('nextBtn');
-  var prevBtn=document.getElementById('prevBtn');
-  var currentPage=document.getElementById('current-page');
-  var totalPages=document.getElementById('total-pages');
-  var currentLogIndex=0;
+  /* ── Selection screen ── */
+  var logsInited = false;
+  var logs, nextBtn, prevBtn, currentPage, totalPages, currentLogIndex;
 
-  totalPages.textContent=String(logs.length).padStart(2,'0');
+  function initReader(){
+    if(logsInited) return;
+    logsInited = true;
+    logs = document.querySelectorAll('.log-entry');
+    nextBtn = document.getElementById('nextBtn');
+    prevBtn = document.getElementById('prevBtn');
+    currentPage = document.getElementById('current-page');
+    totalPages = document.getElementById('total-pages');
+    currentLogIndex = 0;
+    totalPages.textContent = String(logs.length).padStart(2,'0');
+
+    nextBtn.addEventListener('click',function(){
+      if(currentLogIndex>=logs.length-1)return;
+      var nextIndex=currentLogIndex+1;
+      decryptText(nextBtn,'Unlock Next ►',function(){updateView(nextIndex);});
+    });
+
+    prevBtn.addEventListener('click',function(){
+      if(currentLogIndex<=0)return;
+      var prevIndex=currentLogIndex-1;
+      decryptText(prevBtn,'◄ Previous Log',function(){updateView(prevIndex);});
+    });
+  }
 
   function updateButtons(){
     prevBtn.disabled=currentLogIndex===0;
@@ -738,22 +757,11 @@ Unexplained Hotel Logs | Paranormal Stays & Strange Encounters | Secret Reviewer
     updateButtons();
   }
 
-  nextBtn.addEventListener('click',function(){
-    if(currentLogIndex>=logs.length-1)return;
-    var nextIndex=currentLogIndex+1;
-    decryptText(nextBtn,'Unlock Next ►',function(){updateView(nextIndex);});
-  });
-  prevBtn.addEventListener('click',function(){
-    if(currentLogIndex<=0)return;
-    var prevIndex=currentLogIndex-1;
-    decryptText(prevBtn,'◄ Previous Log',function(){updateView(prevIndex);});
-  });
-
-  /* ── Selection screen ── */
   function selectLog(el){
     var logIndex=parseInt(el.getAttribute('data-log'));
     document.getElementById('selection-screen').style.display='none';
     document.getElementById('log-reader').style.display='block';
+    initReader();
     updateView(logIndex);
   }
 
