@@ -256,12 +256,71 @@ Personal Unexplained Encounters | Paranormal & Eerie Real-Life Stories | Secret 
       background-size:128px; animation:staticNoise 4s step-start infinite;
     }
 
-    /* Selection cards */
+    /* ── Selection screen enhanced ── */
     .sel-card:hover { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.04) !important; }
     .sel-card:hover .sel-accent { background:#dc2626 !important; }
-    .sel-card:hover .sel-arrow { color:rgba(220,38,38,0.7) !important; }
+    .sel-card:hover .sel-arrow { color:rgba(220,38,38,0.8) !important; }
     .sel-card.sel-active { border-color:rgba(220,38,38,0.5) !important; background:rgba(220,38,38,0.05) !important; }
     .sel-card.sel-active .sel-accent { background:#dc2626 !important; }
+
+    @keyframes typewriter { from{width:0} to{width:100%} }
+    @keyframes cursorBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+    @keyframes entryFadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes scanline-sweep { 0%{top:-60px} 100%{top:100%} }
+    @keyframes signalFlicker { 0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:0.2} 94%{opacity:1} 97%{opacity:0.4} 98%{opacity:1} }
+
+    .sel-briefing-line {
+      overflow:hidden;
+      white-space:normal;
+      opacity:0;
+      animation: entryFadeUp 0.5s ease forwards;
+    }
+    .sel-transmission {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      color:#444;
+      animation: signalFlicker 4s infinite;
+    }
+    .sel-card-lead {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.88rem;
+      color:#888;
+      line-height:1.7;
+      font-style:italic;
+      border-left:2px solid rgba(220,38,38,0.3);
+      padding-left:12px;
+      margin:10px 0 14px;
+    }
+    .sel-divider {
+      border:none;
+      height:1px;
+      background:linear-gradient(90deg,transparent,rgba(220,38,38,0.25) 30%,rgba(220,38,38,0.25) 70%,transparent);
+      margin:28px 0;
+    }
+    .sel-warning-bar {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.62rem;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:rgba(220,38,38,0.5);
+      border:1px solid rgba(220,38,38,0.15);
+      background:rgba(220,38,38,0.04);
+      padding:8px 14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:20px;
+    }
+    .sel-incident-type {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.58rem;
+      letter-spacing:2px;
+      color:#555;
+      text-transform:uppercase;
+      margin-bottom:6px;
+    }
 
     /* Breadcrumb */
     .breadcrumb {
@@ -363,84 +422,134 @@ Personal Unexplained Encounters | Paranormal & Eerie Real-Life Stories | Secret 
 
     <!-- SELECTION SCREEN -->
     <div id="selection-screen">
-      <div class="font-mono-tech text-xs uppercase mb-5" style="color:#dc2626;letter-spacing:3px;display:flex;align-items:center;gap:10px;">
-        <span class="inline-block w-2 h-2 rounded-full" style="background:#dc2626;animation:pulse-dot 1.4s infinite;"></span>
-        Select a log to access
+
+      <!-- Transmission header -->
+      <div style="margin-bottom:24px;">
+        <div class="sel-transmission" style="margin-bottom:6px;">TRANSMISSION: PERSONAL ENCOUNTERS</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:#333;letter-spacing:2px;text-transform:uppercase;">LOCATION: REDACTED</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:6px;color:rgba(220,38,38,0.6);">
+            <span style="width:6px;height:6px;background:#dc2626;border-radius:50%;display:inline-block;animation:pulse-dot 1.2s infinite;"></span>
+            SIGNAL UNSTABLE
+          </div>
+        </div>
       </div>
-      <div id="sel-cards" style="display:grid;gap:14px;">
 
-        <div class="sel-card" data-log="0" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
-          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log PERSONAL-001</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
+      <!-- Warning bar -->
+      <div class="sel-warning-bar">
+        <span style="color:#dc2626;">&#9888;</span>
+        WARNING: THESE EVENTS PREDATE THE RIDING LOGS. THEY ARE THE REASON FOR THEM.
+      </div>
+
+      <!-- Briefing text -->
+      <div style="margin-bottom:28px;padding:20px 22px;background:rgba(5,5,5,0.8);border:1px solid rgba(255,255,255,0.04);border-left:2px solid rgba(220,38,38,0.3);display:flex;flex-direction:column;gap:10px;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(220,38,38,0.5);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;">// CLASSIFIED BRIEFING — UNX-PERSONAL</div>
+      <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.1s;">You are entering the Personal Archive.</p>
+      <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.2s;">Before the bikes. Before the tours. Before Malaysia and Thailand and the night rides — there were things that happened closer to home. Childhood things. House things.</p>
+      <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.3s;">This is where it started. Not on a dark road at 2am, but in a house in Singapore, before the rider knew he was going to become one.</p>
+      <p class="sel-briefing-line" style="font-family:'IBM Plex Sans',sans-serif;font-size:0.92rem;color:#666;line-height:1.75;animation-delay:0.4s;">Some of these have never been written down before. There may be a reason for that. Read carefully.</p>
+      </div>
+
+      <hr class="sel-divider" />
+
+      <!-- Log select label -->
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#dc2626;letter-spacing:3px;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+        <span style="width:6px;height:6px;background:#dc2626;border-radius:50%;display:inline-block;animation:pulse-dot 1.4s infinite;"></span>
+        3 LOGS AVAILABLE — SELECT TO ENTER
+      </div>
+
+      <!-- Cards -->
+      <div style="display:grid;gap:14px;">
+
+        <div class="sel-card" data-log="0" onclick="selectLog(this)"
+          style="background:rgba(8,8,8,0.9);border:1px solid rgba(220,38,38,0.15);padding:22px 24px;cursor:pointer;position:relative;transition:border-color .3s,background .3s;animation:entryFadeUp 0.5s ease 0.15s both;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .3s;" class="sel-accent"></div>
+          <div class="sel-incident-type">INCIDENT TYPE: VISUAL ENCOUNTER</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#f87171;letter-spacing:2px;text-transform:uppercase;">// Log PERSONAL-001</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#333;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">Declassified</span>
           </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The First Time I Saw Something</div>
-          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">I was around six years old. High fever. Midnight. And an old woman standing near the kitchen who wasn't supposed to be there — and who disappeared the moment my mother switched the lights on properly.</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Childhood</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Sighting</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Fever</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Home</span>
+          <div style="font-size:1.25rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.02em;font-family:'Barlow Condensed',sans-serif;line-height:1.15;margin-bottom:2px;">The First Time I Saw Something</div>
+          <div class="sel-card-lead">I was around six years old. High fever. Midnight. And an old woman standing near the kitchen who wasn't supposed to be there — and who disappeared the moment my mother switched the lights on properly.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:4px;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Childhood</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Sighting</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Fever</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Home</span>
             </div>
-            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
+            <span class="sel-arrow" style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .3s;white-space:nowrap;">ENTER LOG &#9658;</span>
           </div>
         </div>
-        <div class="sel-card" data-log="1" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
-          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log PERSONAL-002</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
+        <div class="sel-card" data-log="1" onclick="selectLog(this)"
+          style="background:rgba(8,8,8,0.9);border:1px solid rgba(220,38,38,0.15);padding:22px 24px;cursor:pointer;position:relative;transition:border-color .3s,background .3s;animation:entryFadeUp 0.5s ease 0.30s both;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .3s;" class="sel-accent"></div>
+          <div class="sel-incident-type">INCIDENT TYPE: COHABITATION</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#f87171;letter-spacing:2px;text-transform:uppercase;">// Log PERSONAL-002</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#333;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">Declassified</span>
           </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">The House With The Little Ghosts</div>
-          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">The owner casually mentioned he took care of little ghosts. My mother told me years later that I used to play with them when I was home alone. I have almost no memory of it.</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Childhood</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Rental House</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Spirits</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Personal</span>
+          <div style="font-size:1.25rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.02em;font-family:'Barlow Condensed',sans-serif;line-height:1.15;margin-bottom:2px;">The House With The Little Ghosts</div>
+          <div class="sel-card-lead">The owner casually mentioned he took care of little ghosts. My mother told me years later that I used to play with them when I was home alone. I have almost no memory of it.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:4px;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Childhood</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Rental House</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Spirits</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Personal</span>
             </div>
-            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
+            <span class="sel-arrow" style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .3s;white-space:nowrap;">ENTER LOG &#9658;</span>
           </div>
         </div>
-        <div class="sel-card" data-log="2" onclick="selectLog(this)" style="background:rgba(10,10,10,0.85);border:1px solid rgba(220,38,38,0.15);padding:20px 22px;cursor:pointer;position:relative;transition:border-color .25s,background .25s;">
-          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .25s;" class="sel-accent"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#f87171;letter-spacing:2px;">// Log PERSONAL-003</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#444;letter-spacing:1px;text-transform:uppercase;">Declassified</span>
+        <div class="sel-card" data-log="2" onclick="selectLog(this)"
+          style="background:rgba(8,8,8,0.9);border:1px solid rgba(220,38,38,0.15);padding:22px 24px;cursor:pointer;position:relative;transition:border-color .3s,background .3s;animation:entryFadeUp 0.5s ease 0.45s both;">
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:rgba(220,38,38,0);transition:background .3s;" class="sel-accent"></div>
+          <div class="sel-incident-type">INCIDENT TYPE: ACTIVE INTERFERENCE</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#f87171;letter-spacing:2px;text-transform:uppercase;">// Log PERSONAL-003</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#333;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;">Declassified</span>
           </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">Maybe Some Stories Don't Want To Be Written</div>
-          <div class="sel-lead font-prose" style="display:none;font-size:0.85rem;color:#777;line-height:1.65;font-style:italic;margin-bottom:12px;">There's something I noticed over the years. Every time I seriously try to write down the unexplained things I've seen or felt, something stops me. I'm not joking.</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:12px;">
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Writing Log</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Late Night</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Interference</span>
-              <span class="font-mono-tech" style="font-size:0.6rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Personal</span>
+          <div style="font-size:1.25rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.02em;font-family:'Barlow Condensed',sans-serif;line-height:1.15;margin-bottom:2px;">Maybe Some Stories Don't Want To Be Written</div>
+          <div class="sel-card-lead">There's something I noticed over the years. Every time I seriously try to write down the unexplained things I've seen or felt, something stops me. I'm not joking.</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:4px;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Writing Log</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Late Night</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Interference</span>
+              <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#555;border:1px solid rgba(255,255,255,0.06);padding:3px 8px;letter-spacing:1px;text-transform:uppercase;">Personal</span>
             </div>
-            <span class="font-mono-tech sel-arrow" style="font-size:0.65rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .25s;white-space:nowrap;">ACCESS LOG &#9658;</span>
+            <span class="sel-arrow" style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(220,38,38,0);letter-spacing:2px;text-transform:uppercase;transition:color .3s;white-space:nowrap;">ENTER LOG &#9658;</span>
           </div>
         </div>
 
-        <!-- Locked card -->
-        <div style="background:rgba(10,10,10,0.5);border:1px solid rgba(220,38,38,0.07);padding:20px 22px;position:relative;opacity:0.4;pointer-events:none;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span class="font-mono-tech text-xs uppercase" style="color:#444;letter-spacing:2px;">// Log UNX-???</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#dc2626;letter-spacing:1px;text-transform:uppercase;">Encrypted</span>
+        <!-- Locked -->
+        <div style="background:rgba(8,8,8,0.6);border:1px solid rgba(220,38,38,0.07);padding:22px 24px;position:relative;opacity:0.35;pointer-events:none;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#dc2626;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">INCIDENT TYPE: &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:#333;letter-spacing:2px;text-transform:uppercase;">// Log &#9608;&#9608;&#9608;-???</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#dc2626;letter-spacing:1px;text-transform:uppercase;">Encrypted</span>
           </div>
-          <div style="font-size:1.3rem;font-weight:700;color:#333;text-transform:uppercase;letter-spacing:0.02em;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</div>
-          <div style="display:flex;gap:8px;">
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#2a2a2a;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;">&#9618;&#9618;&#9618;&#9618;&#9618;&#9618;</span>
-            <span class="font-mono-tech" style="font-size:0.6rem;color:#2a2a2a;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;">&#9618;&#9618;&#9618;&#9618;</span>
+          <div style="font-size:1.25rem;font-weight:800;color:#2a2a2a;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;margin-bottom:10px;">&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</div>
+          <div style="display:flex;gap:6px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#1e1e1e;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;">&#9618;&#9618;&#9618;&#9618;&#9618;&#9618;</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#1e1e1e;border:1px solid rgba(255,255,255,0.03);padding:3px 8px;">&#9618;&#9618;&#9618;&#9618;</span>
           </div>
         </div>
-      </div><!-- /sel-cards -->
+      </div>
+
+
+    <!-- Back to hub — bottom of selection screen -->
+    <div style="margin-top:32px;padding-top:20px;border-top:1px solid rgba(220,38,38,0.1);display:flex;justify-content:center;">
+      <a href="/unexplained/" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#444;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .2s;"
+         onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='#444'">
+        &#9668; Return to Unexplained Archive
+      </a>
+    </div>
     </div><!-- /selection-screen -->
 
     <!-- LOG READER -->
     <div id="log-reader" style="display:none;">
+
     <div id="log-container">
 
        <!-- ══ LOG 1: The First Time I Saw Something ══ -->
@@ -665,8 +774,15 @@ Personal Unexplained Encounters | Paranormal & Eerie Real-Life Stories | Secret 
       <button id="nextBtn" class="nav-btn"><span>Unlock Next ►</span></button>
     </div>
 
-    <div class="text-center mt-16">
-      <a href="/unexplained/" class="font-mono-tech text-gray-600 text-xs tracking-widest uppercase hover:text-red-500 transition-colors duration-200">◄ Return to Unexplained Archive</a>
+    <div style="margin-top:48px;padding-top:20px;border-top:1px solid rgba(220,38,38,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+      <button onclick="backToSelection()" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#444;letter-spacing:2px;text-transform:uppercase;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:0;transition:color .2s;"
+         onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='#444'">
+        &#9668; Back to Personal Archive
+      </button>
+      <a href="/unexplained/" style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:#333;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .2s;"
+         onmouseover="this.style.color='#555'" onmouseout="this.style.color='#333'">
+        Unexplained Archive &#9658;
+      </a>
     </div>
 
     </div><!-- /log-reader -->
@@ -813,6 +929,12 @@ Personal Unexplained Encounters | Paranormal & Eerie Real-Life Stories | Secret 
     updateView(logIndex);
   }
 
+
+  function backToSelection(){
+    document.getElementById('log-reader').style.display='none';
+    document.getElementById('selection-screen').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
 </script>
 </body>
 </html>
