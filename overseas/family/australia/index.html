@@ -421,7 +421,7 @@
 
             <!-- FULL INTEL PANEL -->
             <div class="mt-8 pt-8 border-t border-red-900/30">
-              <div id="full-intel-001" class="hidden space-y-6 text-gray-300">
+              <div id="full-intel-001" class="space-y-6 text-gray-300">
                 <div class="bg-red-950/20 p-4 border-l-2 border-red-600 mb-6">
                   <h4 class="text-red-500 font-bold uppercase mb-2">Detailed Field Log: Australia — Tasmania + Sydney</h4>
                   <p class="text-sm text-gray-500 italic">11–17 May 2015 // Rental Car (Tas) + Public Transport (Sydney) // Sunrise ~07:10 / Sunset ~17:00 throughout</p>
@@ -558,11 +558,7 @@ Final breakfast. Check out. Transit to Sydney Airport.<br><br>
                 </div>
               </div>
 
-              <div class="flex justify-center mt-6">
-                <button onclick="toggleIntel('full-intel-001', this)" class="border border-red-500/30 text-red-500 px-6 py-2 text-sm font-mono hover:bg-red-600 hover:text-white transition-all">
-                  ACCESS FULL INTEL REPORT
-                </button>
-              </div>
+
             </div>
             <!-- END INTEL PANEL -->
 
@@ -673,18 +669,17 @@ Final breakfast. Check out. Transit to Sydney Airport.<br><br>
     pb.addEventListener('click',function(){if(idx<=0)return;decryptText(pb,'◄ Previous File',function(){upView(idx-1);});});
     upView(0);
 
-    function toggleIntel(id,btn){
-      var rep=document.getElementById(id),hidden=rep.classList.contains('hidden');
-      if(hidden){
-        rep.classList.remove('hidden');btn.innerText='CLOSE INTEL REPORT';
+    // Intel report is always visible — apply timestamp formatting on load
+    document.addEventListener('DOMContentLoaded', function(){
+      var rep = document.getElementById('full-intel-001');
+      if(rep){
         rep.querySelectorAll('p').forEach(function(p){
-          var h=p.innerHTML;
-          h=h.replace(/(\[DAY \d+[^\]]*\])/g,'<span class="intel-timestamp">$1</span><br>');
-          p.innerHTML=h;
+          var h = p.innerHTML;
+          h = h.replace(/(\[DAY \d+[^\]]*\])/g,'<span class="intel-timestamp">$1</span><br>');
+          p.innerHTML = h;
         });
-        rep.scrollIntoView({behavior:'smooth',block:'nearest'});
-      } else {rep.classList.add('hidden');btn.innerText='ACCESS FULL INTEL REPORT';}
-    }
+      }
+    });
   </script>
 
 </body>
