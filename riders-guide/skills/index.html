@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="Real-world riding awareness and safety for Singapore motorcyclists. Defensive riding, blind spot habits, wet weather braking, group riding trust, night riding, and road hazard awareness from 10+ years on the road.">
+  <meta name="keywords" content="defensive riding Singapore, motorcycle safety Singapore, blind spot awareness motorcycle, wet weather riding, group riding tips, night riding motorcycle, road hazard motorcycle, emergency braking, Secret Reviewer">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Riding Skills & Awareness — Real-World Safety | Secret Reviewer</title>
+  <link rel="canonical" href="https://secret-reviewer.com/riders-guide/skills/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: {
+        sans:  ['Barlow Condensed','sans-serif'],
+        mono:  ['"Share Tech Mono"','monospace'],
+        prose: ['"IBM Plex Sans"','sans-serif'],
+      }}}
+    };
+  </script>
+  <style>
+    :root {
+      --red:      #dc2626;
+      --red-dim:  rgba(220,38,38,0.15);
+      --red-glow: rgba(220,38,38,0.6);
+      --bg:       #060606;
+    }
+    *, *::before, *::after { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      background-color:var(--bg); color:#ececec;
+      font-family:'Barlow Condensed',sans-serif;
+      margin:0; overflow-x:hidden; cursor:none; line-height:1.75;
+    }
+    .font-mono-tech { font-family:'Share Tech Mono',monospace; }
+    .font-prose     { font-family:'IBM Plex Sans',sans-serif; }
+
+    /* ── Cursor ── */
+    #cursor {
+      position:fixed; width:12px; height:12px;
+      background:var(--red); border-radius:50%;
+      pointer-events:none; z-index:99999;
+      transform:translate(-50%,-50%);
+      transition:width .2s,height .2s; mix-blend-mode:screen;
+    }
+    #cursor-ring {
+      position:fixed; width:36px; height:36px;
+      border:1px solid rgba(220,38,38,0.5); border-radius:50%;
+      pointer-events:none; z-index:99998;
+      transform:translate(-50%,-50%);
+      transition:width .2s,height .2s,border-color .2s;
+    }
+
+    /* ── Animations ── */
+    @keyframes scan        { from{top:-100%} to{top:100%} }
+    @keyframes fadeSlideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse-red   { 0%,100%{box-shadow:0 0 6px rgba(220,38,38,0.3)} 50%{box-shadow:0 0 28px rgba(220,38,38,0.8),0 0 60px rgba(220,38,38,0.25)} }
+    @keyframes pulse-dot   { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    @keyframes staticNoise { 0%{opacity:.03} 25%{opacity:.05} 50%{opacity:.02} 75%{opacity:.06} 100%{opacity:.03} }
+    @keyframes glitch-1    { 0%,100%{clip-path:inset(0 0 98% 0);transform:translate(-2px,0)} 20%{clip-path:inset(20% 0 50% 0);transform:translate(2px,0)} 40%{clip-path:inset(60% 0 20% 0);transform:translate(-2px,0)} 60%{clip-path:inset(80% 0 5% 0);transform:translate(2px,0)} 80%{clip-path:inset(40% 0 60% 0);transform:translate(-2px,0)} }
+    @keyframes glitch-2    { 0%,100%{clip-path:inset(50% 0 30% 0);transform:translate(2px,0);color:#00ffff} 25%{clip-path:inset(10% 0 80% 0);transform:translate(-2px,0)} 50%{clip-path:inset(70% 0 10% 0);transform:translate(2px,0);color:var(--red)} 75%{clip-path:inset(30% 0 50% 0);transform:translate(-2px,0)} }
+    @keyframes cardReveal  { from{opacity:0;transform:translateY(20px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+    @keyframes barGrow     { from{width:0} to{width:var(--bar-w)} }
+
+    .animate-fade-slide-up { animation:fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+    .animate-pulse-red     { animation:pulse-red 2.5s infinite; }
+
+    /* ── CRT ── */
+    body::before {
+      content:""; position:fixed; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);
+      pointer-events:none; z-index:9990;
+    }
+    body::after {
+      content:""; position:fixed; top:-100%; left:0; width:100%; height:100%;
+      background:linear-gradient(rgba(220,38,38,0) 0%,rgba(220,38,38,0.03) 50%,rgba(220,38,38,0) 100%);
+      animation:scan 12s linear infinite; pointer-events:none; z-index:9991;
+    }
+
+    /* ── Progress bar ── */
+    #progress-bar {
+      height:3px;
+      background:linear-gradient(90deg,#7f1d1d,#dc2626,#f87171);
+      box-shadow:0 0 12px rgba(220,38,38,0.9),0 0 24px rgba(220,38,38,0.4);
+      width:0%; transition:width .08s ease-out;
+    }
+
+    /* ── Navbar ── */
+    #navbar { transition:background .4s,border-color .4s; }
+    .nav-scrolled {
+      background:rgba(4,4,4,0.96) !important;
+      border-bottom-color:rgba(127,29,29,0.4) !important;
+      backdrop-filter:blur(20px);
+    }
+
+    /* ── Glitch title ── */
+    .glitch-wrap { position:relative; display:inline-block; }
+    .glitch-wrap::before,.glitch-wrap::after {
+      content:attr(data-text); position:absolute; top:0; left:0; width:100%; height:100%;
+    }
+    .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
+    .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
+
+    /* ── Noise ── */
+    .noise-overlay {
+      position:absolute; inset:0; opacity:.025; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size:128px; animation:staticNoise 4s step-start infinite;
+    }
+
+    /* ── Section rule ── */
+    .section-rule {
+      border:none; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(220,38,38,0.3),transparent);
+      margin:52px 0;
+    }
+
+    /* ── Breadcrumb ── */
+    .breadcrumb {
+      display:inline-flex; align-items:center; gap:8px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.85rem; color:#555; text-transform:uppercase;
+      letter-spacing:2px; text-decoration:none;
+      transition:color .2s;
+    }
+    .breadcrumb:hover { color:var(--red); }
+    .breadcrumb:hover svg { transform:translateX(-3px); }
+    .breadcrumb svg { transition:transform .2s; }
+
+    /* ── Signal line ── */
+    .signal-line {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.68rem; color:rgba(220,38,38,0.45);
+      letter-spacing:2px; text-transform:uppercase;
+      display:flex; align-items:center; gap:8px; margin-bottom:8px;
+    }
+    .signal-line::before {
+      content:''; display:block; width:24px; height:1px;
+      background:rgba(220,38,38,0.45); flex-shrink:0;
+    }
+
+    /* ── Topic block ── */
+    .topic-block {
+      position:relative;
+      border:1px solid rgba(220,38,38,0.15);
+      background:rgba(10,10,10,0.85);
+      overflow:hidden; margin-bottom:20px;
+      animation:cardReveal 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .topic-block::before {
+      content:''; position:absolute; top:0; left:0;
+      width:32px; height:32px;
+      border-top:1px solid rgba(220,38,38,0.5);
+      border-left:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .topic-block::after {
+      content:''; position:absolute; bottom:0; right:0;
+      width:32px; height:32px;
+      border-bottom:1px solid rgba(220,38,38,0.5);
+      border-right:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .topic-block-inner { padding:28px 28px 24px; position:relative; z-index:1; }
+    .topic-block .card-bg {
+      position:absolute; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.007) 3px,rgba(220,38,38,0.007) 4px);
+      pointer-events:none;
+    }
+
+    /* ── Lesson variant — personal war story ── */
+    .topic-block.lesson {
+      border-color:rgba(220,38,38,0.38);
+      background:rgba(14,4,4,0.93);
+    }
+    .topic-block.lesson::before,
+    .topic-block.lesson::after { border-color:rgba(220,38,38,0.72); }
+
+    /* ── Topic heading ── */
+    .topic-heading {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(1.6rem,4vw,2.2rem);
+      font-weight:900; text-transform:uppercase;
+      color:#fff; letter-spacing:0.02em; line-height:1.1;
+      margin:0 0 16px 0;
+    }
+
+    /* ── Prose body ── */
+    .prose-body {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.97rem; color:#8a8a8a; line-height:1.85;
+    }
+    .prose-body p { margin:0 0 14px 0; }
+    .prose-body p:last-child { margin-bottom:0; }
+    .prose-body strong { color:#d0d0d0; font-weight:600; }
+    .prose-body em     { color:#b0b0b0; font-style:italic; }
+
+    /* ── Callout ── */
+    .callout {
+      border-left:2px solid rgba(220,38,38,0.6);
+      background:rgba(220,38,38,0.04);
+      padding:14px 18px; margin:18px 0 0;
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.9rem; color:#999; line-height:1.7; font-style:italic;
+    }
+    .callout strong { color:#f87171; font-style:normal; }
+
+    /* ── Warning callout — amber ── */
+    .callout-warn {
+      border-left:2px solid rgba(251,191,36,0.6);
+      background:rgba(251,191,36,0.04);
+      padding:14px 18px; margin:18px 0 0;
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.9rem; color:#999; line-height:1.7; font-style:italic;
+    }
+    .callout-warn strong { color:#fbbf24; font-style:normal; }
+
+    /* ── SR Take ── */
+    .sr-take {
+      margin-top:18px; border:1px solid rgba(220,38,38,0.25);
+      background:rgba(220,38,38,0.05); padding:14px 18px;
+    }
+    .sr-take-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.6); margin-bottom:6px;
+    }
+    .sr-take p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#bbb; line-height:1.75;
+      margin:0; font-style:italic;
+    }
+
+    /* ── Lesson take — personal survival story ── */
+    .lesson-take {
+      margin-top:18px;
+      border:1px solid rgba(220,38,38,0.45);
+      background:rgba(220,38,38,0.09); padding:16px 18px;
+    }
+    .lesson-take::before {
+      content:'// LIVED EXPERIENCE — NOT A HYPOTHETICAL';
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.62rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.7); display:block; margin-bottom:10px;
+    }
+    .lesson-take p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.97rem; color:#cc8888; line-height:1.85;
+      margin:0;
+    }
+    .lesson-take p + p { margin-top:12px; }
+    .lesson-take p strong { color:#f87171; }
+    .lesson-take p em    { color:#e8a0a0; font-style:italic; }
+
+    /* ── Principle callout — the big rule ── */
+    .principle-block {
+      margin:22px 0;
+      border:1px solid rgba(220,38,38,0.5);
+      background:rgba(220,38,38,0.07);
+      padding:20px 22px;
+      position:relative;
+      overflow:hidden;
+    }
+    .principle-block::before {
+      content:'// CORE PRINCIPLE';
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.62rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.55); display:block; margin-bottom:10px;
+    }
+    .principle-block p {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(1.25rem,3vw,1.65rem);
+      font-weight:900; text-transform:uppercase;
+      color:#fff; line-height:1.25;
+      margin:0; letter-spacing:0.02em;
+    }
+    .principle-block p span { color:#dc2626; }
+    .principle-block .sub {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.9rem; color:#999; line-height:1.7;
+      font-style:italic; margin-top:10px;
+      font-weight:400; text-transform:none; letter-spacing:0;
+    }
+
+    /* ── Comparison table ── */
+    .comp-table { width:100%; border-collapse:collapse; margin-top:18px; }
+    .comp-table th {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.68rem; letter-spacing:2px; text-transform:uppercase;
+      color:rgba(220,38,38,0.5);
+      border-bottom:1px solid rgba(220,38,38,0.2);
+      padding:10px 14px; text-align:left;
+    }
+    .comp-table td {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.88rem; color:#888; line-height:1.6;
+      padding:10px 14px;
+      border-bottom:1px solid rgba(255,255,255,0.04);
+      vertical-align:top;
+    }
+    .comp-table tr:last-child td { border-bottom:none; }
+    .comp-table td:first-child { color:#ddd; font-weight:600; }
+    .comp-table td.good { color:#4ade80; }
+    .comp-table td.bad  { color:#f87171; }
+    .comp-table td.mid  { color:#fbbf24; }
+
+    /* ── Checklist ── */
+    .checklist { list-style:none; padding:0; margin:14px 0 0; }
+    .checklist li {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#888; line-height:1.7;
+      padding:7px 0 7px 28px; position:relative;
+      border-bottom:1px solid rgba(255,255,255,0.04);
+    }
+    .checklist li:last-child { border-bottom:none; }
+    .checklist li::before {
+      content:''; position:absolute; left:6px; top:14px;
+      width:10px; height:10px; border:1px solid rgba(220,38,38,0.5);
+    }
+    .checklist li strong { color:#d0d0d0; }
+    .checklist li.warn::before  { background:rgba(220,38,38,0.25); }
+    .checklist li.ok::before    { background:rgba(74,222,128,0.2); border-color:rgba(74,222,128,0.4); }
+
+    /* ── Gear bar ── */
+    .gear-bar-wrap { margin:6px 0; }
+    .gear-bar-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#555; display:flex; justify-content:space-between; margin-bottom:4px;
+    }
+    .gear-bar-track { height:3px; background:rgba(255,255,255,0.06); }
+    .gear-bar-fill {
+      height:3px; background:linear-gradient(90deg,#7f1d1d,#dc2626);
+      box-shadow:0 0 6px rgba(220,38,38,0.4);
+      animation:barGrow 1s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    /* ── Tag pill ── */
+    .tag-pill {
+      display:inline-block;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#f87171; border:1px solid rgba(220,38,38,0.3);
+      padding:3px 10px; background:rgba(220,38,38,0.05);
+      margin-right:6px; margin-bottom:6px;
+    }
+
+    /* ── Section ID ── */
+    .section-id {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.35); margin-bottom:4px;
+    }
+
+    /* ── Field note ── */
+    .field-note {
+      border-left:2px solid rgba(220,38,38,0.5);
+      padding:14px 18px; margin:18px 0;
+      background:rgba(0,0,0,0.4);
+    }
+    .field-note p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:1rem; color:#aaa; line-height:1.75;
+      font-style:italic; margin:0;
+    }
+    .field-note cite {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:rgba(220,38,38,0.4); display:block; margin-top:8px;
+    }
+
+    /* ── Two-col grid ── */
+    .prose-two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:16px; }
+    @media(max-width:640px){ .prose-two-col { grid-template-columns:1fr; } }
+    .prose-mini-block {
+      border:1px solid rgba(255,255,255,0.06); padding:16px;
+      background:rgba(0,0,0,0.3);
+    }
+    .prose-mini-block h4 {
+      font-size:0.9rem; font-weight:900; text-transform:uppercase;
+      color:#ccc; margin:0 0 8px; letter-spacing:0.05em;
+    }
+    .prose-mini-block p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.85rem; color:#777; line-height:1.7; margin:0;
+    }
+
+    /* ── Scenario block — numbered situation ── */
+    .scenario {
+      border-bottom:1px solid rgba(255,255,255,0.05);
+      padding:14px 0;
+    }
+    .scenario:last-child { border-bottom:none; }
+    .scenario-num {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; color:rgba(220,38,38,0.4);
+      text-transform:uppercase; margin-bottom:5px;
+    }
+    .scenario-title {
+      font-size:1rem; font-weight:900; text-transform:uppercase;
+      color:#ccc; margin:0 0 6px; letter-spacing:0.03em;
+    }
+    .scenario-body {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.88rem; color:#777; line-height:1.75;
+    }
+
+    /* ── Sticky TOC ── */
+    .toc-item {
+      display:flex; align-items:flex-start; gap:10px;
+      padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);
+      text-decoration:none;
+    }
+    .toc-item:last-child { border-bottom:none; }
+    .toc-num {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.7rem; color:rgba(220,38,38,0.4);
+      letter-spacing:1px; padding-top:2px; flex-shrink:0;
+    }
+    .toc-title {
+      font-size:0.95rem; font-weight:700; color:#666;
+      text-transform:uppercase; letter-spacing:0.03em;
+      transition:color .2s;
+    }
+    .toc-item:hover .toc-title { color:var(--red); }
+
+    /* ── Layout ── */
+    @media(min-width:1024px){
+      .layout-with-toc { display:grid; grid-template-columns:1fr 240px; gap:40px; align-items:start; }
+      .toc-sticky { position:sticky; top:80px; }
+    }
+
+    /* ── Delay utils ── */
+    .delay-1{animation-delay:.05s}.delay-2{animation-delay:.10s}.delay-3{animation-delay:.15s}
+    .delay-4{animation-delay:.20s}.delay-5{animation-delay:.25s}.delay-6{animation-delay:.30s}
+    .delay-7{animation-delay:.35s}.delay-8{animation-delay:.40s}.delay-9{animation-delay:.45s}
+    .delay-10{animation-delay:.50s}
+
+    /* ── Awareness matrix ── */
+    .awareness-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px;
+    }
+    @media(max-width:640px){ .awareness-grid { grid-template-columns:1fr; } }
+    .awareness-cell {
+      border:1px solid rgba(255,255,255,0.06);
+      padding:14px 16px; background:rgba(0,0,0,0.3);
+      position:relative;
+    }
+    .awareness-cell.danger { border-color:rgba(220,38,38,0.3); background:rgba(220,38,38,0.04); }
+    .awareness-cell.caution { border-color:rgba(251,191,36,0.25); background:rgba(251,191,36,0.03); }
+    .awareness-cell.safe { border-color:rgba(74,222,128,0.2); background:rgba(74,222,128,0.03); }
+    .awareness-cell-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.62rem; letter-spacing:3px; text-transform:uppercase;
+      margin-bottom:6px;
+    }
+    .danger  .awareness-cell-label { color:rgba(220,38,38,0.6); }
+    .caution .awareness-cell-label { color:rgba(251,191,36,0.6); }
+    .safe    .awareness-cell-label { color:rgba(74,222,128,0.6); }
+    .awareness-cell-title {
+      font-size:0.95rem; font-weight:900; text-transform:uppercase;
+      color:#ccc; margin:0 0 6px;
+    }
+    .awareness-cell p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.83rem; color:#666; line-height:1.65; margin:0;
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="fixed top-0 left-0 w-full z-[9999]">
+  <div id="progress-bar"></div>
+</div>
+
+<!-- ════ NAVBAR ════ -->
+<nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+    <a href="/" class="flex items-center gap-3">
+      <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+        <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+      </div>
+      <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+      <a href="/riders-guide/" class="text-red-500 text-sm font-bold tracking-widest uppercase">Rider's Guide</a>
+      <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+      <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+    <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+      <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
+    <div class="flex flex-col px-5 py-4 gap-4">
+      <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+      <a href="/riders-guide/" class="mobile-link text-red-500 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Rider's Guide</a>
+      <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+      <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ MAIN ════ -->
+<main class="pt-28 pb-24 px-5">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Breadcrumb trail -->
+    <div class="flex items-center gap-2 mb-8 font-mono-tech text-xs tracking-widest uppercase" style="color:#444;">
+      <a href="/" class="hover:text-red-500 transition-colors">Home</a>
+      <span>/</span>
+      <a href="/riders-guide/" class="hover:text-red-500 transition-colors">Rider's Guide</a>
+      <span>/</span>
+      <span style="color:rgba(220,38,38,0.5);">Riding Skills & Awareness</span>
+    </div>
+
+    <!-- ════ PAGE HEADER ════ -->
+    <div class="mb-12 animate-fade-slide-up" style="position:relative;">
+      <div class="noise-overlay"></div>
+      <p class="font-mono-tech text-xs tracking-[0.4em] uppercase mb-4" style="color:rgba(167,139,250,0.6);">// Field Guide RG-003 — Rider Safety Intelligence</p>
+      <h1 class="font-black uppercase leading-none tracking-tight text-white mb-2" style="font-size:clamp(2.8rem,9vw,5rem);">
+        <span class="glitch-wrap" data-text="RIDING">RIDING</span>
+      </h1>
+      <h2 class="font-black uppercase text-red-600 leading-none tracking-tight mb-5" style="font-size:clamp(1.2rem,3vw,1.8rem);letter-spacing:0.1em;">Skills & Awareness</h2>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-widest">
+        <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+        8 SECTIONS // DEFENSIVE RIDING // REAL SITUATIONS // NOT FROM A TEXTBOOK
+      </p>
+      <p class="mt-5 text-gray-500 text-base leading-relaxed max-w-2xl font-prose" style="font-style:italic;">
+        None of this came from a classroom or a riding manual. It came from 10+ years on the road — Singapore expressways, Malaysian mountain passes, 99-bend descents in Thailand, and everything in between. The sections here are about staying alive and alert on a motorcycle in real conditions. Not theory. Not track technique. The road you're actually on.
+      </p>
+    </div>
+
+    <hr class="section-rule" style="margin-top:0;" />
+
+    <!-- ════ LAYOUT ════ -->
+    <div class="layout-with-toc">
+
+      <!-- ── LEFT: Main content ── -->
+      <div>
+
+        <!-- ══ SECTION 01: DEFENSIVE RIDING ══ -->
+        <div id="sec-defensive" class="topic-block delay-1">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-01</div>
+            <div class="signal-line">Foundation // Defensive Riding</div>
+            <h3 class="topic-heading">Defensive Riding — The Mindset That Keeps You Alive</h3>
+
+            <div class="prose-body">
+              <p>Defensive riding is not about riding slowly. It's about <strong>riding with awareness of what everyone else around you might do next</strong> — and positioning yourself so that when they do something unexpected, you have options. A car driver checking their phone, a lorry drifting left, a pedestrian stepping off a kerb without looking — defensive riding means you've already identified these risks before they become emergencies.</p>
+              <p>The core habit: <strong>constantly scan for threats, not just obstacles</strong>. The difference is that an obstacle is something you can see. A threat is something that might move. Every parked car on a narrow road is a threat — a door could open. Every bus stop is a threat — a bus will pull out. Every junction is a threat — someone might not stop. Build the habit of reading potential movement, not just current position.</p>
+              <p>Position on the road is your primary defensive tool. <strong>Never sit in another vehicle's blind spot for longer than necessary.</strong> On expressways, the two most dangerous positions for a motorcycle are directly behind a lorry (no visibility for either party, debris risk) and directly alongside a car at the same speed (you are invisible to them). Move through these positions, don't linger in them.</p>
+            </div>
+
+            <div class="prose-two-col">
+              <div class="prose-mini-block">
+                <h4>The Space Cushion Rule</h4>
+                <p>Maintain a 3-second following gap minimum in normal conditions. In wet weather, double it. In heavy traffic where the gap gets closed by other vehicles, adjust your speed — not your gap. The moment you start reducing your following distance because "everyone else is doing it" is the moment you've lost the most important defensive tool you have.</p>
+              </div>
+              <div class="prose-mini-block">
+                <h4>Read The Road Ahead</h4>
+                <p>Look through the vehicle in front of you, not at it. Watch for brake lights two or three cars ahead. A sudden stop in the third car ahead gives you warning; watching only the car in front gives you reaction time only. Train your eyes to work further ahead — it changes everything about how composed your riding feels.</p>
+              </div>
+            </div>
+
+            <ul class="checklist" style="margin-top:18px;">
+              <li class="ok"><strong>Scan 10–12 seconds ahead</strong> — further than feels natural at first</li>
+              <li class="ok"><strong>Check mirrors every 5–7 seconds</strong> — know what's behind you at all times</li>
+              <li class="ok"><strong>Position away from blind spots</strong> — yours and theirs</li>
+              <li class="ok"><strong>Identify your escape route</strong> — before every junction, before every overtake</li>
+              <li class="warn"><strong>Never assume right of way will be respected</strong> — be ready to yield even when you shouldn't have to</li>
+              <li class="warn"><strong>Never trust a turn signal alone</strong> — a car indicating doesn't mean it's turning; a car not indicating might</li>
+            </ul>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>Defensive riding is not timid riding. It's the most confident form of riding there is — because you're constantly ahead of the situation. Reactive riding, where you're always responding to what just happened, is exhausting and eventually catches up with you. Read the road, position deliberately, and have a plan before you need one.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 02: LOOK WHERE YOU WANT TO GO ══ -->
+        <div id="sec-look" class="topic-block lesson delay-2">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-02 — The Rule That Saved a Life</div>
+            <div class="signal-line">Vision // Where Your Eyes Go, Your Bike Follows</div>
+            <h3 class="topic-heading">Look Where You Want To Go — The Most Important Thing You Will Ever Learn on a Bike</h3>
+
+            <div class="prose-body">
+              <p>There are riding techniques and then there are survival principles. This one sits in the survival category. It is not metaphorical, it is not motivational language — it is a physical description of how a motorcycle works under your body. <strong>Where you look is where you go.</strong> Your body follows your eyes. The bike follows your body. This chain is almost impossible to override consciously, which means training your eyes is the most important skill work you can do as a rider.</p>
+              <p>In a corner, the instinct of a panicking rider is to look at the hazard — the wall, the barrier, the cliff edge, the vehicle on the outside of the bend. And because they look at it, they go toward it. The correction is not about gripping the bars harder or counter-steering more aggressively. It is about forcing your eyes to the exit of the corner — where you <em>want</em> to go — and trusting that the bike will follow.</p>
+            </div>
+
+            <div class="principle-block">
+              <p><span>Look</span> where you want to go.<br/>Your bike will follow <span>no matter how hard the bend is.</span></p>
+              <div class="sub">This is not advice. This is how motorcycle physics works. Your visual input drives your body input which drives the bike. Override the panic instinct — look at the exit, not the danger.</div>
+            </div>
+
+            <div class="lesson-take">
+              <p>I nearly went off a cliff at the <strong>99 bends descending from Doi Inthanon (Tankha road) in northern Thailand</strong>. Coming downhill fast, I caught a corner that was tighter than it looked — the kind where you see the drop on the outside and your brain immediately locks onto it. The natural instinct was firing hard: target fixation. Look at the cliff, ride toward the cliff.</p>
+              <p>What saved it: the phrase <em>"look where you want to go"</em> cut through the panic before the reaction did. I forced my eyes to the apex and exit of the corner. Everything else — the lean, the brake release, the throttle — followed automatically from that one correction. <strong>I made the turn. Steep, committed, harder than anything I'd practiced. The bike did what I told it to with my eyes.</strong></p>
+              <p>This same principle carried through every one of the <strong>1,864 bends at Mae Hong Son</strong>. Blind corners, decreasing radius bends, unfamiliar surfaces. The one constant that held every time: look at where you want to end up, not at the thing you're afraid of hitting. No matter what. No exceptions.</p>
+            </div>
+
+            <div class="prose-body" style="margin-top:18px;">
+              <p><strong>Target fixation</strong> is the name for what happens when you can't break this lock — your eyes fix on the danger and your body steers toward it. It's the mechanism behind many single-vehicle accidents at corners. The counter-training is to practice deliberately moving your eyes to the corner exit even when fear is pulling them toward the hazard. You can do this on every corner you ride in Singapore — make it a habit before it matters on a mountain in Thailand.</p>
+              <p>This principle applies at low speed too. Look where you want the bike to go during slow manoeuvres, U-turns, parking. The rider who stares at the kerb while U-turning in a carpark is steering toward the kerb. Look at the space you want to reach. The bike follows.</p>
+            </div>
+
+            <div class="callout">
+              <strong>Practice this in Singapore first:</strong> On every expressway corner and sweeping on-ramp, consciously push your eyes to the furthest visible point of the bend. Not at the car in front. Not at the barrier. To the exit. Feel how the corner opens up when you do this. Then it's muscle memory when you need it in a mountain pass at 80km/h.
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 03: BLIND SPOT AWARENESS ══ -->
+        <div id="sec-blindspot" class="topic-block delay-3">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-03</div>
+            <div class="signal-line">Awareness // Blind Spots</div>
+            <h3 class="topic-heading">Blind Spot Awareness — You Are Invisible More Often Than You Think</h3>
+
+            <div class="prose-body">
+              <p>A motorcycle is narrow. It fits into the blind zones of cars and lorries almost completely. This is not a driver behaviour problem that you can fix by being a visible, law-abiding rider — it is a physics problem that you manage through positioning. Even an attentive, careful driver checking their mirrors regularly can merge into a lane occupied by a motorcycle they genuinely did not see.</p>
+              <p><strong>The A-pillar blind zone</strong> is especially dangerous at junctions. As a car turns right at an intersection, the driver's A-pillar (the front-right column of the car) sweeps across exactly the space where an oncoming motorcycle is. The car driver genuinely cannot see you at that moment — the pillar blocks you. Coming through a green light doesn't mean it's safe. Check that turning vehicles have actually stopped before committing to the intersection.</p>
+              <p>Lorries and buses have a <strong>full left-side blind zone</strong> extending from the cab backward along the entire vehicle. If you are filtering on the left alongside a lorry and the lorry begins to move left, there is nothing warning the driver — they cannot see you at all. The left side of a lorry at a traffic light is one of the highest-risk positions for a motorcycle in Singapore. Position right or wait behind.</p>
+            </div>
+
+            <div class="awareness-grid">
+              <div class="awareness-cell danger">
+                <div class="awareness-cell-label">// Critical Blind Zone</div>
+                <div class="awareness-cell-title">Lorry Left Side</div>
+                <p>Completely invisible to driver. At traffic lights, if lorry is moving left, you have zero warning. Never filter or wait on the left of a lorry or bus.</p>
+              </div>
+              <div class="awareness-cell danger">
+                <div class="awareness-cell-label">// Critical Blind Zone</div>
+                <div class="awareness-cell-title">Car A-Pillar at Junction</div>
+                <p>Right-turning car's A-pillar sweeps across oncoming traffic. The driver is not negligent — the pillar physically blocks the view. Do not assume they see you.</p>
+              </div>
+              <div class="awareness-cell caution">
+                <div class="awareness-cell-label">// High Risk</div>
+                <div class="awareness-cell-title">Expressway Lane Change</div>
+                <p>Cars checking mirrors before lane changes often miss motorcycles in the blind arc between door mirror and centre mirror. Travel at different speed to adjacent cars — don't pace them.</p>
+              </div>
+              <div class="awareness-cell caution">
+                <div class="awareness-cell-label">// High Risk</div>
+                <div class="awareness-cell-title">Parked Delivery Vehicles</div>
+                <p>Double-parked vans and lorries force you wide into the main lane. Drivers pulling away from the kerb don't check for filtering bikes. Slow significantly when passing them.</p>
+              </div>
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>Assume you are invisible in every situation where you could possibly be invisible. This is not paranoia — it's the correct mental model for a vehicle that rarely appears in car drivers' active awareness. If you are invisible, what is your position? Is it safe if the driver next to you acts on a decision they made without knowing you exist?</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 04: WET WEATHER BRAKING ══ -->
+        <div id="sec-wet" class="topic-block delay-4">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-04</div>
+            <div class="signal-line">Technique // Wet Weather Braking</div>
+            <h3 class="topic-heading">Wet Weather Braking — Why Everything You Know Halves</h3>
+
+            <div class="prose-body">
+              <p>Braking distance in the wet is not slightly longer. On a motorcycle with typical tyres, wet braking distance can be <strong>double to triple</strong> dry braking distance, depending on tyre compound, road surface, and speed. The tyre contact patch in the wet has significantly reduced friction, and the relationship between brake pressure and wheel lockup becomes far more sensitive — the threshold where your wheel goes from slowing to skidding is much lower and arrived at much faster.</p>
+              <p><strong>Progressive brake application is everything in the wet.</strong> Squeeze, don't grab. Start applying front brake gently, let the suspension settle under light braking, then progressively increase pressure. Any sudden grab of the front brake in the wet on a motorcycle risks immediate front wheel lockup — which almost always results in a fall because there is no way to recover a sliding front wheel at road speed.</p>
+              <p>The rear brake becomes relatively more useful in the wet because a locked rear wheel is more manageable than a locked front. You can often feel a rear wheel beginning to slide and release the brake before it fully lets go. You cannot feel the front wheel begin to slide — it is already too late. Use more rear brake than you normally would in the wet, and treat the front as a progressive tool rather than a stopper.</p>
+            </div>
+
+            <div class="gear-bar-wrap" style="margin-top:18px;">
+              <div class="gear-bar-label"><span>Braking grip — dry road</span><span>Full tyre contact</span></div>
+              <div class="gear-bar-track"><div class="gear-bar-fill" style="--bar-w:100%;width:100%;"></div></div>
+            </div>
+            <div class="gear-bar-wrap">
+              <div class="gear-bar-label"><span>Braking grip — light rain</span><span>~60–70% of dry</span></div>
+              <div class="gear-bar-track"><div class="gear-bar-fill" style="--bar-w:65%;width:65%;"></div></div>
+            </div>
+            <div class="gear-bar-wrap">
+              <div class="gear-bar-label"><span>Braking grip — heavy rain</span><span>~40–50% of dry</span></div>
+              <div class="gear-bar-track"><div class="gear-bar-fill" style="--bar-w:45%;width:45%;"></div></div>
+            </div>
+            <div class="gear-bar-wrap">
+              <div class="gear-bar-label"><span>Braking grip — painted lines / metal covers</span><span>Near zero in wet</span></div>
+              <div class="gear-bar-track"><div class="gear-bar-fill" style="--bar-w:10%;width:10%;"></div></div>
+            </div>
+
+            <div class="callout-warn">
+              <strong>White road markings, pedestrian crossings, and lane lines in the wet are essentially ice.</strong> Do not brake on them. Do not lean on them. Cross them as straight as possible. Singapore's roads have these everywhere — junctions, bus stops, zebra crossings. If you're going to stop at a zebra crossing, begin braking before the line, not on it.
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>If you have ABS — use it. Don't try to brake right at the threshold of ABS activation in the wet because you think it's faster. ABS in the wet is doing something you physiologically cannot do: it's modulating brake pressure at a rate your hands cannot match. Let it work. If you don't have ABS, the technique margin in the wet is narrow. Increase following distance so you never need to discover that margin in an emergency.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 05: TUNNEL RIDING ══ -->
+        <div id="sec-tunnel" class="topic-block delay-5">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-05</div>
+            <div class="signal-line">Environment // Tunnel Riding</div>
+            <h3 class="topic-heading">Tunnel Riding — Vision, Fumes & The Speed Trap Nobody Talks About</h3>
+
+            <div class="prose-body">
+              <p>Tunnels are a specific riding environment with conditions that don't exist on open roads, and Singapore has several — the CTE tunnel near Novena, the KPE underwater tunnel, the Woodsville interchange. The common thread is: <strong>sudden darkness, enclosed acoustics, concentrated exhaust fumes, and often wet or oily road surfaces</strong> that don't dry the way open roads do.</p>
+              <p><strong>The darkness transition</strong> is the primary hazard entering a tunnel during the day. Your eyes need time to adapt from bright daylight to tunnel lighting — this takes several seconds. During that window, your visual acuity drops significantly. The correct response is to slow before entering, not inside the tunnel where you're already in low visibility with vehicles around you. Coming out of a tunnel into daylight has the same problem in reverse — the exit looks featureless white for a moment.</p>
+              <p><strong>Wet road in tunnels</strong> is often worse than rain-wet roads because tunnel condensation and oil drips accumulate without the natural washing effect of rain. The approach to tunnel curves should always be treated as wet-weather braking regardless of the weather outside. Some of Singapore's tunnels have standing water along the outer lane after rain. Entering at speed on the outer lane is a risk that doesn't announce itself.</p>
+              <p><strong>Speed reference distortion</strong> inside tunnels is real. The enclosed walls and constant visual pattern cause your brain to underestimate speed. Riders frequently find themselves faster than they intended inside a tunnel without realising it. Glance at the speedometer within the first 100m of entry.</p>
+            </div>
+
+            <ul class="checklist">
+              <li class="ok"><strong>Reduce speed before entry</strong> — not inside where vision is already reduced</li>
+              <li class="ok"><strong>Increase following distance inside</strong> — stopping distances on tunnel surfaces are longer</li>
+              <li class="ok"><strong>Check speedometer after entry</strong> — counter the speed illusion deliberately</li>
+              <li class="ok"><strong>Treat outer lane as wet</strong> — regardless of current weather</li>
+              <li class="warn"><strong>Do not filter aggressively in tunnels</strong> — fumes are concentrated, emergency stops are harder</li>
+              <li class="warn"><strong>Visor up or fully open in long tunnels risks fume exposure</strong> — keep it cracked, not fully open</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 06: GROUP RIDING & THE TRUST RULE ══ -->
+        <div id="sec-group" class="topic-block lesson delay-6">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-06</div>
+            <div class="signal-line">Group Dynamics // Riding With Others</div>
+            <h3 class="topic-heading">Group Riding Etiquette — And Why You Cannot Trust Anyone With Your Safety</h3>
+
+            <div class="prose-body">
+              <p>Group riding is one of the best parts of motorcycle culture. The camaraderie, the shared energy on the road, the way a group of bikes sounds on a mountain highway — it's earned its place. And it will also kill you if you let your guard down because you're comfortable with the people around you.</p>
+              <p>The fundamental rule of group riding that most people learn too late: <strong>you are responsible for your own safety, and no one else in the group is riding your bike for you.</strong> The rider in front of you is making their own decisions, managing their own bike, and reacting to their own inputs. They will sometimes stop suddenly. They will sometimes do something unexpected. Your following distance, your awareness, and your exit strategy are yours — not delegated to the group.</p>
+            </div>
+
+            <div class="principle-block">
+              <p><span>Your friends</span> might be the ones who stop suddenly.<br/>Always have an <span>exit plan.</span></p>
+              <div class="sub">It's not about trust. It's about the reality that every rider in a group is managing their own bike independently. Someone at the front might brake hard for a hazard you cannot yet see. The rider between you and them might not have enough room. Do not let the comfort of familiar company lower your guard.</div>
+            </div>
+
+            <div class="lesson-take">
+              <p>The most dangerous moments in group riding are not the fast sections — they're the slow-down moments. A stop for petrol. A hazard at the front of the group. An unexpected turn. <strong>The rider who hits someone is often not the one who made the bad decision — they're the one who was following too close and trusted that the person ahead would behave predictably.</strong></p>
+              <p>Be especially careful of riders immediately in front of you. Not because they're bad riders — but because you cannot see what they're reacting to. Their brake light is your last warning, and if you're too close, it's not enough warning. <strong>Do not trust others with your bike.</strong> Trust them as people. Trust them as friends. Do not trust that they will never make a sudden, unannounced stop that puts you in danger. Always be ready for it.</p>
+            </div>
+
+            <div class="prose-body" style="margin-top:18px;">
+              <p><strong>Formation riding basics.</strong> The standard staggered formation — odd positions on the left, even positions on the right — maximises following distance while keeping the group compact. Each rider has the full lane width of buffer ahead, rather than the half-lane buffer of single-file. In urban conditions or twisty roads, single-file is safer; maintain it any time the road narrows, bends, or conditions change.</p>
+              <p><strong>The group ride leader's responsibility</strong> is to set pace and call stops — not to make decisions for every rider. If the pace is too fast for your comfort, drop back. Riding above your skill level to keep up with a group is how riders get hurt. The group should stop for you; if they don't, that's a different problem, not a reason to push beyond your limits.</p>
+              <p><strong>Communication protocol.</strong> Establish hand signals before you ride, not during. Slow down, turn left, turn right, hazard on road, stop. These take 30 seconds to agree on and prevent the confusion of someone waving vaguely at 90km/h on the expressway.</p>
+            </div>
+
+            <table class="comp-table">
+              <thead>
+                <tr><th>Situation</th><th>Risk Level</th><th>Response</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Emergency stop from front of group</td><td class="bad">Critical</td><td>This is why you maintain full staggered gap. If you don't have it, you need the gap more than you need to stay with the group.</td></tr>
+                <tr><td>Rider ahead makes unexpected turn</td><td class="mid">High</td><td>Don't follow blindly. Confirm the turn is correct before committing. Missing a turn is recoverable; crashing because you followed someone isn't.</td></tr>
+                <tr><td>Group pace too fast for you</td><td class="mid">High</td><td>Drop back. Signal the rider behind you and reduce speed. The group will wait or you'll rejoin at the next stop. Never push past your limit.</td></tr>
+                <tr><td>Someone is filtering aggressively ahead</td><td class="mid">High</td><td>You don't have to follow. Their gap is their calculation, not yours. Create your own filtering decision independently.</td></tr>
+                <tr><td>Petrol stop / slow urban section</td><td class="mid">Medium</td><td>Re-establish spacing. Group compression happens naturally at stops and slow speeds. Remind yourself of following distance before the pace resumes.</td></tr>
+              </tbody>
+            </table>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>The best group riders are the ones who ride as if they're alone — fully responsible for their own space, their own braking, their own exit options — while also being aware of and considerate of the group around them. Group riding adds responsibility, not a safety net. You are no safer in a group than you are alone. You might actually be in more complex situations more often.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 07: NIGHT RIDING ══ -->
+        <div id="sec-night" class="topic-block delay-7">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-07</div>
+            <div class="signal-line">Environment // Night Riding</div>
+            <h3 class="topic-heading">Night Riding — Fatigue, Visibility & The After-Midnight Rules</h3>
+
+            <div class="prose-body">
+              <p>Night riding in Singapore is actually safer in some respects — traffic is lighter, expressways are clear, and the temperature drop from midnight onward makes extended riding significantly more comfortable. It is also the period where the two most serious risks come together: <strong>rider fatigue and impaired/reckless drivers</strong>. Both increase significantly after midnight.</p>
+              <p><strong>Your visibility drops dramatically after dark</strong> even with a functioning headlight. The headlight illuminates the road ahead but cannot replicate the environmental awareness you have in daylight — side streets, junctions, pedestrians approaching from outside the beam. Your speed should be calibrated to your headlight's effective range: if something appears at the edge of your headlight at your current speed and you cannot stop in time, you're going too fast.</p>
+              <p><strong>Fatigue on night rides is cumulative and deceptive.</strong> You feel alert enough to ride — right up to the moment you don't. Microsleep events on a motorcycle are not survivable. If you feel any of the early signs — repeated yawning, difficulty focusing on road markings, finding your thoughts drifting — stop. A 20-minute nap in a well-lit 24-hour petrol station is not a delay. It's the reason you arrive.</p>
+              <p><strong>Drink driving enforcement</strong> in Singapore and Malaysia peaks between midnight and 3am. Drivers who are impaired are most dangerous in exactly the windows when you feel the road is clear and safe. A late-night ride from KL back toward Singapore, or a post-midnight return from Johor, puts you in traffic with a higher-than-average proportion of impaired drivers. Extended following distance and heightened junction awareness matter more, not less, at these hours.</p>
+            </div>
+
+            <div class="prose-two-col">
+              <div class="prose-mini-block">
+                <h4>Gear for night riding</h4>
+                <p>High-visibility vest or jacket with reflective panels. Not just the stock jacket reflective strips — actual retroreflective coverage. Being seen from behind at night on an expressway is far more critical than being seen from the front. Cars approaching from behind travel faster than you — give them maximum warning.</p>
+              </div>
+              <div class="prose-mini-block">
+                <h4>Visor management</h4>
+                <p>A dark-tinted visor at night is an accident. Keep a clear visor or a photochromic visor. At night, the glare from oncoming headlights on a scratched clear visor is already bad enough. A dark visor reduces your effective visual range to dangerously close distances.</p>
+              </div>
+            </div>
+
+            <div class="callout">
+              <strong>The honest rule:</strong> If you are tired, the correct answer is to stop riding. There is no technique, no amount of coffee, no window-down wind blast that reliably prevents microsleep. Every one of those methods works for maybe 15 minutes and then the fatigue returns stronger. Stop. Sleep. Ride when you're actually rested.
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 08: ROAD HAZARD AWARENESS ══ -->
+        <div id="sec-hazard" class="topic-block delay-8">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-08</div>
+            <div class="signal-line">Awareness // Road Hazards</div>
+            <h3 class="topic-heading">Road Hazard Awareness — What The Road Is Actually Trying To Do To You</h3>
+
+            <div class="prose-body">
+              <p>A car driver encounters most road hazards as an inconvenience. A motorcycle rider encounters the same hazard as a potential crash scenario. The difference is entirely about contact patch area and stability — a car has four wide tyres and a chassis that absorbs irregular surfaces; a motorcycle has two narrow tyres and a physics-dependent balance point that doesn't tolerate sudden grip changes.</p>
+            </div>
+
+            <div class="scenario">
+              <div class="scenario-num">// Hazard 01</div>
+              <div class="scenario-title">Sand & Gravel at Corner Exits</div>
+              <div class="scenario-body">Common at construction sites, rural junctions, and anywhere heavy vehicles turn. Sand on the road mid-corner is like riding on ball bearings — the tyre slides laterally without warning. Approach any junction near active construction works as if there is sand in the corner. You will be right more often than you think, and correct the few times you're wrong before it becomes a slide.</div>
+            </div>
+            <div class="scenario">
+              <div class="scenario-num">// Hazard 02</div>
+              <div class="scenario-title">Drain Grates & Manhole Covers</div>
+              <div class="scenario-body">Singapore's infrastructure is dense with these. In the dry they're manageable — ride over straight, don't brake on them. In the wet they are near-frictionless. The worst scenario is a drain grate mid-corner where you're leaned over. Know where the habitual ones are on your daily routes and plan your line around them rather than over them.</div>
+            </div>
+            <div class="scenario">
+              <div class="scenario-num">// Hazard 03</div>
+              <div class="scenario-title">Diesel Spills from Lorries</div>
+              <div class="scenario-body">Diesel spilled from lorry fuel caps leaves an iridescent slick on the road surface, most visible in wet conditions. At junctions and roundabouts where lorries stop and start frequently, diesel accumulates in the wheel tracks. It looks like a rainbow sheen on wet tarmac. If you see it, you're already on it — but knowing what it looks like means you can identify it early and reduce lean angle.</div>
+            </div>
+            <div class="scenario">
+              <div class="scenario-num">// Hazard 04</div>
+              <div class="scenario-title">Freshly Laid Tarmac</div>
+              <div class="scenario-body">Road resurfacing in Singapore happens regularly. Fresh tarmac, especially in heat, becomes soft and grippy in a way that changes braking feel — and the transition edge between old and new tarmac is a surface change your tyre encounters without warning. Slow before road works, not through them.</div>
+            </div>
+            <div class="scenario">
+              <div class="scenario-num">// Hazard 05</div>
+              <div class="scenario-title">Rear Tyre Debris from Trucks</div>
+              <div class="scenario-body">Large vehicle tyres shed rubber, wire, and tread sections on expressways. In the left lane, these collect and don't clear the way road debris does in rain. Riding in the middle lane on expressways keeps you in the cleaner path. When you do see debris in the lane ahead, signal and move around it rather than riding over it — even what looks like a flat piece of rubber can be thick enough to unsettle the front wheel.</div>
+            </div>
+            <div class="scenario">
+              <div class="scenario-num">// Hazard 06</div>
+              <div class="scenario-title">The Car That Jumps the Queue</div>
+              <div class="scenario-body">Singapore-specific: at merging lanes and filter points, drivers who accelerate past the queue and then force their way in create a sudden deceleration wave that catches motorcycles off guard. If you see a car accelerating past stationary traffic toward a merge point, increase your following distance from the vehicle ahead immediately. The wave is coming.</div>
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>The best hazard awareness is pattern recognition built over time. Every road you ride regularly, you should eventually know where the drain grates are, where the diesel accumulates, which junction has the sand problem. That knowledge costs nothing and saves you every day. When you're on an unfamiliar road — touring, new route — treat every corner as if the hazard is there until you can see it isn't.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 09: EMERGENCY BRAKING BASICS ══ -->
+        <div id="sec-brake" class="topic-block delay-9">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-09</div>
+            <div class="signal-line">Technique // Emergency Braking</div>
+            <h3 class="topic-heading">Emergency Braking Basics — Training For The Moment You Cannot Practise</h3>
+
+            <div class="prose-body">
+              <p>Emergency braking is defined as stopping in the shortest possible distance when something unexpected happens ahead. It is different from normal braking in one critical way: your brain is behind the event. Your conscious mind hasn't finished processing the hazard before your hands and feet need to have already responded. This is why emergency braking technique cannot be improvised in the moment — it has to be the automatic output of trained muscle memory.</p>
+              <p><strong>The technique in brief:</strong> Transfer weight forward with a firm initial front brake input — enough to compress the front suspension and increase front tyre contact load. Then progressively increase front brake pressure as the suspension settles and the front tyre is loaded. Simultaneously apply rear brake to add additional deceleration without over-relying on the front. Stay upright. Do not panic-grab — a panic grab at the front lever in a dry emergency is survivable with ABS; without ABS it is a front wheel lock that often results in a fall before the distance advantage is realised.</p>
+              <p><strong>Practice this regularly on an empty car park or quiet road.</strong> Not full emergency stops every time — that wears tyres and frightens bystanders. Controlled hard braking to a stop from 50–60km/h, maintaining bike stability throughout. Do this ten times and your emergency response improves. Do this fifty times and it becomes a reflex that can fire before your conscious brain catches up.</p>
+              <p><strong>Eyes stay up during emergency braking.</strong> The same look-where-you-want-to-go principle applies. If your eyes drop to the hazard you're trying to avoid, your hands may steer toward it even while braking. Eyes up, look at the space past the hazard, brake in a straight line. If avoidance is possible and safe, it happens after braking has reduced speed — not instead of braking.</p>
+            </div>
+
+            <div class="callout-warn">
+              <strong>The most common emergency braking mistake is not using enough brake.</strong> Riders who have never trained hard stops consistently under-brake in real emergencies because the force required feels excessive and wrong. The result is they stop slower than they could, often still hitting what they were trying to avoid. Controlled practice builds the calibration for how much brake input is actually available before lockup.
+            </div>
+
+            <div class="prose-two-col" style="margin-top:18px;">
+              <div class="prose-mini-block">
+                <h4>With ABS</h4>
+                <p>Brake as hard as you can. The ABS prevents lockup at the threshold. Your job is to squeeze hard, stay upright, and steer if the path clears. The system is faster than your hands at modulating pressure — don't second-guess it or pump the brakes intentionally. Squeeze and hold.</p>
+              </div>
+              <div class="prose-mini-block">
+                <h4>Without ABS</h4>
+                <p>Progressive squeeze is everything. Maximum stopping power sits just below lockup threshold — which is higher than most riders apply in emergencies. The gap between "what you instinctively apply" and "what the bike can handle" is the gap between a near-miss and a collision. Only practice closes it.</p>
+              </div>
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>You will have an emergency braking situation on a motorcycle in your riding life. It is not a question of if. The question is whether your response in that moment is a trained reflex or a panic guess. One of those reliably produces a shorter stopping distance and a standing bike. The other produces whatever luck provides. Practice is the only preparation that matters here.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nav arrows -->
+        <div class="flex items-center justify-between mt-10 pt-6 border-t" style="border-color:rgba(255,255,255,0.06);">
+          <a href="/riders-guide/touring/" class="breadcrumb">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+            Touring Essentials
+          </a>
+          <a href="/riders-guide/comfort/" class="breadcrumb" style="flex-direction:row-reverse;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="transform:rotate(180deg);">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+            Rider Comfort
+          </a>
+        </div>
+
+      </div><!-- end left column -->
+
+      <!-- ── RIGHT: Sticky TOC ── -->
+      <aside class="toc-sticky hidden lg:block">
+        <div style="position:relative; border:1px solid rgba(220,38,38,0.15); background:rgba(10,10,10,0.9); padding:20px;">
+          <div class="card-bg" style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.007) 3px,rgba(220,38,38,0.007) 4px);"></div>
+          <div class="noise-overlay"></div>
+          <div class="relative z-10">
+            <p class="font-mono-tech text-xs tracking-[3px] uppercase mb-4" style="color:rgba(220,38,38,0.4);">// Contents</p>
+            <nav>
+              <a href="#sec-defensive" class="toc-item">
+                <span class="toc-num">01</span>
+                <span class="toc-title">Defensive Riding</span>
+              </a>
+              <a href="#sec-look" class="toc-item">
+                <span class="toc-num">02</span>
+                <span class="toc-title">Look Where You Go</span>
+              </a>
+              <a href="#sec-blindspot" class="toc-item">
+                <span class="toc-num">03</span>
+                <span class="toc-title">Blind Spot Awareness</span>
+              </a>
+              <a href="#sec-wet" class="toc-item">
+                <span class="toc-num">04</span>
+                <span class="toc-title">Wet Weather Braking</span>
+              </a>
+              <a href="#sec-tunnel" class="toc-item">
+                <span class="toc-num">05</span>
+                <span class="toc-title">Tunnel Riding</span>
+              </a>
+              <a href="#sec-group" class="toc-item">
+                <span class="toc-num">06</span>
+                <span class="toc-title">Group Riding</span>
+              </a>
+              <a href="#sec-night" class="toc-item">
+                <span class="toc-num">07</span>
+                <span class="toc-title">Night Riding</span>
+              </a>
+              <a href="#sec-hazard" class="toc-item">
+                <span class="toc-num">08</span>
+                <span class="toc-title">Road Hazards</span>
+              </a>
+              <a href="#sec-brake" class="toc-item">
+                <span class="toc-num">09</span>
+                <span class="toc-title">Emergency Braking</span>
+              </a>
+            </nav>
+            <div class="mt-5 pt-5 border-t" style="border-color:rgba(255,255,255,0.05);">
+              <a href="/riders-guide/" class="font-mono-tech text-xs tracking-widest uppercase text-gray-600 hover:text-red-500 transition-colors flex items-center gap-2">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                All Guides
+              </a>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div><!-- end layout-with-toc -->
+  </div>
+</main>
+
+<!-- ════ FOOTER ════ -->
+<footer class="py-16 px-5 border-t border-white/5 mt-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex flex-col items-center gap-6">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 hover:scale-105 transition-all duration-300">
+          <span class="font-mono-tech text-red-600 text-sm font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+      </a>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="font-mono-tech text-sm tracking-widest uppercase">Watch on YouTube</span>
+      </a>
+      <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  (function(){
+    var cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+    var mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+    (function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+    document.querySelectorAll('a,button').forEach(function(el){
+      el.addEventListener('mouseenter',function(){ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(220,38,38,0.8)';});
+      el.addEventListener('mouseleave',function(){ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(220,38,38,0.5)';});
+    });
+  })();
+
+  // Progress bar
+  window.addEventListener('scroll',function(){
+    var st=document.documentElement.scrollTop||document.body.scrollTop;
+    var sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    document.getElementById('progress-bar').style.width=(sh>0?(st/sh)*100:0)+'%';
+  },{passive:true});
+
+  // Navbar scroll
+  window.addEventListener('scroll',function(){
+    var nav=document.getElementById('navbar');
+    if(window.scrollY>20)nav.classList.add('nav-scrolled');
+    else nav.classList.remove('nav-scrolled');
+  },{passive:true});
+
+  // Mobile menu
+  document.getElementById('menu-toggle').addEventListener('click',function(){
+    var menu=document.getElementById('mobile-menu');
+    var oi=document.getElementById('menu-icon-open'),ci=document.getElementById('menu-icon-close');
+    var isOpen=menu.style.maxHeight==='320px';
+    menu.style.maxHeight=isOpen?'0':'320px';
+    menu.style.borderBottom=isOpen?'':'1px solid rgba(127,29,29,0.3)';
+    oi.style.display=isOpen?'':'none'; ci.style.display=isOpen?'none':'';
+  });
+  document.querySelectorAll('.mobile-link').forEach(function(link){
+    link.addEventListener('click',function(){
+      document.getElementById('mobile-menu').style.maxHeight='0';
+      document.getElementById('menu-icon-open').style.display='';
+      document.getElementById('menu-icon-close').style.display='none';
+    });
+  });
+
+  // TOC scroll-active highlight
+  (function(){
+    var ids=['sec-defensive','sec-look','sec-blindspot','sec-wet','sec-tunnel','sec-group','sec-night','sec-hazard','sec-brake'];
+    var links=document.querySelectorAll('.toc-item');
+    function onScroll(){
+      var fromTop=window.scrollY+120; var active=null;
+      ids.forEach(function(id){var el=document.getElementById(id);if(el&&el.offsetTop<=fromTop)active=id;});
+      links.forEach(function(link){
+        var href=link.getAttribute('href').replace('#','');
+        link.querySelector('.toc-title').style.color=(href===active)?'#dc2626':'';
+      });
+    }
+    window.addEventListener('scroll',onScroll,{passive:true});
+  })();
+</script>
+</body>
+</html>
