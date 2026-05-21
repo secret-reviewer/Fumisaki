@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="Complete guide for new motorcycle riders in Singapore. Helmet fit, jacket choice, gloves, boots, riding schools CDC vs BBDC, first bike selection, and what nobody tells you at the dealership.">
+  <meta name="keywords" content="new rider Singapore, motorcycle guide Singapore, Class 2B Singapore, CDC BBDC motorcycle, motorcycle helmet Singapore, riding gear Singapore, first motorcycle Singapore, beginner rider guide, Secret Reviewer">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>New Riders Singapore — The Guide Nobody Hands You | Secret Reviewer</title>
+  <link rel="canonical" href="https://secret-reviewer.com/riders-guide/new-rider/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: {
+        sans: ['Barlow Condensed','sans-serif'],
+        mono: ['"Share Tech Mono"','monospace'],
+        prose: ['"IBM Plex Sans"','sans-serif'],
+      }}}
+    };
+  </script>
+  <style>
+    :root {
+      --red: #dc2626;
+      --red-dim: rgba(220,38,38,0.15);
+      --red-glow: rgba(220,38,38,0.6);
+      --bg: #060606;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: #ececec;
+      font-family: 'Barlow Condensed', sans-serif;
+      margin: 0; overflow-x: hidden; cursor: none; line-height: 1.75;
+    }
+    .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+    .font-prose { font-family: 'IBM Plex Sans', sans-serif; }
+
+    /* ── Cursor ── */
+    #cursor {
+      position:fixed; width:12px; height:12px;
+      background:var(--red); border-radius:50%;
+      pointer-events:none; z-index:99999;
+      transform:translate(-50%,-50%);
+      transition:width .2s, height .2s; mix-blend-mode:screen;
+    }
+    #cursor-ring {
+      position:fixed; width:36px; height:36px;
+      border:1px solid rgba(220,38,38,0.5); border-radius:50%;
+      pointer-events:none; z-index:99998;
+      transform:translate(-50%,-50%);
+      transition:width .2s, height .2s, border-color .2s;
+    }
+
+    /* ── Animations ── */
+    @keyframes scan { from{top:-100%} to{top:100%} }
+    @keyframes fadeSlideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse-red { 0%,100%{box-shadow:0 0 6px rgba(220,38,38,0.3)} 50%{box-shadow:0 0 28px rgba(220,38,38,0.8),0 0 60px rgba(220,38,38,0.25)} }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    @keyframes staticNoise { 0%{opacity:.03} 25%{opacity:.05} 50%{opacity:.02} 75%{opacity:.06} 100%{opacity:.03} }
+    @keyframes glitch-1 { 0%,100%{clip-path:inset(0 0 98% 0);transform:translate(-2px,0)} 20%{clip-path:inset(20% 0 50% 0);transform:translate(2px,0)} 40%{clip-path:inset(60% 0 20% 0);transform:translate(-2px,0)} 60%{clip-path:inset(80% 0 5% 0);transform:translate(2px,0)} 80%{clip-path:inset(40% 0 60% 0);transform:translate(-2px,0)} }
+    @keyframes glitch-2 { 0%,100%{clip-path:inset(50% 0 30% 0);transform:translate(2px,0);color:#00ffff} 25%{clip-path:inset(10% 0 80% 0);transform:translate(-2px,0)} 50%{clip-path:inset(70% 0 10% 0);transform:translate(2px,0);color:var(--red)} 75%{clip-path:inset(30% 0 50% 0);transform:translate(-2px,0)} }
+    @keyframes cardReveal { from{opacity:0;transform:translateY(20px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+    @keyframes barGrow { from{width:0} to{width:var(--bar-w)} }
+    @keyframes decryptChar {
+      0%   { content: attr(data-char); color: rgba(220,38,38,0.4); }
+      50%  { content: attr(data-rand); color: rgba(220,38,38,0.6); }
+      100% { content: attr(data-char); color: #ececec; }
+    }
+
+    .animate-fade-slide-up { animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+    .animate-pulse-red     { animation: pulse-red 2.5s infinite; }
+
+    /* ── CRT ── */
+    body::before {
+      content:""; position:fixed; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);
+      pointer-events:none; z-index:9990;
+    }
+    body::after {
+      content:""; position:fixed; top:-100%; left:0; width:100%; height:100%;
+      background:linear-gradient(rgba(220,38,38,0) 0%,rgba(220,38,38,0.03) 50%,rgba(220,38,38,0) 100%);
+      animation:scan 12s linear infinite; pointer-events:none; z-index:9991;
+    }
+
+    /* ── Progress bar ── */
+    #progress-bar {
+      height:3px;
+      background:linear-gradient(90deg,#7f1d1d,#dc2626,#f87171);
+      box-shadow:0 0 12px rgba(220,38,38,0.9),0 0 24px rgba(220,38,38,0.4);
+      width:0%; transition:width .08s ease-out;
+    }
+
+    /* ── Navbar ── */
+    #navbar { transition:background .4s,border-color .4s; }
+    .nav-scrolled {
+      background:rgba(4,4,4,0.96) !important;
+      border-bottom-color:rgba(127,29,29,0.4) !important;
+      backdrop-filter:blur(20px);
+    }
+
+    /* ── Glitch title ── */
+    .glitch-wrap { position:relative; display:inline-block; }
+    .glitch-wrap::before, .glitch-wrap::after {
+      content:attr(data-text); position:absolute; top:0; left:0; width:100%; height:100%;
+    }
+    .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
+    .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
+
+    /* ── Noise overlay ── */
+    .noise-overlay {
+      position:absolute; inset:0; opacity:.025; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size:128px; animation:staticNoise 4s step-start infinite;
+    }
+
+    /* ── Section rule ── */
+    .section-rule {
+      border:none; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(220,38,38,0.3),transparent);
+      margin:52px 0;
+    }
+
+    /* ── Breadcrumb ── */
+    .breadcrumb {
+      display:inline-flex; align-items:center; gap:8px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.85rem; color:#555; text-transform:uppercase;
+      letter-spacing:2px; text-decoration:none; margin-bottom:32px;
+      transition:color .2s;
+    }
+    .breadcrumb:hover { color:var(--red); }
+    .breadcrumb:hover svg { transform:translateX(-3px); }
+    .breadcrumb svg { transition:transform .2s; }
+
+    /* ── Signal line ── */
+    .signal-line {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.68rem; color:rgba(220,38,38,0.45);
+      letter-spacing:2px; text-transform:uppercase;
+      display:flex; align-items:center; gap:8px; margin-bottom:8px;
+    }
+    .signal-line::before {
+      content:''; display:block; width:24px; height:1px;
+      background:rgba(220,38,38,0.45); flex-shrink:0;
+    }
+
+    /* ── Topic section block ── */
+    .topic-block {
+      position:relative;
+      border:1px solid rgba(220,38,38,0.15);
+      background:rgba(10,10,10,0.85);
+      overflow:hidden;
+      margin-bottom:20px;
+      animation:cardReveal 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .topic-block::before {
+      content:''; position:absolute; top:0; left:0;
+      width:32px; height:32px;
+      border-top:1px solid rgba(220,38,38,0.5);
+      border-left:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .topic-block::after {
+      content:''; position:absolute; bottom:0; right:0;
+      width:32px; height:32px;
+      border-bottom:1px solid rgba(220,38,38,0.5);
+      border-right:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .topic-block-inner { padding:28px 28px 24px; position:relative; z-index:1; }
+    .topic-block .card-bg {
+      position:absolute; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.007) 3px,rgba(220,38,38,0.007) 4px);
+      pointer-events:none;
+    }
+
+    /* ── Topic header ── */
+    .topic-heading {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(1.6rem,4vw,2.2rem);
+      font-weight:900; text-transform:uppercase;
+      color:#fff; letter-spacing:0.02em; line-height:1.1;
+      margin:0 0 16px 0;
+    }
+
+    /* ── Body prose ── */
+    .prose-body {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.97rem; color:#8a8a8a; line-height:1.85;
+    }
+    .prose-body p { margin:0 0 14px 0; }
+    .prose-body p:last-child { margin-bottom:0; }
+    .prose-body strong { color:#d0d0d0; font-weight:600; }
+    .prose-body em { color:#b0b0b0; font-style:italic; }
+
+    /* ── Callout / verdict box ── */
+    .callout {
+      border-left:2px solid rgba(220,38,38,0.6);
+      background:rgba(220,38,38,0.04);
+      padding:14px 18px;
+      margin:18px 0 0;
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.9rem; color:#999; line-height:1.7;
+      font-style:italic;
+    }
+    .callout strong { color:#f87171; font-style:normal; }
+
+    /* ── Verdict / SR take ── */
+    .sr-take {
+      margin-top:18px;
+      border:1px solid rgba(220,38,38,0.25);
+      background:rgba(220,38,38,0.05);
+      padding:14px 18px;
+    }
+    .sr-take-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.6); margin-bottom:6px;
+    }
+    .sr-take p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#bbb; line-height:1.75;
+      margin:0; font-style:italic;
+    }
+
+    /* ── Comparison table ── */
+    .comp-table { width:100%; border-collapse:collapse; margin-top:18px; }
+    .comp-table th {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.68rem; letter-spacing:2px; text-transform:uppercase;
+      color:rgba(220,38,38,0.5); border-bottom:1px solid rgba(220,38,38,0.2);
+      padding:10px 14px; text-align:left;
+    }
+    .comp-table td {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.88rem; color:#888; line-height:1.6;
+      padding:10px 14px;
+      border-bottom:1px solid rgba(255,255,255,0.04);
+      vertical-align:top;
+    }
+    .comp-table tr:last-child td { border-bottom:none; }
+    .comp-table td:first-child { color:#ddd; font-weight:600; white-space:nowrap; }
+    .comp-table td.good { color:#4ade80; }
+    .comp-table td.bad  { color:#f87171; }
+    .comp-table td.mid  { color:#fbbf24; }
+
+    /* ── Checklist ── */
+    .checklist { list-style:none; padding:0; margin:14px 0 0; }
+    .checklist li {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#888; line-height:1.7;
+      padding:7px 0 7px 28px; position:relative;
+      border-bottom:1px solid rgba(255,255,255,0.04);
+    }
+    .checklist li:last-child { border-bottom:none; }
+    .checklist li::before {
+      content:''; position:absolute; left:6px; top:14px;
+      width:10px; height:10px;
+      border:1px solid rgba(220,38,38,0.5);
+    }
+    .checklist li strong { color:#d0d0d0; }
+    .checklist li.warn::before { background:rgba(220,38,38,0.25); }
+
+    /* ── Gear rating bar ── */
+    .gear-bar-wrap { margin:6px 0; }
+    .gear-bar-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#555; display:flex; justify-content:space-between; margin-bottom:4px;
+    }
+    .gear-bar-track {
+      height:3px; background:rgba(255,255,255,0.06); position:relative;
+    }
+    .gear-bar-fill {
+      height:3px; background:linear-gradient(90deg,#7f1d1d,#dc2626);
+      box-shadow:0 0 6px rgba(220,38,38,0.4);
+      animation:barGrow 1s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    /* ── Tag pill ── */
+    .tag-pill {
+      display:inline-block;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#f87171; border:1px solid rgba(220,38,38,0.3);
+      padding:3px 10px; background:rgba(220,38,38,0.05);
+      margin-right:6px; margin-bottom:6px;
+    }
+
+    /* ── Section badge ── */
+    .section-id {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.35); margin-bottom:4px;
+    }
+
+    /* ── TOC sidebar ── */
+    .toc-item {
+      display:flex; align-items:flex-start; gap:10px;
+      padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);
+      text-decoration:none; transition:color .2s;
+    }
+    .toc-item:last-child { border-bottom:none; }
+    .toc-num {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.7rem; color:rgba(220,38,38,0.4);
+      letter-spacing:1px; padding-top:2px; flex-shrink:0;
+    }
+    .toc-title {
+      font-size:0.95rem; font-weight:700; color:#666;
+      text-transform:uppercase; letter-spacing:0.03em;
+      transition:color .2s;
+    }
+    .toc-item:hover .toc-title { color:var(--red); }
+
+    /* ── Highlight quote ── */
+    .field-note {
+      border-left:2px solid rgba(220,38,38,0.5);
+      padding:14px 18px;
+      margin:18px 0;
+      background:rgba(0,0,0,0.4);
+    }
+    .field-note p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:1rem; color:#aaa; line-height:1.75;
+      font-style:italic; margin:0;
+    }
+    .field-note cite {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:rgba(220,38,38,0.4); display:block; margin-top:8px;
+    }
+
+    /* ── Delay utils ── */
+    .delay-1{animation-delay:.05s}.delay-2{animation-delay:.1s}.delay-3{animation-delay:.15s}
+    .delay-4{animation-delay:.2s}.delay-5{animation-delay:.25s}.delay-6{animation-delay:.3s}
+    .delay-7{animation-delay:.35s}.delay-8{animation-delay:.4s}.delay-9{animation-delay:.45s}
+    .delay-10{animation-delay:.5s}
+
+    /* ── Sticky TOC (desktop) ── */
+    @media(min-width:1024px){
+      .layout-with-toc { display:grid; grid-template-columns:1fr 240px; gap:40px; align-items:start; }
+      .toc-sticky { position:sticky; top:80px; }
+    }
+
+    /* ── Warn pill ── */
+    .warn-pill {
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#fbbf24; border:1px solid rgba(251,191,36,0.3);
+      padding:3px 10px; background:rgba(251,191,36,0.05); margin-bottom:14px;
+    }
+    .good-pill {
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#4ade80; border:1px solid rgba(74,222,128,0.3);
+      padding:3px 10px; background:rgba(74,222,128,0.05); margin-bottom:14px;
+    }
+
+    /* ── Two-col prose grid ── */
+    .prose-two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:16px; }
+    @media(max-width:640px){ .prose-two-col { grid-template-columns:1fr; } }
+    .prose-mini-block {
+      border:1px solid rgba(255,255,255,0.06);
+      padding:16px;
+      background:rgba(0,0,0,0.3);
+    }
+    .prose-mini-block h4 {
+      font-size:0.9rem; font-weight:900; text-transform:uppercase;
+      color:#ccc; margin:0 0 8px; letter-spacing:0.05em;
+    }
+    .prose-mini-block p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.85rem; color:#777; line-height:1.7; margin:0;
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="fixed top-0 left-0 w-full z-[9999]">
+  <div id="progress-bar"></div>
+</div>
+
+<!-- ════ NAVBAR ════ -->
+<nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+    <a href="/" class="flex items-center gap-3 group">
+      <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+        <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+      </div>
+      <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+      <a href="/riders-guide/" class="text-red-500 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Rider's Guide</a>
+      <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+      <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+    <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+      <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
+    <div class="flex flex-col px-5 py-4 gap-4">
+      <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+      <a href="/riders-guide/" class="mobile-link text-red-500 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Rider's Guide</a>
+      <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+      <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ MAIN ════ -->
+<main class="pt-28 pb-24 px-5">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Breadcrumb trail -->
+    <div class="flex items-center gap-2 mb-8 font-mono-tech text-xs tracking-widest uppercase" style="color:#444;">
+      <a href="/" class="hover:text-red-500 transition-colors">Home</a>
+      <span>/</span>
+      <a href="/riders-guide/" class="hover:text-red-500 transition-colors">Rider's Guide</a>
+      <span>/</span>
+      <span style="color:rgba(220,38,38,0.5);">New Riders Singapore</span>
+    </div>
+
+    <!-- ════ PAGE HEADER ════ -->
+    <div class="mb-12 animate-fade-slide-up" style="position:relative;">
+      <div class="noise-overlay"></div>
+      <p class="font-mono-tech text-xs tracking-[0.4em] uppercase mb-4" style="color:rgba(167,139,250,0.6);">// Field Guide RG-001 — Singapore New Rider Intelligence</p>
+      <h1 class="font-black uppercase leading-none tracking-tight text-white mb-2" style="font-size:clamp(2.8rem,9vw,5rem);">
+        <span class="glitch-wrap" data-text="NEW RIDER">NEW RIDER</span>
+      </h1>
+      <h2 class="font-black uppercase text-red-600 leading-none tracking-tight mb-5" style="font-size:clamp(1.2rem,3vw,1.8rem);letter-spacing:0.1em;">Singapore</h2>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-widest">
+        <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+        11 SECTIONS // GEAR + SCHOOL + BIKE SELECTION // SINGAPORE-SPECIFIC
+      </p>
+      <p class="mt-5 text-gray-500 text-base leading-relaxed max-w-2xl font-prose" style="font-style:italic;">
+        The guide I wish someone had handed me before I walked into a dealership, paid for riding school, and spent the first six months making avoidable mistakes. Everything here is specific to riding in Singapore — not generic advice copied from a UK forum.
+      </p>
+    </div>
+
+    <hr class="section-rule" style="margin-top:0;" />
+
+    <!-- ════ LAYOUT: content + sticky TOC ════ -->
+    <div class="layout-with-toc">
+
+      <!-- ── LEFT: Main content ── -->
+      <div>
+
+        <!-- ══ SECTION 01: Before Riding School ══ -->
+        <div id="sec-school" class="topic-block delay-1">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-001-01</div>
+            <div class="signal-line">School Selection</div>
+            <h3 class="topic-heading">CDC vs BBDC — Which School to Choose</h3>
+            <div class="prose-body">
+              <p>There are two schools in Singapore: <strong>CDC (Comfort DelGro Driving Centre)</strong> in Ubi and <strong>BBDC (Bukit Batok Driving Centre)</strong> in Bukit Batok. Most people pick the one closer to home and call it done. That works fine, but there are real differences worth knowing before you pay.</p>
+              <p><strong>CDC</strong> has a larger circuit and generally more test slots, which matters if you want to progress quickly. The layout tends to suit riders who live in the east or central areas. <strong>BBDC</strong> is slightly quieter, which some riders prefer during practice — fewer bikes on the circuit at once means more repetitions per session.</p>
+              <p>Neither school is strictly better. The instructor you get matters more than the school itself — and you don't get to pick your instructor. What you <em>can</em> control is showing up early, staying back for extra practice on the circuit, and not rushing the later stages just to finish fast.</p>
+            </div>
+
+            <table class="comp-table">
+              <thead>
+                <tr>
+                  <th>Factor</th>
+                  <th>CDC (Ubi)</th>
+                  <th>BBDC (Bukit Batok)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Circuit size</td><td class="good">Larger</td><td class="mid">Standard</td></tr>
+                <tr><td>Test slot availability</td><td class="good">More frequent</td><td class="mid">Less frequent</td></tr>
+                <tr><td>Crowd during sessions</td><td class="bad">Busier</td><td class="good">Quieter</td></tr>
+                <tr><td>Location</td><td class="mid">East / Central</td><td class="mid">West</td></tr>
+                <tr><td>Waiting time (booking)</td><td class="mid">Can be long</td><td class="good">Generally shorter</td></tr>
+              </tbody>
+            </table>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>If you live in the west, go BBDC. If you're east or central, CDC. Don't overthink it. Both will get you licensed — what actually matters is showing up to every session not just to pass, but to actually learn.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 02: Class & Licence Progression ══ -->
+        <div id="sec-class" class="topic-block delay-2">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-001-02</div>
+            <div class="signal-line">Licence Progression</div>
+            <h3 class="topic-heading">Class 2B → 2A → 2 — What's the Plan</h3>
+            <div class="prose-body">
+              <p>Singapore's licence progression is staged. You start at <strong>Class 2B</strong> (up to 200cc), wait 1 year before upgrading to <strong>Class 2A</strong> (up to 400cc), then another year to <strong>Class 2</strong> (unlimited). Each upgrade requires a new test at the school.</p>
+              <p>The mistake most new riders make is rushing the upgrade purely for engine size. Riding a 200cc well — filtering confidently, handling rain, navigating expressways — is much harder than it sounds, and the skills you build in that first year translate directly to bigger bikes later. Don't waste the time on a fast upgrade if your fundamentals are shaky.</p>
+              <p>On the flip side: if you genuinely plan to tour Malaysia or ride beyond commuting distance, factoring in the upgrade timeline <em>before</em> you book the Thailand trip makes sense. Plan backwards from when you want to be on a 400cc+.</p>
+            </div>
+            <div class="prose-two-col">
+              <div class="prose-mini-block">
+                <h4>Class 2B — Year 1</h4>
+                <p>Up to 200cc. Most 150–200cc bikes qualify. This is where you learn the road in real conditions — not just the circuit. Treat it as the most important year of your riding life.</p>
+              </div>
+              <div class="prose-mini-block">
+                <h4>Class 2A — Year 2</h4>
+                <p>Up to 400cc. Opens up the MT-03, CB300R, Ninja 400 territory. A significant step in power but manageable if 2B was taken seriously. Don't buy the bike before you pass the test.</p>
+              </div>
+            </div>
+            <div class="callout">
+              <strong>Timeline reality:</strong> Most riders get their 2B, then sit on it for 12 months before upgrading. That 12 months is not dead time — it's the period where you stop surviving rides and start actually riding.
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 03: Helmets ══ -->
+        <div id="sec-helmet" class="topic-block delay-3">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-001-03</div>
+            <div class="signal-line">Protective Gear // Helmets</div>
+            <h3 class="topic-heading">Helmet Selection — Round Head vs Oval Head</h3>
+
+            <div class="prose-body">
+              <p>This is the most important purchase you will make, and it's also where most new riders get it wrong. They pick a helmet based on how it looks on the shelf, not how it fits their skull. A helmet that doesn't fit correctly offers severely reduced protection — no matter how expensive it is.</p>
+              <p><strong>Head shape matters first.</strong> The two main shapes are <strong>round oval</strong> (roughly equal width-to-depth ratio) and <strong>long oval</strong> (longer front-to-back than side-to-side). Most Southeast Asian riders tend toward round oval or intermediate oval. Shoei and Arai tend to be designed for longer oval shapes — which is why many Singapore riders find them tight at the temples but loose at the forehead. AGV, HJC, and LS2 often suit rounder heads better.</p>
+            </div>
+
+            <div class="field-note">
+              <p>The test: put the helmet on and shake your head side to side. If the helmet moves independently of your skin — especially at the cheeks — it's too large. If there are obvious pressure points at the temples or forehead within 30 seconds of wearing it, don't buy it regardless of price.</p>
+              <cite>— Sizing protocol, every helmet fitting</cite>
+            </div>
+
+            <div class="prose-body">
+              <p><strong>Full-face vs open-face vs modular.</strong> For Singapore's traffic conditions, a full-face helmet is the correct answer for anyone who rides beyond the carpark. Open-face looks cleaner but provides zero chin protection, and chin/jaw injuries account for a significant proportion of serious motorcycle head trauma. Modular helmets are convenient but often heavier and less structurally rigid than comparable full-face designs at the same price.</p>
+              <p><strong>Certification.</strong> Look for <strong>SNELL M2020</strong> or <strong>ECE 22.06</strong> rating. DOT alone is not enough — it's a self-certification standard with minimal independent testing. In Singapore, any helmet sold legally should meet ECE standards, but always verify the label inside the helmet before trusting the box.</p>
+            </div>
+
+            <table class="comp-table">
+              <thead>
+                <tr><th>Brand</th><th>Head Shape Fit</th><th>SG Climate Comfort</th><th>Entry Price (SGD)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Shoei (NXR2 etc.)</td><td class="mid">Long oval</td><td class="mid">Moderate ventilation</td><td class="mid">~$800–$1,200</td></tr>
+                <tr><td>Arai (RX-7V etc.)</td><td class="mid">Long oval</td><td class="good">Good ventilation</td><td class="bad">~$1,000–$1,500</td></tr>
+                <tr><td>AGV (K6 / K1S)</td><td class="good">Rounder, suits SG</td><td class="good">Very good ventilation</td><td class="good">~$400–$900</td></tr>
+                <tr><td>HJC (RPHA series)</td><td class="good">Intermediate / round</td><td class="good">Good for price</td><td class="good">~$350–$700</td></tr>
+                <tr><td>LS2 (FF811 etc.)</td><td class="good">Round-friendly</td><td class="mid">Varies by model</td><td class="good">~$200–$450</td></tr>
+              </tbody>
+            </table>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>Don't buy a helmet online for your first purchase. Go to a physical shop — Meng Lee, Sin Soon Hin, or similar — and try 4–5 helmets from different brands. Your head shape tells you the brand; the fit tells you the size. Spend at least $300. This is not the item to budget on.</p>
+            </div>
+
+            <div class="mt-4">
+              <span class="tag-pill">Full-face recommended</span>
+              <span class="tag-pill">ECE 22.06 minimum</span>
+              <span class="tag-pill">Try before you buy</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 04: Jacket ══ -->
+        <div id="sec-jacket" class="topic-block delay-4">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-001-04</div>
+            <div class="signal-line">Protective Gear // Jacket</div>
+            <h3 class="topic-heading">Riding Jacket — Mesh, Textile, or Leather</h3>
+
+            <div class="prose-body">
+              <p>Singapore sits 1 degree north of the equator. The heat and humidity make full textile or leather jackets genuinely punishing for daily use. This is not the same as riding in Europe where you layer up — here the challenge is wearing <em>enough</em> protection without heat exhaustion.</p>
+              <p><strong>Mesh jackets</strong> are the practical answer for Singapore. A good mesh jacket with CE Level 1 shoulder and elbow armour — and ideally a back protector insert — provides meaningful abrasion protection and enough airflow to remain wearable at 33°C. The trade-off is that mesh jackets offer less abrasion resistance than leather in a prolonged slide. But a jacket you actually wear every day beats a leather jacket hanging in the wardrobe.</p>
+              <p><strong>Textile jackets</strong> with ventilation panels are a reasonable middle ground for riders who tour into Malaysia or Thailand where temperatures vary. They're bulkier but offer better rain protection.</p>
+              <p><strong>Leather</strong> is the gold standard for abrasion resistance. Not practical for Singapore commuting but worth considering for track days or longer tours. If you own leather, you need a separate commuter jacket for daily use — don't wear leather in Singapore heat and expect to focus on riding.</p>
+            </div>
+
+            <div class="prose-two-col">
+              <div class="prose-mini-block">
+                <h4>What to look for in a mesh jacket</h4>
+                <p>CE Level 2 armour at shoulders and elbows. Removable back protector slot (and actually buy the back pad separately — most jackets ship without one). Reflective panels for night visibility. Fit that doesn't shift backward when you lean forward on the bike.</p>
+              </div>
+              <div class="prose-mini-block">
+                <h4>Armour certification matters</h4>
+                <p>CE Level 1 is the minimum acceptable. CE Level 2 is better — it absorbs significantly more impact energy. Some budget jackets ship with foam pads labelled "protectors" that offer minimal real protection. Check for the CE EN 13594 or CE EN 1621 markings on the armour itself.</p>
+              </div>
+            </div>
+
+            <div class="callout">
+              <strong>The t-shirt under the jacket question:</strong> Yes, always wear a shirt underneath. Mesh jackets pass air but they also pass debris in a fall. A long-sleeve base layer also reduces sun exposure on extended rides and gives you something to wear when you're off the bike.
+            </div>
+
+            <div class="gear-bar-wrap" style="margin-top:18px;">
+              <div class="gear-bar-label"><span>Abrasion resistance</span><span>Leather: 95 / Textile: 70 / Mesh: 50</span></div>
+              <div class="gear-bar-track"><div class="gear-bar-fill" style="--bar-w:50%;width:50%;"></div></div>
+            </div>
+            <div class="gear-bar-wrap">
+              <div class="gear-bar-label"><span>Daily wearability in SG heat</span><span>Mesh: 90 / Textile: 55 / Leather: 20</span></div>
+              <div class="gear-bar-track"><div class="gear-bar-fill" style="--bar-w:90%;width:90%;"></div></div>
+            </div>
+            <div class="gear-bar-wrap">
+              <div class="gear-bar-label"><span>Rain protection</span><span>Leather: 40 / Textile: 80 / Mesh: 15</span></div>
+              <div class="gear-bar-track"><div class="gear-bar-fill" style="--bar-w:80%;width:80%;"></div></div>
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>For Singapore daily riding: mesh jacket with CE Level 2 armour is the answer. Budget around $200–$400 for something that won't let you down. Brands like Alpinestars (Andes V3), Dainese (Air Fast), and Rev'it (Tornado series) have solid mesh options. Avoid no-name jackets with unverified armour ratings regardless of how they look.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 05: Gloves ══ -->
+        <div id="sec-gloves" class="topic-block delay-5">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-001-05</div>
+            <div class="signal-line">Protective Gear // Gloves</div>
+            <h3 class="topic-heading">Riding Gloves — Why Your Hands Hit First</h3>
+
+            <div class="prose-body">
+              <p>In a fall, your hands go out instinctively before your brain has time to override the reflex. This is why hand injuries are disproportionately common in low-speed crashes — the kind most new riders will experience. Proper riding gloves with palm sliders and knuckle protection can mean the difference between road rash and intact skin.</p>
+              <p><strong>Short cuff vs gauntlet.</strong> For Singapore daily riding, short-cuff gloves are more practical — easier to put on and take off, cooler, and enough protection for city speeds. If you're touring or riding at highway speeds regularly, gauntlet gloves that cover the wrist provide better protection in a higher-speed incident.</p>
+              <p><strong>Touchscreen compatibility</strong> is genuinely useful in Singapore — you will need to operate your phone for navigation at stops. Most modern gloves include touchscreen-compatible fingertips; verify this before buying if it matters to you.</p>
+              <p><strong>Fit.</strong> Gloves should be snug but not restrictive. You need full throttle, clutch, and brake lever control without glove material bunching or slipping. Try gloves on the bike grip in the shop if the shop allows it.</p>
+            </div>
+
+            <ul class="checklist">
+              <li><strong>Knuckle protection</strong> — hard shell or moulded plastic, not just padding</li>
+              <li><strong>Palm slider</strong> — the bit that prevents road rash in a low-side</li>
+              <li><strong>Secure closure</strong> — velcro or strap that prevents glove pulling off in a slide</li>
+              <li class="warn"><strong>Avoid open-mesh with no palm protection</strong> — looks sporty, does nothing in a slide</li>
+              <li class="warn"><strong>Avoid "fashion" gloves</strong> — no armour, no slider, no protection beyond looking the part</li>
+            </ul>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>Spend at least $80–$120 on gloves. At this price bracket you get real palm sliders and knuckle armour. Alpinestars SP-8 V3 Air, RST Tractech Evo 4, or similar. Don't buy the $30 gloves from the helmet shop — they are better than nothing but not by much.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 06: Boots ══ -->
+        <div id="sec-boots" class="topic-block delay-6">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-001-06</div>
+            <div class="signal-line">Protective Gear // Footwear</div>
+            <h3 class="topic-heading">Boots & Footwear — The Compromise Nobody Wants to Make</h3>
+
+            <div class="prose-body">
+              <p>Ankle injuries are among the most common long-term-impact injuries from low-speed crashes. A proper motorcycle boot provides ankle support, toe protection, and a non-slip sole that doesn't catch on the gear lever or footpeg. Sneakers and slippers offer none of this.</p>
+              <p>The problem in Singapore is practical: you're commuting. You arrive at the office. You don't want to carry a bag full of separate shoes. This is a legitimate constraint, and the answer is <strong>urban motorcycle boots</strong> — boots that look like casual shoes or work boots but have internal ankle armour and reinforced toes.</p>
+              <p>Brands like <strong>TCX Street Ace</strong>, <strong>Forma Bolt</strong>, or <strong>Alpinestars Corozal</strong> all produce commuter-friendly boots that pass in most office environments while providing meaningful ankle protection. They cost more than sneakers, but ankle surgery costs significantly more than that.</p>
+            </div>
+
+            <div class="callout">
+              <strong>The flip flop commuter problem:</strong> You see it every morning at every traffic light in Singapore — riders in slippers or Havaianas. They've never had an incident, so they think it's fine. The risk isn't the ride itself; it's the one time in three years where an emergency stop or a bike tip-over at low speed sends a footpeg into an unprotected ankle. It only needs to happen once.
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>If you absolutely refuse to wear dedicated motorcycle boots daily, at minimum wear a proper sneaker with ankle coverage — not slides or slippers. For longer rides or touring, non-negotiable: proper boots. The ankle is a complex joint; repairing it surgically is expensive, slow, and never complete.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 07: Pants ══ -->
+        <div id="sec-pants" class="topic-block delay-7">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-001-07</div>
+            <div class="signal-line">Protective Gear // Lower Body</div>
+            <h3 class="topic-heading">Riding Pants — The Gear Most Riders Skip</h3>
+
+            <div class="prose-body">
+              <p>Hands up: most Singapore riders wear jeans, work trousers, or shorts on the bike. This is the norm, not the exception. Dedicated riding pants feel excessive for a 10-minute commute — until they're not.</p>
+              <p>The practical middle ground is <strong>kevlar-lined riding jeans</strong>. From the outside they look like normal denim. Inside, the knee and hip areas are reinforced with Kevlar or UHMWPE fibres that dramatically reduce abrasion injury in a slide. Many include armour pockets at the knees — add CE-rated knee armour and you have meaningful lower body protection that doesn't look like motorcycle gear at the office.</p>
+              <p>Brands like <strong>Draggin' Jeans</strong>, <strong>Resurgence Gear</strong>, and <strong>Pando Moto</strong> make riding jeans that sit at SGD $200–$450. Not cheap. But they're wearable every day and they survive office visits without the motorcycle look.</p>
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>This is gear I'd prioritise for touring specifically, not necessarily daily SG commuting. If budget is limited: helmet first, jacket second, gloves third, boots fourth, pants last. But if you're riding 5 days a week, riding jeans are worth the investment and the cost per wear ends up lower than you'd expect.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 08: First Bike Selection ══ -->
+        <div id="sec-bike" class="topic-block delay-8">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-001-08</div>
+            <div class="signal-line">Bike Selection // Class 2B</div>
+            <h3 class="topic-heading">Choosing Your First Bike — New vs Used</h3>
+
+            <div class="prose-body">
+              <p>The short version: <strong>buy used for your first bike</strong>. Not because new bikes are bad — because you will drop your first bike. In a carpark. At zero miles an hour. It's not a failure; it's part of learning. When you drop a used bike with some existing scuffs, it costs you nothing emotionally. When you drop a brand-new bike you're still paying off, the day is ruined.</p>
+              <p>At Class 2B, the 150–200cc segment in Singapore is well-supplied with used options. Common recommendations: <strong>Yamaha YZF-R15</strong>, <strong>Honda CB150R</strong>, <strong>Yamaha MT-15</strong>, <strong>Kawasaki Z125 Pro</strong> (lighter, good for smaller riders). All have reasonable parts availability and established mechanics who know them.</p>
+              <p>What to look for in a used bike: service records (consistent oil changes, not just pre-sale maintenance), no mismatched paint panels, straight forks (sight down the front from above), no oil seeping from around the engine gaskets, and a TP report to confirm no outstanding loans or accident write-offs.</p>
+            </div>
+
+            <table class="comp-table">
+              <thead>
+                <tr><th>Bike</th><th>Engine</th><th>For Who</th><th>Used Price (est.)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Yamaha MT-15</td><td>155cc</td><td class="good">All-round 2B, good ergonomics</td><td class="mid">$6–9K</td></tr>
+                <tr><td>Honda CB150R</td><td>150cc</td><td class="good">Reliable, great for commuting</td><td class="mid">$5–8K</td></tr>
+                <tr><td>Yamaha YZF-R15</td><td>155cc</td><td class="mid">Sport posture, good for highways</td><td class="mid">$6–9K</td></tr>
+                <tr><td>Kawasaki Z125 Pro</td><td>125cc</td><td class="good">Lighter riders, city only</td><td class="good">$4–6K</td></tr>
+                <tr><td>Honda MSX125 Grom</td><td>125cc</td><td class="mid">Fun, city use, not for highway</td><td class="mid">$5–7K</td></tr>
+              </tbody>
+            </table>
+
+            <div class="callout">
+              <strong>On the TP report:</strong> Run it before you pay any deposit. Go to the LTA OneMotoring portal, enter the plate number, and check the registered owner, loan status, and accident history. A seller who refuses this step before you commit — walk away.
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>Budget $6,000–$8,000 for a decent used 2B bike in Singapore, factoring in road tax and insurance. Don't buy the cheapest bike you can find — a $2,500 bike with no service records and questionable history will cost you more in repairs than a $7,000 bike that was properly maintained. Buy the history, not just the hardware.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 09: Insurance ══ -->
+        <div id="sec-insurance" class="topic-block delay-9">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-001-09</div>
+            <div class="signal-line">Ownership // Insurance</div>
+            <h3 class="topic-heading">Motorcycle Insurance in Singapore</h3>
+
+            <div class="prose-body">
+              <p>Insurance for a new rider in Singapore is <strong>expensive</strong>. As a new 2B rider under 30, expect comprehensive cover to cost $800–$1,500 per year depending on bike value and excess structure. This is one of the costs most people don't factor into their first-year budget.</p>
+              <p><strong>Third party only (TPO)</strong> is the legal minimum and significantly cheaper, but it provides zero cover for your own bike damage. For a new rider who is more likely to have a drop or minor incident, having some level of own-damage cover is worth considering.</p>
+              <p>Key factors affecting your premium: age (under 25 is expensive), years of licence held, claims history, bike engine size and value, and whether you've completed advanced riding training. Some insurers offer discounts for riders who have completed defensive riding courses — worth checking with your insurer.</p>
+              <p>Insurers commonly used for motorcycles in Singapore include <strong>NTUC Income</strong>, <strong>FWD</strong>, <strong>Great Eastern</strong>, and <strong>AIG</strong>. Get at least three quotes before committing — premiums vary significantly for the same risk profile.</p>
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>Don't skip insurance shopping. Use a broker or comparison site to get multiple quotes simultaneously. Pay attention to the excess amount (what you pay out of pocket per claim) — a lower premium with a $1,500 excess is not always better than a slightly higher premium with a $500 excess, depending on how you ride.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 10: Road Skills Nobody Teaches ══ -->
+        <div id="sec-road" class="topic-block delay-10">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-001-10</div>
+            <div class="signal-line">Road Craft // Singapore Specific</div>
+            <h3 class="topic-heading">What School Doesn't Teach You About Singapore Roads</h3>
+
+            <div class="prose-body">
+              <p>Riding school teaches you to pass a test. The circuit is controlled, predictable, and nothing like Kranji Expressway at 7:45am. Here's what you need to know that doesn't appear in the syllabus.</p>
+              <p><strong>Painted road markings are lethal when wet.</strong> White lane markings, zebra crossings, give-way lines — they have near-zero friction when it rains. In Singapore this means every morning commute after a night shower involves painted surface risk. Ride over markings as straight as possible; don't brake or lean on them.</p>
+              <p><strong>Metal covers and drain grates.</strong> Singapore's infrastructure means manhole covers and drain grates are everywhere. They are slippery in the dry and extremely slippery when wet. Avoid braking directly on them. Ride over them, not on them.</p>
+              <p><strong>Left lane isn't always the safe lane.</strong> On expressways, the left lane has the most debris — sand, gravel, tyre fragments from heavy vehicles. The middle lane is often cleaner and more predictable. The right lane on expressways in Singapore has fast cars that will tailgate without warning.</p>
+              <p><strong>The school circuit has no buses.</strong> Singapore buses pull out from bus stops without checking mirrors. They're large, they're frequent, and they're legally obligated to yield but practically guaranteed not to. Build a buffer every time you pass a bus stop in the left lane.</p>
+            </div>
+
+            <ul class="checklist">
+              <li><strong>Wet painted lines</strong> — treat as ice, ride over straight, don't brake on them</li>
+              <li><strong>Metal drain covers</strong> — approach straight, no braking or leaning on them</li>
+              <li><strong>Left lane debris</strong> — on expressways, middle lane is cleaner</li>
+              <li><strong>Bus stops</strong> — maximum buffer when passing, assume the bus will pull out</li>
+              <li><strong>Sand and gravel at corners</strong> — common on SG urban roads after works, feels like riding on ball bearings</li>
+              <li class="warn"><strong>Filtered red light cameras</strong> — some junctions have them, they catch motorcycles</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 11: First Year Gear Budget ══ -->
+        <div id="sec-budget" class="topic-block delay-1">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-001-11</div>
+            <div class="signal-line">Budget Planning</div>
+            <h3 class="topic-heading">First Year Realistic Budget Breakdown</h3>
+
+            <div class="prose-body">
+              <p>Most new rider budget articles focus on riding school fees and ignore everything else. Here's a complete picture of what you're actually looking at in your first year of riding in Singapore.</p>
+            </div>
+
+            <table class="comp-table">
+              <thead>
+                <tr><th>Item</th><th>Budget</th><th>Realistic</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Riding school (2B full course)</td><td class="good">~$1,500</td><td class="mid">~$1,800+</td><td>Factor in retests</td></tr>
+                <tr><td>Helmet</td><td class="mid">$300</td><td class="mid">$400–$700</td><td>Don't skimp here</td></tr>
+                <tr><td>Jacket (mesh)</td><td class="mid">$200</td><td class="mid">$280–$450</td><td>With CE2 armour</td></tr>
+                <tr><td>Gloves</td><td class="good">$80</td><td class="mid">$100–$180</td><td>Proper palm sliders</td></tr>
+                <tr><td>Boots</td><td class="mid">$150</td><td class="mid">$180–$350</td><td>Urban style acceptable</td></tr>
+                <tr><td>First bike (used 2B)</td><td class="mid">$6,000</td><td class="mid">$6,500–$9,000</td><td>With service history</td></tr>
+                <tr><td>Road tax (annual)</td><td class="good">~$70</td><td class="good">~$70–$140</td><td>Depends on CC</td></tr>
+                <tr><td>Insurance (annual)</td><td class="bad">$800</td><td class="bad">$900–$1,500</td><td>New rider penalty</td></tr>
+                <tr><td>Servicing (first year)</td><td class="mid">$300</td><td class="mid">$400–$600</td><td>Oil changes, tyre check</td></tr>
+              </tbody>
+            </table>
+
+            <div class="callout">
+              <strong>Total first year realistic cost:</strong> ~$10,000–$14,000 all-in, assuming a used bike purchase. This is what it actually costs, not the number riding school brochures quote. Plan for it.
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>If $10–14K in year one isn't realistic, it's better to wait and do it right than to cut corners on gear and buy a bike you can't afford to insure and maintain. Riding with inadequate gear on a questionable bike in Singapore traffic is exactly the scenario that produces bad outcomes. The sport is worth doing properly — do it when you can afford to.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation arrows -->
+        <div class="flex items-center justify-between mt-10 pt-6 border-t" style="border-color:rgba(255,255,255,0.06);">
+          <a href="/riders-guide/" class="breadcrumb" style="margin-bottom:0;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+            Back to Rider's Guide
+          </a>
+          <a href="/riders-guide/touring/" class="breadcrumb" style="margin-bottom:0; flex-direction:row-reverse;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="transform:rotate(180deg);">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+            Touring Prep
+          </a>
+        </div>
+
+      </div><!-- end left content -->
+
+      <!-- ── RIGHT: Sticky TOC ── -->
+      <aside class="toc-sticky hidden lg:block">
+        <div style="position:relative; border:1px solid rgba(220,38,38,0.15); background:rgba(10,10,10,0.9); padding:20px;">
+          <div class="card-bg" style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.007) 3px,rgba(220,38,38,0.007) 4px);"></div>
+          <div class="noise-overlay"></div>
+          <div class="relative z-10">
+            <p class="font-mono-tech text-xs tracking-[3px] uppercase mb-4" style="color:rgba(220,38,38,0.4);">// Contents</p>
+            <nav>
+              <a href="#sec-school" class="toc-item">
+                <span class="toc-num">01</span>
+                <span class="toc-title">CDC vs BBDC</span>
+              </a>
+              <a href="#sec-class" class="toc-item">
+                <span class="toc-num">02</span>
+                <span class="toc-title">Licence Progression</span>
+              </a>
+              <a href="#sec-helmet" class="toc-item">
+                <span class="toc-num">03</span>
+                <span class="toc-title">Helmet Selection</span>
+              </a>
+              <a href="#sec-jacket" class="toc-item">
+                <span class="toc-num">04</span>
+                <span class="toc-title">Riding Jacket</span>
+              </a>
+              <a href="#sec-gloves" class="toc-item">
+                <span class="toc-num">05</span>
+                <span class="toc-title">Gloves</span>
+              </a>
+              <a href="#sec-boots" class="toc-item">
+                <span class="toc-num">06</span>
+                <span class="toc-title">Boots & Footwear</span>
+              </a>
+              <a href="#sec-pants" class="toc-item">
+                <span class="toc-num">07</span>
+                <span class="toc-title">Riding Pants</span>
+              </a>
+              <a href="#sec-bike" class="toc-item">
+                <span class="toc-num">08</span>
+                <span class="toc-title">First Bike</span>
+              </a>
+              <a href="#sec-insurance" class="toc-item">
+                <span class="toc-num">09</span>
+                <span class="toc-title">Insurance</span>
+              </a>
+              <a href="#sec-road" class="toc-item">
+                <span class="toc-num">10</span>
+                <span class="toc-title">SG Road Craft</span>
+              </a>
+              <a href="#sec-budget" class="toc-item">
+                <span class="toc-num">11</span>
+                <span class="toc-title">Year 1 Budget</span>
+              </a>
+            </nav>
+            <div class="mt-5 pt-5 border-t" style="border-color:rgba(255,255,255,0.05);">
+              <a href="/riders-guide/" class="font-mono-tech text-xs tracking-widest uppercase text-gray-600 hover:text-red-500 transition-colors flex items-center gap-2">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                All Guides
+              </a>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div><!-- end layout-with-toc -->
+
+  </div>
+</main>
+
+<!-- ════ FOOTER ════ -->
+<footer class="py-16 px-5 border-t border-white/5 mt-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex flex-col items-center gap-6">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 hover:scale-105 transition-all duration-300">
+          <span class="font-mono-tech text-red-600 text-sm font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+      </a>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="font-mono-tech text-sm tracking-widest uppercase">Watch on YouTube</span>
+      </a>
+      <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  (function(){
+    var cursor=document.getElementById('cursor'), ring=document.getElementById('cursor-ring');
+    var mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+    (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+    document.querySelectorAll('a,button').forEach(function(el){
+      el.addEventListener('mouseenter',function(){ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(220,38,38,0.8)';});
+      el.addEventListener('mouseleave',function(){ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(220,38,38,0.5)';});
+    });
+  })();
+
+  // Progress bar
+  window.addEventListener('scroll',function(){
+    var st=document.documentElement.scrollTop||document.body.scrollTop;
+    var sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    document.getElementById('progress-bar').style.width=(sh>0?(st/sh)*100:0)+'%';
+  },{passive:true});
+
+  // Navbar scroll
+  window.addEventListener('scroll',function(){
+    var nav=document.getElementById('navbar');
+    if(window.scrollY>20)nav.classList.add('nav-scrolled');
+    else nav.classList.remove('nav-scrolled');
+  },{passive:true});
+
+  // Mobile menu
+  document.getElementById('menu-toggle').addEventListener('click',function(){
+    var menu=document.getElementById('mobile-menu');
+    var openIcon=document.getElementById('menu-icon-open');
+    var closeIcon=document.getElementById('menu-icon-close');
+    var isOpen=menu.style.maxHeight==='320px';
+    menu.style.maxHeight=isOpen?'0':'320px';
+    menu.style.borderBottom=isOpen?'':'1px solid rgba(127,29,29,0.3)';
+    openIcon.style.display=isOpen?'':'none';
+    closeIcon.style.display=isOpen?'none':'';
+  });
+  document.querySelectorAll('.mobile-link').forEach(function(link){
+    link.addEventListener('click',function(){
+      document.getElementById('mobile-menu').style.maxHeight='0';
+      document.getElementById('menu-icon-open').style.display='';
+      document.getElementById('menu-icon-close').style.display='none';
+    });
+  });
+
+  // TOC active highlight on scroll
+  (function(){
+    var sections = ['sec-school','sec-class','sec-helmet','sec-jacket','sec-gloves','sec-boots','sec-pants','sec-bike','sec-insurance','sec-road','sec-budget'];
+    var tocLinks = document.querySelectorAll('.toc-item');
+    function onScroll(){
+      var fromTop = window.scrollY + 120;
+      var active = null;
+      sections.forEach(function(id){
+        var el = document.getElementById(id);
+        if(el && el.offsetTop <= fromTop) active = id;
+      });
+      tocLinks.forEach(function(link){
+        var href = link.getAttribute('href').replace('#','');
+        if(href === active){
+          link.querySelector('.toc-title').style.color = '#dc2626';
+        } else {
+          link.querySelector('.toc-title').style.color = '';
+        }
+      });
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+  })();
+</script>
+</body>
+</html>
