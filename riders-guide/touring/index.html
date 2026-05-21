@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="Practical motorcycle touring preparation for Singapore riders heading to Malaysia, Thailand, and beyond. Packing discipline, power setup, rain prep, border crossing, and the real lessons from multi-day rides.">
+  <meta name="keywords" content="motorcycle touring Malaysia, motorcycle touring Thailand, Singapore touring preparation, motorcycle packing guide, long distance riding tips, touring bag setup, border crossing motorcycle Singapore, Secret Reviewer">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Touring Essentials — Preparation for Singapore Riders | Secret Reviewer</title>
+  <link rel="canonical" href="https://secret-reviewer.com/riders-guide/touring/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: {
+        sans:  ['Barlow Condensed','sans-serif'],
+        mono:  ['"Share Tech Mono"','monospace'],
+        prose: ['"IBM Plex Sans"','sans-serif'],
+      }}}
+    };
+  </script>
+  <style>
+    :root {
+      --red:     #dc2626;
+      --red-dim: rgba(220,38,38,0.15);
+      --red-glow:rgba(220,38,38,0.6);
+      --bg:      #060606;
+    }
+    *, *::before, *::after { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      background-color:var(--bg); color:#ececec;
+      font-family:'Barlow Condensed',sans-serif;
+      margin:0; overflow-x:hidden; cursor:none; line-height:1.75;
+    }
+    .font-mono-tech { font-family:'Share Tech Mono',monospace; }
+    .font-prose     { font-family:'IBM Plex Sans',sans-serif; }
+
+    /* ── Cursor ── */
+    #cursor {
+      position:fixed; width:12px; height:12px;
+      background:var(--red); border-radius:50%;
+      pointer-events:none; z-index:99999;
+      transform:translate(-50%,-50%);
+      transition:width .2s,height .2s; mix-blend-mode:screen;
+    }
+    #cursor-ring {
+      position:fixed; width:36px; height:36px;
+      border:1px solid rgba(220,38,38,0.5); border-radius:50%;
+      pointer-events:none; z-index:99998;
+      transform:translate(-50%,-50%);
+      transition:width .2s,height .2s,border-color .2s;
+    }
+
+    /* ── Keyframes ── */
+    @keyframes scan       { from{top:-100%} to{top:100%} }
+    @keyframes fadeSlideUp{ from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse-red  { 0%,100%{box-shadow:0 0 6px rgba(220,38,38,0.3)} 50%{box-shadow:0 0 28px rgba(220,38,38,0.8),0 0 60px rgba(220,38,38,0.25)} }
+    @keyframes pulse-dot  { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    @keyframes staticNoise{ 0%{opacity:.03} 25%{opacity:.05} 50%{opacity:.02} 75%{opacity:.06} 100%{opacity:.03} }
+    @keyframes glitch-1   { 0%,100%{clip-path:inset(0 0 98% 0);transform:translate(-2px,0)} 20%{clip-path:inset(20% 0 50% 0);transform:translate(2px,0)} 40%{clip-path:inset(60% 0 20% 0);transform:translate(-2px,0)} 60%{clip-path:inset(80% 0 5% 0);transform:translate(2px,0)} 80%{clip-path:inset(40% 0 60% 0);transform:translate(-2px,0)} }
+    @keyframes glitch-2   { 0%,100%{clip-path:inset(50% 0 30% 0);transform:translate(2px,0);color:#00ffff} 25%{clip-path:inset(10% 0 80% 0);transform:translate(-2px,0)} 50%{clip-path:inset(70% 0 10% 0);transform:translate(2px,0);color:var(--red)} 75%{clip-path:inset(30% 0 50% 0);transform:translate(-2px,0)} }
+    @keyframes cardReveal { from{opacity:0;transform:translateY(20px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+    @keyframes barGrow    { from{width:0} to{width:var(--bar-w)} }
+
+    .animate-fade-slide-up { animation:fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+    .animate-pulse-red     { animation:pulse-red 2.5s infinite; }
+
+    /* ── CRT overlay ── */
+    body::before {
+      content:""; position:fixed; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);
+      pointer-events:none; z-index:9990;
+    }
+    body::after {
+      content:""; position:fixed; top:-100%; left:0; width:100%; height:100%;
+      background:linear-gradient(rgba(220,38,38,0) 0%,rgba(220,38,38,0.03) 50%,rgba(220,38,38,0) 100%);
+      animation:scan 12s linear infinite; pointer-events:none; z-index:9991;
+    }
+
+    /* ── Progress bar ── */
+    #progress-bar {
+      height:3px;
+      background:linear-gradient(90deg,#7f1d1d,#dc2626,#f87171);
+      box-shadow:0 0 12px rgba(220,38,38,0.9),0 0 24px rgba(220,38,38,0.4);
+      width:0%; transition:width .08s ease-out;
+    }
+
+    /* ── Navbar ── */
+    #navbar { transition:background .4s,border-color .4s; }
+    .nav-scrolled {
+      background:rgba(4,4,4,0.96) !important;
+      border-bottom-color:rgba(127,29,29,0.4) !important;
+      backdrop-filter:blur(20px);
+    }
+
+    /* ── Glitch title ── */
+    .glitch-wrap { position:relative; display:inline-block; }
+    .glitch-wrap::before,.glitch-wrap::after {
+      content:attr(data-text); position:absolute; top:0; left:0; width:100%; height:100%;
+    }
+    .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
+    .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
+
+    /* ── Noise overlay ── */
+    .noise-overlay {
+      position:absolute; inset:0; opacity:.025; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size:128px; animation:staticNoise 4s step-start infinite;
+    }
+
+    /* ── Section rule ── */
+    .section-rule {
+      border:none; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(220,38,38,0.3),transparent);
+      margin:52px 0;
+    }
+
+    /* ── Breadcrumb ── */
+    .breadcrumb {
+      display:inline-flex; align-items:center; gap:8px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.85rem; color:#555; text-transform:uppercase;
+      letter-spacing:2px; text-decoration:none; margin-bottom:32px;
+      transition:color .2s;
+    }
+    .breadcrumb:hover { color:var(--red); }
+    .breadcrumb:hover svg { transform:translateX(-3px); }
+    .breadcrumb svg { transition:transform .2s; }
+
+    /* ── Signal line ── */
+    .signal-line {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.68rem; color:rgba(220,38,38,0.45);
+      letter-spacing:2px; text-transform:uppercase;
+      display:flex; align-items:center; gap:8px; margin-bottom:8px;
+    }
+    .signal-line::before {
+      content:''; display:block; width:24px; height:1px;
+      background:rgba(220,38,38,0.45); flex-shrink:0;
+    }
+
+    /* ── Topic block ── */
+    .topic-block {
+      position:relative;
+      border:1px solid rgba(220,38,38,0.15);
+      background:rgba(10,10,10,0.85);
+      overflow:hidden; margin-bottom:20px;
+      animation:cardReveal 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .topic-block::before {
+      content:''; position:absolute; top:0; left:0;
+      width:32px; height:32px;
+      border-top:1px solid rgba(220,38,38,0.5);
+      border-left:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .topic-block::after {
+      content:''; position:absolute; bottom:0; right:0;
+      width:32px; height:32px;
+      border-bottom:1px solid rgba(220,38,38,0.5);
+      border-right:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .topic-block-inner { padding:28px 28px 24px; position:relative; z-index:1; }
+    .topic-block .card-bg {
+      position:absolute; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.007) 3px,rgba(220,38,38,0.007) 4px);
+      pointer-events:none;
+    }
+
+    /* ── Warning block — special "LESSON LEARNED" variant ── */
+    .topic-block.lesson {
+      border-color:rgba(220,38,38,0.35);
+      background:rgba(14,4,4,0.92);
+    }
+    .topic-block.lesson::before { border-color:rgba(220,38,38,0.7); }
+    .topic-block.lesson::after  { border-color:rgba(220,38,38,0.7); }
+
+    /* ── Topic heading ── */
+    .topic-heading {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(1.6rem,4vw,2.2rem);
+      font-weight:900; text-transform:uppercase;
+      color:#fff; letter-spacing:0.02em; line-height:1.1;
+      margin:0 0 16px 0;
+    }
+
+    /* ── Prose body ── */
+    .prose-body {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.97rem; color:#8a8a8a; line-height:1.85;
+    }
+    .prose-body p { margin:0 0 14px 0; }
+    .prose-body p:last-child { margin-bottom:0; }
+    .prose-body strong { color:#d0d0d0; font-weight:600; }
+    .prose-body em { color:#b0b0b0; font-style:italic; }
+
+    /* ── Callout ── */
+    .callout {
+      border-left:2px solid rgba(220,38,38,0.6);
+      background:rgba(220,38,38,0.04);
+      padding:14px 18px; margin:18px 0 0;
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.9rem; color:#999; line-height:1.7; font-style:italic;
+    }
+    .callout strong { color:#f87171; font-style:normal; }
+
+    /* ── Warning callout ── */
+    .callout-warn {
+      border-left:2px solid rgba(251,191,36,0.6);
+      background:rgba(251,191,36,0.04);
+      padding:14px 18px; margin:18px 0 0;
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.9rem; color:#999; line-height:1.7; font-style:italic;
+    }
+    .callout-warn strong { color:#fbbf24; font-style:normal; }
+
+    /* ── SR Take ── */
+    .sr-take {
+      margin-top:18px; border:1px solid rgba(220,38,38,0.25);
+      background:rgba(220,38,38,0.05); padding:14px 18px;
+    }
+    .sr-take-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.6); margin-bottom:6px;
+    }
+    .sr-take p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#bbb; line-height:1.75;
+      margin:0; font-style:italic;
+    }
+
+    /* ── Lesson Learned callout ── */
+    .lesson-take {
+      margin-top:18px;
+      border:1px solid rgba(220,38,38,0.4);
+      background:rgba(220,38,38,0.08); padding:14px 18px;
+      position:relative;
+    }
+    .lesson-take::before {
+      content:'// LESSON LEARNED — PERSONAL';
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.62rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.7); display:block; margin-bottom:8px;
+    }
+    .lesson-take p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.95rem; color:#cc8888; line-height:1.8;
+      margin:0;
+    }
+    .lesson-take p strong { color:#f87171; }
+
+    /* ── Comparison table ── */
+    .comp-table { width:100%; border-collapse:collapse; margin-top:18px; }
+    .comp-table th {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.68rem; letter-spacing:2px; text-transform:uppercase;
+      color:rgba(220,38,38,0.5);
+      border-bottom:1px solid rgba(220,38,38,0.2);
+      padding:10px 14px; text-align:left;
+    }
+    .comp-table td {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.88rem; color:#888; line-height:1.6;
+      padding:10px 14px;
+      border-bottom:1px solid rgba(255,255,255,0.04);
+      vertical-align:top;
+    }
+    .comp-table tr:last-child td { border-bottom:none; }
+    .comp-table td:first-child { color:#ddd; font-weight:600; }
+    .comp-table td.good { color:#4ade80; }
+    .comp-table td.bad  { color:#f87171; }
+    .comp-table td.mid  { color:#fbbf24; }
+
+    /* ── Checklist ── */
+    .checklist { list-style:none; padding:0; margin:14px 0 0; }
+    .checklist li {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#888; line-height:1.7;
+      padding:7px 0 7px 28px; position:relative;
+      border-bottom:1px solid rgba(255,255,255,0.04);
+    }
+    .checklist li:last-child { border-bottom:none; }
+    .checklist li::before {
+      content:''; position:absolute; left:6px; top:14px;
+      width:10px; height:10px; border:1px solid rgba(220,38,38,0.5);
+    }
+    .checklist li strong { color:#d0d0d0; }
+    .checklist li.warn::before { background:rgba(220,38,38,0.25); }
+    .checklist li.ok::before   { background:rgba(74,222,128,0.2); border-color:rgba(74,222,128,0.4); }
+
+    /* ── Gear bar ── */
+    .gear-bar-wrap { margin:6px 0; }
+    .gear-bar-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#555; display:flex; justify-content:space-between; margin-bottom:4px;
+    }
+    .gear-bar-track { height:3px; background:rgba(255,255,255,0.06); position:relative; }
+    .gear-bar-fill {
+      height:3px; background:linear-gradient(90deg,#7f1d1d,#dc2626);
+      box-shadow:0 0 6px rgba(220,38,38,0.4);
+      animation:barGrow 1s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    /* ── Tag pill ── */
+    .tag-pill {
+      display:inline-block;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#f87171; border:1px solid rgba(220,38,38,0.3);
+      padding:3px 10px; background:rgba(220,38,38,0.05);
+      margin-right:6px; margin-bottom:6px;
+    }
+
+    /* ── Section ID ── */
+    .section-id {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.35); margin-bottom:4px;
+    }
+
+    /* ── Field note ── */
+    .field-note {
+      border-left:2px solid rgba(220,38,38,0.5);
+      padding:14px 18px; margin:18px 0;
+      background:rgba(0,0,0,0.4);
+    }
+    .field-note p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:1rem; color:#aaa; line-height:1.75;
+      font-style:italic; margin:0;
+    }
+    .field-note cite {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:rgba(220,38,38,0.4); display:block; margin-top:8px;
+    }
+
+    /* ── Two-col prose grid ── */
+    .prose-two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:16px; }
+    @media(max-width:640px){ .prose-two-col { grid-template-columns:1fr; } }
+    .prose-mini-block {
+      border:1px solid rgba(255,255,255,0.06); padding:16px;
+      background:rgba(0,0,0,0.3);
+    }
+    .prose-mini-block h4 {
+      font-size:0.9rem; font-weight:900; text-transform:uppercase;
+      color:#ccc; margin:0 0 8px; letter-spacing:0.05em;
+    }
+    .prose-mini-block p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.85rem; color:#777; line-height:1.7; margin:0;
+    }
+
+    /* ── Timeline (preparation schedule) ── */
+    .timeline { position:relative; padding-left:28px; margin-top:18px; }
+    .timeline::before {
+      content:''; position:absolute; left:8px; top:0; bottom:0;
+      width:1px; background:linear-gradient(180deg,rgba(220,38,38,0.5),rgba(220,38,38,0.05));
+    }
+    .timeline-item { position:relative; margin-bottom:20px; }
+    .timeline-item::before {
+      content:''; position:absolute; left:-24px; top:6px;
+      width:8px; height:8px; border:1px solid rgba(220,38,38,0.6);
+      background:rgba(220,38,38,0.15);
+    }
+    .timeline-week {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.5); margin-bottom:4px;
+    }
+    .timeline-title {
+      font-size:1rem; font-weight:900; text-transform:uppercase;
+      color:#ccc; margin:0 0 4px;
+    }
+    .timeline-body {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.88rem; color:#777; line-height:1.7;
+    }
+
+    /* ── Packing category block ── */
+    .pack-category {
+      border-bottom:1px solid rgba(255,255,255,0.05);
+      padding:14px 0;
+    }
+    .pack-category:last-child { border-bottom:none; }
+    .pack-cat-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.4); margin-bottom:6px;
+    }
+    .pack-cat-title {
+      font-size:1rem; font-weight:900; text-transform:uppercase;
+      color:#ccc; margin:0 0 6px;
+    }
+    .pack-cat-body {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.88rem; color:#777; line-height:1.7;
+    }
+
+    /* ── Sticky TOC ── */
+    .toc-item {
+      display:flex; align-items:flex-start; gap:10px;
+      padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);
+      text-decoration:none; transition:color .2s;
+    }
+    .toc-item:last-child { border-bottom:none; }
+    .toc-num {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.7rem; color:rgba(220,38,38,0.4);
+      letter-spacing:1px; padding-top:2px; flex-shrink:0;
+    }
+    .toc-title {
+      font-size:0.95rem; font-weight:700; color:#666;
+      text-transform:uppercase; letter-spacing:0.03em;
+      transition:color .2s;
+    }
+    .toc-item:hover .toc-title { color:var(--red); }
+
+    /* ── Layout ── */
+    @media(min-width:1024px){
+      .layout-with-toc { display:grid; grid-template-columns:1fr 240px; gap:40px; align-items:start; }
+      .toc-sticky { position:sticky; top:80px; }
+    }
+
+    /* ── Delay utils ── */
+    .delay-1{animation-delay:.05s}.delay-2{animation-delay:.10s}.delay-3{animation-delay:.15s}
+    .delay-4{animation-delay:.20s}.delay-5{animation-delay:.25s}.delay-6{animation-delay:.30s}
+    .delay-7{animation-delay:.35s}.delay-8{animation-delay:.40s}.delay-9{animation-delay:.45s}
+    .delay-10{animation-delay:.50s}
+
+    /* ── Final checklist mega-block ── */
+    .final-checklist-grid {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:0; margin-top:18px;
+    }
+    @media(max-width:640px){ .final-checklist-grid { grid-template-columns:1fr; } }
+    .final-check-group { padding:16px; border:1px solid rgba(255,255,255,0.05); }
+    .final-check-group + .final-check-group { border-left:none; }
+    @media(max-width:640px){ .final-check-group + .final-check-group { border-left:1px solid rgba(255,255,255,0.05); border-top:none; } }
+    .final-check-group-title {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.45); margin-bottom:10px;
+    }
+    .fcheck {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.85rem; color:#777; line-height:1.6;
+      padding:5px 0 5px 22px; position:relative;
+      border-bottom:1px solid rgba(255,255,255,0.03);
+    }
+    .fcheck:last-child { border-bottom:none; }
+    .fcheck::before {
+      content:''; position:absolute; left:4px; top:12px;
+      width:8px; height:8px; border:1px solid rgba(220,38,38,0.4);
+    }
+    .fcheck.critical::before { background:rgba(220,38,38,0.3); border-color:rgba(220,38,38,0.7); }
+    .fcheck strong { color:#d0d0d0; }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="fixed top-0 left-0 w-full z-[9999]">
+  <div id="progress-bar"></div>
+</div>
+
+<!-- ════ NAVBAR ════ -->
+<nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+    <a href="/" class="flex items-center gap-3">
+      <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+        <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+      </div>
+      <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+      <a href="/riders-guide/" class="text-red-500 text-sm font-bold tracking-widest uppercase">Rider's Guide</a>
+      <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+      <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+    <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+      <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
+    <div class="flex flex-col px-5 py-4 gap-4">
+      <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+      <a href="/riders-guide/" class="mobile-link text-red-500 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Rider's Guide</a>
+      <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+      <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ MAIN ════ -->
+<main class="pt-28 pb-24 px-5">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Breadcrumb trail -->
+    <div class="flex items-center gap-2 mb-8 font-mono-tech text-xs tracking-widest uppercase" style="color:#444;">
+      <a href="/" class="hover:text-red-500 transition-colors">Home</a>
+      <span>/</span>
+      <a href="/riders-guide/" class="hover:text-red-500 transition-colors">Rider's Guide</a>
+      <span>/</span>
+      <span style="color:rgba(220,38,38,0.5);">Touring Essentials</span>
+    </div>
+
+    <!-- ════ PAGE HEADER ════ -->
+    <div class="mb-12 animate-fade-slide-up" style="position:relative;">
+      <div class="noise-overlay"></div>
+      <p class="font-mono-tech text-xs tracking-[0.4em] uppercase mb-4" style="color:rgba(167,139,250,0.6);">// Field Guide RG-002 — Touring Preparation Intelligence</p>
+      <h1 class="font-black uppercase leading-none tracking-tight text-white mb-2" style="font-size:clamp(2.8rem,9vw,5rem);">
+        <span class="glitch-wrap" data-text="TOURING">TOURING</span>
+      </h1>
+      <h2 class="font-black uppercase text-red-600 leading-none tracking-tight mb-5" style="font-size:clamp(1.2rem,3vw,1.8rem);letter-spacing:0.1em;">Essentials</h2>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-widest">
+        <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+        9 SECTIONS // MALAYSIA + THAILAND + BEYOND // PREPARE EARLY — NOT THE NIGHT BEFORE
+      </p>
+      <p class="mt-5 text-gray-500 text-base leading-relaxed max-w-2xl font-prose" style="font-style:italic;">
+        This is not about which saddle bag looks the part or what gear brand to buy. This is about actually being ready — physically, mechanically, and mentally — to ride beyond Singapore borders for multiple days. Most of the mistakes here are ones I made myself. The preparation timeline alone would have saved me two hours of frantic repacking the morning of departure.
+      </p>
+    </div>
+
+    <hr class="section-rule" style="margin-top:0;" />
+
+    <!-- ════ LAYOUT ════ -->
+    <div class="layout-with-toc">
+
+      <!-- ── LEFT: Main content ── -->
+      <div>
+
+        <!-- ══ THE CARDINAL RULE (standalone lesson block) ══ -->
+        <div class="topic-block lesson delay-1">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-00 — Before Everything Else</div>
+            <div class="signal-line">The Rule You Will Break Once</div>
+            <h3 class="topic-heading">Prepare Early. Test Everything. Then Pack Half of What You Think You Need.</h3>
+            <div class="prose-body">
+              <p>There are two types of touring mistakes: the ones you can fix on the road, and the ones you can't. Poor preparation almost always produces the second type. The charging kit that trips its circuit because you never tested it under load. The tank bag that wobbles at 100km/h because you strapped it on the morning you left. The rain cover that doesn't fit because you bought it online without trying it on your bag first.</p>
+              <p><strong>Everything new that goes on the bike needs to be tested in Singapore before departure.</strong> Not the day before — 2 to 4 weeks before. That means riding with the setup for a few days, identifying problems, fixing them, and riding again. Your daily commute is your test environment. Use it.</p>
+            </div>
+
+            <div class="lesson-take">
+              <p>I spent <strong>two full hours the morning of departure</strong> removing things from bags. Clothes I "just in case" packed. A second pair of shoes. Rain gear I could have bought in Malaysia if needed. Cables and adapters for devices I wasn't bringing. The load looked completely reasonable the night before. On the bike that morning, with fuel and with the awareness that I was riding to Thailand, it wasn't. Pack early. Sit on the loaded bike in your carpark. Ride around the block. If it feels wrong — and you'll know — deal with it then, not at 5am on departure day.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 01: PREPARATION TIMELINE ══ -->
+        <div id="sec-timeline" class="topic-block delay-2">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-01</div>
+            <div class="signal-line">Preparation // Timeline</div>
+            <h3 class="topic-heading">The Preparation Timeline — Start Earlier Than You Think</h3>
+            <div class="prose-body">
+              <p>Most riders think about touring preparation in the week before departure. That's too late for anything that requires testing, adjustment, or ordering. Below is a realistic timeline that accounts for the actual time needed to bed things in properly.</p>
+            </div>
+
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-week">// 4–6 Weeks Out</div>
+                <div class="timeline-title">Order, Install & First Test</div>
+                <div class="timeline-body">Install all new electrical equipment — USB charger, RAM mount, intercom if using one. Do your first test ride with everything powered. Check for vibration on the mount, connector reliability at speed, heat from the charger, and whether your cable management holds at highway pace. Order any replacement parts your bike is due for: tyres, chain, brake pads. Don't leave this for two weeks out.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-week">// 3 Weeks Out</div>
+                <div class="timeline-title">Bag Setup & Load Test</div>
+                <div class="timeline-body">Attach your touring bags with the load you plan to carry. Ride your normal commute route for 2–3 days. Feel for wobble, strap wear, vibration at speed. A tail bag that's fine at 60km/h in Singapore can oscillate badly at 110km/h on the PLUS. Adjust, reattach, test again. Don't assume fit — confirm it.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-week">// 2 Weeks Out</div>
+                <div class="timeline-title">Documentation & Bike Service</div>
+                <div class="timeline-body">Get your bike serviced if within the window. Fresh oil, chain tension and lube, tyre pressure and tread depth check, brake fluid level. Confirm your road tax and insurance coverage extends to Malaysia (and Thailand if applicable). Prepare your VEP paperwork. Photocopy your passport and licence. Sort travel insurance — standard travel insurance often excludes motorcycle incidents; read the exclusions.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-week">// 1 Week Out</div>
+                <div class="timeline-title">Final Pack & Reduce</div>
+                <div class="timeline-body">Pack everything you think you need. Then take out one third. Then pack it on the bike and ride around the block. If it still feels heavy, take out more. This is the week you confirm your daily clothing count — not add to it.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-week">// Night Before</div>
+                <div class="timeline-title">No New Decisions</div>
+                <div class="timeline-body">The night before is not the time to install a new app, change your route, repack your bags, or add anything. Everything should be settled. Get a proper night's sleep. The first riding day is often the longest — you need to be rested, not wired from a 1am packing session.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 02: WHAT TO BRING ══ -->
+        <div id="sec-bring" class="topic-block delay-3">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-02</div>
+            <div class="signal-line">Packing // What To Bring Touring</div>
+            <h3 class="topic-heading">What To Bring — And What To Leave Behind</h3>
+
+            <div class="prose-body">
+              <p>The packing question for motorcycle touring is not "what do I need?" — it's "what is the minimum I can manage with?" Space is hard. Weight affects handling. Every extra kilogram in a tail bag raises the centre of gravity and changes how the bike responds on mountain roads. Pack with discipline, not anxiety.</p>
+            </div>
+
+            <div class="field-note">
+              <p>Two tops, two base layers, one pair of shorts for the hotel, four pairs of socks and underwear. That's it. Clothes get washed at the hotel every night — hand wash, hang dry with the ceiling fan on full. The riding jacket and riding jeans only get washed when they're visibly dirty or you have an extra rest day. Carrying three pairs of jeans is carrying dead weight.</p>
+              <cite>— Packing rule, learned the hard way</cite>
+            </div>
+
+            <div class="prose-body">
+              <p>The logic is straightforward: <strong>wash daily, carry two spares</strong>. Two casual tops means one to wear and one clean. Four pairs of socks and underwear gives you a buffer for the days the hotel room is too humid for overnight drying. The riding jacket goes on regardless — it doesn't need washing every day and doesn't need to be packed. The riding jeans are the same: they're on you or they're hanging in the room.</p>
+              <p>Hotels and guesthouses in Malaysia and Thailand almost universally have shower facilities and somewhere to hang clothes. In northern Thailand, ceiling fans are strong enough to dry cotton overnight. In the lowlands and coastal towns, the humidity is higher — synthetic fabrics dry faster and weigh less. Consider merino wool base layers: they resist odour, dry relatively fast, and one layer covers two days if needed.</p>
+            </div>
+
+            <div class="pack-category">
+              <div class="pack-cat-label">// Clothing — Daily Rotation</div>
+              <div class="pack-cat-title">Clothing Strategy</div>
+              <div class="pack-cat-body">2 casual tops / 2 base layers / 1 lightweight shorts (hotel use) / 4 pairs socks and underwear. That's the full clothing list. The riding jacket and riding jeans are on your body — they don't go in the bag. Don't bring "just in case" outfits for restaurants. Malaysia and Thailand are not formal countries. Presentable means clean, not dressed up.</div>
+            </div>
+            <div class="pack-category">
+              <div class="pack-cat-label">// Toiletries</div>
+              <div class="pack-cat-title">Keep It Small</div>
+              <div class="pack-cat-body">Travel-size everything. Shampoo and body wash are available at every 7-Eleven and convenience store across Malaysia and Thailand — no need to bring a week's supply. Toothbrush, toothpaste, deodorant, sunscreen (SPF 50 for full-day highway riding), and lip balm. A small tube of antiseptic cream for minor cuts and scratches. That covers it.</div>
+            </div>
+            <div class="pack-category">
+              <div class="pack-cat-label">// Documents & Cash</div>
+              <div class="pack-cat-title">Carry Originals, Photograph Everything</div>
+              <div class="pack-cat-body">Passport original (required for hotel check-in across Malaysia and Thailand). Driving licence original. Vehicle insurance documents and road tax disc. Emergency contacts written on paper — not just saved in a phone. Photograph every document and store in Google Drive or similar cloud before you leave. A combination of Ringgit / Baht cash and card — rural petrol stations in Malaysia sometimes don't accept cards, and remote Thailand towns are largely cash-only.</div>
+            </div>
+            <div class="pack-category">
+              <div class="pack-cat-label">// Bike-Specific Essentials</div>
+              <div class="pack-cat-title">On The Bike, Not In The Bag</div>
+              <div class="pack-cat-body">Chain lube (travel size, re-lube every 500km in wet conditions). Tyre puncture kit — specifically a portable CO2 inflator or mini pump and plugging kit if you're on tubeless tyres. A short bungee set for securing extra items. Zip ties (solve more problems than you'd expect). A small adjustable spanner and hex key set matching your bike's most-accessed bolts.</div>
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>The moment you think "I'll probably need this" — ask yourself if you can buy it in Malaysia or Thailand if you actually do need it. The answer is almost always yes, and almost always cheaper than at home. Buy it there if needed. Leave it in Singapore if uncertain.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 03: POWER & CHARGING ══ -->
+        <div id="sec-power" class="topic-block delay-4">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-03</div>
+            <div class="signal-line">Setup // Power & Charging</div>
+            <h3 class="topic-heading">Power & Charging Setup — Install Early, Test Early</h3>
+
+            <div class="prose-body">
+              <p>On a multi-day tour, your phone is your navigation, your camera, your emergency contact, and your route planner for the next day. Running it off the bike's electrical system via a USB charger is the only reliable approach — battery packs run flat mid-day when you need them most, and stopping to hunt for charging is a day-wrecking disruption.</p>
+              <p>A <strong>SAE-to-USB or direct-to-battery USB charger</strong> (Techmount, Koso, or similar) wired to the battery with a fuse is the correct setup. It draws directly from the battery rather than from an accessory socket, which means it's active regardless of ignition state — important if you park and need the phone to charge. A waterproof USB port or a weatherproof cover is non-negotiable in tropical touring conditions.</p>
+              <p>The phone mount matters as much as the charger. A RAM X-Grip or similar ball-mount system provides vibration isolation and prevents the resonance that can destroy OIS camera modules over hundreds of kilometres of highway vibration. Don't mount the phone directly on the handlebar without a vibration damper if you're doing it for any extended period.</p>
+            </div>
+
+            <div class="callout-warn">
+              <strong>Install and test this 2–4 weeks before departure.</strong> Run it on your daily commute. Confirm the cable doesn't pull loose at speed. Confirm the mount doesn't vibrate into looseness on longer rides. Confirm the circuit doesn't overheat the charger after an hour in direct sun. If you find problems at this stage, you have time to fix them. If you find them at the Causeway, you don't.
+            </div>
+
+            <div class="prose-two-col">
+              <div class="prose-mini-block">
+                <h4>What to test in Singapore first</h4>
+                <p>Take the phone through its full navigation session on a long weekend ride — at least 90 minutes continuous. Confirm GPS lock holds, confirm the charger keeps pace with navigation drain, confirm the mount stays secure on varying road surfaces. Only after this is the setup proven.</p>
+              </div>
+              <div class="prose-mini-block">
+                <h4>Cable management</h4>
+                <p>Route the charging cable through the headlight cowl or under the tank pad to prevent it whipping in the wind. Zip-tie it at three points minimum. A cable that flaps at 110km/h will either disconnect, wear through its insulation, or distract you. All three are problems.</p>
+              </div>
+            </div>
+
+            <ul class="checklist">
+              <li class="ok"><strong>Direct-to-battery USB charger</strong> — fused, weatherproof port</li>
+              <li class="ok"><strong>RAM mount or equivalent</strong> — with vibration damper</li>
+              <li class="ok"><strong>Backup power bank</strong> — for hotel top-ups and non-riding days</li>
+              <li class="ok"><strong>Intercom / Bluetooth headset</strong> — tested and paired before departure</li>
+              <li class="warn"><strong>Do not mount USB charger loose</strong> — test for heat and voltage stability first</li>
+              <li class="warn"><strong>Do not rely on powerbanks alone</strong> — they die on long riding days</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 04: BAG SETUP ══ -->
+        <div id="sec-bags" class="topic-block delay-5">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-04</div>
+            <div class="signal-line">Setup // Touring Bag Configuration</div>
+            <h3 class="topic-heading">Touring Bag Setup — The Configuration That Works</h3>
+
+            <div class="prose-body">
+              <p>There is no single correct bag setup — it depends on your bike's rack, subframe, and what you're willing to deal with daily. What matters more than the brand is the configuration principle: <strong>weight low and centred, access logical, rain protection built-in not bolted on</strong>.</p>
+              <p>The most practical setup for a naked or sport-touring bike under 400cc: a <strong>tail bag or soft pannier system</strong> on the rear seat, a <strong>tank bag</strong> for daily-access items (phone, wallet, snacks, passport), and nothing on the handlebars beyond the phone mount. Avoid overloading the front — it affects steering input and makes the bike feel vague at speed.</p>
+              <p>Soft luggage beats hard panniers for most riders on this trip profile. It compresses when empty, doesn't require rack modification, and is less likely to catch crosswinds. The trade-off is waterproofing — and in Malaysia or Thailand, rain is not a "might happen" scenario. It's a daily certainty from May to October, and frequent the rest of the year. A dry bag liner or dedicated waterproof soft luggage is not optional if you want dry clothes at the end of the day.</p>
+            </div>
+
+            <div class="lesson-take">
+              <p>I underestimated how much the bag setup needs bedding in. Not just "does it fit" but "does it fit when it's loaded, when I lean forward, when I brake hard, when I'm getting on and off 10 times a day at petrol stations." Give yourself <strong>2–3 days of daily riding with the full loaded setup in Singapore</strong> before departure. You will find problems. That's the point.</p>
+            </div>
+
+            <div class="prose-two-col" style="margin-top:18px;">
+              <div class="prose-mini-block">
+                <h4>Tank Bag — Daily Access</h4>
+                <p>Passport, phone (when not navigating), wallet, snacks, lip balm, earphones. Everything you reach for without stopping. Magnetic or strap-mount — confirm it doesn't interfere with the fuel cap or scratch the tank without a base pad.</p>
+              </div>
+              <div class="prose-mini-block">
+                <h4>Tail Bag — Overnight Load</h4>
+                <p>Clothes, toiletries, electronics chargers, emergency kit. You only access this at the hotel. It should be secure, waterproof-lined, and sized to what you actually pack — not bought large with the plan to fill it.</p>
+              </div>
+            </div>
+
+            <div class="callout">
+              <strong>Weight distribution check:</strong> loaded bike on the centre stand or with a friend holding it upright — does it feel nose-heavy or tail-heavy? Aim for neutral. If the tail squats noticeably, redistribute. If the front feels light, move weight forward. You'll feel it on day one of the tour if you don't check it at home first.
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 05: HYDRATION & FATIGUE ══ -->
+        <div id="sec-hydration" class="topic-block delay-6">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-05</div>
+            <div class="signal-line">Endurance // Hydration & Fatigue</div>
+            <h3 class="topic-heading">Hydration & Fatigue — The Invisible Performance Killer</h3>
+
+            <div class="prose-body">
+              <p>Dehydration on a motorcycle is insidious. You're outdoors, moving, and there's no obvious sweating — but wind evaporation is removing moisture constantly, and riding in a jacket in 33–38°C ambient temperatures accelerates it further. By the time you feel thirsty on the bike, you're already behind on hydration. Mild dehydration reduces reaction time, concentration, and decision-making quality — exactly the things you need on an unfamiliar road.</p>
+              <p><strong>The rule: stop every 90–120 minutes without negotiation.</strong> Not because you feel tired — because your body has been doing sustained physical work in heat, and the compound cost of 6 hours of riding without a break is significantly higher than the time spent at four scheduled stops. A 10-minute halt, 500ml of water or isotonic drink, and shade time is not weakness — it's a riding strategy.</p>
+              <p>Avoid depending on roadside drinks with high sugar content as your primary hydration. 100Plus is fine as a supplement but the sugar load doesn't help sustained energy levels over a full day. Plain water is more effective. In northern Malaysia and Thailand above 300m altitude, temperatures drop — you'll drink less without realising it and still lose moisture through exertion. The 90-minute rule applies regardless of perceived temperature.</p>
+            </div>
+
+            <div class="prose-two-col">
+              <div class="prose-mini-block">
+                <h4>Signs you're dehydrated on the bike</h4>
+                <p>Concentration starting to drift. Overreacting to minor events. Feeling irritable at other road users. Route decisions that seem obviously wrong in retrospect. Stopping feeling smooth and deliberate. These are cognitive symptoms — they show up before physical ones.</p>
+              </div>
+              <div class="prose-mini-block">
+                <h4>Managing fatigue on multi-day rides</h4>
+                <p>Plan for 350–450km maximum per day on touring roads, not 600km. The last 100km of a 600km day is where accidents happen. If you've been awake since 5am and it's 5pm, the right call is to stop — not to push to the original destination.</p>
+              </div>
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>Build your daily route around petrol stops and meal breaks, not just mileage. In Malaysia, R&Rs (rest and recreation stops) on the PLUS are spaced for car drivers, not necessarily for riders who need more frequent breaks. Know where your stops will be in advance and stop there — don't keep going because you're "almost at the next town."</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 06: LONG-DISTANCE COMFORT ══ -->
+        <div id="sec-comfort" class="topic-block delay-7">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-06</div>
+            <div class="signal-line">Endurance // Long-Distance Comfort</div>
+            <h3 class="topic-heading">Long-Distance Riding Comfort — Managing 300+ Kilometre Days</h3>
+
+            <div class="prose-body">
+              <p>The biggest comfort challenge on touring bikes in the under-400cc category is saddle pressure and wind fatigue. Most naked bikes in this segment have saddles designed for city use — firm, flat, and narrow enough to be fine for 30 minutes but progressively punishing over 4 hours. There are ways to manage this without buying a touring bike.</p>
+              <p><strong>Riding position adjustments</strong> matter more than gear. On the highway, shift your seating position every 30–40 minutes — slightly further back, slightly further forward, move your hands on the grips. These micro-adjustments distribute the pressure load across different muscle groups and delay the point at which fatigue becomes a riding safety issue.</p>
+              <p><strong>Handlebar risers</strong> or bar-end adjustments can reduce wrist load significantly on longer stints if your bike puts you in an aggressive forward lean. This is a modification to consider and test 3–4 weeks before departure — not to install the week before.</p>
+              <p><strong>Gel seat pads</strong> are a legitimate solution for extended saddle pressure. They add 1–2cm of height and soften impact on rougher surfaces. Test them in Singapore first — some riders find they change the contact patch in a way that doesn't suit their body shape, and you need to know that before day 3 of a 7-day tour.</p>
+              <p>Neck and shoulder fatigue from sustained highway riding is real, especially with a full-face helmet in crosswind conditions. On open highway stretches in Kedah or the Thai flats, wind resistance builds. Slightly tucking behind the instrument cluster, even without a windshield, reduces the load on your neck muscles meaningfully.</p>
+            </div>
+
+            <div class="gear-bar-wrap" style="margin-top:18px;">
+              <div class="gear-bar-label"><span>Saddle comfort — stock 150cc/200cc naked</span><span>City: OK / 2hr: Manageable / 4hr+: Pain</span></div>
+              <div class="gear-bar-track"><div class="gear-bar-fill" style="--bar-w:30%;width:30%;"></div></div>
+            </div>
+            <div class="gear-bar-wrap">
+              <div class="gear-bar-label"><span>With gel pad + position rotation</span><span>Significant improvement on 4hr+ rides</span></div>
+              <div class="gear-bar-track"><div class="gear-bar-fill" style="--bar-w:65%;width:65%;"></div></div>
+            </div>
+            <div class="gear-bar-wrap">
+              <div class="gear-bar-label"><span>Wrist fatigue — aggressive riding position</span><span>Managed with riser / bar adjustment</span></div>
+              <div class="gear-bar-track"><div class="gear-bar-fill" style="--bar-w:55%;width:55%;"></div></div>
+            </div>
+
+            <div class="callout">
+              <strong>Stretching at stops is not optional on long days.</strong> Quad stretch, hip flexor, wrists, shoulders. 3 minutes at each petrol stop. It sounds minor until you arrive at the hotel on day 4 barely able to walk because you rode 400km in a sustained crouch without stretching. Your body is doing sustained isometric work the whole time you're on the bike.
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 07: RAIN RIDING ══ -->
+        <div id="sec-rain" class="topic-block delay-8">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-07</div>
+            <div class="signal-line">Preparation // Rain Riding</div>
+            <h3 class="topic-heading">Rain Riding Preparation — It Will Rain. Plan For When, Not If.</h3>
+
+            <div class="prose-body">
+              <p>Peninsular Malaysia and Thailand receive heavy rainfall year-round, with the west coast of Malaysia drier from January to April and the east coast wetter during the northeast monsoon (October to February). For Singapore-based touring, the honest answer is: regardless of when you go, you will ride in the rain at some point. Preparation for this is not optional.</p>
+              <p><strong>Rain suit over your riding gear</strong> is the practical approach. A two-piece rain suit (jacket and pants) that fits over your full riding kit — including the jacket — is the standard. Don't buy a suit that requires you to remove your jacket to put it on; you won't do it in the rain at the roadside. Buy one that fits over everything with room to spare, specifically with your jacket on. Test this before departure.</p>
+              <p><strong>Waterproof gloves</strong> or latex disposable gloves over your regular gloves solve the cold wet hand problem that develops after 30 minutes of sustained rain riding. Latex gloves are sold everywhere in Malaysia and Thailand — carry a pair in the tank bag.</p>
+              <p>Rain in Malaysia and Thailand often arrives as heavy downpours that pass in 30–45 minutes. The practical strategy: check the weather app in the morning, identify the window, and either ride through the clear period or take shelter if a squall is passing. Pushing through a tropical downpour at 90km/h on a highway is not a skills issue — it's a visibility and aquaplaning risk. Stopping for 30 minutes under a petrol station canopy is the correct call, not a failure of touring resolve.</p>
+              <p><strong>Visor treatment</strong> for rain repellency (Rain-X or similar) genuinely improves vision in heavy rain. Apply to the visor before departure and reapply mid-tour. A pinlock insert, if your helmet accepts it, eliminates fogging — which is a bigger issue in Thai and Malaysian humidity than in Singapore.</p>
+            </div>
+
+            <ul class="checklist">
+              <li class="ok"><strong>Two-piece rain suit</strong> — tested over full riding gear, including jacket</li>
+              <li class="ok"><strong>Waterproof bag liners</strong> — inside all luggage, not just the rain cover outside</li>
+              <li class="ok"><strong>Pinlock visor insert</strong> — eliminates fogging in high humidity</li>
+              <li class="ok"><strong>Rain-X visor treatment</strong> — applied and tested before departure</li>
+              <li class="ok"><strong>Spare latex gloves in tank bag</strong> — for sudden rain starts on the road</li>
+              <li class="warn"><strong>Don't ride through tropical squalls above 80km/h</strong> — visibility and aquaplaning risk outweigh time saved</li>
+              <li class="warn"><strong>Don't trust only the external rain cover</strong> — bags soak through at seams over sustained rain</li>
+            </ul>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>The riders who fight the rain are the ones who arrive soaked, cold, and stressed. The riders who plan for it — rain suit ready to deploy in under 2 minutes, bag liners installed, shelter stops planned — arrive at the destination in the same condition they left. Rain is not the enemy. Unpreparedness for rain is.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 08: BORDER CROSSING ══ -->
+        <div id="sec-border" class="topic-block delay-9">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-08</div>
+            <div class="signal-line">Logistics // Border & Checkpoint Prep</div>
+            <h3 class="topic-heading">Border & Checkpoint Preparation — SG to Malaysia to Thailand</h3>
+
+            <div class="prose-body">
+              <p>The Woodlands Checkpoint to Johor Bahru crossing is the most time-variable part of any Malaysia tour. Queue times range from 15 minutes at 5am on a weekday to over 2 hours on Friday afternoons and public holiday eves. Timing your departure matters — most experienced riders cross before 6am on day one and before Friday peak. If you're heading north and need to cross Johor on a Friday, factor this into your day's distance target.</p>
+              <p><strong>VEP (Vehicle Entry Permit)</strong> for foreign vehicles entering Malaysia. Singapore motorcycles entering Malaysia must have the VEP transponder fitted and activated. Check your VEP account status at least 2 weeks before departure — delays in the VEP system happen and you don't want to discover an issue at the checkpoint.</p>
+              <p><strong>Vehicle insurance</strong> must explicitly cover Malaysia. Some Singapore policies include Malaysia as standard; some require an endorsement or additional premium. Read your policy document, not just the certificate. If riding into Thailand, Malaysian vehicle insurance does not automatically extend there — you'll need a separate Thai third-party motor insurance, which can be purchased at border crossings between Malaysia and Thailand, specifically at Sadao/Ban Prachak or Bukit Kayu Hitam.</p>
+              <p>At <strong>Thai border crossings</strong>, the process for motorcycles involves immigration processing, vehicle inspection, and insurance purchase. Budget 1.5–2 hours for your first crossing if you haven't done it before. Bring passport photos (2 copies), a copy of your bike's insurance and road tax, and cash for the Thai insurance fee (around 300–500 Baht for short-term cover).</p>
+            </div>
+
+            <table class="comp-table">
+              <thead>
+                <tr><th>Crossing</th><th>Best Time</th><th>Docs Required</th><th>Typical Duration</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Woodlands → JB (Causeway)</td><td class="good">Before 6am weekday</td><td class="mid">Passport, IC, VEP active, insurance</td><td class="mid">15min–2hr</td></tr>
+                <tr><td>Tuas Second Link</td><td class="good">Generally shorter queues</td><td class="mid">Same as Woodlands</td><td class="good">15–45min typically</td></tr>
+                <tr><td>Malaysia → Thailand (Bukit Kayu Hitam / Sadao)</td><td class="mid">Morning, weekdays</td><td class="bad">Passport, Thai insurance, bike docs, passport photos</td><td class="bad">1.5–2.5hr first crossing</td></tr>
+              </tbody>
+            </table>
+
+            <div class="callout">
+              <strong>Keep documents accessible but not loose.</strong> A small waterproof document pouch in the tank bag — not in the tail bag you have to unload at the checkpoint. You'll be asked for passport and bike documents at minimum, and having to unpack your entire setup at a checkpoint is avoidable with 10 minutes of organisation before departure.
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 09: EMERGENCY KIT ══ -->
+        <div id="sec-emergency" class="topic-block delay-10">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-09</div>
+            <div class="signal-line">Safety // Emergency Kit</div>
+            <h3 class="topic-heading">Emergency Kit — The Stuff You Hope You Never Use</h3>
+
+            <div class="prose-body">
+              <p>An emergency kit on a motorcycle tour is not a large first-aid bag. Space and weight prevent that. It's a targeted selection of items that address the most common problems on the road: minor injuries, punctures, bike-related breakdowns, and communications when your phone is dead or you're in a no-coverage zone.</p>
+              <p>The medical portion: <strong>plasters and gauze pads</strong> (road rash is the most common non-serious injury), antiseptic wipes, pain relief (paracetamol and ibuprofen), blister plasters (your boots might need a few days to stop causing them), anti-diarrhoea tablets (food quality varies), and any personal prescription medication with at least 2 extra days' supply in case of delay.</p>
+              <p>The bike portion: <strong>tubeless tyre plugging kit with CO2 inflators</strong> (a puncture on a highway in northern Thailand is a long wait for assistance if you can't handle it yourself), a 1-litre emergency petrol reserve if your bike doesn't have a reliable low-fuel warning, spare fuses matching your bike's fuse map, and a quality LED torch.</p>
+            </div>
+
+            <div class="prose-two-col">
+              <div class="prose-mini-block">
+                <h4>Medical — Keep Small, Keep Accessible</h4>
+                <p>Plasters (assorted), gauze + tape, antiseptic wipes, paracetamol + ibuprofen, anti-diarrhoea, blister plasters, any personal medications. The whole kit should fit in a zip-lock bag inside the tank bag. Weight: under 200g.</p>
+              </div>
+              <div class="prose-mini-block">
+                <h4>Bike — Puncture Is The Main Scenario</h4>
+                <p>Tyre plug kit + CO2 inflators (or mini pump). Spare fuses for the bike's map. Spare throttle cable if your bike has known issues. Zip ties (10+). Electrical tape. A small flat-head and Phillips screwdriver. This addresses 80% of roadside issues that don't require a workshop.</p>
+              </div>
+            </div>
+
+            <div class="callout-warn">
+              <strong>Save these contacts before you leave:</strong> Singapore Embassy in Kuala Lumpur (+603 2161 6277) and Bangkok (+662 286 2111). Your insurance company's 24-hour emergency line. A recovery company number for Malaysia (PLUS highway: 1800 88 0000). Your travel insurance assistance line. Write them on paper — not just your phone.
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>Learn to fix a tubeless tyre puncture at home before you go. It takes 10 minutes to learn and 5 minutes to do on the roadside once you've practiced it. A YouTube session and one practice run in your carpark means you won't be stranded on a Malaysian highway for 3 hours waiting for a mechanic who may or may not come.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 10: MASTER TOURING CHECKLIST ══ -->
+        <div id="sec-checklist" class="topic-block delay-1">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-10</div>
+            <div class="signal-line">Deployment // Pre-Departure Master Checklist</div>
+            <h3 class="topic-heading">Touring Checklist — Clear All Before Departure</h3>
+
+            <div class="prose-body">
+              <p>This is the list you run through the night before. Not the morning of. If anything on this list is a "not yet" on the night before, you have a decision to make about whether to push departure back — not a reason to leave it and hope. Every item here has been selected because it represents something that has actually caused a problem for touring riders.</p>
+            </div>
+
+            <div class="final-checklist-grid">
+              <div class="final-check-group">
+                <div class="final-check-group-title">// Bike — Mechanical</div>
+                <div class="fcheck critical"><strong>Engine oil</strong> — checked and topped</div>
+                <div class="fcheck critical"><strong>Tyre pressure</strong> — set to touring load spec</div>
+                <div class="fcheck critical"><strong>Tyre tread depth</strong> — 2mm minimum, ideally 3mm+</div>
+                <div class="fcheck critical"><strong>Chain tension & lube</strong> — fresh lube applied</div>
+                <div class="fcheck critical"><strong>Brake pads</strong> — checked front and rear</div>
+                <div class="fcheck"><strong>Brake fluid level</strong> — reservoir visible</div>
+                <div class="fcheck"><strong>Coolant</strong> — if water-cooled, reservoir level confirmed</div>
+                <div class="fcheck"><strong>Lights</strong> — headlight, tail, indicators all working</div>
+                <div class="fcheck"><strong>Mirrors</strong> — set, bolts tight</div>
+                <div class="fcheck"><strong>All nuts & bolts</strong> — spot check, nothing backing out</div>
+              </div>
+              <div class="final-check-group">
+                <div class="final-check-group-title">// Documents & Admin</div>
+                <div class="fcheck critical"><strong>Passport</strong> — valid, photocopy stored in cloud</div>
+                <div class="fcheck critical"><strong>Driving licence</strong> — original carried</div>
+                <div class="fcheck critical"><strong>VEP</strong> — confirmed active</div>
+                <div class="fcheck critical"><strong>Vehicle insurance</strong> — Malaysia extension confirmed</div>
+                <div class="fcheck critical"><strong>Road tax disc</strong> — on bike and valid</div>
+                <div class="fcheck"><strong>Travel insurance</strong> — motorcycle incidents covered, confirmed</div>
+                <div class="fcheck"><strong>Emergency numbers</strong> — written on paper, not just phone</div>
+                <div class="fcheck"><strong>Accommodation booked</strong> — at least night 1, ideally all nights</div>
+                <div class="fcheck"><strong>Cash</strong> — Ringgit and/or Baht depending on destination</div>
+                <div class="fcheck"><strong>Route downloaded offline</strong> — Google Maps / Maps.me offline area</div>
+              </div>
+              <div class="final-check-group">
+                <div class="final-check-group-title">// Gear & Clothing</div>
+                <div class="fcheck critical"><strong>Helmet</strong> — visor clean, pinlock fitted if applicable</div>
+                <div class="fcheck critical"><strong>Riding jacket</strong> — armour checked, back protector in</div>
+                <div class="fcheck critical"><strong>Gloves</strong> — including latex emergency pair in tank bag</div>
+                <div class="fcheck critical"><strong>Boots</strong> — worn in, no new footwear on day 1</div>
+                <div class="fcheck"><strong>Rain suit</strong> — accessible, fits over full gear</div>
+                <div class="fcheck"><strong>Visor rain treatment</strong> — applied</div>
+                <div class="fcheck"><strong>Sunscreen</strong> — SPF 50, in tank bag</div>
+                <div class="fcheck"><strong>Clothing count confirmed</strong> — 2 tops, 4 socks/underwear, 1 shorts</div>
+              </div>
+              <div class="final-check-group">
+                <div class="final-check-group-title">// Electronics & Kit</div>
+                <div class="fcheck critical"><strong>Phone charger mount</strong> — secure, cable managed</div>
+                <div class="fcheck critical"><strong>Navigation route</strong> — loaded and tested</div>
+                <div class="fcheck"><strong>Intercom / headset</strong> — paired, charged</div>
+                <div class="fcheck"><strong>Power bank</strong> — fully charged</div>
+                <div class="fcheck"><strong>Tyre plug kit</strong> — in accessible location</div>
+                <div class="fcheck"><strong>Chain lube (travel size)</strong> — packed</div>
+                <div class="fcheck"><strong>Medical kit</strong> — in tank bag</div>
+                <div class="fcheck"><strong>Emergency contacts note</strong> — in tank bag</div>
+                <div class="fcheck"><strong>Bags loaded and balanced</strong> — ride test done</div>
+                <div class="fcheck"><strong>No new items added since load test</strong> — if yes, repeat test</div>
+              </div>
+            </div>
+
+            <div class="lesson-take" style="margin-top:20px;">
+              <p>If the bags are already packed and you feel the urge to add <strong>"just one more thing"</strong> — stop. Put it back. That impulse is where the 2-hour pre-departure repack comes from. The list above is complete. If something's not on it and you haven't needed it on previous trips, you don't need it on this one.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nav arrows -->
+        <div class="flex items-center justify-between mt-10 pt-6 border-t" style="border-color:rgba(255,255,255,0.06);">
+          <a href="/riders-guide/new-rider/" class="breadcrumb" style="margin-bottom:0;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+            New Riders SG
+          </a>
+          <a href="/riders-guide/skills/" class="breadcrumb" style="margin-bottom:0; flex-direction:row-reverse;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="transform:rotate(180deg);">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+            Skills &amp; Awareness
+          </a>
+        </div>
+
+      </div><!-- end left column -->
+
+      <!-- ── RIGHT: Sticky TOC ── -->
+      <aside class="toc-sticky hidden lg:block">
+        <div style="position:relative; border:1px solid rgba(220,38,38,0.15); background:rgba(10,10,10,0.9); padding:20px;">
+          <div class="card-bg" style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.007) 3px,rgba(220,38,38,0.007) 4px);"></div>
+          <div class="noise-overlay"></div>
+          <div class="relative z-10">
+            <p class="font-mono-tech text-xs tracking-[3px] uppercase mb-4" style="color:rgba(220,38,38,0.4);">// Contents</p>
+            <nav>
+              <a href="#sec-timeline" class="toc-item">
+                <span class="toc-num">01</span>
+                <span class="toc-title">Preparation Timeline</span>
+              </a>
+              <a href="#sec-bring" class="toc-item">
+                <span class="toc-num">02</span>
+                <span class="toc-title">What To Bring</span>
+              </a>
+              <a href="#sec-power" class="toc-item">
+                <span class="toc-num">03</span>
+                <span class="toc-title">Power & Charging</span>
+              </a>
+              <a href="#sec-bags" class="toc-item">
+                <span class="toc-num">04</span>
+                <span class="toc-title">Bag Setup</span>
+              </a>
+              <a href="#sec-hydration" class="toc-item">
+                <span class="toc-num">05</span>
+                <span class="toc-title">Hydration & Fatigue</span>
+              </a>
+              <a href="#sec-comfort" class="toc-item">
+                <span class="toc-num">06</span>
+                <span class="toc-title">Long-Distance Comfort</span>
+              </a>
+              <a href="#sec-rain" class="toc-item">
+                <span class="toc-num">07</span>
+                <span class="toc-title">Rain Riding</span>
+              </a>
+              <a href="#sec-border" class="toc-item">
+                <span class="toc-num">08</span>
+                <span class="toc-title">Border Crossing</span>
+              </a>
+              <a href="#sec-emergency" class="toc-item">
+                <span class="toc-num">09</span>
+                <span class="toc-title">Emergency Kit</span>
+              </a>
+              <a href="#sec-checklist" class="toc-item">
+                <span class="toc-num">10</span>
+                <span class="toc-title">Master Checklist</span>
+              </a>
+            </nav>
+            <div class="mt-5 pt-5 border-t" style="border-color:rgba(255,255,255,0.05);">
+              <a href="/riders-guide/" class="font-mono-tech text-xs tracking-widest uppercase text-gray-600 hover:text-red-500 transition-colors flex items-center gap-2">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                All Guides
+              </a>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div><!-- end layout-with-toc -->
+  </div>
+</main>
+
+<!-- ════ FOOTER ════ -->
+<footer class="py-16 px-5 border-t border-white/5 mt-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex flex-col items-center gap-6">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 hover:scale-105 transition-all duration-300">
+          <span class="font-mono-tech text-red-600 text-sm font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+      </a>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="font-mono-tech text-sm tracking-widest uppercase">Watch on YouTube</span>
+      </a>
+      <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  (function(){
+    var cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+    var mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+    (function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+    document.querySelectorAll('a,button').forEach(function(el){
+      el.addEventListener('mouseenter',function(){ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(220,38,38,0.8)';});
+      el.addEventListener('mouseleave',function(){ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(220,38,38,0.5)';});
+    });
+  })();
+
+  // Progress bar
+  window.addEventListener('scroll',function(){
+    var st=document.documentElement.scrollTop||document.body.scrollTop;
+    var sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    document.getElementById('progress-bar').style.width=(sh>0?(st/sh)*100:0)+'%';
+  },{passive:true});
+
+  // Navbar scroll
+  window.addEventListener('scroll',function(){
+    var nav=document.getElementById('navbar');
+    if(window.scrollY>20)nav.classList.add('nav-scrolled');
+    else nav.classList.remove('nav-scrolled');
+  },{passive:true});
+
+  // Mobile menu
+  document.getElementById('menu-toggle').addEventListener('click',function(){
+    var menu=document.getElementById('mobile-menu');
+    var oi=document.getElementById('menu-icon-open'),ci=document.getElementById('menu-icon-close');
+    var isOpen=menu.style.maxHeight==='320px';
+    menu.style.maxHeight=isOpen?'0':'320px';
+    menu.style.borderBottom=isOpen?'':'1px solid rgba(127,29,29,0.3)';
+    oi.style.display=isOpen?'':'none'; ci.style.display=isOpen?'none':'';
+  });
+  document.querySelectorAll('.mobile-link').forEach(function(link){
+    link.addEventListener('click',function(){
+      document.getElementById('mobile-menu').style.maxHeight='0';
+      document.getElementById('menu-icon-open').style.display='';
+      document.getElementById('menu-icon-close').style.display='none';
+    });
+  });
+
+  // TOC scroll-active highlight
+  (function(){
+    var ids=['sec-timeline','sec-bring','sec-power','sec-bags','sec-hydration','sec-comfort','sec-rain','sec-border','sec-emergency','sec-checklist'];
+    var links=document.querySelectorAll('.toc-item');
+    function onScroll(){
+      var fromTop=window.scrollY+120;
+      var active=null;
+      ids.forEach(function(id){var el=document.getElementById(id);if(el&&el.offsetTop<=fromTop)active=id;});
+      links.forEach(function(link){
+        var href=link.getAttribute('href').replace('#','');
+        link.querySelector('.toc-title').style.color=(href===active)?'#dc2626':'';
+      });
+    }
+    window.addEventListener('scroll',onScroll,{passive:true});
+  })();
+</script>
+</body>
+</html>
