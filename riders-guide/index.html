@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="Practical riding knowledge for Singapore motorcyclists. Touring prep, beginner guides, riding skills, comfort tips, and real-world advice from 10+ years on the road.">
+  <meta name="keywords" content="motorcycle guide Singapore, beginner rider Singapore, touring preparation Malaysia, riding tips Singapore, motorcycle ownership Singapore, riding safety, Secret Reviewer">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rider's Guide | Practical Motorcycle Knowledge for Singapore Riders | Secret Reviewer</title>
+  <link rel="canonical" href="https://secret-reviewer.com/riders-guide/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: {
+        sans: ['Barlow Condensed','sans-serif'],
+        mono: ['"Share Tech Mono"','monospace'],
+        prose: ['"IBM Plex Sans"','sans-serif'],
+      }}}
+    };
+  </script>
+  <style>
+    :root {
+      --red: #dc2626;
+      --red-dim: rgba(220,38,38,0.15);
+      --red-glow: rgba(220,38,38,0.6);
+      --bg: #060606;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: #ececec;
+      font-family: 'Barlow Condensed', sans-serif;
+      margin: 0; overflow-x: hidden; cursor: none; line-height: 1.75;
+    }
+    .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+
+    /* Cursor */
+    #cursor {
+      position: fixed; width: 12px; height: 12px;
+      background: var(--red); border-radius: 50%;
+      pointer-events: none; z-index: 99999;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s; mix-blend-mode: screen;
+    }
+    #cursor-ring {
+      position: fixed; width: 36px; height: 36px;
+      border: 1px solid rgba(220,38,38,0.5); border-radius: 50%;
+      pointer-events: none; z-index: 99998;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, border-color .2s;
+    }
+
+    /* Animations */
+    @keyframes scan { from{top:-100%} to{top:100%} }
+    @keyframes fadeSlideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse-red { 0%,100%{box-shadow:0 0 6px rgba(220,38,38,0.3)} 50%{box-shadow:0 0 28px rgba(220,38,38,0.8),0 0 60px rgba(220,38,38,0.25)} }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    @keyframes staticNoise { 0%{opacity:.03} 25%{opacity:.05} 50%{opacity:.02} 75%{opacity:.06} 100%{opacity:.03} }
+    @keyframes glitch-1 { 0%,100%{clip-path:inset(0 0 98% 0);transform:translate(-2px,0)} 20%{clip-path:inset(20% 0 50% 0);transform:translate(2px,0)} 40%{clip-path:inset(60% 0 20% 0);transform:translate(-2px,0)} 60%{clip-path:inset(80% 0 5% 0);transform:translate(2px,0)} 80%{clip-path:inset(40% 0 60% 0);transform:translate(-2px,0)} }
+    @keyframes glitch-2 { 0%,100%{clip-path:inset(50% 0 30% 0);transform:translate(2px,0);color:#00ffff} 25%{clip-path:inset(10% 0 80% 0);transform:translate(-2px,0)} 50%{clip-path:inset(70% 0 10% 0);transform:translate(2px,0);color:var(--red)} 75%{clip-path:inset(30% 0 50% 0);transform:translate(-2px,0)} }
+    @keyframes cardReveal { from{opacity:0;transform:translateY(20px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+
+    .animate-fade-slide-up { animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+    .animate-pulse-red { animation: pulse-red 2.5s infinite; }
+
+    /* CRT */
+    body::before {
+      content:""; position:fixed; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);
+      pointer-events:none; z-index:9990;
+    }
+    body::after {
+      content:""; position:fixed; top:-100%; left:0; width:100%; height:100%;
+      background:linear-gradient(rgba(220,38,38,0) 0%,rgba(220,38,38,0.03) 50%,rgba(220,38,38,0) 100%);
+      animation:scan 12s linear infinite; pointer-events:none; z-index:9991;
+    }
+
+    /* Progress bar */
+    #progress-bar {
+      height:3px;
+      background:linear-gradient(90deg,#7f1d1d,#dc2626,#f87171);
+      box-shadow:0 0 12px rgba(220,38,38,0.9),0 0 24px rgba(220,38,38,0.4);
+      width:0%; transition:width .08s ease-out;
+    }
+
+    /* Navbar */
+    #navbar { transition:background .4s,border-color .4s; }
+    .nav-scrolled {
+      background:rgba(4,4,4,0.96) !important;
+      border-bottom-color:rgba(127,29,29,0.4) !important;
+      backdrop-filter:blur(20px);
+    }
+
+    /* Glitch title */
+    .glitch-wrap { position:relative; display:inline-block; }
+    .glitch-wrap::before, .glitch-wrap::after {
+      content:attr(data-text); position:absolute; top:0; left:0; width:100%; height:100%;
+    }
+    .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
+    .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
+
+    /* Section rule */
+    .section-rule {
+      border:none; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(220,38,38,0.3),transparent);
+      margin:48px 0;
+    }
+
+    /* Noise overlay */
+    .noise-overlay {
+      position:absolute; inset:0; opacity:.025; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size:128px; animation:staticNoise 4s step-start infinite;
+    }
+
+    /* ── Section cards ── */
+    .section-card {
+      position: relative;
+      border: 1px solid rgba(220,38,38,0.18);
+      background: rgba(10,10,10,0.9);
+      overflow: hidden;
+      transition: border-color 0.35s, transform 0.35s, box-shadow 0.35s;
+      animation: cardReveal 0.6s cubic-bezier(0.22,1,0.36,1) both;
+      text-decoration: none;
+      display: block;
+    }
+    .section-card:hover {
+      border-color: rgba(220,38,38,0.55);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 30px rgba(220,38,38,0.08);
+    }
+    .section-card::before {
+      content:''; position:absolute; top:0; left:0;
+      width:36px; height:36px;
+      border-top:1px solid rgba(220,38,38,0.5);
+      border-left:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .section-card::after {
+      content:''; position:absolute; bottom:0; right:0;
+      width:36px; height:36px;
+      border-bottom:1px solid rgba(220,38,38,0.5);
+      border-right:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .section-card .card-bg {
+      position:absolute; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.008) 3px,rgba(220,38,38,0.008) 4px);
+      pointer-events:none;
+    }
+    .section-card .card-glow {
+      position:absolute; inset:0; pointer-events:none;
+      opacity:0; transition:opacity 0.4s;
+    }
+    .section-card:hover .card-glow { opacity:1; }
+
+    /* Guide category icon area */
+    .guide-icon-wrap {
+      width:48px; height:48px;
+      border:1px solid rgba(220,38,38,0.35);
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+      background:rgba(220,38,38,0.05);
+      transition:background .3s, border-color .3s;
+    }
+    .section-card:hover .guide-icon-wrap {
+      background:rgba(220,38,38,0.12);
+      border-color:rgba(220,38,38,0.6);
+    }
+
+    /* Log count badge */
+    .log-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.72rem; letter-spacing:2px;
+      color:#f87171; border:1px solid rgba(220,38,38,0.35);
+      background:rgba(220,38,38,0.07);
+      padding:4px 12px; text-transform:uppercase;
+    }
+
+    /* Preview snippet */
+    .preview-snippet {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#777; line-height:1.75;
+      font-style:italic;
+      border-left:2px solid rgba(220,38,38,0.3);
+      padding-left:14px; margin:0;
+    }
+
+    /* Access button */
+    .access-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.72rem; letter-spacing:2px; text-transform:uppercase;
+      color:#f87171; border:1px solid rgba(220,38,38,0.4);
+      padding:10px 20px; background:transparent;
+      transition:background .25s, color .25s, box-shadow .25s;
+      text-decoration:none;
+    }
+    .access-btn:hover {
+      background:var(--red); color:#fff;
+      box-shadow:0 0 20px rgba(220,38,38,0.35);
+    }
+
+    /* Log preview row */
+    .log-preview {
+      border-bottom:1px solid rgba(255,255,255,0.04);
+      padding:14px 0;
+    }
+    .log-preview:last-child { border-bottom:none; }
+    .log-preview-title {
+      font-size:1rem; font-weight:700; color:#e0e0e0;
+      text-transform:uppercase; letter-spacing:0.03em;
+      margin:0 0 5px 0; line-height:1.2;
+    }
+
+    /* Stats bar */
+    .stat-item {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.7rem; color:#444; letter-spacing:2px;
+      text-transform:uppercase; display:flex; flex-direction:column; gap:4px;
+    }
+    .stat-item span { color:#f87171; font-size:1.4rem; font-weight:700; letter-spacing:-1px; }
+
+    /* Signal line */
+    .signal-line {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.68rem; color:rgba(220,38,38,0.4);
+      letter-spacing:2px; text-transform:uppercase;
+      display:flex; align-items:center; gap:8px;
+    }
+    .signal-line::before {
+      content:''; display:block; width:24px; height:1px;
+      background:rgba(220,38,38,0.4); flex-shrink:0;
+    }
+
+    /* Delay utilities */
+    .delay-1 { animation-delay:.05s }
+    .delay-2 { animation-delay:.1s }
+    .delay-3 { animation-delay:.15s }
+    .delay-4 { animation-delay:.2s }
+    .delay-5 { animation-delay:.25s }
+    .delay-6 { animation-delay:.3s }
+    .delay-7 { animation-delay:.35s }
+    .delay-8 { animation-delay:.4s }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display:inline-flex; align-items:center; gap:8px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.85rem; color:#555; text-transform:uppercase;
+      letter-spacing:2px; text-decoration:none; margin-bottom:32px;
+      transition:color .2s;
+    }
+    .breadcrumb:hover { color:var(--red); }
+    .breadcrumb svg { transition:transform .2s; }
+    .breadcrumb:hover svg { transform:translateX(-3px); }
+
+    /* Category label strip */
+    .category-divider {
+      display:flex; align-items:center; gap:12px; margin:36px 0 20px;
+    }
+    .category-divider-line {
+      flex:1; height:1px;
+      background:linear-gradient(90deg,rgba(220,38,38,0.25),transparent);
+    }
+    .category-divider-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.45); white-space:nowrap;
+    }
+
+    /* Tag pill */
+    .tag-pill {
+      display:inline-block;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#f87171; border:1px solid rgba(220,38,38,0.3);
+      padding:3px 10px; background:rgba(220,38,38,0.05);
+    }
+
+    /* Coming soon overlay */
+    .coming-soon-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:#555; border:1px solid rgba(255,255,255,0.08);
+      padding:4px 10px;
+    }
+
+    /* Compact card variant for the 4-column grid row */
+    .guide-card-compact {
+      position:relative;
+      border:1px solid rgba(220,38,38,0.15);
+      background:rgba(10,10,10,0.9);
+      overflow:hidden;
+      transition:border-color 0.35s, transform 0.35s, box-shadow 0.35s;
+      animation:cardReveal 0.6s cubic-bezier(0.22,1,0.36,1) both;
+      text-decoration:none; display:block;
+      padding:24px 22px 22px;
+    }
+    .guide-card-compact::before {
+      content:''; position:absolute; top:0; left:0;
+      width:28px; height:28px;
+      border-top:1px solid rgba(220,38,38,0.4);
+      border-left:1px solid rgba(220,38,38,0.4);
+      pointer-events:none; z-index:2;
+    }
+    .guide-card-compact::after {
+      content:''; position:absolute; bottom:0; right:0;
+      width:28px; height:28px;
+      border-bottom:1px solid rgba(220,38,38,0.4);
+      border-right:1px solid rgba(220,38,38,0.4);
+      pointer-events:none; z-index:2;
+    }
+    .guide-card-compact:hover {
+      border-color:rgba(220,38,38,0.5);
+      transform:translateY(-3px);
+      box-shadow:0 10px 32px rgba(0,0,0,0.5), 0 0 24px rgba(220,38,38,0.07);
+    }
+    .guide-card-compact .card-bg {
+      position:absolute; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.008) 3px,rgba(220,38,38,0.008) 4px);
+      pointer-events:none;
+    }
+    .guide-card-compact .card-glow {
+      position:absolute; inset:0; pointer-events:none;
+      opacity:0; transition:opacity 0.4s;
+    }
+    .guide-card-compact:hover .card-glow { opacity:1; }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="fixed top-0 left-0 w-full z-[9999]">
+  <div id="progress-bar"></div>
+</div>
+
+<!-- ════ NAVBAR ════ -->
+<nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+    <a href="/" class="flex items-center gap-3 group">
+      <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+        <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+      </div>
+      <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+      <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+      <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+    <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+      <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
+    <div class="flex flex-col px-5 py-4 gap-4">
+      <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+      <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+      <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ MAIN ════ -->
+<main class="pt-28 pb-24 px-5">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Breadcrumb -->
+    <a href="/" class="breadcrumb">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Back to Home
+    </a>
+
+    <!-- Page header -->
+    <div class="mb-14 animate-fade-slide-up" style="position:relative;">
+      <div class="noise-overlay"></div>
+      <p class="font-mono-tech text-xs tracking-[0.4em] uppercase mb-4" style="color:rgba(167,139,250,0.6);">// Field-Tested Knowledge — Written for Riders, Not Dealerships</p>
+      <h1 class="font-black uppercase leading-none tracking-tight text-white mb-4" style="font-size:clamp(3rem,10vw,5.5rem);">
+        <span class="glitch-wrap" data-text="The RIDER'S GUIDE">The RIDER'S GUIDE</span><br/>
+      </h1>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-widest mt-4">
+        <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+        8 CATEGORIES // SINGAPORE-FIRST // NO SPONSORED FLUFF
+      </p>
+      <p class="mt-5 text-gray-500 text-base leading-relaxed max-w-2xl" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">
+        Not gear reviews. Not mod logs. This is the practical side — what you actually need to know before you ride, where you're going wrong, and how to make your riding life easier in Singapore and beyond.
+      </p>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="flex flex-wrap gap-10 mb-14 pl-1">
+      <div class="stat-item"><span>8</span>Categories</div>
+      <div class="stat-item"><span>10+</span>Years Riding</div>
+      <div class="stat-item"><span>SG</span>Based</div>
+      <div class="stat-item"><span>0</span>Sponsored</div>
+    </div>
+
+    <hr class="section-rule" />
+
+    <!-- ════ FEATURE CARD: NEW RIDERS SINGAPORE ════ -->
+    <a href="/riders-guide/new-rider/" class="section-card delay-1 mb-5 block">
+      <div class="card-bg"></div>
+      <div class="card-glow" style="background:radial-gradient(ellipse 60% 80% at 30% 50%, rgba(220,38,38,0.07) 0%, transparent 70%);"></div>
+      <div class="noise-overlay"></div>
+
+      <div class="relative h-48 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950 flex items-center justify-center">
+        <!-- Abstract grid pattern representing Singapore streets / training circuit -->
+        <svg class="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 800 192" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <rect width="800" height="192" fill="none"/>
+          <!-- Road grid lines -->
+          <line x1="0" y1="64" x2="800" y2="64" stroke="#dc2626" stroke-width="1" stroke-dasharray="40,20"/>
+          <line x1="0" y1="128" x2="800" y2="128" stroke="#dc2626" stroke-width="1" stroke-dasharray="40,20"/>
+          <line x1="160" y1="0" x2="160" y2="192" stroke="#dc2626" stroke-width="1" stroke-dasharray="30,15"/>
+          <line x1="320" y1="0" x2="320" y2="192" stroke="#dc2626" stroke-width="1" stroke-dasharray="30,15"/>
+          <line x1="480" y1="0" x2="480" y2="192" stroke="#dc2626" stroke-width="1" stroke-dasharray="30,15"/>
+          <line x1="640" y1="0" x2="640" y2="192" stroke="#dc2626" stroke-width="1" stroke-dasharray="30,15"/>
+          <!-- Circuit markers -->
+          <circle cx="160" cy="64" r="4" fill="#dc2626" opacity="0.6"/>
+          <circle cx="320" cy="128" r="4" fill="#dc2626" opacity="0.6"/>
+          <circle cx="480" cy="64" r="4" fill="#dc2626" opacity="0.6"/>
+          <circle cx="640" cy="128" r="4" fill="#dc2626" opacity="0.6"/>
+          <!-- Large faded SG -->
+          <text x="380" y="140" font-family="'Share Tech Mono',monospace" font-size="140" fill="#dc2626" opacity="0.04" text-anchor="middle">SG</text>
+        </svg>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent"></div>
+        <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-RG-001 // New Rider // Singapore Circuit // Class 2B → 2A → 2</div>
+      </div>
+
+      <div class="p-7 relative z-10">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+          <div class="flex-1">
+            <div class="signal-line mb-3">New Rider // Singapore</div>
+            <h2 class="text-3xl font-black uppercase text-white tracking-tight leading-none mb-3">New Riders<br/>Singapore</h2>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="tag-pill">Class 2B</span>
+              <span class="tag-pill">CDC / BBDC</span>
+              <span class="tag-pill">First Bike</span>
+              <span class="tag-pill">Gear Guide</span>
+            </div>
+            <p class="text-gray-500 text-base leading-relaxed max-w-lg" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">
+              What the riding schools don't cover. From picking a school to choosing your first bike — without spending money you don't need to.
+            </p>
+          </div>
+          <div class="md:w-64 flex-shrink-0 space-y-0">
+            <div class="log-preview">
+              <p class="log-preview-title">Which School, Which Route</p>
+              <p class="preview-snippet">CDC vs BBDC isn't just about location. Pass rates, circuit layouts, and instructor quality all differ. Know before you pay the deposit.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">Your First Bike Isn't Your Last</p>
+              <p class="preview-snippet">The mistake is buying too much too soon. A used Class 2B bike with a clean service record beats a shiny new 150cc every time.</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between mt-5 pt-4 border-t" style="border-color:rgba(255,255,255,0.05);">
+          <span class="log-badge">
+            <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+            Guide RG-001
+          </span>
+          <span class="access-btn">Access Guide ▶</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- ════ FEATURE CARD: TOURING PREPARATION — wide ════ -->
+    <a href="/riders-guide/touring/" class="section-card delay-2 mb-5 block">
+      <div class="card-bg"></div>
+      <div class="card-glow" style="background:radial-gradient(ellipse 60% 80% at 70% 50%, rgba(220,38,38,0.07) 0%, transparent 70%);"></div>
+      <div class="noise-overlay"></div>
+
+      <div class="relative h-48 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950">
+        <!-- Route line SVG — abstract SG to Malaysia to Thailand -->
+        <svg class="absolute inset-0 w-full h-full opacity-15" viewBox="0 0 800 192" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#dc2626"/>
+            </marker>
+          </defs>
+          <!-- Route path -->
+          <path d="M 80,160 C 180,140 250,110 320,90 S 480,50 600,40 S 700,35 740,30" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="8,5" marker-end="url(#arr)"/>
+          <!-- Waypoint dots -->
+          <circle cx="80" cy="160" r="5" fill="#dc2626" opacity="0.8"/>
+          <text x="88" y="155" font-family="'Share Tech Mono',monospace" font-size="9" fill="#dc2626" opacity="0.5">SG</text>
+          <circle cx="320" cy="90" r="4" fill="#dc2626" opacity="0.6"/>
+          <text x="328" y="85" font-family="'Share Tech Mono',monospace" font-size="9" fill="#dc2626" opacity="0.5">KL</text>
+          <circle cx="600" cy="40" r="4" fill="#dc2626" opacity="0.6"/>
+          <text x="608" y="35" font-family="'Share Tech Mono',monospace" font-size="9" fill="#dc2626" opacity="0.5">CNX</text>
+          <!-- Distance markers -->
+          <text x="180" y="170" font-family="'Share Tech Mono',monospace" font-size="8" fill="#dc2626" opacity="0.3">~350KM</text>
+          <text x="460" y="100" font-family="'Share Tech Mono',monospace" font-size="8" fill="#dc2626" opacity="0.3">~1,800KM</text>
+        </svg>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent"></div>
+        <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-RG-002 // Touring // Malaysia + Thailand // Multi-Day Prep</div>
+      </div>
+
+      <div class="p-7 relative z-10">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+          <div class="flex-1">
+            <div class="signal-line mb-3">Touring // Preparation</div>
+            <h2 class="text-3xl font-black uppercase text-white tracking-tight leading-none mb-3">Touring<br/>Preparation</h2>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="tag-pill">Malaysia</span>
+              <span class="tag-pill">Thailand</span>
+              <span class="tag-pill">Packing</span>
+              <span class="tag-pill">Route Planning</span>
+              <span class="tag-pill">Insurance</span>
+            </div>
+            <p class="text-gray-500 text-base leading-relaxed max-w-lg" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">
+              The gap between planning a tour and actually surviving one is preparation. Covers everything from VEP paperwork to rain gear and what to eat on the way up to KL.
+            </p>
+          </div>
+          <div class="md:w-64 flex-shrink-0 space-y-0">
+            <div class="log-preview">
+              <p class="log-preview-title">VEP, Carnet & CIQ</p>
+              <p class="preview-snippet">Singapore exit procedures have changed. What you needed in 2018 is not what you need now. Sort this before the trip, not at Woodlands.</p>
+            </div>
+            <div class="log-preview">
+              <p class="log-preview-title">Packing for a Week</p>
+              <p class="preview-snippet">The rule that held for Thailand: if it doesn't fit in the tail bag plus tank bag, it doesn't come. No exceptions the morning you leave.</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between mt-5 pt-4 border-t" style="border-color:rgba(255,255,255,0.05);">
+          <span class="log-badge">
+            <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+            Guide RG-002
+          </span>
+          <span class="access-btn">Access Guide ▶</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- ════ 2-COLUMN GRID ════ -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+
+      <!-- CARD: Riding Skills & Awareness -->
+      <a href="/riders-guide/skills/" class="section-card delay-3">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 20% 20%, rgba(220,38,38,0.06) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
+
+        <div class="relative h-44 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950 flex items-center justify-center">
+          <!-- Abstract awareness/vision cone SVG -->
+          <svg class="absolute inset-0 w-full h-full opacity-12" viewBox="0 0 400 176" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <!-- Vision cone -->
+            <path d="M 200,88 L 20,20 L 20,156 Z" fill="rgba(220,38,38,0.08)" stroke="#dc2626" stroke-width="0.5"/>
+            <!-- Zones -->
+            <ellipse cx="200" cy="88" rx="160" ry="60" fill="none" stroke="#dc2626" stroke-width="0.5" stroke-dasharray="6,4" opacity="0.3"/>
+            <ellipse cx="200" cy="88" rx="90" ry="35" fill="none" stroke="#dc2626" stroke-width="0.5" stroke-dasharray="4,3" opacity="0.5"/>
+            <circle cx="200" cy="88" r="6" fill="#dc2626" opacity="0.7"/>
+            <!-- Threat markers -->
+            <polygon points="330,50 340,70 320,70" fill="none" stroke="#dc2626" stroke-width="1" opacity="0.4"/>
+            <polygon points="80,110 90,130 70,130" fill="none" stroke="#dc2626" stroke-width="1" opacity="0.4"/>
+            <text x="200" y="176" font-family="'Share Tech Mono',monospace" font-size="8" fill="#dc2626" opacity="0.2" text-anchor="middle">THREAT AWARENESS ZONE</text>
+          </svg>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-RG-003 // Skills // Awareness</div>
+        </div>
+
+        <div class="p-6 relative z-10">
+          <div class="signal-line mb-2">Skills // Situational Awareness</div>
+          <h2 class="text-2xl font-black uppercase text-white tracking-tight leading-none mb-3">Riding Skills<br/>& Awareness</h2>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="tag-pill">Lane Positioning</span>
+            <span class="tag-pill">Filtering</span>
+            <span class="tag-pill">Night Riding</span>
+          </div>
+          <div class="space-y-0 mb-5">
+            <div class="log-preview">
+              <p class="log-preview-title">Filtering in SG Traffic</p>
+              <p class="preview-snippet">Legal doesn't mean safe. Speed differential and mirror-check discipline matter more than the lane gap itself.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              Guide RG-003
+            </span>
+            <span class="access-btn">Access Guide ▶</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- CARD: Rider Comfort -->
+      <a href="/riders-guide/comfort/" class="section-card delay-4">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 80% 20%, rgba(220,38,38,0.06) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
+
+        <div class="relative h-44 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950 flex items-center justify-center">
+          <!-- Abstract ergonomics/heat schematic -->
+          <svg class="absolute inset-0 w-full h-full opacity-12" viewBox="0 0 400 176" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <!-- Body heat zones -->
+            <ellipse cx="200" cy="70" rx="50" ry="55" fill="rgba(220,38,38,0.05)" stroke="#dc2626" stroke-width="0.5" stroke-dasharray="4,3"/>
+            <ellipse cx="200" cy="88" rx="90" ry="70" fill="none" stroke="#dc2626" stroke-width="0.4" stroke-dasharray="6,4" opacity="0.3"/>
+            <!-- Temperature marks -->
+            <text x="110" y="60" font-family="'Share Tech Mono',monospace" font-size="9" fill="#dc2626" opacity="0.35">32°C</text>
+            <text x="270" y="60" font-family="'Share Tech Mono',monospace" font-size="9" fill="#dc2626" opacity="0.35">HUMIDITY</text>
+            <text x="200" y="176" font-family="'Share Tech Mono',monospace" font-size="8" fill="#dc2626" opacity="0.2" text-anchor="middle">SG THERMAL PROFILE — ALL YEAR</text>
+            <!-- Crosshair -->
+            <line x1="200" y1="50" x2="200" y2="130" stroke="#dc2626" stroke-width="0.5" opacity="0.4"/>
+            <line x1="150" y1="88" x2="250" y2="88" stroke="#dc2626" stroke-width="0.5" opacity="0.4"/>
+          </svg>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-RG-004 // Comfort // Heat + Long Distance</div>
+        </div>
+
+        <div class="p-6 relative z-10">
+          <div class="signal-line mb-2">Comfort // Riding in the Tropics</div>
+          <h2 class="text-2xl font-black uppercase text-white tracking-tight leading-none mb-3">Rider<br/>Comfort</h2>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="tag-pill">Heat Management</span>
+            <span class="tag-pill">Long Haul</span>
+            <span class="tag-pill">Ergonomics</span>
+          </div>
+          <div class="space-y-0 mb-5">
+            <div class="log-preview">
+              <p class="log-preview-title">Riding Jackets in 33°C Heat</p>
+              <p class="preview-snippet">Mesh jacket ventilation drops your perceived temperature more than riding in a t-shirt — plus you survive a slide. No-brainer in Singapore.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              Guide RG-004
+            </span>
+            <span class="access-btn">Access Guide ▶</span>
+          </div>
+        </div>
+      </a>
+
+    </div><!-- end 2-col grid -->
+
+    <!-- ════ SECOND 2-COLUMN ROW ════ -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+
+      <!-- CARD: Ownership & Maintenance Basics -->
+      <a href="/riders-guide/ownership/" class="section-card delay-5">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 20% 80%, rgba(220,38,38,0.06) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
+
+        <div class="relative h-44 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950 flex items-center justify-center">
+          <svg class="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 400 176" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <!-- Service interval diagram -->
+            <line x1="40" y1="88" x2="360" y2="88" stroke="#dc2626" stroke-width="1" opacity="0.4"/>
+            <circle cx="80"  cy="88" r="5" fill="#dc2626" opacity="0.7"/>
+            <circle cx="160" cy="88" r="5" fill="#dc2626" opacity="0.5"/>
+            <circle cx="240" cy="88" r="5" fill="#dc2626" opacity="0.5"/>
+            <circle cx="320" cy="88" r="5" fill="#dc2626" opacity="0.5"/>
+            <text x="80"  y="75" font-family="'Share Tech Mono',monospace" font-size="8" fill="#dc2626" opacity="0.45" text-anchor="middle">1,000</text>
+            <text x="160" y="75" font-family="'Share Tech Mono',monospace" font-size="8" fill="#dc2626" opacity="0.35" text-anchor="middle">5,000</text>
+            <text x="240" y="75" font-family="'Share Tech Mono',monospace" font-size="8" fill="#dc2626" opacity="0.35" text-anchor="middle">10,000</text>
+            <text x="320" y="75" font-family="'Share Tech Mono',monospace" font-size="8" fill="#dc2626" opacity="0.35" text-anchor="middle">20,000</text>
+            <text x="200" y="130" font-family="'Share Tech Mono',monospace" font-size="8" fill="#dc2626" opacity="0.2" text-anchor="middle">SERVICE INTERVAL — KM</text>
+          </svg>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-RG-005 // Ownership // Servicing // COE</div>
+        </div>
+
+        <div class="p-6 relative z-10">
+          <div class="signal-line mb-2">Ownership // Singapore Context</div>
+          <h2 class="text-2xl font-black uppercase text-white tracking-tight leading-none mb-3">Ownership &<br/>Maintenance</h2>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="tag-pill">Servicing</span>
+            <span class="tag-pill">COE</span>
+            <span class="tag-pill">Workshop Tips</span>
+          </div>
+          <div class="space-y-0 mb-5">
+            <div class="log-preview">
+              <p class="log-preview-title">How Not to Get Conned</p>
+              <p class="preview-snippet">The whole reason this blog exists. Basic service literacy is the only real protection against a workshop that sees a new rider walk in.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              Guide RG-005
+            </span>
+            <span class="access-btn">Access Guide ▶</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- CARD: Singapore Rider Life -->
+      <a href="/riders-guide/singapore/" class="section-card delay-6">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 80% 80%, rgba(220,38,38,0.06) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
+
+        <div class="relative h-44 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950 flex items-center justify-center">
+          <svg class="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 400 176" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <!-- Abstracted Singapore map outline / ERP gantries -->
+            <rect x="40" y="120" width="40" height="30" fill="none" stroke="#dc2626" stroke-width="0.8" opacity="0.5"/>
+            <rect x="180" y="100" width="40" height="50" fill="none" stroke="#dc2626" stroke-width="0.8" opacity="0.5"/>
+            <rect x="320" y="115" width="40" height="35" fill="none" stroke="#dc2626" stroke-width="0.8" opacity="0.5"/>
+            <!-- ERP gantry arch -->
+            <path d="M 190,100 Q 200,80 210,100" fill="none" stroke="#dc2626" stroke-width="1" opacity="0.6"/>
+            <text x="200" y="77" font-family="'Share Tech Mono',monospace" font-size="7" fill="#dc2626" opacity="0.5" text-anchor="middle">ERP</text>
+            <!-- Road lines -->
+            <line x1="0" y1="100" x2="400" y2="100" stroke="#dc2626" stroke-width="0.5" stroke-dasharray="12,8" opacity="0.2"/>
+            <text x="200" y="176" font-family="'Share Tech Mono',monospace" font-size="8" fill="#dc2626" opacity="0.2" text-anchor="middle">SGP — URBAN RIDING ENVIRONMENT</text>
+          </svg>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-RG-006 // Singapore // Carparks // ERP // MSCP</div>
+        </div>
+
+        <div class="p-6 relative z-10">
+          <div class="signal-line mb-2">Singapore // Local Rider Intel</div>
+          <h2 class="text-2xl font-black uppercase text-white tracking-tight leading-none mb-3">Singapore<br/>Rider Life</h2>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="tag-pill">Parking</span>
+            <span class="tag-pill">ERP</span>
+            <span class="tag-pill">MSCP</span>
+            <span class="tag-pill">Fuel Stops</span>
+          </div>
+          <div class="space-y-0 mb-5">
+            <div class="log-preview">
+              <p class="log-preview-title">Parking Without Getting a Fine</p>
+              <p class="preview-snippet">Season parking, HDB lots, hourly coupon zones — navigating this as a new rider costs money if you get it wrong the first time.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              Guide RG-006
+            </span>
+            <span class="access-btn">Access Guide ▶</span>
+          </div>
+        </div>
+      </a>
+
+    </div><!-- end second 2-col grid -->
+
+    <!-- ════ BOTTOM COMPACT 2-COL GRID: Mistakes + Apps ════ -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+
+      <!-- CARD: Rider Mistakes -->
+      <a href="/riders-guide/mistakes/" class="section-card delay-7">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 20% 50%, rgba(220,38,38,0.07) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
+
+        <div class="relative h-40 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950 flex items-center justify-center">
+          <svg class="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <!-- Warning triangle pattern -->
+            <polygon points="200,20 350,140 50,140" fill="none" stroke="#dc2626" stroke-width="1.2" opacity="0.5"/>
+            <polygon points="200,50 310,130 90,130" fill="none" stroke="#dc2626" stroke-width="0.6" opacity="0.25"/>
+            <line x1="200" y1="75" x2="200" y2="115" stroke="#dc2626" stroke-width="2" opacity="0.6"/>
+            <circle cx="200" cy="125" r="4" fill="#dc2626" opacity="0.6"/>
+          </svg>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-RG-007 // Mistakes // Hard Lessons</div>
+        </div>
+
+        <div class="p-6 relative z-10">
+          <div class="signal-line mb-2">Mistakes // Don't Repeat Mine</div>
+          <h2 class="text-2xl font-black uppercase text-white tracking-tight leading-none mb-3">Rider<br/>Mistakes</h2>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="tag-pill">Gear Mistakes</span>
+            <span class="tag-pill">Workshop</span>
+            <span class="tag-pill">Buying Used</span>
+          </div>
+          <p class="preview-snippet mb-5">
+            Ten years of getting things wrong — compressed so you don't have to repeat them. The expensive lessons are in here.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              Guide RG-007
+            </span>
+            <span class="access-btn">Access Guide ▶</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- CARD: Riding Apps -->
+      <a href="/riders-guide/apps/" class="section-card delay-8">
+        <div class="card-bg"></div>
+        <div class="card-glow" style="background:radial-gradient(ellipse 80% 60% at 80% 50%, rgba(220,38,38,0.07) 0%, transparent 70%);"></div>
+        <div class="noise-overlay"></div>
+
+        <div class="relative h-40 overflow-hidden border-b border-red-900/20 bg-gradient-to-br from-gray-900 via-black to-gray-950 flex items-center justify-center">
+          <svg class="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <!-- Phone/screen grid -->
+            <rect x="160" y="20" width="80" height="130" rx="6" fill="none" stroke="#dc2626" stroke-width="1" opacity="0.5"/>
+            <rect x="170" y="35" width="60" height="90" fill="none" stroke="#dc2626" stroke-width="0.5" opacity="0.3"/>
+            <!-- App icons simplified -->
+            <rect x="175" y="42" width="16" height="16" rx="2" fill="none" stroke="#dc2626" stroke-width="0.7" opacity="0.5"/>
+            <rect x="198" y="42" width="16" height="16" rx="2" fill="none" stroke="#dc2626" stroke-width="0.7" opacity="0.5"/>
+            <rect x="175" y="65" width="16" height="16" rx="2" fill="none" stroke="#dc2626" stroke-width="0.7" opacity="0.5"/>
+            <rect x="198" y="65" width="16" height="16" rx="2" fill="none" stroke="#dc2626" stroke-width="0.7" opacity="0.5"/>
+            <!-- Signal lines coming off phone -->
+            <line x1="240" y1="80" x2="340" y2="60" stroke="#dc2626" stroke-width="0.5" stroke-dasharray="4,3" opacity="0.3"/>
+            <line x1="240" y1="80" x2="340" y2="100" stroke="#dc2626" stroke-width="0.5" stroke-dasharray="4,3" opacity="0.3"/>
+          </svg>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-3 left-4 font-mono-tech text-red-600/40 text-xs tracking-widest uppercase">// SR-RG-008 // Apps // Navigation // Weather</div>
+        </div>
+
+        <div class="p-6 relative z-10">
+          <div class="signal-line mb-2">Apps // Tools That Actually Help</div>
+          <h2 class="text-2xl font-black uppercase text-white tracking-tight leading-none mb-3">Riding<br/>Apps</h2>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="tag-pill">Navigation</span>
+            <span class="tag-pill">Weather</span>
+            <span class="tag-pill">Community</span>
+          </div>
+          <p class="preview-snippet mb-5">
+            The apps that stayed on my homescreen after three years. Not a comprehensive list — just the ones that changed how I ride and plan.
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="log-badge">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+              Guide RG-008
+            </span>
+            <span class="access-btn">Access Guide ▶</span>
+          </div>
+        </div>
+      </a>
+
+    </div><!-- end compact grid -->
+
+    <hr class="section-rule" />
+
+    <!-- Archive footer note -->
+    <div class="text-center space-y-3">
+      <p class="font-mono-tech text-gray-700 text-xs tracking-widest uppercase">// End of Current Guide Index</p>
+      <p class="text-gray-600 text-sm" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">
+        Guides are written from real experience, not manufacturer spec sheets.<br/>
+        New entries get added when there's something worth saying — not on a content calendar.
+      </p>
+    </div>
+
+  </div>
+</main>
+
+<!-- ════ FOOTER ════ -->
+<footer class="py-16 px-5 border-t border-white/5 mt-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex flex-col items-center gap-6">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 hover:scale-105 transition-all duration-300">
+          <span class="font-mono-tech text-red-600 text-sm font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+      </a>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="font-mono-tech text-sm tracking-widest uppercase">Watch on YouTube</span>
+      </a>
+      <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  (function(){
+    var cursor=document.getElementById('cursor'), ring=document.getElementById('cursor-ring');
+    var mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+    (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+    document.querySelectorAll('a,button').forEach(function(el){
+      el.addEventListener('mouseenter',function(){ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(220,38,38,0.8)';});
+      el.addEventListener('mouseleave',function(){ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(220,38,38,0.5)';});
+    });
+  })();
+
+  // Progress bar
+  window.addEventListener('scroll',function(){
+    var st=document.documentElement.scrollTop||document.body.scrollTop;
+    var sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    document.getElementById('progress-bar').style.width=(sh>0?(st/sh)*100:0)+'%';
+  },{passive:true});
+
+  // Navbar scroll
+  window.addEventListener('scroll',function(){
+    var nav=document.getElementById('navbar');
+    if(window.scrollY>20)nav.classList.add('nav-scrolled');
+    else nav.classList.remove('nav-scrolled');
+  },{passive:true});
+
+  // Mobile menu
+  document.getElementById('menu-toggle').addEventListener('click',function(){
+    var menu=document.getElementById('mobile-menu');
+    var openIcon=document.getElementById('menu-icon-open');
+    var closeIcon=document.getElementById('menu-icon-close');
+    var isOpen=menu.style.maxHeight==='320px';
+    menu.style.maxHeight=isOpen?'0':'320px';
+    menu.style.borderBottom=isOpen?'':'1px solid rgba(127,29,29,0.3)';
+    openIcon.style.display=isOpen?'':'none';
+    closeIcon.style.display=isOpen?'none':'';
+  });
+  document.querySelectorAll('.mobile-link').forEach(function(link){
+    link.addEventListener('click',function(){
+      document.getElementById('mobile-menu').style.maxHeight='0';
+      document.getElementById('menu-icon-open').style.display='';
+      document.getElementById('menu-icon-close').style.display='none';
+    });
+  });
+</script>
+</body>
+</html>
