@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="Practical motorcycle ownership and maintenance habits for Singapore riders. Pre-ride checks, tyre pressure, chain care, battery, service intervals, and the basic troubleshooting every rider must know.">
+  <meta name="keywords" content="motorcycle maintenance Singapore, motorcycle ownership tips, pre-ride check motorcycle, chain care motorcycle, tyre pressure motorcycle, motorcycle battery care, basic motorcycle troubleshooting, Secret Reviewer">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ownership Basics — What Every Rider Must Know | Secret Reviewer</title>
+  <link rel="canonical" href="https://secret-reviewer.com/riders-guide/ownership/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: {
+        sans:  ['Barlow Condensed','sans-serif'],
+        mono:  ['"Share Tech Mono"','monospace'],
+        prose: ['"IBM Plex Sans"','sans-serif'],
+      }}}
+    };
+  </script>
+  <style>
+    :root {
+      --red:      #dc2626;
+      --red-dim:  rgba(220,38,38,0.15);
+      --red-glow: rgba(220,38,38,0.6);
+      --bg:       #060606;
+    }
+    *, *::before, *::after { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      background-color:var(--bg); color:#ececec;
+      font-family:'Barlow Condensed',sans-serif;
+      margin:0; overflow-x:hidden; cursor:none; line-height:1.75;
+    }
+    .font-mono-tech { font-family:'Share Tech Mono',monospace; }
+    .font-prose     { font-family:'IBM Plex Sans',sans-serif; }
+
+    /* ── Cursor ── */
+    #cursor {
+      position:fixed; width:12px; height:12px;
+      background:var(--red); border-radius:50%;
+      pointer-events:none; z-index:99999;
+      transform:translate(-50%,-50%);
+      transition:width .2s,height .2s; mix-blend-mode:screen;
+    }
+    #cursor-ring {
+      position:fixed; width:36px; height:36px;
+      border:1px solid rgba(220,38,38,0.5); border-radius:50%;
+      pointer-events:none; z-index:99998;
+      transform:translate(-50%,-50%);
+      transition:width .2s,height .2s,border-color .2s;
+    }
+
+    /* ── Animations ── */
+    @keyframes scan        { from{top:-100%} to{top:100%} }
+    @keyframes fadeSlideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse-red   { 0%,100%{box-shadow:0 0 6px rgba(220,38,38,0.3)} 50%{box-shadow:0 0 28px rgba(220,38,38,0.8),0 0 60px rgba(220,38,38,0.25)} }
+    @keyframes pulse-dot   { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    @keyframes staticNoise { 0%{opacity:.03} 25%{opacity:.05} 50%{opacity:.02} 75%{opacity:.06} 100%{opacity:.03} }
+    @keyframes glitch-1    { 0%,100%{clip-path:inset(0 0 98% 0);transform:translate(-2px,0)} 20%{clip-path:inset(20% 0 50% 0);transform:translate(2px,0)} 40%{clip-path:inset(60% 0 20% 0);transform:translate(-2px,0)} 60%{clip-path:inset(80% 0 5% 0);transform:translate(2px,0)} 80%{clip-path:inset(40% 0 60% 0);transform:translate(-2px,0)} }
+    @keyframes glitch-2    { 0%,100%{clip-path:inset(50% 0 30% 0);transform:translate(2px,0);color:#00ffff} 25%{clip-path:inset(10% 0 80% 0);transform:translate(-2px,0)} 50%{clip-path:inset(70% 0 10% 0);transform:translate(2px,0);color:var(--red)} 75%{clip-path:inset(30% 0 50% 0);transform:translate(-2px,0)} }
+    @keyframes cardReveal  { from{opacity:0;transform:translateY(20px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+    @keyframes barGrow     { from{width:0} to{width:var(--bar-w)} }
+
+    .animate-fade-slide-up { animation:fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+    .animate-pulse-red     { animation:pulse-red 2.5s infinite; }
+
+    /* ── CRT ── */
+    body::before {
+      content:""; position:fixed; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);
+      pointer-events:none; z-index:9990;
+    }
+    body::after {
+      content:""; position:fixed; top:-100%; left:0; width:100%; height:100%;
+      background:linear-gradient(rgba(220,38,38,0) 0%,rgba(220,38,38,0.03) 50%,rgba(220,38,38,0) 100%);
+      animation:scan 12s linear infinite; pointer-events:none; z-index:9991;
+    }
+
+    /* ── Progress bar ── */
+    #progress-bar {
+      height:3px;
+      background:linear-gradient(90deg,#7f1d1d,#dc2626,#f87171);
+      box-shadow:0 0 12px rgba(220,38,38,0.9),0 0 24px rgba(220,38,38,0.4);
+      width:0%; transition:width .08s ease-out;
+    }
+
+    /* ── Navbar ── */
+    #navbar { transition:background .4s,border-color .4s; }
+    .nav-scrolled {
+      background:rgba(4,4,4,0.96) !important;
+      border-bottom-color:rgba(127,29,29,0.4) !important;
+      backdrop-filter:blur(20px);
+    }
+
+    /* ── Glitch title ── */
+    .glitch-wrap { position:relative; display:inline-block; }
+    .glitch-wrap::before,.glitch-wrap::after {
+      content:attr(data-text); position:absolute; top:0; left:0; width:100%; height:100%;
+    }
+    .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
+    .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
+
+    /* ── Noise ── */
+    .noise-overlay {
+      position:absolute; inset:0; opacity:.025; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size:128px; animation:staticNoise 4s step-start infinite;
+    }
+
+    /* ── Section rule ── */
+    .section-rule {
+      border:none; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(220,38,38,0.3),transparent);
+      margin:52px 0;
+    }
+
+    /* ── Breadcrumb ── */
+    .breadcrumb {
+      display:inline-flex; align-items:center; gap:8px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.85rem; color:#555; text-transform:uppercase;
+      letter-spacing:2px; text-decoration:none;
+      transition:color .2s;
+    }
+    .breadcrumb:hover { color:var(--red); }
+    .breadcrumb:hover svg { transform:translateX(-3px); }
+    .breadcrumb svg { transition:transform .2s; }
+
+    /* ── Signal line ── */
+    .signal-line {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.68rem; color:rgba(220,38,38,0.45);
+      letter-spacing:2px; text-transform:uppercase;
+      display:flex; align-items:center; gap:8px; margin-bottom:8px;
+    }
+    .signal-line::before {
+      content:''; display:block; width:24px; height:1px;
+      background:rgba(220,38,38,0.45); flex-shrink:0;
+    }
+
+    /* ── Topic block ── */
+    .topic-block {
+      position:relative;
+      border:1px solid rgba(220,38,38,0.15);
+      background:rgba(10,10,10,0.85);
+      overflow:hidden; margin-bottom:20px;
+      animation:cardReveal 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .topic-block::before {
+      content:''; position:absolute; top:0; left:0;
+      width:32px; height:32px;
+      border-top:1px solid rgba(220,38,38,0.5);
+      border-left:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .topic-block::after {
+      content:''; position:absolute; bottom:0; right:0;
+      width:32px; height:32px;
+      border-bottom:1px solid rgba(220,38,38,0.5);
+      border-right:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .topic-block-inner { padding:28px 28px 24px; position:relative; z-index:1; }
+    .topic-block .card-bg {
+      position:absolute; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.007) 3px,rgba(220,38,38,0.007) 4px);
+      pointer-events:none;
+    }
+
+    /* ── Lesson / serious variant ── */
+    .topic-block.lesson {
+      border-color:rgba(220,38,38,0.38);
+      background:rgba(14,4,4,0.93);
+    }
+    .topic-block.lesson::before,
+    .topic-block.lesson::after { border-color:rgba(220,38,38,0.72); }
+
+    /* ── Topic heading ── */
+    .topic-heading {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(1.6rem,4vw,2.2rem);
+      font-weight:900; text-transform:uppercase;
+      color:#fff; letter-spacing:0.02em; line-height:1.1;
+      margin:0 0 16px 0;
+    }
+
+    /* ── Prose body ── */
+    .prose-body {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.97rem; color:#8a8a8a; line-height:1.85;
+    }
+    .prose-body p { margin:0 0 14px 0; }
+    .prose-body p:last-child { margin-bottom:0; }
+    .prose-body strong { color:#d0d0d0; font-weight:600; }
+    .prose-body em     { color:#b0b0b0; font-style:italic; }
+
+    /* ── Callout ── */
+    .callout {
+      border-left:2px solid rgba(220,38,38,0.6);
+      background:rgba(220,38,38,0.04);
+      padding:14px 18px; margin:18px 0 0;
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.9rem; color:#999; line-height:1.7; font-style:italic;
+    }
+    .callout strong { color:#f87171; font-style:normal; }
+
+    /* ── Amber warning callout ── */
+    .callout-warn {
+      border-left:2px solid rgba(251,191,36,0.6);
+      background:rgba(251,191,36,0.04);
+      padding:14px 18px; margin:18px 0 0;
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.9rem; color:#999; line-height:1.7; font-style:italic;
+    }
+    .callout-warn strong { color:#fbbf24; font-style:normal; }
+
+    /* ── SR Take ── */
+    .sr-take {
+      margin-top:18px; border:1px solid rgba(220,38,38,0.25);
+      background:rgba(220,38,38,0.05); padding:14px 18px;
+    }
+    .sr-take-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.6); margin-bottom:6px;
+    }
+    .sr-take p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#bbb; line-height:1.75;
+      margin:0; font-style:italic;
+    }
+
+    /* ── Lesson take ── */
+    .lesson-take {
+      margin-top:18px;
+      border:1px solid rgba(220,38,38,0.45);
+      background:rgba(220,38,38,0.09); padding:16px 18px;
+    }
+    .lesson-take::before {
+      content:'// LIVED EXPERIENCE — NOT A HYPOTHETICAL';
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.62rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.7); display:block; margin-bottom:10px;
+    }
+    .lesson-take p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.97rem; color:#cc8888; line-height:1.85; margin:0;
+    }
+    .lesson-take p + p { margin-top:12px; }
+    .lesson-take p strong { color:#f87171; }
+    .lesson-take p em    { color:#e8a0a0; font-style:italic; }
+
+    /* ── Principle block ── */
+    .principle-block {
+      margin:22px 0;
+      border:1px solid rgba(220,38,38,0.5);
+      background:rgba(220,38,38,0.07);
+      padding:20px 22px; position:relative; overflow:hidden;
+    }
+    .principle-block::before {
+      content:'// THE RULE';
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.62rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.55); display:block; margin-bottom:10px;
+    }
+    .principle-block p {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(1.2rem,3vw,1.55rem);
+      font-weight:900; text-transform:uppercase;
+      color:#fff; line-height:1.25; margin:0; letter-spacing:0.02em;
+    }
+    .principle-block p span { color:#dc2626; }
+    .principle-block .sub {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.9rem; color:#999; line-height:1.7;
+      font-style:italic; margin-top:10px;
+      font-weight:400; text-transform:none; letter-spacing:0;
+    }
+
+    /* ── Comparison table ── */
+    .comp-table { width:100%; border-collapse:collapse; margin-top:18px; }
+    .comp-table th {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.68rem; letter-spacing:2px; text-transform:uppercase;
+      color:rgba(220,38,38,0.5);
+      border-bottom:1px solid rgba(220,38,38,0.2);
+      padding:10px 14px; text-align:left;
+    }
+    .comp-table td {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.88rem; color:#888; line-height:1.6;
+      padding:10px 14px;
+      border-bottom:1px solid rgba(255,255,255,0.04);
+      vertical-align:top;
+    }
+    .comp-table tr:last-child td { border-bottom:none; }
+    .comp-table td:first-child { color:#ddd; font-weight:600; white-space:nowrap; }
+    .comp-table td.good { color:#4ade80; }
+    .comp-table td.bad  { color:#f87171; }
+    .comp-table td.mid  { color:#fbbf24; }
+
+    /* ── Checklist ── */
+    .checklist { list-style:none; padding:0; margin:14px 0 0; }
+    .checklist li {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#888; line-height:1.7;
+      padding:7px 0 7px 28px; position:relative;
+      border-bottom:1px solid rgba(255,255,255,0.04);
+    }
+    .checklist li:last-child { border-bottom:none; }
+    .checklist li::before {
+      content:''; position:absolute; left:6px; top:14px;
+      width:10px; height:10px; border:1px solid rgba(220,38,38,0.5);
+    }
+    .checklist li strong { color:#d0d0d0; }
+    .checklist li.warn::before  { background:rgba(220,38,38,0.25); }
+    .checklist li.ok::before    { background:rgba(74,222,128,0.2); border-color:rgba(74,222,128,0.4); }
+
+    /* ── Gear bar ── */
+    .gear-bar-wrap { margin:6px 0; }
+    .gear-bar-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#555; display:flex; justify-content:space-between; margin-bottom:4px;
+    }
+    .gear-bar-track { height:3px; background:rgba(255,255,255,0.06); }
+    .gear-bar-fill {
+      height:3px; background:linear-gradient(90deg,#7f1d1d,#dc2626);
+      box-shadow:0 0 6px rgba(220,38,38,0.4);
+      animation:barGrow 1s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    /* ── Tag pill ── */
+    .tag-pill {
+      display:inline-block;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#f87171; border:1px solid rgba(220,38,38,0.3);
+      padding:3px 10px; background:rgba(220,38,38,0.05);
+      margin-right:6px; margin-bottom:6px;
+    }
+
+    /* ── Section ID ── */
+    .section-id {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.35); margin-bottom:4px;
+    }
+
+    /* ── Field note ── */
+    .field-note {
+      border-left:2px solid rgba(220,38,38,0.5);
+      padding:14px 18px; margin:18px 0;
+      background:rgba(0,0,0,0.4);
+    }
+    .field-note p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:1rem; color:#aaa; line-height:1.75;
+      font-style:italic; margin:0;
+    }
+    .field-note cite {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:rgba(220,38,38,0.4); display:block; margin-top:8px;
+    }
+
+    /* ── Two-col grid ── */
+    .prose-two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:16px; }
+    @media(max-width:640px){ .prose-two-col { grid-template-columns:1fr; } }
+    .prose-mini-block {
+      border:1px solid rgba(255,255,255,0.06); padding:16px;
+      background:rgba(0,0,0,0.3);
+    }
+    .prose-mini-block h4 {
+      font-size:0.9rem; font-weight:900; text-transform:uppercase;
+      color:#ccc; margin:0 0 8px; letter-spacing:0.05em;
+    }
+    .prose-mini-block p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.85rem; color:#777; line-height:1.7; margin:0;
+    }
+
+    /* ── Wear indicator diagram ── */
+    .wear-row {
+      display:flex; align-items:flex-start; gap:14px;
+      padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.04);
+    }
+    .wear-row:last-child { border-bottom:none; }
+    .wear-badge {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.62rem; letter-spacing:2px; text-transform:uppercase;
+      padding:4px 10px; flex-shrink:0; margin-top:2px;
+    }
+    .wear-badge.ok   { color:#4ade80; border:1px solid rgba(74,222,128,0.35); background:rgba(74,222,128,0.06); }
+    .wear-badge.warn { color:#fbbf24; border:1px solid rgba(251,191,36,0.35); background:rgba(251,191,36,0.06); }
+    .wear-badge.crit { color:#f87171; border:1px solid rgba(220,38,38,0.5);   background:rgba(220,38,38,0.08); }
+    .wear-content h4 {
+      font-size:0.95rem; font-weight:900; text-transform:uppercase;
+      color:#ccc; margin:0 0 4px;
+    }
+    .wear-content p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.86rem; color:#777; line-height:1.65; margin:0;
+    }
+
+    /* ── Sticky TOC ── */
+    .toc-item {
+      display:flex; align-items:flex-start; gap:10px;
+      padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04);
+      text-decoration:none;
+    }
+    .toc-item:last-child { border-bottom:none; }
+    .toc-num {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.7rem; color:rgba(220,38,38,0.4);
+      letter-spacing:1px; padding-top:2px; flex-shrink:0;
+    }
+    .toc-title {
+      font-size:0.95rem; font-weight:700; color:#666;
+      text-transform:uppercase; letter-spacing:0.03em;
+      transition:color .2s;
+    }
+    .toc-item:hover .toc-title { color:var(--red); }
+
+    /* ── Layout ── */
+    @media(min-width:1024px){
+      .layout-with-toc { display:grid; grid-template-columns:1fr 240px; gap:40px; align-items:start; }
+      .toc-sticky { position:sticky; top:80px; }
+    }
+
+    /* ── Delay utils ── */
+    .delay-1{animation-delay:.05s}.delay-2{animation-delay:.10s}.delay-3{animation-delay:.15s}
+    .delay-4{animation-delay:.20s}.delay-5{animation-delay:.25s}.delay-6{animation-delay:.30s}
+    .delay-7{animation-delay:.35s}.delay-8{animation-delay:.40s}.delay-9{animation-delay:.45s}
+    .delay-10{animation-delay:.50s}
+
+    /* ── Know-your-bike grid ── */
+    .bike-know-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px;
+    }
+    @media(max-width:640px){ .bike-know-grid { grid-template-columns:1fr; } }
+    .bike-know-cell {
+      border:1px solid rgba(255,255,255,0.07);
+      background:rgba(0,0,0,0.3);
+      padding:14px 16px;
+    }
+    .bike-know-cell.must {
+      border-color:rgba(220,38,38,0.3);
+      background:rgba(220,38,38,0.04);
+    }
+    .bike-know-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.62rem; letter-spacing:3px; text-transform:uppercase;
+      margin-bottom:5px;
+    }
+    .must .bike-know-label { color:rgba(220,38,38,0.6); }
+    .bike-know-cell:not(.must) .bike-know-label { color:rgba(255,255,255,0.2); }
+    .bike-know-cell h4 {
+      font-size:0.92rem; font-weight:900; text-transform:uppercase;
+      color:#ccc; margin:0 0 6px;
+    }
+    .bike-know-cell p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.83rem; color:#666; line-height:1.65; margin:0;
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="fixed top-0 left-0 w-full z-[9999]">
+  <div id="progress-bar"></div>
+</div>
+
+<!-- ════ NAVBAR ════ -->
+<nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+    <a href="/" class="flex items-center gap-3">
+      <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+        <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+      </div>
+      <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+      <a href="/riders-guide/" class="text-red-500 text-sm font-bold tracking-widest uppercase">Rider's Guide</a>
+      <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+      <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+    <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+      <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
+    <div class="flex flex-col px-5 py-4 gap-4">
+      <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+      <a href="/riders-guide/" class="mobile-link text-red-500 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Rider's Guide</a>
+      <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+      <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ MAIN ════ -->
+<main class="pt-28 pb-24 px-5">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Breadcrumb trail -->
+    <div class="flex items-center gap-2 mb-8 font-mono-tech text-xs tracking-widest uppercase" style="color:#444;">
+      <a href="/" class="hover:text-red-500 transition-colors">Home</a>
+      <span>/</span>
+      <a href="/riders-guide/" class="hover:text-red-500 transition-colors">Rider's Guide</a>
+      <span>/</span>
+      <span style="color:rgba(220,38,38,0.5);">Ownership Basics</span>
+    </div>
+
+    <!-- ════ PAGE HEADER ════ -->
+    <div class="mb-12 animate-fade-slide-up" style="position:relative;">
+      <div class="noise-overlay"></div>
+      <p class="font-mono-tech text-xs tracking-[0.4em] uppercase mb-4" style="color:rgba(167,139,250,0.6);">// Field Guide RG-005 — Ownership & Maintenance Intelligence</p>
+      <h1 class="font-black uppercase leading-none tracking-tight text-white mb-2" style="font-size:clamp(2.8rem,9vw,5rem);">
+        <span class="glitch-wrap" data-text="OWNERSHIP">OWNERSHIP</span>
+      </h1>
+      <h2 class="font-black uppercase text-red-600 leading-none tracking-tight mb-5" style="font-size:clamp(1.2rem,3vw,1.8rem);letter-spacing:0.1em;">& Maintenance Basics</h2>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-widest">
+        <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+        8 SECTIONS // DAILY HABITS // KNOW YOUR OWN BIKE // "I DON'T KNOW" IS NOT AN OPTION
+      </p>
+      <p class="mt-5 text-gray-500 text-base leading-relaxed max-w-2xl font-prose" style="font-style:italic;">
+        This is not advanced mechanics. You don't need to be a technician. You do need to know your own bike well enough to check it, maintain it, and get yourself out of trouble when you're stranded at 11pm on a highway with no signal and a tow truck 90 minutes away. Every section here is something every rider can and should do themselves.
+      </p>
+    </div>
+
+    <hr class="section-rule" style="margin-top:0;" />
+
+    <!-- ════ LAYOUT ════ -->
+    <div class="layout-with-toc">
+
+      <!-- ── LEFT: Main content ── -->
+      <div>
+
+        <!-- ══ MANDATE BLOCK: Know Your Own Bike ══ -->
+        <div class="topic-block lesson delay-1">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-005-00 — Before Everything Else</div>
+            <div class="signal-line">The Minimum Standard</div>
+            <h3 class="topic-heading">"I Don't Know" Is Not An Excuse. Know Your Bike.</h3>
+
+            <div class="prose-body">
+              <p>Every rider must reach a baseline level of self-sufficiency with their own motorcycle. Not workshop-level expertise — basic familiarity. Where your fuse box is. Which fuse is which. Where your relay is. What a blown fuse looks, feels, and tests like. How to check tyre pressure. How to plug a tubeless tyre with a worm kit. Which wire connects to what on your lighting circuit.</p>
+              <p>This is not optional knowledge for "serious riders." It is the minimum competency for anyone who rides a machine that they intend to keep running and that they depend on to get home safely. A workshop can fix almost anything. A workshop is also not available at midnight on a quiet stretch of road in northern Malaysia with no mobile reception.</p>
+            </div>
+
+            <div class="principle-block">
+              <p><span>"I don't know"</span> is not an excuse.<br/>It might be the reason you're <span>stuck somewhere for 2 hours.</span></p>
+              <div class="sub">A blown fuse, a loose relay, a dead battery terminal — these are all 5-minute fixes if you know where to look and have the right item in your kit. They are 2-hour waits if you don't. Learn your bike at home, not on the roadside.</div>
+            </div>
+
+            <div class="prose-body" style="margin-top:18px;">
+              <p>This doesn't require a mechanical course. It requires one afternoon with your bike, your owner's manual, and the internet. Find your fuse box. Pull out each fuse and look at it. Learn what each one protects. Find your relay block. Learn what a relay does (it's a switch — when it fails, things stop working). Find every bolt you'd need to touch for basic maintenance. Open your owner's manual and read the maintenance schedule page.</p>
+              <p>That's it. One afternoon. It might be the most useful thing you do as a rider this year.</p>
+            </div>
+
+            <div class="bike-know-grid">
+              <div class="bike-know-cell must">
+                <div class="bike-know-label">// Must Know</div>
+                <h4>Fuse Box Location</h4>
+                <p>Know exactly where it is without looking it up. Know which fuse controls which circuit. Carry 3–5 spare fuses matching your bike's map in your kit at all times.</p>
+              </div>
+              <div class="bike-know-cell must">
+                <div class="bike-know-label">// Must Know</div>
+                <h4>Relay Location</h4>
+                <p>Most bikes have a starter relay, horn relay, and fuel pump relay. A failed relay is often mistaken for a dead battery. Knowing where yours is means you can swap it in minutes.</p>
+              </div>
+              <div class="bike-know-cell must">
+                <div class="bike-know-label">// Must Know</div>
+                <h4>Tyre Plugging (Worm Kit)</h4>
+                <p>A tubeless worm plug kit costs under $15 and handles 80% of roadside punctures. Learn how to use it at home first. With CO2 canisters, you can be riding again in under 10 minutes.</p>
+              </div>
+              <div class="bike-know-cell must">
+                <div class="bike-know-label">// Must Know</div>
+                <h4>Basic Electrical Trace</h4>
+                <p>Know which wire goes where on your tail light, headlight, and indicator circuits. If a light stops working, the fault path is fuse → relay → bulb → earth. Being able to trace that is the difference between a quick fix and a long wait.</p>
+              </div>
+              <div class="bike-know-cell">
+                <div class="bike-know-label">// Good to Know</div>
+                <h4>Kill Switch & Fuel Petcock</h4>
+                <p>Sounds obvious, but riders have been stranded because they forgot the kill switch was on, or didn't know their bike has a reserve position on the fuel tap. Check yours now, not when you need it.</p>
+              </div>
+              <div class="bike-know-cell">
+                <div class="bike-know-label">// Good to Know</div>
+                <h4>Chain Adjuster Procedure</h4>
+                <p>Chain adjustment is something you'll need on a long tour. Know how to check slack (20–30mm is typical), loosen the axle nut, advance both adjusters evenly, and re-torque. Your manual has the spec.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 01: PRE-RIDE CHECKS ══ -->
+        <div id="sec-preride" class="topic-block delay-2">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-005-01</div>
+            <div class="signal-line">Daily Habit // Pre-Ride Checks</div>
+            <h3 class="topic-heading">Pre-Ride Checks — 60 Seconds That Keep You Off The Ground</h3>
+
+            <div class="prose-body">
+              <p>A pre-ride check doesn't need to be a full workshop inspection. It's a fast, systematic walk-around that catches the things that change overnight or between rides — a slow puncture, a loose mirror, a chain that's suddenly sitting with no slack. Most of these take 60 seconds total. The one time you skip it is often the one time something has actually changed.</p>
+              <p>The key word is <strong>systematic</strong>. Same order every time, so nothing gets missed. A check that skips tyres because "they were fine yesterday" is not a check — it's an assumption. Tyres lose pressure overnight. Nails don't announce themselves.</p>
+            </div>
+
+            <div class="field-note">
+              <p>T-CLOCS is the standard framework: <strong>T</strong>yres & Wheels → <strong>C</strong>ontrols → <strong>L</strong>ights & Electrics → <strong>O</strong>il & Fluids → <strong>C</strong>hassis → <strong>S</strong>tand. Run through it in that order and you've covered everything that matters before a ride.</p>
+              <cite>— Pre-ride inspection framework</cite>
+            </div>
+
+            <ul class="checklist">
+              <li class="ok"><strong>Tyres</strong> — squeeze test for obvious pressure loss, visual check for nails or sidewall damage</li>
+              <li class="ok"><strong>Chain</strong> — slack check (grab mid-lower run, should move 20–30mm), visible lubrication</li>
+              <li class="ok"><strong>Controls</strong> — both levers pull smoothly, throttle snaps back on release, no binding in steering</li>
+              <li class="ok"><strong>Lights</strong> — headlight, tail light, both indicators (30-second check every few days, not every ride)</li>
+              <li class="ok"><strong>Mirrors</strong> — positioned correctly, mounting bolts hand-tight</li>
+              <li class="ok"><strong>Fuel level</strong> — check before every ride, not when the low fuel light surprises you on the PIE</li>
+              <li class="ok"><strong>Engine oil</strong> — sight glass or dipstick check weekly minimum, more if the bike runs hot</li>
+              <li class="warn"><strong>Any fluid puddle under the bike</strong> — oil, brake fluid, or coolant on the carpark floor means something needs attention before riding</li>
+            </ul>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>The pre-ride check is not about finding a problem every day. It's about the one day in 200 when there is something — and catching it before it catches you mid-ride. Build the habit when there's nothing to find, and it'll be automatic the morning you pull a 10cm nail out of your rear tyre instead of discovering it on the ECP at 80km/h.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 02: TYRE PRESSURE ══ -->
+        <div id="sec-tyre" class="topic-block delay-3">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-005-02</div>
+            <div class="signal-line">Maintenance // Tyre Pressure</div>
+            <h3 class="topic-heading">Tyre Pressure Habits — The Most Ignored Safety Check on Any Motorcycle</h3>
+
+            <div class="prose-body">
+              <p>Tyre pressure is the single most impactful and most frequently ignored maintenance item on a motorcycle. It affects handling, braking distance, tyre wear rate, fuel consumption, and — most critically — the bike's ability to manage its contact patch correctly in an emergency. An under-inflated tyre runs hotter, wears faster on the shoulders, and generates less precise steering input. An over-inflated tyre loses contact patch area and becomes skittish on uneven surfaces.</p>
+              <p><strong>Check pressure cold</strong> — before riding, not after. Heat from riding increases air pressure by 4–6 PSI, which means checking after a ride gives you a falsely high reading. Always check cold, always at the same time (morning, before departure), always with the same gauge.</p>
+              <p>For most 150–400cc bikes, the standard range is <strong>28–33 PSI front, 32–36 PSI rear</strong> — but your specific number is on the sticker inside the swingarm or in the owner's manual. Use that spec, not a generic number from the internet. With touring luggage, some manufacturers recommend adding 3–4 PSI to the rear — again, check your manual.</p>
+              <p><strong>Singapore's climate accelerates tyre pressure loss.</strong> Heat causes rubber to become slightly more permeable, and the temperature cycling between cool night and hot midday causes pressure fluctuation. Weekly checks are the minimum. If you're commuting daily in Singapore heat, every 3–4 days is better.</p>
+            </div>
+
+            <div class="gear-bar-wrap" style="margin-top:18px;">
+              <div class="gear-bar-label"><span>Handling precision at correct pressure</span><span>Full contact patch, correct profile</span></div>
+              <div class="gear-bar-track"><div class="gear-bar-fill" style="--bar-w:100%;width:100%;"></div></div>
+            </div>
+            <div class="gear-bar-wrap">
+              <div class="gear-bar-label"><span>At 5 PSI under spec</span><span>Shoulder wear, sluggish steering, heat buildup</span></div>
+              <div class="gear-bar-track"><div class="gear-bar-fill" style="--bar-w:60%;width:60%;"></div></div>
+            </div>
+            <div class="gear-bar-wrap">
+              <div class="gear-bar-label"><span>At 10 PSI under spec</span><span>Serious handling compromise, tyre failure risk</span></div>
+              <div class="gear-bar-track"><div class="gear-bar-fill" style="--bar-w:28%;width:28%;"></div></div>
+            </div>
+
+            <div class="callout">
+              <strong>Buy your own gauge.</strong> Petrol station gauges are often inaccurate and inconsistently calibrated across stations. A decent digital tyre gauge costs $15–25 and gives you a reading you can trust. Keep it on the bike or in your kit bag. Check at home where you know the gauge, not at the petrol station where you don't.
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>Tyre pressure takes 2 minutes to check properly. It is the highest return-on-time maintenance action you can do on a motorcycle. Riders who check weekly ride on better contact patches, go through tyres more slowly, and have a bike that handles how the manufacturer intended. Riders who check monthly — or "when it looks a bit flat" — are riding a different bike than they think they are.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 03: CHAIN CARE ══ -->
+        <div id="sec-chain" class="topic-block delay-4">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-005-03</div>
+            <div class="signal-line">Maintenance // Chain Care</div>
+            <h3 class="topic-heading">Chain Care Basics — Cheap to Maintain, Expensive to Ignore</h3>
+
+            <div class="prose-body">
+              <p>The chain is the single most maintenance-intensive consumable on a motorcycle, and the most directly connected to your safety. A dry, stretched, or improperly tensioned chain affects acceleration feel, can cause unpredictable power delivery, and in worst cases can jump the sprocket or break — which on a motorcycle at speed is a serious accident scenario.</p>
+              <p>The good news: chain maintenance is simple, cheap, and takes 10 minutes. The discipline is doing it regularly rather than waiting for the chain to announce its neglect through noise, stiff links, or a visible kink.</p>
+              <p><strong>Clean before lube, always.</strong> Lubing a dirty chain seals in grit and accelerates wear. Use a chain cleaner spray or kerosene with a brush to remove built-up wax and road debris, wipe dry, then apply fresh lubricant to the inner surface of the chain (where it contacts the sprocket) while slowly rotating the rear wheel. Let it penetrate for 5 minutes before riding.</p>
+              <p><strong>Lube every 500km</strong> in normal conditions, every 200–300km in wet conditions. Rain washes lubricant off rapidly — always re-lube after a wet ride before the next day's commute.</p>
+              <p><strong>Chain slack</strong> should be 20–30mm measured at the mid-point of the lower run (the distance the chain moves up and down when pressed). Too tight and the chain binds and stresses the gearbox output shaft bearing. Too loose and it can slap, skip, or jump. Your manual gives the exact spec for your bike.</p>
+            </div>
+
+            <table class="comp-table">
+              <thead>
+                <tr><th>Symptom</th><th>Likely Cause</th><th>Action</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Chain feels stiff or has tight spots</td><td class="bad">Kinked or seized links (rust, lack of lube)</td><td>Clean, lube, check individual link flex. If tight spots persist after lube, chain replacement is needed.</td></tr>
+                <tr><td>Clunking on acceleration / deceleration</td><td class="mid">Excessive chain slack or worn sprocket</td><td>Check and adjust slack. Inspect sprocket teeth for hook-like wear profile.</td></tr>
+                <tr><td>Chain visibly "hooked" or wavy</td><td class="bad">Worn sprocket teeth, stretched chain</td><td>Replace chain and both sprockets together — never just the chain on worn sprockets.</td></tr>
+                <tr><td>Excessive noise at all speeds</td><td class="mid">Dry chain or misaligned rear wheel</td><td>Lube first. If noise persists, check wheel alignment marks on both sides of the swingarm adjuster.</td></tr>
+                <tr><td>O-rings visible and cracked on chain</td><td class="bad">Chain at end of service life</td><td>Replace. Cracked O-rings mean internal lubrication has been lost — stretch follows rapidly.</td></tr>
+              </tbody>
+            </table>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>A chain and sprocket set for a 150–200cc bike costs $80–150. A chain that's been run dry and stretched into the sprockets costs the same — but now you're replacing the sprockets too, and paying workshop labour. 10 minutes every 500km keeps the chain set alive two to three times longer. The maths is obvious.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 04: BATTERY CARE ══ -->
+        <div id="sec-battery" class="topic-block delay-5">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-005-04</div>
+            <div class="signal-line">Maintenance // Battery Care</div>
+            <h3 class="topic-heading">Battery Care — And How To Tell It's Not Actually the Battery</h3>
+
+            <div class="prose-body">
+              <p>Motorcycle batteries in Singapore's climate face two primary failure modes: heat degradation (the plates expand and contract with temperature cycling, eventually losing capacity) and discharge from short-ride patterns (10–15 minutes of commuting doesn't fully recharge what the starter drew). Most batteries on regularly-ridden Singapore bikes last 2–3 years. A battery that's been left for extended periods or consistently short-charged dies faster.</p>
+              <p><strong>Symptoms of a weak battery</strong> are distinctive: cranking speed is noticeably slower than usual, the engine turns over sluggishly especially when cold, and electronics behave oddly (dashboard flickers, fuel injection hesitates). These symptoms are the battery saying it has maybe 2–4 weeks left, not months. Don't wait for the full no-start — plan the replacement when you see the symptoms, not after you're stuck in a carpark.</p>
+              <p><strong>Terminal connections matter.</strong> Corrosion on the battery terminals is one of the most common causes of apparent electrical failure that isn't the battery at all. White or greenish powder on the terminal posts increases resistance and can prevent enough current from flowing to the starter — especially when the starter demand is already at peak (cold engine, first start of the day). Remove the terminals, clean with baking soda and water or a wire brush, and reconnect firmly. This has resolved "dead battery" scenarios more than once.</p>
+              <p><strong>The relay test.</strong> If you turn the key and hear a rapid clicking sound rather than the starter cranking, the starter relay is usually the prime suspect, not the battery. The relay clicks when it doesn't have enough voltage to hold contact — this can be a dying battery, but it's also a corroded terminal or a failing relay itself. Test the battery voltage (12.6V fully charged, 12.0V needs attention, below 11.5V is effectively dead) with a cheap multimeter before buying a new battery.</p>
+            </div>
+
+            <div class="prose-two-col">
+              <div class="prose-mini-block">
+                <h4>Trickle charger for bikes sitting idle</h4>
+                <p>If the bike sits unused for more than 2 weeks — school holidays, overseas travel, injury recovery — connect a smart trickle charger (CTEK, Optimate) to maintain charge. A motorcycle battery left fully discharged for weeks suffers sulfation damage that permanently reduces capacity. A $40 charger extends battery life significantly.</p>
+              </div>
+              <div class="prose-mini-block">
+                <h4>Jump starting a motorcycle</h4>
+                <p>Use another motorcycle or a jump pack — not a car with its engine running. A car's charging system runs at significantly higher current than a motorcycle battery is designed to handle. Connect positive to positive, negative to a bare metal chassis point (not the battery negative terminal), start, disconnect in reverse. Simple and safe if you follow the sequence.</p>
+              </div>
+            </div>
+
+            <div class="callout-warn">
+              <strong>Know where your battery is before you need to access it in a rush.</strong> On some bikes it's under the seat. On others it's behind a side panel. On a few 150–200cc bikes it's under the tank. Pull the manual. Find it now, in your carpark, not in a dark underground carpark at night with your phone torch and no idea where the bolts are.
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 05: SERVICE INTERVALS ══ -->
+        <div id="sec-service" class="topic-block delay-6">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-005-05</div>
+            <div class="signal-line">Reliability // Service Intervals</div>
+            <h3 class="topic-heading">Service Intervals — What Actually Needs Doing & When</h3>
+
+            <div class="prose-body">
+              <p>Service interval schedules exist for a reason that has nothing to do with workshop revenue. Engine oil degrades under heat and contamination. Air filters clog. Brake fluid absorbs moisture over time and its boiling point drops. Coolant chemistry changes. None of these degradations announce themselves with a warning light — they just progressively reduce reliability and safety until something gives.</p>
+              <p>For most 150–400cc bikes in Singapore, the following schedule covers the essentials without over-servicing:</p>
+            </div>
+
+            <table class="comp-table">
+              <thead>
+                <tr><th>Item</th><th>Interval</th><th>Why It Matters</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Engine oil & filter</td><td class="mid">Every 3,000–5,000km or 6 months</td><td>Oil breaks down faster in SG heat and urban stop-start riding. Short-trip riding never fully warms oil to burn off condensation. Don't extend intervals in tropical conditions.</td></tr>
+                <tr><td>Air filter</td><td class="mid">Every 10,000km or yearly</td><td>Dusty roads and construction sites clog filters faster than indicated. Check at every oil change — if it looks grey, replace it regardless of mileage.</td></tr>
+                <tr><td>Spark plug(s)</td><td class="good">Every 12,000–20,000km</td><td>Signs before failure: hard starting, rough idle, reduced performance. Cheap to replace proactively; inconvenient when they fail on the road.</td></tr>
+                <tr><td>Brake fluid</td><td class="mid">Every 2 years regardless of mileage</td><td>Absorbs moisture over time. Boiling point drops. Spongy lever in hard braking is often old brake fluid, not air in the system.</td></tr>
+                <tr><td>Coolant (water-cooled bikes)</td><td class="good">Every 2 years</td><td>Coolant chemistry deteriorates and loses anti-corrosion properties. An overheating engine in Singapore traffic is a worst-case scenario preventable with a $20 coolant flush.</td></tr>
+                <tr><td>Tyres</td><td class="bad">Inspect every 6 months, replace at 2mm tread depth or 5 years</td><td>Rubber hardens with age regardless of mileage. A 5-year-old tyre with 3mm tread is not safe — the compound has hardened. Date code is on the sidewall: four digits, week and year of manufacture.</td></tr>
+                <tr><td>Drive chain & sprockets</td><td class="mid">Chain at 15,000–25,000km; sprockets with chain</td><td>Depends heavily on maintenance quality. A well-lubed chain lasts twice as long as a neglected one at the same mileage.</td></tr>
+                <tr><td>Brake pads</td><td class="bad">Inspect every 6,000km, replace at wear indicator</td><td>See Section 06 for wear signs. Never ignore the metal-on-metal screech — that's the indicator scraping the disc.</td></tr>
+              </tbody>
+            </table>
+
+            <div class="callout">
+              <strong>Keep a service log.</strong> A simple notes app entry with the date, mileage, and what was done is enough. When you sell the bike, this history is concrete evidence of care and adds tangible value. When a workshop tells you something needs replacing, you can check when it was last done. "I don't know when the last service was" is how you get upsold on things that don't need doing yet.
+            </div>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>Find a workshop you trust before you need one urgently. An urgent workshop visit under time pressure is when corners get cut and unnecessary work gets approved. A workshop you've used twice and whose recommendations you've verified against your service log is a different conversation entirely. The whole reason this blog exists is a workshop that took advantage of a rider who didn't know what they were looking at. Don't be that rider.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 06: BRAKE & TYRE WEAR ══ -->
+        <div id="sec-wear" class="topic-block delay-7">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-005-06</div>
+            <div class="signal-line">Safety // Brake & Tyre Wear</div>
+            <h3 class="topic-heading">Brake & Tyre Wear Signs — What Your Bike Is Telling You Before It Stops Working</h3>
+
+            <div class="prose-body">
+              <p>Both brakes and tyres communicate their condition through feel, sound, and visual signs — all of which are visible and interpretable by any rider who's paying attention. The failure mode for both items is gradual rather than sudden, which means there is always a window to act before they become dangerous. The risk is ignoring the early signs until the gradual becomes critical.</p>
+            </div>
+
+            <p class="font-mono-tech text-xs tracking-widest uppercase mb-3" style="color:rgba(220,38,38,0.4);">// Brake Wear Indicators</p>
+            <div>
+              <div class="wear-row">
+                <span class="wear-badge ok">Normal</span>
+                <div class="wear-content">
+                  <h4>Firm lever, consistent bite point</h4>
+                  <p>Brake engages progressively with pressure. No vibration through the lever. Pads have visible material above the wear indicator line (a small groove or slot on the pad face — check with a torch through the caliper window).</p>
+                </div>
+              </div>
+              <div class="wear-row">
+                <span class="wear-badge warn">Watch</span>
+                <div class="wear-content">
+                  <h4>Lever feels slightly further out / spongy</h4>
+                  <p>Pads thinning but not at indicator. Spongy feel with no change in fluid level suggests moisture in the brake fluid — time for a flush. Slightly increased lever travel suggests pad wear approaching the replace-soon threshold.</p>
+                </div>
+              </div>
+              <div class="wear-row">
+                <span class="wear-badge crit">Replace Now</span>
+                <div class="wear-content">
+                  <h4>Squealing, grinding, or metal-on-metal scrape</h4>
+                  <p>The wear indicator (a raised metal tab on the pad) is now contacting the disc. This sound is the warning system working as designed — replace immediately. Continuing to ride on worn pads scores the disc, turning a $40 pad replacement into a $200+ disc replacement.</p>
+                </div>
+              </div>
+              <div class="wear-row">
+                <span class="wear-badge crit">Replace Now</span>
+                <div class="wear-content">
+                  <h4>Lever pulls all the way to the bar</h4>
+                  <p>Either pads are completely depleted or there is air in the hydraulic line. Either condition means the brake is no longer providing reliable stopping force. Do not ride until diagnosed and fixed.</p>
+                </div>
+              </div>
+            </div>
+
+            <p class="font-mono-tech text-xs tracking-widest uppercase mt-6 mb-3" style="color:rgba(220,38,38,0.4);">// Tyre Wear Indicators</p>
+            <div>
+              <div class="wear-row">
+                <span class="wear-badge ok">Normal</span>
+                <div class="wear-content">
+                  <h4>Even wear across tread width, tread indicators visible</h4>
+                  <p>Tread wear indicators are small raised blocks inside the tread grooves — when the tread surface reaches the same height as these blocks, you're at the minimum legal tread depth (1.6mm, though 2mm is the recommended replace point for safety).</p>
+                </div>
+              </div>
+              <div class="wear-row">
+                <span class="wear-badge warn">Watch</span>
+                <div class="wear-content">
+                  <h4>Centre wear faster than edges (rear tyre)</h4>
+                  <p>Normal pattern for rear tyres on commuter bikes — most of the load and drive force is through the centre tread. Start planning for replacement when centre tread approaches wear indicators. Don't wait for the edges to also wear out.</p>
+                </div>
+              </div>
+              <div class="wear-row">
+                <span class="wear-badge crit">Replace Now</span>
+                <div class="wear-content">
+                  <h4>Wear indicators flush with tread / flat spot visible</h4>
+                  <p>Legal minimum and safety minimum are both at or past. Replace immediately. A squared-off rear tyre in particular causes the bike to "step" when you lean — a disconcerting and genuinely hazardous handling characteristic.</p>
+                </div>
+              </div>
+              <div class="wear-row">
+                <span class="wear-badge crit">Replace Now</span>
+                <div class="wear-content">
+                  <h4>Cracking on tyre sidewalls or between tread blocks</h4>
+                  <p>Age-related rubber hardening. Common on bikes that sit for months or on tyres over 4–5 years old regardless of tread depth. A cracked tyre can suffer sudden blowout under load. The date code on the sidewall (e.g. "2420" = week 24, year 2020) tells you the manufacturing date.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 07: BASIC BIKE CLEANING ══ -->
+        <div id="sec-clean" class="topic-block delay-8">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-005-07</div>
+            <div class="signal-line">Habit // Basic Bike Cleaning</div>
+            <h3 class="topic-heading">Basic Bike Cleaning — Why It's Maintenance, Not Just Aesthetics</h3>
+
+            <div class="prose-body">
+              <p>Cleaning a motorcycle is often treated as a vanity exercise — the bike looks better, you feel better about it. That's true, but cleaning also has direct maintenance value. A clean bike lets you see things: oil seeps from gaskets, hairline cracks in brackets, corrosion starting at bolt heads, chain lube flung across the swingarm in patterns that tell you about sprocket wear. A dirty bike hides all of this.</p>
+              <p><strong>Frequency in Singapore:</strong> weekly for daily commuters is reasonable — road grime, exhaust soot, and bird deposits accumulate quickly in urban riding. After any rain ride, the underside of the bike picks up road dirt and needs a rinse to prevent long-term brake and chain component corrosion.</p>
+              <p><strong>What not to do:</strong> high-pressure washers directly at seals, bearings, and electrical connectors. The pressure forces water past rubber seals into wheel bearings, headstock bearings, and wire connector housings, causing corrosion and eventual failure over months. Low-pressure hose rinse, sponge wash, and a microfibre dry is the correct method. A pressure washer from a distance on the wheel wells and underside is acceptable — not aimed at the headstock, swingarm pivot, or electrical connectors.</p>
+              <p>After washing, <strong>re-lube the chain</strong> — water rinses away lubricant. This is not optional. A dry chain ridden to the next service interval is a chain that has been running on metal-to-metal contact for hundreds of kilometres.</p>
+            </div>
+
+            <div class="prose-two-col">
+              <div class="prose-mini-block">
+                <h4>What to look for while cleaning</h4>
+                <p>Oil weeping from around the engine cover gaskets. Brake fluid wetness around caliper bleed nipples. Coolant residue (usually crystalline white deposits) near hose joints. Rust forming on exposed bolt heads. Any fresh crack or dent on frame or swingarm. You see these things when your hand is near the bike — not from two metres away.</p>
+              </div>
+              <div class="prose-mini-block">
+                <h4>Products worth having</h4>
+                <p>Chain cleaner spray. Chain lubricant (road-specific, not WD-40). Plastic-safe degreaser for the engine area. Two buckets — one rinse, one wash — to prevent scratching with grit. A dedicated bike microfibre cloth. That's the full kit. No specialist equipment needed.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SECTION 08: RELIABILITY HABITS ══ -->
+        <div id="sec-reliability" class="topic-block delay-9">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-005-08</div>
+            <div class="signal-line">Mindset // Reliability Habits</div>
+            <h3 class="topic-heading">Reliability Habits — The Compounding Effect of Consistent Small Actions</h3>
+
+            <div class="prose-body">
+              <p>Bike reliability is not primarily about buying a reliable bike — it's about how that bike is maintained over time. A well-built motorcycle neglected for two years develops reliability problems. A modest bike maintained consistently and correctly will outlast its service life expectation with fewer surprises. The difference is almost entirely in the owner's habits.</p>
+              <p><strong>React to changes, not just scheduled intervals.</strong> Your bike gives you information every ride — the feel of the clutch engagement, the sound of the chain, how far the brake lever travels before bite, the sound at cold start. These are baselines. When something feels different from yesterday, that's a signal. It might be nothing. It might be the start of something. Investigate it rather than normalising it.</p>
+              <p><strong>Address small problems immediately.</strong> A small oil seep, a slightly loose mirror bolt, a brake pad at 50% — these are all "deal with it this weekend" items. The version where you defer "this weekend" for six weekends is how small problems become expensive ones. The oil seep that becomes an empty sump. The loose bolt that vibrates out on the PIE. The 50% brake pad that becomes metal-on-disc during a wet emergency stop.</p>
+              <p><strong>Learn what your specific bike is known for.</strong> Join forums, Facebook groups, or Reddit communities for your model. Every bike has a known weak point — the component that fails earlier than expected, the common fault that owners have documented. Knowing this in advance means you watch for it, maintain it more carefully, or carry the relevant spare part. The collective knowledge of a bike community is far more specific than any generic maintenance guide.</p>
+            </div>
+
+            <div class="lesson-take">
+              <p>The number of riders who've been stranded somewhere, no reception, waiting 2 hours for a tow truck, because of something they <em>noticed weeks ago and didn't deal with</em> — it's not a small number. <strong>A slow tyre that you checked and said "should be fine for a few more days." A battery that cranked a bit slower last Tuesday. A chain that was clanking slightly yesterday.</strong> These are not coincidences. They're decisions to defer that eventually came due at the worst possible time.</p>
+              <p>Your bike will be as reliable as the attention you give it. That is not an exaggeration. It is a direct relationship.</p>
+            </div>
+
+            <div class="prose-two-col" style="margin-top:18px;">
+              <div class="prose-mini-block">
+                <h4>The emergency kit that earns its place</h4>
+                <p>Tyre worm plug kit + 2 CO2 canisters. Spare fuses (full set matching your bike's map). Multimeter (basic one fits in a jacket pocket). Zip ties ×10. Electrical tape. A glove and a small LED torch. This kit weighs under 400g, costs under $40, and has resolved real roadside situations that would otherwise have meant a 2-hour wait for a tow.</p>
+              </div>
+              <div class="prose-mini-block">
+                <h4>The documentation habit</h4>
+                <p>Photograph your VIN, number plate, and engine number and store in cloud. Photograph your service receipts after every visit. Note mileage and date in your phone. If your bike is stolen, you have everything insurance needs immediately. If a workshop claims something was "just done," you have the date and mileage it was actually done. Ten seconds per service visit.</p>
+              </div>
+            </div>
+
+            <ul class="checklist" style="margin-top:18px;">
+              <li class="ok"><strong>Establish your weekly check routine</strong> — same day, same order, consistent</li>
+              <li class="ok"><strong>Carry a tyre plug kit and spare fuses</strong> — at all times, not just on tours</li>
+              <li class="ok"><strong>Know your bike's known weak points</strong> — join your model's community and read</li>
+              <li class="ok"><strong>Service log, even minimal</strong> — date, mileage, what was done</li>
+              <li class="ok"><strong>React to changes in feel, sound, or behaviour</strong> — your bike is telling you something</li>
+              <li class="warn"><strong>Never defer a "small problem" more than once</strong> — the second deferral is when it becomes expensive</li>
+              <li class="warn"><strong>Never let a workshop service your bike without checking what was recommended against your log</strong> — know when things were last done</li>
+            </ul>
+
+            <div class="sr-take">
+              <div class="sr-take-label">// SR Take</div>
+              <p>The most reliable bike in any carpark is not the newest or most expensive — it's the one owned by the rider who checks it before they ride, deals with problems when they're small, and actually knows what's going on under the fairings. That rider is never surprised. They also spend less on maintenance over the bike's life than the rider who services reactively. Reliability is a habit, not a spec sheet item.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nav arrows -->
+        <div class="flex items-center justify-between mt-10 pt-6 border-t" style="border-color:rgba(255,255,255,0.06);">
+          <a href="/riders-guide/comfort/" class="breadcrumb">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+            Rider Comfort
+          </a>
+          <a href="/riders-guide/singapore/" class="breadcrumb" style="flex-direction:row-reverse;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="transform:rotate(180deg);">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+            Singapore Rider Life
+          </a>
+        </div>
+
+      </div><!-- end left column -->
+
+      <!-- ── RIGHT: Sticky TOC ── -->
+      <aside class="toc-sticky hidden lg:block">
+        <div style="position:relative; border:1px solid rgba(220,38,38,0.15); background:rgba(10,10,10,0.9); padding:20px;">
+          <div class="card-bg" style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.007) 3px,rgba(220,38,38,0.007) 4px);"></div>
+          <div class="noise-overlay"></div>
+          <div class="relative z-10">
+            <p class="font-mono-tech text-xs tracking-[3px] uppercase mb-4" style="color:rgba(220,38,38,0.4);">// Contents</p>
+            <nav>
+              <a href="#sec-preride" class="toc-item">
+                <span class="toc-num">01</span>
+                <span class="toc-title">Pre-Ride Checks</span>
+              </a>
+              <a href="#sec-tyre" class="toc-item">
+                <span class="toc-num">02</span>
+                <span class="toc-title">Tyre Pressure</span>
+              </a>
+              <a href="#sec-chain" class="toc-item">
+                <span class="toc-num">03</span>
+                <span class="toc-title">Chain Care</span>
+              </a>
+              <a href="#sec-battery" class="toc-item">
+                <span class="toc-num">04</span>
+                <span class="toc-title">Battery Care</span>
+              </a>
+              <a href="#sec-service" class="toc-item">
+                <span class="toc-num">05</span>
+                <span class="toc-title">Service Intervals</span>
+              </a>
+              <a href="#sec-wear" class="toc-item">
+                <span class="toc-num">06</span>
+                <span class="toc-title">Brake & Tyre Wear</span>
+              </a>
+              <a href="#sec-clean" class="toc-item">
+                <span class="toc-num">07</span>
+                <span class="toc-title">Bike Cleaning</span>
+              </a>
+              <a href="#sec-reliability" class="toc-item">
+                <span class="toc-num">08</span>
+                <span class="toc-title">Reliability Habits</span>
+              </a>
+            </nav>
+            <div class="mt-5 pt-5 border-t" style="border-color:rgba(255,255,255,0.05);">
+              <a href="/riders-guide/" class="font-mono-tech text-xs tracking-widest uppercase text-gray-600 hover:text-red-500 transition-colors flex items-center gap-2">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                All Guides
+              </a>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div><!-- end layout-with-toc -->
+  </div>
+</main>
+
+<!-- ════ FOOTER ════ -->
+<footer class="py-16 px-5 border-t border-white/5 mt-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex flex-col items-center gap-6">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 hover:scale-105 transition-all duration-300">
+          <span class="font-mono-tech text-red-600 text-sm font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+      </a>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="font-mono-tech text-sm tracking-widest uppercase">Watch on YouTube</span>
+      </a>
+      <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  (function(){
+    var cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+    var mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+    (function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+    document.querySelectorAll('a,button').forEach(function(el){
+      el.addEventListener('mouseenter',function(){ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(220,38,38,0.8)';});
+      el.addEventListener('mouseleave',function(){ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(220,38,38,0.5)';});
+    });
+  })();
+
+  // Progress bar
+  window.addEventListener('scroll',function(){
+    var st=document.documentElement.scrollTop||document.body.scrollTop;
+    var sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    document.getElementById('progress-bar').style.width=(sh>0?(st/sh)*100:0)+'%';
+  },{passive:true});
+
+  // Navbar scroll
+  window.addEventListener('scroll',function(){
+    var nav=document.getElementById('navbar');
+    if(window.scrollY>20)nav.classList.add('nav-scrolled');
+    else nav.classList.remove('nav-scrolled');
+  },{passive:true});
+
+  // Mobile menu
+  document.getElementById('menu-toggle').addEventListener('click',function(){
+    var menu=document.getElementById('mobile-menu');
+    var oi=document.getElementById('menu-icon-open'),ci=document.getElementById('menu-icon-close');
+    var isOpen=menu.style.maxHeight==='320px';
+    menu.style.maxHeight=isOpen?'0':'320px';
+    menu.style.borderBottom=isOpen?'':'1px solid rgba(127,29,29,0.3)';
+    oi.style.display=isOpen?'':'none'; ci.style.display=isOpen?'none':'';
+  });
+  document.querySelectorAll('.mobile-link').forEach(function(link){
+    link.addEventListener('click',function(){
+      document.getElementById('mobile-menu').style.maxHeight='0';
+      document.getElementById('menu-icon-open').style.display='';
+      document.getElementById('menu-icon-close').style.display='none';
+    });
+  });
+
+  // TOC scroll-active highlight
+  (function(){
+    var ids=['sec-preride','sec-tyre','sec-chain','sec-battery','sec-service','sec-wear','sec-clean','sec-reliability'];
+    var links=document.querySelectorAll('.toc-item');
+    function onScroll(){
+      var fromTop=window.scrollY+120; var active=null;
+      ids.forEach(function(id){var el=document.getElementById(id);if(el&&el.offsetTop<=fromTop)active=id;});
+      links.forEach(function(link){
+        var href=link.getAttribute('href').replace('#','');
+        link.querySelector('.toc-title').style.color=(href===active)?'#dc2626':'';
+      });
+    }
+    window.addEventListener('scroll',onScroll,{passive:true});
+  })();
+</script>
+</body>
+</html>
