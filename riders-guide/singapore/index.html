@@ -119,6 +119,21 @@
     }
 
     /* ── Signal line ── */
+
+    /* ── Breadcrumb / nav arrows ── */
+.breadcrumb {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:0.85rem; color:#555; text-transform:uppercase;
+  letter-spacing:2px; text-decoration:none; margin-bottom:32px;
+  transition:color .2s;
+}
+.breadcrumb:hover { color:#dc2626; }
+.breadcrumb:hover svg { transform:translateX(-3px); }
+.breadcrumb svg { transition:transform .2s; }
+
+
+    
     .signal-line {
       font-family:'Share Tech Mono',monospace;
       font-size:0.68rem; color:rgba(220,38,38,0.45);
@@ -830,18 +845,18 @@
 
           <!-- Nav arrows -->
         <div class="flex items-center justify-between mt-10 pt-6 border-t" style="border-color:rgba(255,255,255,0.06);">
-          <a href="/riders-guide/ownership/" class="breadcrumb">
+          <a href="/riders-guide/ownership/" class="breadcrumb" style="margin-bottom:0;”>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
               <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
             </svg>
             Ownership and Maintenance 
           </a>
-          <a href="/riders-guide/apps/" class="breadcrumb" style="flex-direction:row-reverse;">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="transform:rotate(180deg);">
-              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
-            </svg>
-            Useful Apps
-          </a>
+        <a href="/riders-guide/apps/" class="breadcrumb" style="margin-bottom:0; flex-direction:row-reverse;">
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+    <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+  </svg>
+  Useful Apps
+</a>
         </div>
 
       </div><!-- end main content col -->
