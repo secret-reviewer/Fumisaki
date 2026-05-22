@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="Singapore rider life — practical lessons, observations, and real-world knowledge from 10+ years of riding on Singapore roads. Common mistakes, riding etiquette, touring prep, and more.">
+  <meta name="keywords" content="Singapore motorcycle, rider life Singapore, motorcycle tips Singapore, riding observations Singapore, touring preparation Singapore, riding mistakes Singapore, Secret Reviewer">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Singapore Rider Life — Lessons, Habits & Observations | Secret Reviewer</title>
+  <link rel="canonical" href="https://secret-reviewer.com/riders-guide/singapore/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: {
+        sans: ['Barlow Condensed','sans-serif'],
+        mono: ['"Share Tech Mono"','monospace'],
+        prose: ['"IBM Plex Sans"','sans-serif'],
+      }}}
+    };
+  </script>
+  <style>
+    :root {
+      --red: #dc2626;
+      --red-dim: rgba(220,38,38,0.15);
+      --red-glow: rgba(220,38,38,0.6);
+      --bg: #060606;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: #ececec;
+      font-family: 'Barlow Condensed', sans-serif;
+      margin: 0; overflow-x: hidden; cursor: none; line-height: 1.75;
+    }
+    .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+    .font-prose { font-family: 'IBM Plex Sans', sans-serif; }
+
+    /* ── Cursor ── */
+    #cursor {
+      position:fixed; width:12px; height:12px;
+      background:var(--red); border-radius:50%;
+      pointer-events:none; z-index:99999;
+      transform:translate(-50%,-50%);
+      transition:width .2s, height .2s; mix-blend-mode:screen;
+    }
+    #cursor-ring {
+      position:fixed; width:36px; height:36px;
+      border:1px solid rgba(220,38,38,0.5); border-radius:50%;
+      pointer-events:none; z-index:99998;
+      transform:translate(-50%,-50%);
+      transition:width .2s, height .2s, border-color .2s;
+    }
+
+    /* ── Animations ── */
+    @keyframes scan { from{top:-100%} to{top:100%} }
+    @keyframes fadeSlideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse-red { 0%,100%{box-shadow:0 0 6px rgba(220,38,38,0.3)} 50%{box-shadow:0 0 28px rgba(220,38,38,0.8),0 0 60px rgba(220,38,38,0.25)} }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    @keyframes staticNoise { 0%{opacity:.03} 25%{opacity:.05} 50%{opacity:.02} 75%{opacity:.06} 100%{opacity:.03} }
+    @keyframes glitch-1 { 0%,100%{clip-path:inset(0 0 98% 0);transform:translate(-2px,0)} 20%{clip-path:inset(20% 0 50% 0);transform:translate(2px,0)} 40%{clip-path:inset(60% 0 20% 0);transform:translate(-2px,0)} 60%{clip-path:inset(80% 0 5% 0);transform:translate(2px,0)} 80%{clip-path:inset(40% 0 60% 0);transform:translate(-2px,0)} }
+    @keyframes glitch-2 { 0%,100%{clip-path:inset(50% 0 30% 0);transform:translate(2px,0);color:#00ffff} 25%{clip-path:inset(10% 0 80% 0);transform:translate(-2px,0)} 50%{clip-path:inset(70% 0 10% 0);transform:translate(2px,0);color:var(--red)} 75%{clip-path:inset(30% 0 50% 0);transform:translate(-2px,0)} }
+    @keyframes cardReveal { from{opacity:0;transform:translateY(20px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+    @keyframes barGrow { from{width:0} to{width:var(--bar-w)} }
+
+    .animate-fade-slide-up { animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+    .animate-pulse-red     { animation: pulse-red 2.5s infinite; }
+
+    /* ── CRT ── */
+    body::before {
+      content:""; position:fixed; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);
+      pointer-events:none; z-index:9990;
+    }
+    body::after {
+      content:""; position:fixed; top:-100%; left:0; width:100%; height:100%;
+      background:linear-gradient(rgba(220,38,38,0) 0%,rgba(220,38,38,0.03) 50%,rgba(220,38,38,0) 100%);
+      animation:scan 12s linear infinite; pointer-events:none; z-index:9991;
+    }
+
+    /* ── Progress bar ── */
+    #progress-bar {
+      height:3px;
+      background:linear-gradient(90deg,#7f1d1d,#dc2626,#f87171);
+      box-shadow:0 0 12px rgba(220,38,38,0.9),0 0 24px rgba(220,38,38,0.4);
+      width:0%; transition:width .08s ease-out;
+    }
+
+    /* ── Navbar ── */
+    #navbar { transition:background .4s,border-color .4s; }
+    .nav-scrolled {
+      background:rgba(4,4,4,0.96) !important;
+      border-bottom-color:rgba(127,29,29,0.4) !important;
+      backdrop-filter:blur(20px);
+    }
+
+    /* ── Glitch title ── */
+    .glitch-wrap { position:relative; display:inline-block; }
+    .glitch-wrap::before, .glitch-wrap::after {
+      content:attr(data-text); position:absolute; top:0; left:0; width:100%; height:100%;
+    }
+    .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
+    .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
+
+    /* ── Noise overlay ── */
+    .noise-overlay {
+      position:absolute; inset:0; opacity:.025; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size:128px; animation:staticNoise 4s step-start infinite;
+    }
+
+    /* ── Section rule ── */
+    .section-rule {
+      border:none; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(220,38,38,0.3),transparent);
+      margin:52px 0;
+    }
+
+    /* ── Signal line ── */
+    .signal-line {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.68rem; color:rgba(220,38,38,0.45);
+      letter-spacing:2px; text-transform:uppercase;
+      display:flex; align-items:center; gap:8px; margin-bottom:8px;
+    }
+    .signal-line::before {
+      content:''; display:block; width:24px; height:1px;
+      background:rgba(220,38,38,0.45); flex-shrink:0;
+    }
+
+    /* ── Topic section block ── */
+    .topic-block {
+      position:relative;
+      border:1px solid rgba(220,38,38,0.15);
+      background:rgba(10,10,10,0.85);
+      overflow:hidden;
+      margin-bottom:20px;
+      animation:cardReveal 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .topic-block::before {
+      content:''; position:absolute; top:0; left:0;
+      width:32px; height:32px;
+      border-top:1px solid rgba(220,38,38,0.5);
+      border-left:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .topic-block::after {
+      content:''; position:absolute; bottom:0; right:0;
+      width:32px; height:32px;
+      border-bottom:1px solid rgba(220,38,38,0.5);
+      border-right:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .topic-block-inner { padding:28px 28px 24px; position:relative; z-index:1; }
+    .topic-block .card-bg {
+      position:absolute; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.007) 3px,rgba(220,38,38,0.007) 4px);
+      pointer-events:none;
+    }
+
+    /* ── Topic header ── */
+    .topic-heading {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(1.6rem,4vw,2.2rem);
+      font-weight:900; text-transform:uppercase;
+      color:#fff; letter-spacing:0.02em; line-height:1.1;
+      margin:0 0 16px 0;
+    }
+
+    /* ── Body prose ── */
+    .prose-body {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.97rem; color:#8a8a8a; line-height:1.85;
+    }
+    .prose-body p { margin:0 0 14px 0; }
+    .prose-body p:last-child { margin-bottom:0; }
+    .prose-body strong { color:#d0d0d0; font-weight:600; }
+    .prose-body em { color:#b0b0b0; font-style:italic; }
+
+    /* ── Callout ── */
+    .callout {
+      border-left:2px solid rgba(220,38,38,0.6);
+      background:rgba(220,38,38,0.04);
+      padding:14px 18px;
+      margin:18px 0 0;
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.9rem; color:#999; line-height:1.7;
+      font-style:italic;
+    }
+    .callout strong { color:#f87171; font-style:normal; }
+
+    /* ── SR Take ── */
+    .sr-take {
+      margin-top:18px;
+      border:1px solid rgba(220,38,38,0.25);
+      background:rgba(220,38,38,0.05);
+      padding:14px 18px;
+    }
+    .sr-take-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.6); margin-bottom:6px;
+    }
+    .sr-take p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#bbb; line-height:1.75;
+      margin:0; font-style:italic;
+    }
+
+    /* ── Checklist ── */
+    .checklist { list-style:none; padding:0; margin:14px 0 0; }
+    .checklist li {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#888; line-height:1.7;
+      padding:7px 0 7px 28px; position:relative;
+      border-bottom:1px solid rgba(255,255,255,0.04);
+    }
+    .checklist li:last-child { border-bottom:none; }
+    .checklist li::before {
+      content:''; position:absolute; left:6px; top:14px;
+      width:10px; height:10px;
+      border:1px solid rgba(220,38,38,0.5);
+    }
+    .checklist li strong { color:#d0d0d0; }
+    .checklist li.warn::before { background:rgba(220,38,38,0.25); }
+    .checklist li.ok::before { background:rgba(74,222,128,0.2); border-color:rgba(74,222,128,0.5); }
+
+    /* ── Tag pill ── */
+    .tag-pill {
+      display:inline-block;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#f87171; border:1px solid rgba(220,38,38,0.3);
+      padding:3px 10px; background:rgba(220,38,38,0.05);
+      margin-right:6px; margin-bottom:6px;
+    }
+
+    /* ── Section badge ── */
+    .section-id {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.35); margin-bottom:4px;
+    }
+
+    /* ── TOC sidebar ── */
+    .toc-item {
+      display:flex; align-items:flex-start; gap:10px;
+      padding:10px 8px; border-bottom:1px solid rgba(255,255,255,0.04);
+      text-decoration:none; transition:all .2s;
+      border-left:2px solid transparent; margin-left:-8px;
+    }
+    .toc-item:last-child { border-bottom:none; }
+    .toc-item.active {
+      border-left-color: #dc2626;
+      background: rgba(220,38,38,0.06);
+    }
+    .toc-item.active .toc-num { color: rgba(220,38,38,0.8); }
+    .toc-item.active .toc-title { color: #dc2626; }
+    .toc-num {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.7rem; color:rgba(220,38,38,0.4);
+      letter-spacing:1px; padding-top:2px; flex-shrink:0;
+      transition:color .2s;
+    }
+    .toc-title {
+      font-size:0.95rem; font-weight:700; color:#666;
+      text-transform:uppercase; letter-spacing:0.03em;
+      transition:color .2s;
+    }
+    .toc-item:hover .toc-title { color:var(--red); }
+
+    /* ── Field note ── */
+    .field-note {
+      border-left:2px solid rgba(220,38,38,0.5);
+      padding:14px 18px;
+      margin:18px 0;
+      background:rgba(0,0,0,0.4);
+    }
+    .field-note p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:1rem; color:#aaa; line-height:1.75;
+      font-style:italic; margin:0;
+    }
+
+    /* ── Warn / good pill ── */
+    .warn-pill {
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#fbbf24; border:1px solid rgba(251,191,36,0.3);
+      padding:3px 10px; background:rgba(251,191,36,0.05); margin-bottom:14px;
+    }
+    .good-pill {
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#4ade80; border:1px solid rgba(74,222,128,0.3);
+      padding:3px 10px; background:rgba(74,222,128,0.05); margin-bottom:14px;
+    }
+
+    /* ── Number stat ── */
+    .stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:18px; }
+    @media(max-width:520px){ .stat-grid { grid-template-columns:repeat(2,1fr); } }
+    .stat-cell {
+      border:1px solid rgba(220,38,38,0.12);
+      background:rgba(0,0,0,0.35);
+      padding:16px 14px; text-align:center;
+    }
+    .stat-cell .stat-val {
+      font-family:'Share Tech Mono',monospace;
+      font-size:1.5rem; color:var(--red); line-height:1;
+      margin-bottom:4px;
+    }
+    .stat-cell .stat-label {
+      font-size:0.75rem; color:#555; text-transform:uppercase; letter-spacing:2px;
+    }
+
+    /* ── Accessory card ── */
+    .acc-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px; }
+    @media(max-width:540px){ .acc-grid { grid-template-columns:1fr; } }
+    .acc-card {
+      border:1px solid rgba(255,255,255,0.06);
+      background:rgba(0,0,0,0.3);
+      padding:16px;
+    }
+    .acc-card h4 {
+      font-size:0.95rem; font-weight:900; text-transform:uppercase;
+      color:#ccc; margin:0 0 4px; letter-spacing:0.05em;
+    }
+    .acc-card .acc-price {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.7rem; color:rgba(220,38,38,0.5);
+      letter-spacing:2px; margin-bottom:8px;
+    }
+    .acc-card p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.85rem; color:#666; line-height:1.7; margin:0;
+    }
+    .acc-card .acc-skip {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; color:#f87171; letter-spacing:1px;
+      margin-top:8px; display:block;
+    }
+
+    /* ── Photo spot card ── */
+    .spot-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px; }
+    @media(max-width:540px){ .spot-grid { grid-template-columns:1fr; } }
+    .spot-card {
+      border:1px solid rgba(220,38,38,0.12);
+      background:rgba(0,0,0,0.35);
+      padding:16px;
+      position:relative;
+    }
+    .spot-card::before {
+      content:''; position:absolute; top:0; left:0;
+      width:20px; height:20px;
+      border-top:1px solid rgba(220,38,38,0.4);
+      border-left:1px solid rgba(220,38,38,0.4);
+    }
+    .spot-card h4 {
+      font-size:0.95rem; font-weight:900; text-transform:uppercase;
+      color:#ccc; margin:0 0 4px; letter-spacing:0.05em;
+    }
+    .spot-card .spot-tag {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; color:rgba(74,222,128,0.6);
+      letter-spacing:2px; margin-bottom:8px; display:block;
+    }
+    .spot-card p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.85rem; color:#666; line-height:1.7; margin:0;
+    }
+
+    /* ── Delay utils ── */
+    .delay-1{animation-delay:.05s}.delay-2{animation-delay:.1s}.delay-3{animation-delay:.15s}
+    .delay-4{animation-delay:.2s}.delay-5{animation-delay:.25s}.delay-6{animation-delay:.3s}
+    .delay-7{animation-delay:.35s}.delay-8{animation-delay:.4s}.delay-9{animation-delay:.45s}
+    .delay-10{animation-delay:.5s}
+
+    /* ── Sticky TOC (desktop) ── */
+    @media(min-width:1024px){
+      .layout-with-toc { display:grid; grid-template-columns:1fr 240px; gap:40px; align-items:start; }
+      .toc-sticky { position:sticky; top:80px; }
+    }
+
+    /* ── TOC panel corner brackets ── */
+    .toc-panel {
+      position:relative;
+    }
+    .toc-panel::before {
+      content:''; position:absolute; top:0; left:0;
+      width:32px; height:32px;
+      border-top:1px solid rgba(220,38,38,0.5);
+      border-left:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .toc-panel::after {
+      content:''; position:absolute; bottom:0; right:0;
+      width:32px; height:32px;
+      border-bottom:1px solid rgba(220,38,38,0.5);
+      border-right:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+
+    /* ── Observation item ── */
+    .obs-item {
+      display:flex; gap:14px; align-items:flex-start;
+      padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.04);
+    }
+    .obs-item:last-child { border-bottom:none; }
+    .obs-num {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.75rem; color:rgba(220,38,38,0.4);
+      flex-shrink:0; padding-top:3px; min-width:28px;
+    }
+    .obs-text {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#888; line-height:1.75;
+    }
+    .obs-text strong { color:#d0d0d0; }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="fixed top-0 left-0 w-full z-[9999]">
+  <div id="progress-bar"></div>
+</div>
+
+<!-- ════ NAVBAR ════ -->
+<nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+    <a href="/" class="flex items-center gap-3 group">
+      <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+        <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+      </div>
+      <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+      <a href="/riders-guide/" class="text-red-500 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Rider's Guide</a>
+      <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+      <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+    <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+      <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
+    <div class="flex flex-col px-5 py-4 gap-4">
+      <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+      <a href="/riders-guide/" class="mobile-link text-red-500 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Rider's Guide</a>
+      <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+      <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ MAIN ════ -->
+<main class="pt-28 pb-24 px-5">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 mb-8 font-mono-tech text-xs tracking-widest uppercase" style="color:#444;">
+      <a href="/" class="hover:text-red-500 transition-colors">Home</a>
+      <span>/</span>
+      <a href="/riders-guide/" class="hover:text-red-500 transition-colors">Rider's Guide</a>
+      <span>/</span>
+      <span style="color:rgba(220,38,38,0.5);">Singapore Rider Life</span>
+    </div>
+
+    <!-- ════ PAGE HEADER ════ -->
+    <div class="mb-12 animate-fade-slide-up" style="position:relative;">
+      <div class="noise-overlay"></div>
+      <p class="font-mono-tech text-xs tracking-[0.4em] uppercase mb-4" style="color:rgba(167,139,250,0.6);">// Field Intel RG-002 — Singapore Rider Life & Observations</p>
+      <h1 class="font-black uppercase leading-none tracking-tight text-white mb-2" style="font-size:clamp(2.8rem,9vw,5rem);">
+        <span class="glitch-wrap" data-text="RIDER LIFE">RIDER LIFE</span>
+      </h1>
+      <h2 class="font-black uppercase text-red-600 leading-none tracking-tight mb-5" style="font-size:clamp(1.2rem,3vw,1.8rem);letter-spacing:0.1em;">Singapore</h2>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-widest">
+        <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+        8 SECTIONS // HABITS · MISTAKES · OBSERVATIONS // SINGAPORE-SPECIFIC
+      </p>
+      <p class="mt-5 text-gray-500 text-base leading-relaxed max-w-2xl font-prose" style="font-style:italic;">
+        Not a travel log. Not a gear review. This is the practical knowledge that accumulates after years of riding Singapore roads daily — the patterns, mistakes, habits, and unwritten rules that nobody puts in a brochure.
+      </p>
+    </div>
+
+    <hr class="section-rule" style="margin-top:0;" />
+
+    <!-- ════ LAYOUT ════ -->
+    <div class="layout-with-toc">
+
+      <!-- ── LEFT: Main content ── -->
+      <div>
+
+        <!-- ══ SEC 01: Common Rider Mistakes ══ -->
+        <div id="sec-mistakes" class="topic-block delay-1">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-01</div>
+            <div class="signal-line">Rider Error</div>
+            <h3 class="topic-heading">Common Rider Mistakes</h3>
+            <div class="prose-body">
+              <p>Most mistakes on Singapore roads are not about skill gaps — they are about <strong>bad habits that form early and stick</strong>. The scariest part is how normal they feel once you've been doing them long enough.</p>
+            </div>
+            <ul class="checklist mt-4">
+              <li class="warn"><strong>Braking too late into corners.</strong> Many riders carry too much speed into a bend, then panic-brake mid-corner. Slow before the corner, not in it.</li>
+              <li class="warn"><strong>Fixed lane position.</strong> Riding dead centre of the lane, every time. Predictable to other road users but leaves you no escape space from hazards on either side.</li>
+              <li class="warn"><strong>Not covering the brakes.</strong> Riding with both hands on the throttle-side only. In Singapore traffic, you want fingers on the brake levers constantly.</li>
+              <li class="warn"><strong>Tunnel vision at junctions.</strong> Looking only at the vehicle directly in front. Cars cut from two and three lanes away — scan wide, especially at PIE and CTE entries.</li>
+              <li class="warn"><strong>Overtaking on the left.</strong> Filtering left of a vehicle that's about to turn left, or cutting through the left shoulder near bus stops. High risk, low reward.</li>
+              <li class="warn"><strong>Riding too close to lorry rear bumpers.</strong> Road debris, sudden braking, liquid spills. Give lorries significantly more space than cars — they hide more surprises.</li>
+              <li class="warn"><strong>Over-reliance on mirrors, under-use of head checks.</strong> Mirrors have dead zones. A quick head check before any lane change is a habit worth building early.</li>
+              <li class="warn"><strong>Rushing the warm-up.</strong> Jumping on a cold bike and immediately blasting onto the expressway. Tyres need heat, especially in the morning.</li>
+            </ul>
+            <div class="callout">
+              <strong>Common pattern:</strong> Most near-misses happen not on expressways but at everyday junctions and carpark exits — the places where familiarity breeds inattention.
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SEC 02: Things Riders Learn Over Time ══ -->
+        <div id="sec-learn" class="topic-block delay-2">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-02</div>
+            <div class="signal-line">Experience Gained</div>
+            <h3 class="topic-heading">Things Riders Learn Over Time</h3>
+            <div class="prose-body">
+              <p>Nobody tells you these things directly. They come from mileage, from close calls, from watching other riders make the same mistakes, and from quietly adjusting your own habits over the years.</p>
+            </div>
+            <ul class="checklist mt-4">
+              <li class="ok"><strong>Smooth beats fast.</strong> The rider who rides smoothly — consistent throttle, no jerky inputs — always feels more in control than someone who is fast and erratic. Smooth arrives safely too.</li>
+              <li class="ok"><strong>Your eyes lead your bike.</strong> Where you look is where you go. Looking at the kerb when cornering takes you toward the kerb. Look through the corner, to the exit.</li>
+              <li class="ok"><strong>Anticipation is the real skill.</strong> Reading three to four vehicles ahead, watching for brake light patterns before they reach the car in front of you. This is what separates experienced riders.</li>
+              <li class="ok"><strong>The road changes after rain.</strong> First 15 minutes after rain begins — particularly at zebra crossings, road markings, drain covers — are the most slippery. Many riders learn this from a slide, not a manual.</li>
+              <li class="ok"><strong>Gear matters more at low speeds.</strong> A crash at 60km/h on the expressway is dramatic. A low-speed carpark tip-over while unclipping your helmet can still cause serious wrist and ankle injuries.</li>
+              <li class="ok"><strong>Fatigue is cumulative.</strong> You do not feel tired until you stop. On long rides, micro-breaks every 90 minutes are worth more than pushing through to the destination.</li>
+              <li class="ok"><strong>Tyre condition is everything.</strong> Worn tyres on Singapore's wet roads in the rain are the closest thing to riding on ice you will find here. Check wear indicators regularly.</li>
+              <li class="ok"><strong>Other riders are not your competition.</strong> The one blasting past you on the AYE is not winning anything. Nobody medals for getting to Tuas early.</li>
+            </ul>
+            <div class="sr-take">
+              <div class="sr-take-label">// Field observation</div>
+              <p>The riders who last longest on Singapore roads are almost never the fastest. They're the ones who read traffic well, stay relaxed, and have quietly removed ego from the equation.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SEC 03: Money Wasted on Accessories ══ -->
+        <div id="sec-accessories" class="topic-block delay-3">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-03</div>
+            <div class="signal-line">Spending Patterns</div>
+            <h3 class="topic-heading">Money Wasted On Unnecessary Accessories</h3>
+            <div class="prose-body">
+              <p>New riders are the best customers accessory shops have ever seen. The enthusiasm is real — and so is the buyer's remorse. These are the common buys that end up at the back of the cabinet within a few months. All items listed are <strong>genuinely affordable</strong> options where a budget-friendly good version exists — the point is that they still don't get used.</p>
+            </div>
+            <div class="acc-grid">
+              <div class="acc-card">
+                <h4>Handlebar End Mirrors</h4>
+                <div class="acc-price">~$30–60 / pair</div>
+                <p>Looks slick on Instagram. Vibrates to uselessness at speed on most naked bikes. Stock mirrors on most modern bikes are already well positioned.</p>
+                <span class="acc-skip">// Usually removed within 2 months</span>
+              </div>
+              <div class="acc-card">
+                <h4>Decorative Tank Pads</h4>
+                <div class="acc-price">~$10–30</div>
+                <p>The 3D gel "skull" or logo tank pad that peels, bubbles in heat, and leaves adhesive residue. A plain clear tank pad protects paint and stays invisible.</p>
+                <span class="acc-skip">// Better: clear Gyeon or similar protection</span>
+              </div>
+              <div class="acc-card">
+                <h4>Cheap Bluetooth Intercom</h4>
+                <div class="acc-price">~$30–60</div>
+                <p>The no-brand helmet intercom with 200m range and audio that cuts out the moment a lorry passes. Either buy Cardo Freecom or Sena, or skip it entirely.</p>
+                <span class="acc-skip">// Dead within 3 rides</span>
+              </div>
+              <div class="acc-card">
+                <h4>LED Strip Underglow</h4>
+                <div class="acc-price">~$20–50</div>
+                <p>It looks cool on YouTube builds. In Singapore, it draws LTA attention and does nothing for visibility to other drivers where it actually matters — your rear profile.</p>
+                <span class="acc-skip">// LTA compliance risk</span>
+              </div>
+              <div class="acc-card">
+                <h4>Phone Mount (cheap)</h4>
+                <div class="acc-price">~$8–20</div>
+                <p>Vibration kills phone cameras and loosens cheap mounts. A Quad Lock or SP Connect is worth the price. The $10 grip-clamp from Shopee is not.</p>
+                <span class="acc-skip">// Lost a phone at CTE? You'll know.</span>
+              </div>
+              <div class="acc-card">
+                <h4>Tinted Visor (non-certified)</h4>
+                <div class="acc-price">~$15–40</div>
+                <p>The ultra-dark tint that looks aggressive in daylight and becomes genuinely dangerous at dusk and in tunnels. Buy a proper Pinlock-compatible tinted visor from your helmet brand.</p>
+                <span class="acc-skip">// Dangerous after 6pm</span>
+              </div>
+            </div>
+            <div class="callout mt-4">
+              <strong>The rule:</strong> if you're buying it because it looks good in a photo, wait two weeks. If you still want it, the purchase is probably fine. If you've forgotten about it, you just saved yourself the money.
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SEC 04: Unsafe Riding Habits ══ -->
+        <div id="sec-unsafe" class="topic-block delay-4">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-04</div>
+            <div class="signal-line">Safety Critical</div>
+            <h3 class="topic-heading">Unsafe Riding Habits</h3>
+            <div class="prose-body">
+              <p>These are not dramatic stunts. They are everyday habits that feel normal until they cause an accident. The gradual drift into these behaviours is the danger — nobody starts riding planning to tailgate or skip helmet checks.</p>
+            </div>
+            <ul class="checklist mt-2">
+              <li class="warn"><strong>Tailgating.</strong> The most common dangerous habit on Singapore roads. Following a car at 3–4 bike lengths at 80km/h is not a safe gap — it is a collision waiting for a trigger. At 80km/h, your reaction + braking distance is significantly longer than most riders think. Double your gap.</li>
+              <li class="warn"><strong>Weaving without checking.</strong> Aggressive lane changes between vehicles on expressways without checking mirrors and blind spots first. Other bikes filter too — you may be invisible to each other until the last second.</li>
+              <li class="warn"><strong>Riding in vehicle blind spots.</strong> Parking yourself in the blind spot of a lorry or bus for extended periods. Either accelerate past or drop back — never sit there and hope they check.</li>
+              <li class="warn"><strong>Phone use at red lights.</strong> A habit that makes you the last to see the light change and the first to be distracted when it does. Traffic conditions change within the count.</li>
+              <li class="warn"><strong>Skipping the helmet strap click.</strong> Helmet on, strap undone — particularly common for short carpark-to-carpark hops. A fall at low speed with an unfastened helmet is still a head injury.</li>
+              <li class="warn"><strong>Riding fatigued on expressways.</strong> The monotony of SLE and TPE stretches can induce microsleep. If your eyes are heavy, take the next exit, stop at a 7-Eleven, and rest.</li>
+              <li class="warn"><strong>Filtering at speed through stationary traffic.</strong> Slow-speed filtering through stationary lanes is generally accepted. Maintaining speed through a gap while traffic stops is a different and significantly more dangerous act — car doors, pedestrians, sudden lane changes.</li>
+            </ul>
+            <div class="field-note">
+              <p>Tailgating feels fast. It feels like you're keeping up, keeping pace, staying aggressive. What it actually is: giving up all your reaction margin so you can look like you're in a hurry.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SEC 05: Singapore Riding Observations ══ -->
+        <div id="sec-observations" class="topic-block delay-5">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-05</div>
+            <div class="signal-line">Field Notes</div>
+            <h3 class="topic-heading">Singapore Riding Observations</h3>
+            <div class="prose-body">
+              <p>Things you notice after enough time on Singapore roads. Not rules — observations. The kind of pattern recognition that comes from repetition.</p>
+            </div>
+            <div class="mt-4">
+              <div class="obs-item">
+                <span class="obs-num">01</span>
+                <div class="obs-text"><strong>Morning peak hour on the CTE is a study in patience.</strong> Heavy vehicle lane discipline breaks down completely between 7:30 and 9am. Filtering requires constant anticipation of sudden lateral moves.</div>
+              </div>
+              <div class="obs-item">
+                <span class="obs-num">02</span>
+                <div class="obs-text"><strong>Drain covers are the enemy after rain.</strong> The metal gratings near slip roads and at junctions go from harmless to ice-like in the first few minutes of rainfall. Approach them in as upright a position as possible.</div>
+              </div>
+              <div class="obs-item">
+                <span class="obs-num">03</span>
+                <div class="obs-text"><strong>Riders tend to cluster near Kranji, Sembawang, and Woodlands on weekend mornings.</strong> These corridors get busy with group rides heading north. Ride at your own pace — don't be dragged into someone else's tempo.</div>
+              </div>
+              <div class="obs-item">
+                <span class="obs-num">04</span>
+                <div class="obs-text"><strong>ERP gantries cause sudden braking.</strong> Drivers who didn't top up their CashCard. It happens every time. Leave extra space as you approach gantries, especially unfamiliar routes.</div>
+              </div>
+              <div class="obs-item">
+                <span class="obs-num">05</span>
+                <div class="obs-text"><strong>Private-hire cars are a different animal.</strong> Navigation-dependent drivers who make last-second turns, unexpected stops, and unpredictable speed changes. Give them extra buffer — they're not thinking about you.</div>
+              </div>
+              <div class="obs-item">
+                <span class="obs-num">06</span>
+                <div class="obs-text"><strong>Buses give no quarter at bus bays.</strong> Once a bus starts indicating to re-enter traffic, it is moving regardless. Anticipate it and let it in. Fighting a 12-tonne vehicle is not a battle worth entering.</div>
+              </div>
+              <div class="obs-item">
+                <span class="obs-num">07</span>
+                <div class="obs-text"><strong>The Tuas and Woodlands checkpoints have different energy levels.</strong> Causeway mornings mean heavy congestion and impatient filtering. The heat, exhaust fumes, and stop-start nature make it genuinely tiring. Hydrate before you queue.</div>
+              </div>
+              <div class="obs-item">
+                <span class="obs-num">08</span>
+                <div class="obs-text"><strong>Parking lots at hawker centres are their own ecosystem.</strong> Bikes parked in every available space, pedestrians walking in all directions, vans reversing without looking. Ride slowly, park decisively.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SEC 06: Touring Preparation Mistakes ══ -->
+        <div id="sec-touring" class="topic-block delay-6">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-06</div>
+            <div class="signal-line">Pre-Departure Errors</div>
+            <h3 class="topic-heading">Touring Preparation Mistakes</h3>
+            <div class="prose-body">
+              <p>The enthusiasm before a Malaysia or Thailand tour makes it easy to over-prepare in the wrong areas and completely miss the important ones. These are the most common preparation mistakes made before long-distance rides.</p>
+            </div>
+            <ul class="checklist mt-3">
+              <li class="warn"><strong>Overpacking.</strong> The number one mistake. Riders stuff every available space with "just in case" items — spare clothing for seven days on a three-day ride, full toolkits, extra helmets, rain gear for every possible scenario. Every additional kilogram shifts the bike's handling and increases fatigue. Pack for the actual trip, not the imaginary worst case.</li>
+              <li class="warn"><strong>Not checking tyre condition before crossing the Causeway.</strong> Discovering your tyres are at the wear indicator in Johor Bahru is expensive and stressful. Check tread depth at least three days before departure — not the morning of.</li>
+              <li class="warn"><strong>Ignoring chain tension and lubrication.</strong> A dry, loose chain is a liability on long touring distances. Lube and adjust before you leave — not after 300km in Ipoh when it's already slapping.</li>
+              <li class="warn"><strong>No local cash before departure.</strong> Crossing into Malaysia with nothing but a Visa card. Many roadside stalls, petrol stations, and toll booths in rural areas are still cash-heavy. Get RM before you leave.</li>
+              <li class="warn"><strong>Not planning fuel stops on unfamiliar routes.</strong> Singapore-conditioned riders used to 5km between petrol stations get caught out on Malaysian highways where the next station can be 80km away. Know your tank range, check the route.</li>
+              <li class="warn"><strong>Group ride pace mismatches.</strong> Forming a group without agreeing on pace and rest stop intervals. One fast rider pulls the group faster than the slower riders are comfortable with. Agree on the slowest rider setting the pace before you leave.</li>
+              <li class="warn"><strong>Forgetting to inform your insurer of overseas travel.</strong> Some Singapore motorcycle insurance policies require notification or endorsement for overseas riding. Check before crossing, not after an incident.</li>
+              <li class="warn"><strong>No emergency contact and itinerary left with someone at home.</strong> Basic but consistently skipped. Someone who is not on the ride should know your route, expected stops, and check-in schedule.</li>
+            </ul>
+            <div class="sr-take">
+              <div class="sr-take-label">// Touring reality</div>
+              <p>The best-prepared touring riders are almost always the ones who have been caught out before. One experience riding 400km with a poorly adjusted chain or a bloated top box handles more future preparation lessons than any checklist.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SEC 07: Riding Etiquette & Awareness ══ -->
+        <div id="sec-etiquette" class="topic-block delay-7">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-07</div>
+            <div class="signal-line">Unwritten Rules</div>
+            <h3 class="topic-heading">Riding Etiquette & Awareness</h3>
+            <div class="prose-body">
+              <p>The unwritten code between riders. Most of this is not taught anywhere — it develops through time on the road, watching experienced riders, and understanding that the motorcycle community is small enough that what you do reflects on everyone who rides.</p>
+            </div>
+            <ul class="checklist mt-3">
+              <li class="ok"><strong>Give way when a faster rider is behind you.</strong> If a rider is closing on you quickly and you are not going to match their pace, move to the left and let them through. This is not about ego — it is about not being the reason someone makes an impatient, risky overtake. The road is shared. If someone is clearly faster than you on that day, that stretch, that mood — let them through cleanly.</li>
+              <li class="ok"><strong>The nod or wave.</strong> Acknowledging a passing rider going the opposite direction. It is not mandatory, but it is a gesture that means something quiet. Not all riders do it — but the ones who do have usually been doing it for a while.</li>
+              <li class="ok"><strong>Help a stopped rider.</strong> If you see a bike pulled to the shoulder with the rider standing next to it, slow down and check if they need assistance. A quick ask costs nothing.</li>
+              <li class="ok"><strong>Headlight flash for a camera ahead.</strong> On Malaysian and Thai roads especially — flash your headlight to warn riders behind you of a speed trap or road hazard. It is a shared courtesy.</li>
+              <li class="ok"><strong>Don't pressure less-experienced riders in a group.</strong> If you are the faster, more experienced rider in a group, riding at the back and protecting the less experienced riders at front is the right position — not blasting to the front and waiting impatiently at every stop.</li>
+              <li class="ok"><strong>Park without blocking other bikes' exits.</strong> Particularly in tight motorcycle bays. Your convenience should not trap someone else's bike. If space is tight, park so the person behind you can still roll out.</li>
+              <li class="ok"><strong>No unnecessary revving in quiet areas.</strong> Carparks at midnight, residential areas, hospital zones. The bike sounds good to you — to everyone within 200 metres, it is noise pollution.</li>
+            </ul>
+            <div class="field-note">
+              <p>A faster rider behind you is not an insult to your riding. Blocking them is. Give way, let them through — they'll be gone in seconds. That's not weakness, that's awareness.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SEC 08: Things New Riders Often Overlook ══ -->
+        <div id="sec-overlook" class="topic-block delay-8">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-002-08</div>
+            <div class="signal-line">Commonly Missed</div>
+            <h3 class="topic-heading">Things New Riders Often Overlook</h3>
+            <div class="prose-body">
+              <p>Not obvious mistakes — just gaps. Things that slip through because nobody thought to mention them, and new riders only discover them by experience or by asking the right person at the right time.</p>
+            </div>
+
+            <!-- Parking sub-section -->
+            <div class="mt-4 mb-5" style="border:1px solid rgba(220,38,38,0.15); padding:20px; background:rgba(0,0,0,0.3);">
+              <div class="font-mono-tech text-xs tracking-widest uppercase mb-3" style="color:rgba(220,38,38,0.5);">// Parking Properly</div>
+              <div class="prose-body">
+                <p><strong>Side stand parking:</strong> When parking on a side stand in a standard marked lot, angle the bike so the front wheel is <strong>slightly to the right of centre</strong>. The side stand leans the bike to the left — if you park perfectly centred or leaning left, the bike can look like it's falling and may make it difficult to retrieve in a tight bay. A slight rightward offset with the stand down keeps the lean natural and stable.</p>
+                <p><strong>Main stand parking:</strong> The main stand is balanced — park <strong>at the centre of the lot</strong>, perpendicular to the bay lines. A main stand bike that's parked crooked is harder to roll off and risks touching neighbouring bikes when they enter or exit.</p>
+                <p><strong>Slope awareness:</strong> On any incline, engage first gear (not just main stand) and turn the front wheel toward the kerb for extra security. A gust of wind, a passing lorry, or an overzealous carpark cleaner can tip an unsecured bike on a slope.</p>
+              </div>
+            </div>
+
+            <ul class="checklist">
+              <li><strong>Tyre cold pressure vs warm pressure.</strong> Check pressure in the morning before riding — not after. Tyres expand when hot and give a falsely high reading after a ride. Most manufacturers quote cold pressure.</li>
+              <li><strong>Where your bike's kill switch actually is.</strong> It sounds obvious. In a panic stop or stall, many new riders reach for the ignition key instead of the kill switch. Know the controls without looking.</li>
+              <li><strong>Brake and clutch lever position.</strong> The stock lever angle suits the average hand. Adjust lever distance and angle for your grip size — particularly important in stop-start city traffic where lever reach affects fatigue over time.</li>
+              <li><strong>Helmet fit degrades over time.</strong> Foam compresses with use. A helmet that felt snug at purchase may feel noticeably looser after 18 months of regular wear. Recheck fit periodically, and replace helmets after any significant impact.</li>
+              <li><strong>The value of riding in rain early.</strong> Deliberately riding in light rain in a safe area — not avoiding it forever — gives you calibrated understanding of how your bike behaves on wet roads. Riders who only ever wait for dry days are unprepared when they get caught.</li>
+              <li><strong>Keeping a basic maintenance log.</strong> Oil change date, tyre swap date, chain lube frequency. It takes five minutes to note down after a service and saves significant guesswork six months later.</li>
+            </ul>
+
+            <!-- Enjoy the ride sub-section -->
+            <div class="mt-5" style="border:1px solid rgba(74,222,128,0.15); background:rgba(74,222,128,0.03); padding:20px;">
+              <div class="font-mono-tech text-xs tracking-widest uppercase mb-3" style="color:rgba(74,222,128,0.4);">// Enjoy The Ride — Singapore Photo Spots</div>
+              <div class="prose-body">
+                <p>Singapore is small — but it has more good motorcycle photo locations than most riders bother to find. Part of rider life is finding your own spots and making the ride the point, not just the destination.</p>
+              </div>
+              <div class="spot-grid">
+                <div class="spot-card">
+                  <h4>Gardens by the Bay (Marina)</h4>
+                  <span class="spot-tag">// City backdrop · Golden hour</span>
+                  <p>The Supertree Grove as a backdrop at dusk. Empty early morning on weekends before the crowds arrive. The Dragonfly Bridge walkway gives great framing angles.</p>
+                </div>
+                <div class="spot-card">
+                  <h4>Coney Island / Punggol Waterway</h4>
+                  <span class="spot-tag">// Nature contrast · Weekend morning</span>
+                  <p>A bike against the reservoir backdrop at Punggol is one of the few genuinely non-urban shots available in Singapore. Arrive before 7:30am for clear space.</p>
+                </div>
+                <div class="spot-card">
+                  <h4>Old Upper Thomson Road</h4>
+                  <span class="spot-tag">// Tree canopy · Ride + photo</span>
+                  <p>The stretch of canopy road near the old Bishan junction. Low traffic on weekday mornings, good light filtering through, and one of the few tree-lined roads left in Singapore.</p>
+                </div>
+                <div class="spot-card">
+                  <h4>Jurong Lake District (Taman Jurong area)</h4>
+                  <span class="spot-tag">// Industrial + lake contrast</span>
+                  <p>Industrial environment with waterway views. A different visual language from the usual urban shots. Works well with darker, more moody bike aesthetics.</p>
+                </div>
+                <div class="spot-card">
+                  <h4>Changi Beach Park / Tanah Merah</h4>
+                  <span class="spot-tag">// Coastal · Runway backdrop</span>
+                  <p>The eastern stretch with Changi Airport approach paths overhead. Coastal light, occasional low-flying aircraft, and significantly less traffic than the west side.</p>
+                </div>
+                <div class="spot-card">
+                  <h4>Henderson Waves (Harbourfront)</h4>
+                  <span class="spot-tag">// Architecture contrast · Night shooting</span>
+                  <p>Park the bike at the lower level, walk up for elevated shots looking back down at the city. The Telok Blangah area has good road curves for riding shots too.</p>
+                </div>
+              </div>
+              <div class="callout mt-4">
+                Singapore is 728 km² — you will find the same five roads boring within a year if you don't deliberately go looking. The island rewards the rider who explores slowly, not the one who blasts through familiar routes on repeat.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div><!-- end main content col -->
+
+      <!-- ── RIGHT: Sticky TOC ── -->
+      <aside class="toc-sticky hidden lg:block">
+        <div style="position:relative; border:1px solid rgba(220,38,38,0.15); background:rgba(10,10,10,0.9); padding:20px;">
+          <!-- corner brackets -->
+          <div style="position:absolute;top:0;left:0;width:32px;height:32px;border-top:1px solid rgba(220,38,38,0.5);border-left:1px solid rgba(220,38,38,0.5);pointer-events:none;z-index:2;"></div>
+          <div style="position:absolute;bottom:0;right:0;width:32px;height:32px;border-bottom:1px solid rgba(220,38,38,0.5);border-right:1px solid rgba(220,38,38,0.5);pointer-events:none;z-index:2;"></div>
+          <div class="card-bg" style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.007) 3px,rgba(220,38,38,0.007) 4px);"></div>
+          <div class="noise-overlay"></div>
+          <div class="relative z-10">
+            <p class="font-mono-tech text-xs tracking-[3px] uppercase mb-4" style="color:rgba(220,38,38,0.4);">// Contents</p>
+            <nav>
+              <a href="#sec-mistakes" class="toc-item">
+                <span class="toc-num">01</span>
+                <span class="toc-title">Common Mistakes</span>
+              </a>
+              <a href="#sec-learn" class="toc-item">
+                <span class="toc-num">02</span>
+                <span class="toc-title">Lessons Over Time</span>
+              </a>
+              <a href="#sec-accessories" class="toc-item">
+                <span class="toc-num">03</span>
+                <span class="toc-title">Wasted Accessories</span>
+              </a>
+              <a href="#sec-unsafe" class="toc-item">
+                <span class="toc-num">04</span>
+                <span class="toc-title">Unsafe Habits</span>
+              </a>
+              <a href="#sec-observations" class="toc-item">
+                <span class="toc-num">05</span>
+                <span class="toc-title">SG Observations</span>
+              </a>
+              <a href="#sec-touring" class="toc-item">
+                <span class="toc-num">06</span>
+                <span class="toc-title">Touring Prep Mistakes</span>
+              </a>
+              <a href="#sec-etiquette" class="toc-item">
+                <span class="toc-num">07</span>
+                <span class="toc-title">Riding Etiquette</span>
+              </a>
+              <a href="#sec-overlook" class="toc-item">
+                <span class="toc-num">08</span>
+                <span class="toc-title">Often Overlooked</span>
+              </a>
+            </nav>
+            <div class="mt-5 pt-5 border-t" style="border-color:rgba(255,255,255,0.05);">
+              <a href="/riders-guide/" class="font-mono-tech text-xs tracking-widest uppercase text-gray-600 hover:text-red-500 transition-colors flex items-center gap-2">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                All Guides
+              </a>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div><!-- end layout-with-toc -->
+
+  </div>
+</main>
+
+<!-- ════ FOOTER ════ -->
+<footer class="py-16 px-5 border-t border-white/5 mt-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex flex-col items-center gap-6">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 hover:scale-105 transition-all duration-300">
+          <span class="font-mono-tech text-red-600 text-sm font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+      </a>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="font-mono-tech text-sm tracking-widest uppercase">Watch on YouTube</span>
+      </a>
+      <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  (function(){
+    var cursor=document.getElementById('cursor'), ring=document.getElementById('cursor-ring');
+    var mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+    (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+    document.querySelectorAll('a,button').forEach(function(el){
+      el.addEventListener('mouseenter',function(){ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(220,38,38,0.8)';});
+      el.addEventListener('mouseleave',function(){ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(220,38,38,0.5)';});
+    });
+  })();
+
+  // Progress bar
+  window.addEventListener('scroll',function(){
+    var st=document.documentElement.scrollTop||document.body.scrollTop;
+    var sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    document.getElementById('progress-bar').style.width=(sh>0?(st/sh)*100:0)+'%';
+  },{passive:true});
+
+  // Navbar scroll
+  window.addEventListener('scroll',function(){
+    var nav=document.getElementById('navbar');
+    if(window.scrollY>20)nav.classList.add('nav-scrolled');
+    else nav.classList.remove('nav-scrolled');
+  },{passive:true});
+
+  // Mobile menu
+  document.getElementById('menu-toggle').addEventListener('click',function(){
+    var menu=document.getElementById('mobile-menu');
+    var openIcon=document.getElementById('menu-icon-open');
+    var closeIcon=document.getElementById('menu-icon-close');
+    var isOpen=menu.style.maxHeight==='320px';
+    menu.style.maxHeight=isOpen?'0':'320px';
+    menu.style.borderBottom=isOpen?'':'1px solid rgba(127,29,29,0.3)';
+    openIcon.style.display=isOpen?'':'none';
+    closeIcon.style.display=isOpen?'none':'';
+  });
+  document.querySelectorAll('.mobile-link').forEach(function(link){
+    link.addEventListener('click',function(){
+      document.getElementById('mobile-menu').style.maxHeight='0';
+      document.getElementById('menu-icon-open').style.display='';
+      document.getElementById('menu-icon-close').style.display='none';
+    });
+  });
+
+  // TOC active highlight on scroll
+  (function(){
+    var sections = ['sec-mistakes','sec-learn','sec-accessories','sec-unsafe','sec-observations','sec-touring','sec-etiquette','sec-overlook'];
+    var tocLinks = document.querySelectorAll('.toc-item');
+    function onScroll(){
+      var fromTop = window.scrollY + 120;
+      var active = null;
+      sections.forEach(function(id){
+        var el = document.getElementById(id);
+        if(el && el.offsetTop <= fromTop) active = id;
+      });
+      tocLinks.forEach(function(link){
+        var href = link.getAttribute('href').replace('#','');
+        if(href === active){
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  })();
+</script>
+</body>
+</html>
