@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="Useful mobile apps and digital tools for motorcycle riders in Singapore and beyond. Navigation, weather, fuel tracking, safety, touring planning and more — practical tools that actually get used on the road.">
+  <meta name="keywords" content="motorcycle apps Singapore, rider apps, Waze Malaysia, touring apps motorcycle, TPMS app, YouTrip overseas, motorcycle navigation, Secret Reviewer">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rider Apps & Digital Tools — What Actually Gets Used | Secret Reviewer</title>
+  <link rel="canonical" href="https://secret-reviewer.com/riders-guide/apps/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: {
+        sans: ['Barlow Condensed','sans-serif'],
+        mono: ['"Share Tech Mono"','monospace'],
+        prose: ['"IBM Plex Sans"','sans-serif'],
+      }}}
+    };
+  </script>
+  <style>
+    :root {
+      --red: #dc2626;
+      --red-dim: rgba(220,38,38,0.15);
+      --red-glow: rgba(220,38,38,0.6);
+      --bg: #060606;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: #ececec;
+      font-family: 'Barlow Condensed', sans-serif;
+      margin: 0; overflow-x: hidden; cursor: none; line-height: 1.75;
+    }
+    .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+    .font-prose { font-family: 'IBM Plex Sans', sans-serif; }
+
+    /* ── Cursor ── */
+    #cursor {
+      position:fixed; width:12px; height:12px;
+      background:var(--red); border-radius:50%;
+      pointer-events:none; z-index:99999;
+      transform:translate(-50%,-50%);
+      transition:width .2s, height .2s; mix-blend-mode:screen;
+    }
+    #cursor-ring {
+      position:fixed; width:36px; height:36px;
+      border:1px solid rgba(220,38,38,0.5); border-radius:50%;
+      pointer-events:none; z-index:99998;
+      transform:translate(-50%,-50%);
+      transition:width .2s, height .2s, border-color .2s;
+    }
+
+    /* ── Animations ── */
+    @keyframes scan { from{top:-100%} to{top:100%} }
+    @keyframes fadeSlideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse-red { 0%,100%{box-shadow:0 0 6px rgba(220,38,38,0.3)} 50%{box-shadow:0 0 28px rgba(220,38,38,0.8),0 0 60px rgba(220,38,38,0.25)} }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    @keyframes staticNoise { 0%{opacity:.03} 25%{opacity:.05} 50%{opacity:.02} 75%{opacity:.06} 100%{opacity:.03} }
+    @keyframes glitch-1 { 0%,100%{clip-path:inset(0 0 98% 0);transform:translate(-2px,0)} 20%{clip-path:inset(20% 0 50% 0);transform:translate(2px,0)} 40%{clip-path:inset(60% 0 20% 0);transform:translate(-2px,0)} 60%{clip-path:inset(80% 0 5% 0);transform:translate(2px,0)} 80%{clip-path:inset(40% 0 60% 0);transform:translate(-2px,0)} }
+    @keyframes glitch-2 { 0%,100%{clip-path:inset(50% 0 30% 0);transform:translate(2px,0);color:#00ffff} 25%{clip-path:inset(10% 0 80% 0);transform:translate(-2px,0)} 50%{clip-path:inset(70% 0 10% 0);transform:translate(2px,0);color:var(--red)} 75%{clip-path:inset(30% 0 50% 0);transform:translate(-2px,0)} }
+    @keyframes cardReveal { from{opacity:0;transform:translateY(20px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+
+    .animate-fade-slide-up { animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+    .animate-pulse-red     { animation: pulse-red 2.5s infinite; }
+
+    /* ── CRT ── */
+    body::before {
+      content:""; position:fixed; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);
+      pointer-events:none; z-index:9990;
+    }
+    body::after {
+      content:""; position:fixed; top:-100%; left:0; width:100%; height:100%;
+      background:linear-gradient(rgba(220,38,38,0) 0%,rgba(220,38,38,0.03) 50%,rgba(220,38,38,0) 100%);
+      animation:scan 12s linear infinite; pointer-events:none; z-index:9991;
+    }
+
+    /* ── Progress bar ── */
+    #progress-bar {
+      height:3px;
+      background:linear-gradient(90deg,#7f1d1d,#dc2626,#f87171);
+      box-shadow:0 0 12px rgba(220,38,38,0.9),0 0 24px rgba(220,38,38,0.4);
+      width:0%; transition:width .08s ease-out;
+    }
+
+    /* ── Navbar ── */
+    #navbar { transition:background .4s,border-color .4s; }
+    .nav-scrolled {
+      background:rgba(4,4,4,0.96) !important;
+      border-bottom-color:rgba(127,29,29,0.4) !important;
+      backdrop-filter:blur(20px);
+    }
+
+    /* ── Glitch title ── */
+    .glitch-wrap { position:relative; display:inline-block; }
+    .glitch-wrap::before, .glitch-wrap::after {
+      content:attr(data-text); position:absolute; top:0; left:0; width:100%; height:100%;
+    }
+    .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
+    .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
+
+    /* ── Noise overlay ── */
+    .noise-overlay {
+      position:absolute; inset:0; opacity:.025; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size:128px; animation:staticNoise 4s step-start infinite;
+    }
+
+    /* ── Section rule ── */
+    .section-rule {
+      border:none; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(220,38,38,0.3),transparent);
+      margin:52px 0;
+    }
+
+    /* ── Signal line ── */
+    .signal-line {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.68rem; color:rgba(220,38,38,0.45);
+      letter-spacing:2px; text-transform:uppercase;
+      display:flex; align-items:center; gap:8px; margin-bottom:8px;
+    }
+    .signal-line::before {
+      content:''; display:block; width:24px; height:1px;
+      background:rgba(220,38,38,0.45); flex-shrink:0;
+    }
+
+    /* ── Topic section block ── */
+    .topic-block {
+      position:relative;
+      border:1px solid rgba(220,38,38,0.15);
+      background:rgba(10,10,10,0.85);
+      overflow:hidden;
+      margin-bottom:20px;
+      animation:cardReveal 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .topic-block::before {
+      content:''; position:absolute; top:0; left:0;
+      width:32px; height:32px;
+      border-top:1px solid rgba(220,38,38,0.5);
+      border-left:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .topic-block::after {
+      content:''; position:absolute; bottom:0; right:0;
+      width:32px; height:32px;
+      border-bottom:1px solid rgba(220,38,38,0.5);
+      border-right:1px solid rgba(220,38,38,0.5);
+      pointer-events:none; z-index:2;
+    }
+    .topic-block-inner { padding:28px 28px 24px; position:relative; z-index:1; }
+    .topic-block .card-bg {
+      position:absolute; inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.007) 3px,rgba(220,38,38,0.007) 4px);
+      pointer-events:none;
+    }
+
+    /* ── Topic heading ── */
+    .topic-heading {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(1.6rem,4vw,2.2rem);
+      font-weight:900; text-transform:uppercase;
+      color:#fff; letter-spacing:0.02em; line-height:1.1;
+      margin:0 0 16px 0;
+    }
+
+    /* ── Body prose ── */
+    .prose-body {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.97rem; color:#8a8a8a; line-height:1.85;
+    }
+    .prose-body p { margin:0 0 14px 0; }
+    .prose-body p:last-child { margin-bottom:0; }
+    .prose-body strong { color:#d0d0d0; font-weight:600; }
+    .prose-body em { color:#b0b0b0; font-style:italic; }
+
+    /* ── Callout ── */
+    .callout {
+      border-left:2px solid rgba(220,38,38,0.6);
+      background:rgba(220,38,38,0.04);
+      padding:14px 18px;
+      margin:18px 0 0;
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.9rem; color:#999; line-height:1.7;
+      font-style:italic;
+    }
+    .callout strong { color:#f87171; font-style:normal; }
+
+    /* ── SR Take ── */
+    .sr-take {
+      margin-top:18px;
+      border:1px solid rgba(220,38,38,0.25);
+      background:rgba(220,38,38,0.05);
+      padding:14px 18px;
+    }
+    .sr-take-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.6); margin-bottom:6px;
+    }
+    .sr-take p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.92rem; color:#bbb; line-height:1.75;
+      margin:0; font-style:italic;
+    }
+
+    /* ── Section badge ── */
+    .section-id {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(220,38,38,0.35); margin-bottom:4px;
+    }
+
+    /* ── TOC sidebar ── */
+    .toc-item {
+      display:flex; align-items:flex-start; gap:10px;
+      padding:10px 8px; border-bottom:1px solid rgba(255,255,255,0.04);
+      text-decoration:none; transition:all .2s;
+      border-left:2px solid transparent; margin-left:-8px;
+    }
+    .toc-item:last-child { border-bottom:none; }
+    .toc-item.active {
+      border-left-color: #dc2626;
+      background: rgba(220,38,38,0.06);
+    }
+    .toc-item.active .toc-num { color: rgba(220,38,38,0.8); }
+    .toc-item.active .toc-title { color: #dc2626; }
+    .toc-num {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.7rem; color:rgba(220,38,38,0.4);
+      letter-spacing:1px; padding-top:2px; flex-shrink:0;
+      transition:color .2s;
+    }
+    .toc-title {
+      font-size:0.95rem; font-weight:700; color:#666;
+      text-transform:uppercase; letter-spacing:0.03em;
+      transition:color .2s;
+    }
+    .toc-item:hover .toc-title { color:var(--red); }
+
+    /* ── Field note ── */
+    .field-note {
+      border-left:2px solid rgba(220,38,38,0.5);
+      padding:14px 18px; margin:18px 0;
+      background:rgba(0,0,0,0.4);
+    }
+    .field-note p {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:1rem; color:#aaa; line-height:1.75;
+      font-style:italic; margin:0;
+    }
+
+    /* ── Delay utils ── */
+    .delay-1{animation-delay:.05s}.delay-2{animation-delay:.1s}.delay-3{animation-delay:.15s}
+    .delay-4{animation-delay:.2s}.delay-5{animation-delay:.25s}.delay-6{animation-delay:.3s}
+    .delay-7{animation-delay:.35s}.delay-8{animation-delay:.4s}
+
+    /* ── Sticky TOC (desktop) ── */
+    @media(min-width:1024px){
+      .layout-with-toc { display:grid; grid-template-columns:1fr 240px; gap:40px; align-items:start; }
+      .toc-sticky { position:sticky; top:80px; }
+    }
+
+    /* ── App card grid ── */
+    .app-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px; }
+    @media(max-width:560px){ .app-grid { grid-template-columns:1fr; } }
+
+    .app-card {
+      position:relative;
+      border:1px solid rgba(255,255,255,0.07);
+      background:rgba(0,0,0,0.35);
+      padding:18px 16px 16px;
+      transition:border-color .2s;
+    }
+    .app-card:hover { border-color:rgba(220,38,38,0.25); }
+    .app-card::before {
+      content:''; position:absolute; top:0; left:0;
+      width:18px; height:18px;
+      border-top:1px solid rgba(220,38,38,0.35);
+      border-left:1px solid rgba(220,38,38,0.35);
+    }
+
+    /* SR-used badge on card */
+    .app-card.sr-used {
+      border-color:rgba(220,38,38,0.2);
+      background:rgba(220,38,38,0.03);
+    }
+    .app-card.sr-used::before {
+      border-color:rgba(220,38,38,0.6);
+    }
+
+    .app-card-header {
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:8px; margin-bottom:6px;
+    }
+    .app-name {
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:1.05rem; font-weight:900; text-transform:uppercase;
+      color:#ddd; letter-spacing:0.04em; line-height:1.1;
+    }
+    .app-platform {
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.6rem; letter-spacing:2px; text-transform:uppercase;
+      color:#444; white-space:nowrap; padding-top:3px;
+    }
+    .app-desc {
+      font-family:'IBM Plex Sans',sans-serif;
+      font-size:0.87rem; color:#666; line-height:1.7; margin:0;
+    }
+    .app-tag {
+      display:inline-block; margin-top:10px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.6rem; letter-spacing:2px; text-transform:uppercase;
+      padding:2px 8px;
+    }
+    .app-tag.used {
+      color:#dc2626; border:1px solid rgba(220,38,38,0.35);
+      background:rgba(220,38,38,0.06);
+    }
+    .app-tag.alt {
+      color:#888; border:1px solid rgba(255,255,255,0.1);
+      background:rgba(255,255,255,0.03);
+    }
+    .app-tag.free {
+      color:#4ade80; border:1px solid rgba(74,222,128,0.3);
+      background:rgba(74,222,128,0.04);
+    }
+    .app-tag.paid {
+      color:#fbbf24; border:1px solid rgba(251,191,36,0.3);
+      background:rgba(251,191,36,0.04);
+    }
+    .app-context {
+      margin-top:8px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; color:rgba(220,38,38,0.45);
+      letter-spacing:1px;
+    }
+
+    /* ── Warn / good pill ── */
+    .warn-pill {
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#fbbf24; border:1px solid rgba(251,191,36,0.3);
+      padding:3px 10px; background:rgba(251,191,36,0.05); margin-bottom:14px;
+    }
+    .good-pill {
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:'Share Tech Mono',monospace;
+      font-size:0.65rem; letter-spacing:2px; text-transform:uppercase;
+      color:#4ade80; border:1px solid rgba(74,222,128,0.3);
+      padding:3px 10px; background:rgba(74,222,128,0.05); margin-bottom:14px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="fixed top-0 left-0 w-full z-[9999]">
+  <div id="progress-bar"></div>
+</div>
+
+<!-- ════ NAVBAR ════ -->
+<nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+    <a href="/" class="flex items-center gap-3 group">
+      <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+        <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+      </div>
+      <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+      <a href="/riders-guide/" class="text-red-500 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Rider's Guide</a>
+      <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+      <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+    <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+      <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
+    <div class="flex flex-col px-5 py-4 gap-4">
+      <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+      <a href="/riders-guide/" class="mobile-link text-red-500 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Rider's Guide</a>
+      <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+      <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ MAIN ════ -->
+<main class="pt-28 pb-24 px-5">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 mb-8 font-mono-tech text-xs tracking-widest uppercase" style="color:#444;">
+      <a href="/" class="hover:text-red-500 transition-colors">Home</a>
+      <span>/</span>
+      <a href="/riders-guide/" class="hover:text-red-500 transition-colors">Rider's Guide</a>
+      <span>/</span>
+      <span style="color:rgba(220,38,38,0.5);">Rider Apps</span>
+    </div>
+
+    <!-- ════ PAGE HEADER ════ -->
+    <div class="mb-12 animate-fade-slide-up" style="position:relative;">
+      <div class="noise-overlay"></div>
+      <p class="font-mono-tech text-xs tracking-[0.4em] uppercase mb-4" style="color:rgba(167,139,250,0.6);">// Field Intel RG-003 — Digital Tools & Mobile Apps</p>
+      <h1 class="font-black uppercase leading-none tracking-tight text-white mb-2" style="font-size:clamp(2.8rem,9vw,5rem);">
+        <span class="glitch-wrap" data-text="RIDER APPS">RIDER APPS</span>
+      </h1>
+      <h2 class="font-black uppercase text-red-600 leading-none tracking-tight mb-5" style="font-size:clamp(1.2rem,3vw,1.8rem);letter-spacing:0.1em;">What Actually Gets Used</h2>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-widest">
+        <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+        8 SECTIONS // NAVIGATION · WEATHER · SAFETY · TOURING // SINGAPORE &amp; BEYOND
+      </p>
+      <p class="mt-5 text-gray-500 text-base leading-relaxed max-w-2xl font-prose" style="font-style:italic;">
+        Not a listicle of every app in the App Store. These are the tools that actually stay on the phone — the ones that solve real problems on the road in Singapore, Malaysia, Thailand, and beyond.
+        Cards marked <span style="color:#dc2626;font-style:normal;font-family:'Share Tech Mono',monospace;font-size:0.8rem;">SR USED</span> are apps in active rotation.
+      </p>
+    </div>
+
+    <hr class="section-rule" style="margin-top:0;" />
+
+    <!-- ════ LAYOUT ════ -->
+    <div class="layout-with-toc">
+
+      <!-- ── LEFT: Main content ── -->
+      <div>
+
+        <!-- ══ SEC 01: Navigation Apps ══ -->
+        <div id="sec-nav" class="topic-block delay-1">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-01</div>
+            <div class="signal-line">Wayfinding</div>
+            <h3 class="topic-heading">Navigation Apps</h3>
+            <div class="prose-body">
+              <p>No single app handles every country well. The practical approach is knowing <strong>which app to open where</strong> — and having the right one pre-loaded with offline maps before you leave Singapore.</p>
+            </div>
+            <div class="app-grid">
+              <div class="app-card sr-used">
+                <div class="app-card-header">
+                  <div class="app-name">Waze</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">The primary navigation app for Singapore and Malaysia. Real-time traffic, speed camera alerts, accident reports from other drivers, and ERP/toll awareness. The crowd-sourced hazard reporting is genuinely useful on Malaysian highways and in KL city traffic.</p>
+                <div><span class="app-tag used">SR Used — SG &amp; MY</span> <span class="app-tag free">Free</span></div>
+                <div class="app-context">// Primary for SG daily commute + Malaysia touring</div>
+              </div>
+              <div class="app-card sr-used">
+                <div class="app-card-header">
+                  <div class="app-name">Google Maps</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Takes over from Waze when riding in Thailand and further afield. Better POI coverage outside Malaysia, more reliable in areas with lower Waze user density. Offline map downloads are essential — download the full country before crossing any border.</p>
+                <div><span class="app-tag used">SR Used — TH &amp; Beyond</span> <span class="app-tag free">Free</span></div>
+                <div class="app-context">// Thailand touring + any unfamiliar country</div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Maps.me</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Fully offline navigation from OpenStreetMap data. No data plan needed once maps are downloaded. Useful as a backup when roaming is patchy in rural Thailand or remote Malaysian stretches. Not as polished as Google but it works when others don't.</p>
+                <div><span class="app-tag alt">Alternative</span> <span class="app-tag free">Free</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">OsmAnd</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">More powerful offline navigation with turn-by-turn routing. Steeper learning curve but preferred by dedicated tourers who want full offline capability with contour lines and detailed road data. Good for long-haul trips where data is unreliable.</p>
+                <div><span class="app-tag alt">Alternative</span> <span class="app-tag free">Free / Paid</span></div>
+              </div>
+            </div>
+            <div class="callout mt-2">
+              <strong>Practical tip:</strong> Use Waze in SG and MY for live traffic. Switch to Google Maps once you cross into Thailand — the offline download covers you when roaming fails in remote areas.
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SEC 02: Weather Apps ══ -->
+        <div id="sec-weather" class="topic-block delay-2">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-02</div>
+            <div class="signal-line">Rain Radar</div>
+            <h3 class="topic-heading">Weather Apps</h3>
+            <div class="prose-body">
+              <p>Singapore weather is hyperlocal and fast-moving. An app that shows regional rain is useless when a storm is 3km away and you're deciding whether to suit up. You need <strong>radar, not forecasts</strong>.</p>
+            </div>
+            <div class="app-grid">
+              <div class="app-card sr-used">
+                <div class="app-card-header">
+                  <div class="app-name">myENV</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">NEA's official app. The rain radar is the most accurate available for Singapore — updated every 5 minutes, shows radar sweeps and 2-hour nowcast. The dengue cluster and PSI data is secondary for riders but the rain radar alone justifies the install.</p>
+                <div><span class="app-tag used">SR Used — Singapore</span> <span class="app-tag free">Free</span></div>
+                <div class="app-context">// Primary SG rain check before every ride</div>
+              </div>
+              <div class="app-card sr-used">
+                <div class="app-card-header">
+                  <div class="app-name">Singapore Weather / Rain Alarm</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Push notifications when rain is approaching your location. The alert system means you don't have to actively check — it tells you when to pay attention. Particularly useful when overseas and checking Singapore conditions for someone else, or when parked up and not watching the sky.</p>
+                <div><span class="app-tag used">SR Used — Overseas Check</span> <span class="app-tag free">Free</span></div>
+                <div class="app-context">// Background alerts, passive monitoring</div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Windy</div>
+                  <div class="app-platform">iOS / Android / Web</div>
+                </div>
+                <p class="app-desc">Global wind and weather visualisation. More useful for longer overseas tours where you're planning the next day's riding across a wider region. The animated rain layer across Thailand or Peninsula Malaysia helps plan rest stops around incoming storms.</p>
+                <div><span class="app-tag alt">Touring Use</span> <span class="app-tag free">Free</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Weather Underground</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Hyper-local weather using personal weather station data. Better granularity than standard weather apps in urban areas. Useful as a cross-reference for Malaysia and Thailand when myENV radar doesn't extend coverage.</p>
+                <div><span class="app-tag alt">Alternative</span> <span class="app-tag free">Free</span></div>
+              </div>
+            </div>
+            <div class="sr-take">
+              <div class="sr-take-label">// On the road habit</div>
+              <p>Check myENV radar before leaving, not when you're already geared up. A 5-minute check saves a full soaking or an unnecessary 20-minute roadside shelter stop.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SEC 03: Fuel & Expense Tracking ══ -->
+        <div id="sec-fuel" class="topic-block delay-3">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-03</div>
+            <div class="signal-line">Cost Control</div>
+            <h3 class="topic-heading">Fuel & Expense Tracking Apps</h3>
+            <div class="prose-body">
+              <p>Most riders have no idea what their bike actually costs to run per month. Tracking fuel, services, and parts over time gives you a real number — and catches patterns, like a sudden drop in fuel economy that signals something needs attention.</p>
+            </div>
+            <div class="app-grid">
+              <div class="app-card sr-used">
+                <div class="app-card-header">
+                  <div class="app-name">Autosist</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Tracks fuel fill-ups, service records, repairs, and parts costs against odometer readings. Calculates fuel economy over time, shows maintenance history in a clean log, and lets you set reminders for upcoming services. Genuinely useful for understanding your real running costs — not just what you paid at the pump.</p>
+                <div><span class="app-tag used">SR Used</span> <span class="app-tag free">Free / Paid</span></div>
+                <div class="app-context">// Fuel, repairs, maintenance log — all in one</div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Fuelly</div>
+                  <div class="app-platform">iOS / Android / Web</div>
+                </div>
+                <p class="app-desc">Dedicated fuel economy tracker with a community aspect — you can see average fuel economy reported by other owners of the same bike model. Good for benchmarking your MT-03 or whatever you're riding against real-world numbers from other owners.</p>
+                <div><span class="app-tag alt">Alternative</span> <span class="app-tag free">Free</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Moto Logbook</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Simpler interface than Autosist, focused purely on motorcycle maintenance logs. Good for riders who want a clean, no-frills service history without the expense tracking overhead. Useful if you're planning to resell — a documented history has real value.</p>
+                <div><span class="app-tag alt">Alternative</span> <span class="app-tag free">Free</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Notes / Spreadsheet</div>
+                  <div class="app-platform">Any</div>
+                </div>
+                <p class="app-desc">Not glamorous — but a Google Sheets tab with date, odometer, and cost columns works perfectly and syncs across all devices. Many long-term riders prefer this over any dedicated app because there's no lock-in and it's always accessible.</p>
+                <div><span class="app-tag alt">Low-tech option</span> <span class="app-tag free">Free</span></div>
+              </div>
+            </div>
+            <div class="callout mt-2">
+              <strong>The real value</strong> of fuel tracking is not the cost per litre — it's spotting when your economy drops by 10–15% unexpectedly. That's usually your first data point that something (air filter, tyre pressure, chain tension) needs attention.
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SEC 04: Checkpoint & Traffic Apps ══ -->
+        <div id="sec-traffic" class="topic-block delay-4">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-04</div>
+            <div class="signal-line">Road Intel</div>
+            <h3 class="topic-heading">Checkpoint & Traffic Apps</h3>
+            <div class="prose-body">
+              <p>Singapore's expressway system is camera-dense and ERP-heavy. For Malaysia runs, knowing Causeway and Second Link queue status before you leave saves significant time. These apps exist for exactly that purpose.</p>
+            </div>
+            <div class="app-grid">
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">One Motoring</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">LTA's official platform — traffic camera images across Singapore expressways and major roads updated every few minutes. Useful for checking actual conditions at a specific junction or expressway stretch before you ride out. Also shows ERP rates by gantry and time.</p>
+                <div><span class="app-tag free">Free</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">MyJPJ / VEP Check</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Malaysia's JPJ app for road tax checks and VEP-related information. Useful reference if riding your Singapore-registered bike into Malaysia frequently, particularly with the VEP scheme in force. Keeps documentation accessible without printing.</p>
+                <div><span class="app-tag free">Free</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Waze (Checkpoint Reports)</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Waze's user-reported road alerts include Causeway and Second Link queue depth, speed traps, and police checkpoint locations in Malaysia. Not perfectly reliable but consistently the fastest source of real-time checkpoint intel from other riders and drivers on the same route.</p>
+                <div><span class="app-tag used">SR Used</span> <span class="app-tag free">Free</span></div>
+                <div class="app-context">// Causeway queue + MY speed trap alerts</div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Telegram Groups</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Not an app category, but an honest reality: the fastest checkpoint and jam intel for Singapore-Malaysia crossings comes from active Telegram rider groups, not any official app. Worth joining two or three active ones that share real-time crossing updates.</p>
+                <div><span class="app-tag free">Free</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SEC 05: TPMS & Bike Monitoring ══ -->
+        <div id="sec-tpms" class="topic-block delay-5">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-05</div>
+            <div class="signal-line">Bike Telemetry</div>
+            <h3 class="topic-heading">TPMS & Bike Monitoring Apps</h3>
+            <div class="prose-body">
+              <p>Tyre pressure monitoring is one of those things that feels optional until it isn't. A slow puncture on the expressway is a very different experience from discovering low pressure at the petrol station. Most TPMS systems pair with a companion app for pressure and temperature history.</p>
+            </div>
+            <div class="app-grid">
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Fobo Bike 2</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Companion app for the Fobo Bike 2 TPMS sensor system. Shows real-time front and rear tyre pressure and temperature on your phone while riding. Alert thresholds are configurable — set it to warn you before pressure drops to a dangerous level, not after.</p>
+                <div><span class="app-tag alt">Hardware Required</span> <span class="app-tag free">Free App</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Nonda ZUS TPMS</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Connects to the Nonda ZUS external TPMS sensors. Slightly simpler UI than Fobo but similarly functional. Useful if you've already invested in the Nonda sensor hardware — the app handles alerts, history, and pressure unit display.</p>
+                <div><span class="app-tag alt">Hardware Required</span> <span class="app-tag free">Free App</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">OBD2 Apps (ELM327)</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">For bikes with OBD2 ports — mostly larger naked bikes and adventure bikes from 2015 onwards. Apps like Torque (Android) or OBD Fusion (iOS) connected via a Bluetooth ELM327 adapter give live engine data, fault code reading, and basic diagnostics without a workshop scan tool.</p>
+                <div><span class="app-tag alt">Hardware Required</span> <span class="app-tag paid">Paid</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Yamaha MyRide</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Yamaha's official connected-bike app for compatible models. Fuel level, service reminders, and basic telemetry on newer Yamaha bikes with Y-Connect compatibility. Limited to newer models but worth checking if your bike supports it — it integrates with Yamaha's dealer service reminders.</p>
+                <div><span class="app-tag alt">Yamaha Models</span> <span class="app-tag free">Free</span></div>
+              </div>
+            </div>
+            <div class="callout mt-2">
+              <strong>Singapore note:</strong> Tyre pressure drops roughly 1 PSI per 10°C temperature change. Early morning cold tyres vs afternoon heat creates a real variance — check pressure consistently at the same time of day.
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SEC 06: Intercom & Communication ══ -->
+        <div id="sec-intercom" class="topic-block delay-6">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-06</div>
+            <div class="signal-line">Rider Comms</div>
+            <h3 class="topic-heading">Intercom & Communication Apps</h3>
+            <div class="prose-body">
+              <p>Group ride communication in 2024 has two layers: the hardware intercom between helmets for riders close together, and apps for group coordination when the group spreads out. Both matter on longer rides.</p>
+            </div>
+            <div class="app-grid">
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Cardo Connect</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Companion app for Cardo intercom systems (Packtalk, Freecom series). Handles firmware updates, music sharing configuration, group mesh setup, and audio equaliser settings. If you're using Cardo hardware, you need this app — setup without it is significantly more painful.</p>
+                <div><span class="app-tag alt">Cardo Hardware</span> <span class="app-tag free">Free</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Sena Motorcycles</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Sena's companion app for their intercom lineup. Firmware updates, pairing management, Mesh intercom configuration for larger groups. Same role as Cardo Connect but for Sena hardware. The two ecosystems don't cross-connect — pick a standard within your group before investing.</p>
+                <div><span class="app-tag alt">Sena Hardware</span> <span class="app-tag free">Free</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">WhatsApp / Telegram</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">The honest answer for group coordination. When riders spread across 20km of highway, the voice group chat on WhatsApp or a Telegram location-share is how most Singapore riders actually communicate. Not glamorous — but already on everyone's phone.</p>
+                <div><span class="app-tag free">Free</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Zello</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Push-to-talk walkie-talkie app over mobile data. Popular with larger touring groups across Malaysia and Thailand where intercom range becomes a limitation. Works over 4G — useful when the group gets separated across multiple fuel stops or junction splits.</p>
+                <div><span class="app-tag alt">Group Touring</span> <span class="app-tag free">Free</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SEC 07: Touring Planning Apps ══ -->
+        <div id="sec-planning" class="topic-block delay-7">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-07</div>
+            <div class="signal-line">Pre-Departure</div>
+            <h3 class="topic-heading">Touring Planning Apps</h3>
+            <div class="prose-body">
+              <p>Planning a ride is a different task from navigating one. These tools handle the before — route building, waypoint management, accommodation research, and the logistics of getting across multiple countries efficiently.</p>
+            </div>
+            <div class="app-grid">
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Kurviger</div>
+                  <div class="app-platform">Web / Android</div>
+                </div>
+                <p class="app-desc">Route planner built specifically for motorcycle touring — prioritises curvy roads and avoids motorways by preference. Strong in Europe but increasingly useful for Malaysian highland routes. Plan on desktop, export to GPX for navigation. Good for scenic route building around Cameron Highlands or Genting approaches.</p>
+                <div><span class="app-tag alt">Route Planning</span> <span class="app-tag free">Free / Paid</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Furkot</div>
+                  <div class="app-platform">Web</div>
+                </div>
+                <p class="app-desc">Multi-day touring planner that calculates realistic daily distances based on average speed and riding hours. Handles waypoints, accommodation stops, and exports to Google Maps or GPX. Particularly useful for Thailand trip planning where you're juggling multiple overnight stops.</p>
+                <div><span class="app-tag alt">Multi-day Tours</span> <span class="app-tag free">Free</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">iOverlander</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Community-sourced camping spots, rest areas, guesthouses, and points of interest specifically from overlanders and long-distance travellers. The data quality in Thailand and Malaysia is solid — local knowledge from people who have actually ridden the same routes.</p>
+                <div><span class="app-tag alt">Overseas Touring</span> <span class="app-tag free">Free</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Google Maps (Saved Lists)</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Using Google Maps' saved places feature to build a pre-trip waypoint list — petrol stations, lunch stops, tyre shops, mechanic references — accessible offline. Simple, but the combination of saved lists and offline maps makes it the most practical touring planning tool for most riders.</p>
+                <div><span class="app-tag used">SR Used</span> <span class="app-tag free">Free</span></div>
+                <div class="app-context">// Pre-saved waypoints before every tour</div>
+              </div>
+            </div>
+            <div class="field-note">
+              <p>The best touring preparation happens the evening before departure — not on the road. Pre-saved petrol stations, mechanic locations, and overnight stops in an offline map removes the phone-fiddling decision-making mid-ride.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SEC 08: Emergency & Safety Apps ══ -->
+        <div id="sec-emergency" class="topic-block delay-8">
+          <div class="card-bg"></div>
+          <div class="noise-overlay"></div>
+          <div class="topic-block-inner">
+            <div class="section-id">// RG-003-08</div>
+            <div class="signal-line">Critical Tools</div>
+            <h3 class="topic-heading">Emergency & Safety Apps</h3>
+            <div class="prose-body">
+              <p>The apps you hope never become essential. The reality of touring across borders is that language barriers, unfamiliar hospitals, and card acceptance limitations are real problems — having the right tools installed before you need them is not paranoia, it is preparation.</p>
+            </div>
+            <div class="app-grid">
+              <div class="app-card sr-used">
+                <div class="app-card-header">
+                  <div class="app-name">YouTrip</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Singapore-issued multi-currency digital wallet with no foreign transaction fees and real exchange rates. The practical overseas emergency card — load it before departure and use it anywhere Mastercard is accepted. Preferred over physical credit cards for day-to-day overseas spending; the physical card is the backup, not the primary.</p>
+                <div><span class="app-tag used">SR Used — Primary Overseas</span> <span class="app-tag free">Free</span></div>
+                <div class="app-context">// Main card for MY, TH and beyond. Credit card as backup only.</div>
+              </div>
+              <div class="app-card sr-used">
+                <div class="app-card-header">
+                  <div class="app-name">Tralate</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Offline-capable translation with camera OCR — point it at a Thai or Malay sign, menu, or form and get an instant translation. The offline language packs are critical: download Thai and Bahasa before you leave Singapore. In a medical situation or a police checkpoint in rural Thailand, real-time translation without data is not optional.</p>
+                <div><span class="app-tag used">SR Used — Overseas</span> <span class="app-tag free">Free / Paid</span></div>
+                <div class="app-context">// Thai &amp; BM packs downloaded before departure</div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">Google Translate</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">The backup translation option. Camera translation and conversation mode are powerful when you have data. Download offline packs for Thai, Bahasa Malaysia, and Mandarin before departure — they work without a connection once downloaded. Wider language coverage than Tralate for more remote destinations.</p>
+                <div><span class="app-tag alt">Backup Translator</span> <span class="app-tag free">Free</span></div>
+              </div>
+              <div class="app-card">
+                <div class="app-card-header">
+                  <div class="app-name">MySOS / Emergency Contacts</div>
+                  <div class="app-platform">iOS / Android</div>
+                </div>
+                <p class="app-desc">Singapore's MySOS app links to emergency services and shares location. More practically: save the emergency number of your insurer, a contact person at home, and the Singapore embassy number for whatever country you're visiting directly in your contacts — not buried in a PDF. Accessibility in a crisis depends on it being findable in seconds.</p>
+                <div><span class="app-tag free">Free</span></div>
+              </div>
+            </div>
+
+            <!-- Digital card note -->
+            <div class="mt-5" style="border:1px solid rgba(220,38,38,0.18); background:rgba(220,38,38,0.03); padding:20px;">
+              <div class="font-mono-tech text-xs tracking-widest uppercase mb-3" style="color:rgba(220,38,38,0.5);">// On Digital vs Physical Cards Overseas</div>
+              <div class="prose-body">
+                <p>YouTrip is the daily driver for overseas spending — no surprise fees, decent exchange rates, and the app gives instant visibility on what was spent where. The physical credit card travels in the bag as a genuine emergency backup — not the primary, not the "just in case I see something I want to buy" card.</p>
+                <p>Load YouTrip before departure, not at the airport. Overseas top-ups from a Singapore bank account still work, but doing it at a Malaysian petrol station on mobile data is an unnecessary stress point.</p>
+              </div>
+            </div>
+
+            <div class="callout mt-4">
+              <strong>Before any overseas ride:</strong> offline maps downloaded, translation packs installed, YouTrip loaded, emergency contacts saved as actual contacts — not screenshots. These take 20 minutes at home and remove entire categories of avoidable problems on the road.
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end main content col -->
+
+      <!-- ── RIGHT: Sticky TOC ── -->
+      <aside class="toc-sticky hidden lg:block">
+        <div style="position:relative; border:1px solid rgba(220,38,38,0.15); background:rgba(10,10,10,0.9); padding:20px;">
+          <div style="position:absolute;top:0;left:0;width:32px;height:32px;border-top:1px solid rgba(220,38,38,0.5);border-left:1px solid rgba(220,38,38,0.5);pointer-events:none;z-index:2;"></div>
+          <div style="position:absolute;bottom:0;right:0;width:32px;height:32px;border-bottom:1px solid rgba(220,38,38,0.5);border-right:1px solid rgba(220,38,38,0.5);pointer-events:none;z-index:2;"></div>
+          <div class="card-bg" style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.007) 3px,rgba(220,38,38,0.007) 4px);"></div>
+          <div class="noise-overlay"></div>
+          <div class="relative z-10">
+            <p class="font-mono-tech text-xs tracking-[3px] uppercase mb-4" style="color:rgba(220,38,38,0.4);">// Contents</p>
+            <nav>
+              <a href="#sec-nav" class="toc-item">
+                <span class="toc-num">01</span>
+                <span class="toc-title">Navigation</span>
+              </a>
+              <a href="#sec-weather" class="toc-item">
+                <span class="toc-num">02</span>
+                <span class="toc-title">Weather</span>
+              </a>
+              <a href="#sec-fuel" class="toc-item">
+                <span class="toc-num">03</span>
+                <span class="toc-title">Fuel &amp; Expenses</span>
+              </a>
+              <a href="#sec-traffic" class="toc-item">
+                <span class="toc-num">04</span>
+                <span class="toc-title">Checkpoint &amp; Traffic</span>
+              </a>
+              <a href="#sec-tpms" class="toc-item">
+                <span class="toc-num">05</span>
+                <span class="toc-title">TPMS &amp; Monitoring</span>
+              </a>
+              <a href="#sec-intercom" class="toc-item">
+                <span class="toc-num">06</span>
+                <span class="toc-title">Intercom &amp; Comms</span>
+              </a>
+              <a href="#sec-planning" class="toc-item">
+                <span class="toc-num">07</span>
+                <span class="toc-title">Touring Planning</span>
+              </a>
+              <a href="#sec-emergency" class="toc-item">
+                <span class="toc-num">08</span>
+                <span class="toc-title">Emergency &amp; Safety</span>
+              </a>
+            </nav>
+            <div class="mt-5 pt-5 border-t" style="border-color:rgba(255,255,255,0.05);">
+              <p class="font-mono-tech text-xs tracking-widest uppercase mb-3" style="color:rgba(220,38,38,0.3);">// Legend</p>
+              <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-2">
+                  <span style="display:inline-block;width:8px;height:8px;background:rgba(220,38,38,0.5);flex-shrink:0;"></span>
+                  <span class="font-mono-tech text-xs" style="color:#555;">SR Used</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span style="display:inline-block;width:8px;height:8px;border:1px solid rgba(255,255,255,0.15);flex-shrink:0;"></span>
+                  <span class="font-mono-tech text-xs" style="color:#555;">Alternative</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-5 pt-5 border-t" style="border-color:rgba(255,255,255,0.05);">
+              <a href="/riders-guide/" class="font-mono-tech text-xs tracking-widest uppercase text-gray-600 hover:text-red-500 transition-colors flex items-center gap-2">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                All Guides
+              </a>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div><!-- end layout-with-toc -->
+
+  </div>
+</main>
+
+<!-- ════ FOOTER ════ -->
+<footer class="py-16 px-5 border-t border-white/5 mt-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex flex-col items-center gap-6">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 hover:scale-105 transition-all duration-300">
+          <span class="font-mono-tech text-red-600 text-sm font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+      </a>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="font-mono-tech text-sm tracking-widest uppercase">Watch on YouTube</span>
+      </a>
+      <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  (function(){
+    var cursor=document.getElementById('cursor'), ring=document.getElementById('cursor-ring');
+    var mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+    (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+    document.querySelectorAll('a,button').forEach(function(el){
+      el.addEventListener('mouseenter',function(){ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(220,38,38,0.8)';});
+      el.addEventListener('mouseleave',function(){ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(220,38,38,0.5)';});
+    });
+  })();
+
+  // Progress bar
+  window.addEventListener('scroll',function(){
+    var st=document.documentElement.scrollTop||document.body.scrollTop;
+    var sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    document.getElementById('progress-bar').style.width=(sh>0?(st/sh)*100:0)+'%';
+  },{passive:true});
+
+  // Navbar scroll
+  window.addEventListener('scroll',function(){
+    var nav=document.getElementById('navbar');
+    if(window.scrollY>20)nav.classList.add('nav-scrolled');
+    else nav.classList.remove('nav-scrolled');
+  },{passive:true});
+
+  // Mobile menu
+  document.getElementById('menu-toggle').addEventListener('click',function(){
+    var menu=document.getElementById('mobile-menu');
+    var openIcon=document.getElementById('menu-icon-open');
+    var closeIcon=document.getElementById('menu-icon-close');
+    var isOpen=menu.style.maxHeight==='320px';
+    menu.style.maxHeight=isOpen?'0':'320px';
+    menu.style.borderBottom=isOpen?'':'1px solid rgba(127,29,29,0.3)';
+    openIcon.style.display=isOpen?'':'none';
+    closeIcon.style.display=isOpen?'none':'';
+  });
+  document.querySelectorAll('.mobile-link').forEach(function(link){
+    link.addEventListener('click',function(){
+      document.getElementById('mobile-menu').style.maxHeight='0';
+      document.getElementById('menu-icon-open').style.display='';
+      document.getElementById('menu-icon-close').style.display='none';
+    });
+  });
+
+  // TOC active highlight on scroll
+  (function(){
+    var sections = ['sec-nav','sec-weather','sec-fuel','sec-traffic','sec-tpms','sec-intercom','sec-planning','sec-emergency'];
+    var tocLinks = document.querySelectorAll('.toc-item');
+    function onScroll(){
+      var fromTop = window.scrollY + 120;
+      var active = null;
+      sections.forEach(function(id){
+        var el = document.getElementById(id);
+        if(el && el.offsetTop <= fromTop) active = id;
+      });
+      tocLinks.forEach(function(link){
+        var href = link.getAttribute('href').replace('#','');
+        if(href === active){
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  })();
+</script>
+</body>
+</html>
