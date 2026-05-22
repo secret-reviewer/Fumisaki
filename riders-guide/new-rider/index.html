@@ -340,10 +340,13 @@
     .delay-7{animation-delay:.35s}.delay-8{animation-delay:.4s}.delay-9{animation-delay:.45s}
     .delay-10{animation-delay:.5s}
 
+    
     /* ── Sticky TOC (desktop) ── */
-    @media(min-width:1024px){
-      .layout-with-toc { display:grid; grid-template-columns:1fr 240px; gap:40px; align-items:start; }
-      .toc-sticky { position:sticky; top:80px; }
+    .layout-with-toc { display:grid; grid-template-columns:1fr 260px; gap:40px; align-items:start; }
+    .toc-sticky { position:sticky; top:80px; }
+    @media(max-width:860px){
+      .layout-with-toc { display:block; }
+      .toc-sticky { position:static; margin-top:40px; }
     }
 
     /* ── Warn pill ── */
@@ -435,7 +438,7 @@
 
 <!-- ════ MAIN ════ -->
 <main class="pt-28 pb-24 px-5">
-  <div class="max-w-4xl mx-auto">
+  <div class="max-w-5xl mx-auto">
 
     <!-- Breadcrumb trail -->
     <div class="flex items-center gap-2 mb-8 font-mono-tech text-xs tracking-widest uppercase" style="color:#444;">
@@ -681,6 +684,7 @@ After that, I switched to a Shoei Neotec 2, and the difference was night and day
             
           </div>
         </div>
+      </div>
 
         <!-- ══ SECTION 05: Gloves ══ -->
         <div id="sec-gloves" class="topic-block delay-5">
@@ -954,7 +958,7 @@ After that, I switched to a Shoei Neotec 2, and the difference was night and day
       </div><!-- end left content -->
 
       <!-- ── RIGHT: Sticky TOC ── -->
-      <aside class="toc-sticky hidden lg:block">
+      <aside class="toc-sticky">
         <div style="position:relative; border:1px solid rgba(220,38,38,0.15); background:rgba(10,10,10,0.9); padding:20px;">
           <div class="card-bg" style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(220,38,38,0.007) 3px,rgba(220,38,38,0.007) 4px);"></div>
           <div class="noise-overlay"></div>
