@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SR-LAB-007 // Vibration Damping | Secret Reviewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Share+Tech+Mono&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: {
+        sans: ['Barlow Condensed','sans-serif'],
+        mono: ['"Share Tech Mono"','monospace'],
+        prose: ['"IBM Plex Sans"','sans-serif'],
+      }}}
+    };
+  </script>
+  <style>
+    :root {
+      --red: #dc2626;
+      --red-dim: rgba(220,38,38,0.15);
+      --red-glow: rgba(220,38,38,0.6);
+      --bg: #060606;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: #ececec;
+      font-family: 'Barlow Condensed', sans-serif;
+      margin: 0; overflow-x: hidden; cursor: none; line-height: 1.75;
+    }
+    .font-mono-tech { font-family: 'Share Tech Mono', monospace; }
+
+    /* Cursor */
+    #cursor { position:fixed; width:12px; height:12px; background:var(--red); border-radius:50%; pointer-events:none; z-index:99999; transform:translate(-50%,-50%); transition:width .2s,height .2s; mix-blend-mode:screen; }
+    #cursor-ring { position:fixed; width:36px; height:36px; border:1px solid rgba(220,38,38,0.5); border-radius:50%; pointer-events:none; z-index:99998; transform:translate(-50%,-50%); transition:width .2s,height .2s,border-color .2s; }
+
+    @keyframes scan { from{top:-100%} to{top:100%} }
+    @keyframes fadeSlideUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse-red { 0%,100%{box-shadow:0 0 6px rgba(220,38,38,0.3)} 50%{box-shadow:0 0 28px rgba(220,38,38,0.8),0 0 60px rgba(220,38,38,0.25)} }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    @keyframes staticNoise { 0%{opacity:.03} 25%{opacity:.05} 50%{opacity:.02} 75%{opacity:.06} 100%{opacity:.03} }
+    @keyframes glitch-1 { 0%,100%{clip-path:inset(0 0 98% 0);transform:translate(-2px,0)} 20%{clip-path:inset(20% 0 50% 0);transform:translate(2px,0)} 40%{clip-path:inset(60% 0 20% 0);transform:translate(-2px,0)} 60%{clip-path:inset(80% 0 5% 0);transform:translate(2px,0)} 80%{clip-path:inset(40% 0 60% 0);transform:translate(-2px,0)} }
+    @keyframes glitch-2 { 0%,100%{clip-path:inset(50% 0 30% 0);transform:translate(2px,0);color:#00ffff} 25%{clip-path:inset(10% 0 80% 0);transform:translate(-2px,0)} 50%{clip-path:inset(70% 0 10% 0);transform:translate(2px,0);color:var(--red)} 75%{clip-path:inset(30% 0 50% 0);transform:translate(-2px,0)} }
+    @keyframes decryptFlicker { 0%{opacity:0.2} 5%{opacity:0.8} 10%{opacity:0.1} 15%{opacity:0.9} 20%{opacity:0.3} 100%{opacity:1} }
+    @keyframes cardReveal { from{opacity:0;transform:translateY(20px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+
+    .animate-fade-slide-up { animation: fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+    .animate-pulse-red { animation: pulse-red 2.5s infinite; }
+    .decrypt-text { animation: decryptFlicker 1.4s steps(2,end) both; }
+
+    body::before { content:""; position:fixed; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px); pointer-events:none; z-index:9990; }
+    body::after { content:""; position:fixed; top:-100%; left:0; width:100%; height:100%; background:linear-gradient(rgba(220,38,38,0) 0%,rgba(220,38,38,0.03) 50%,rgba(220,38,38,0) 100%); animation:scan 12s linear infinite; pointer-events:none; z-index:9991; }
+
+    #progress-bar { height:3px; background:linear-gradient(90deg,#7f1d1d,#dc2626,#f87171); box-shadow:0 0 12px rgba(220,38,38,0.9),0 0 24px rgba(220,38,38,0.4); width:0%; transition:width .08s ease-out; }
+
+    #navbar { transition:background .4s,border-color .4s; }
+    .nav-scrolled { background:rgba(4,4,4,0.96) !important; border-bottom-color:rgba(127,29,29,0.4) !important; backdrop-filter:blur(20px); }
+
+    .glitch-wrap { position:relative; display:inline-block; }
+    .glitch-wrap::before, .glitch-wrap::after { content:attr(data-text); position:absolute; top:0; left:0; width:100%; height:100%; }
+    .glitch-wrap::before { color:#00ffff; animation:glitch-1 6s infinite step-start; opacity:.6; }
+    .glitch-wrap::after  { color:#f87171; animation:glitch-2 6s infinite step-start; opacity:.6; }
+
+    .section-rule { border:none; height:1px; background:linear-gradient(90deg,transparent,rgba(220,38,38,0.3),transparent); margin:48px 0; }
+
+    .noise-overlay { position:absolute; inset:0; opacity:.025; pointer-events:none; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); background-size:128px; animation:staticNoise 4s step-start infinite; }
+
+    .log-badge { display:inline-flex; align-items:center; gap:6px; font-family:'Share Tech Mono',monospace; font-size:0.72rem; letter-spacing:2px; color:#f87171; border:1px solid rgba(220,38,38,0.35); background:rgba(220,38,38,0.07); padding:4px 12px; text-transform:uppercase; }
+
+    .diff-pips { display:flex; gap:3px; align-items:center; }
+    .diff-pip { width:7px; height:7px; border:1px solid rgba(220,38,38,0.25); }
+    .diff-pip.on { background:var(--red); border-color:var(--red); }
+
+    .signal-line { font-family:'Share Tech Mono',monospace; font-size:0.68rem; color:rgba(220,38,38,0.4); letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:8px; }
+    .signal-line::before { content:''; display:block; width:24px; height:1px; background:rgba(220,38,38,0.4); flex-shrink:0; }
+
+    .breadcrumb { display:inline-flex; align-items:center; gap:8px; font-family:'Share Tech Mono',monospace; font-size:0.85rem; color:#555; text-transform:uppercase; letter-spacing:2px; text-decoration:none; margin-bottom:32px; transition:color .2s; }
+    .breadcrumb:hover { color:var(--red); }
+    .breadcrumb svg { transition:transform .2s; }
+    .breadcrumb:hover svg { transform:translateX(-3px); }
+
+    /* Intel panel (case study callout) */
+    .intel-panel {
+      position:relative; border:1px solid rgba(220,38,38,0.3);
+      background:rgba(10,10,10,0.92); padding:28px 28px 24px;
+      margin:36px 0; overflow:hidden;
+    }
+    .intel-panel::before { content:''; position:absolute; top:0; left:0; width:28px; height:28px; border-top:1px solid var(--red); border-left:1px solid var(--red); }
+    .intel-panel::after { content:''; position:absolute; bottom:0; right:0; width:28px; height:28px; border-bottom:1px solid var(--red); border-right:1px solid var(--red); }
+    .intel-tag { font-family:'Share Tech Mono',monospace; font-size:0.68rem; letter-spacing:3px; color:#f87171; text-transform:uppercase; display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+    .intel-tag::before { content:''; width:6px; height:6px; background:var(--red); animation:pulse-dot 1.6s infinite; }
+    .intel-body { font-family:'IBM Plex Sans',sans-serif; font-size:1rem; color:#d4d4d4; line-height:1.85; }
+    .intel-stat-row { display:flex; gap:32px; margin-top:20px; flex-wrap:wrap; }
+    .intel-stat { font-family:'Share Tech Mono',monospace; }
+    .intel-stat .num { font-size:1.6rem; color:#f87171; font-weight:700; display:block; }
+    .intel-stat .lbl { font-size:0.65rem; color:#555; letter-spacing:2px; text-transform:uppercase; }
+
+    /* Spec table */
+    .spec-table { width:100%; border-collapse:collapse; font-family:'Share Tech Mono',monospace; font-size:0.85rem; }
+    .spec-table th { text-align:left; color:#f87171; font-size:0.68rem; letter-spacing:2px; text-transform:uppercase; padding:10px 14px; border-bottom:1px solid rgba(220,38,38,0.35); }
+    .spec-table td { padding:12px 14px; border-bottom:1px solid rgba(255,255,255,0.05); color:#ccc; vertical-align:top; }
+    .spec-table tr:hover td { background:rgba(220,38,38,0.03); }
+    .spec-table .mat-name { color:#fff; font-weight:700; }
+
+    /* Step list */
+    .step-row { display:flex; gap:20px; padding:22px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .step-row:last-child { border-bottom:none; }
+    .step-num { font-family:'Share Tech Mono',monospace; font-size:1.6rem; color:rgba(220,38,38,0.35); font-weight:700; flex-shrink:0; width:44px; }
+    .step-title { font-size:1.15rem; font-weight:700; text-transform:uppercase; color:#e8e8e8; letter-spacing:0.02em; margin-bottom:6px; }
+    .step-body { font-family:'IBM Plex Sans',sans-serif; font-size:0.94rem; color:#999; line-height:1.75; }
+
+    /* Toggle (intel report) */
+    .toggle-item { border:1px solid rgba(220,38,38,0.18); background:rgba(10,10,10,0.85); margin-bottom:10px; }
+    .toggle-header { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; cursor:pointer; user-select:none; }
+    .toggle-header:hover { background:rgba(220,38,38,0.04); }
+    .toggle-title { font-family:'Share Tech Mono',monospace; font-size:0.85rem; letter-spacing:1.5px; text-transform:uppercase; color:#e0e0e0; display:flex; align-items:center; gap:12px; }
+    .toggle-title::before { content:''; width:6px; height:6px; background:var(--red); flex-shrink:0; }
+    .toggle-plus { font-family:'Share Tech Mono',monospace; color:#f87171; font-size:1.1rem; transition:transform .3s; }
+    .toggle-item.open .toggle-plus { transform:rotate(45deg); }
+    .toggle-content { max-height:0; overflow:hidden; transition:max-height .35s ease; }
+    .toggle-item.open .toggle-content { max-height:400px; }
+    .toggle-content-inner { padding:0 20px 20px; font-family:'IBM Plex Sans',sans-serif; font-size:0.92rem; color:#999; line-height:1.75; }
+
+    /* Warning box */
+    .warn-box { border-left:3px solid var(--red); background:rgba(220,38,38,0.05); padding:16px 20px; margin:28px 0; }
+    .warn-label { font-family:'Share Tech Mono',monospace; font-size:0.68rem; letter-spacing:2px; color:#f87171; text-transform:uppercase; margin-bottom:8px; display:block; }
+    .warn-body { font-family:'IBM Plex Sans',sans-serif; font-size:0.92rem; color:#ccc; line-height:1.7; }
+
+    /* Prev/Next nav */
+    .prevnext-card { display:flex; align-items:center; gap:14px; border:1px solid rgba(220,38,38,0.2); background:rgba(10,10,10,0.85); padding:18px 22px; text-decoration:none; transition:border-color .25s, transform .25s; flex:1; }
+    .prevnext-card:hover { border-color:rgba(220,38,38,0.55); transform:translateY(-2px); }
+    .prevnext-label { font-family:'Share Tech Mono',monospace; font-size:0.65rem; letter-spacing:2px; color:#666; text-transform:uppercase; }
+    .prevnext-title { font-size:1.1rem; font-weight:700; text-transform:uppercase; color:#e8e8e8; }
+
+    .delay-1{animation-delay:.05s} .delay-2{animation-delay:.10s} .delay-3{animation-delay:.15s}
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="fixed top-0 left-0 w-full z-[9999]"><div id="progress-bar"></div></div>
+
+<!-- ════ NAVBAR ════ -->
+<nav id="navbar" class="fixed top-[3px] left-0 w-full z-[900] bg-transparent border-b border-transparent">
+  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+    <a href="/" class="flex items-center gap-3 group">
+      <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 transition-colors duration-300">
+        <span class="font-mono-tech text-red-600 text-xs font-bold">SR</span>
+      </div>
+      <span class="text-white font-bold text-sm tracking-widest uppercase hidden sm:block" style="letter-spacing:0.25em;">Secret Reviewer</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Home</a>
+      <a href="/gallery/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Gallery</a>
+      <a href="/contact/" class="text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase transition-colors duration-200">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase border border-red-600/50 px-3 py-1.5 hover:bg-red-600/15 hover:border-red-500 transition-all duration-200 animate-pulse-red">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+    <button id="menu-toggle" class="md:hidden text-gray-400 hover:text-red-500 transition-colors" aria-label="Toggle menu">
+      <svg id="menu-icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="menu-icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none;">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="md:hidden" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; background:rgba(4,4,4,0.99); backdrop-filter:blur(24px);">
+    <div class="flex flex-col px-5 py-4 gap-4">
+      <a href="/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Home</a>
+      <a href="/gallery/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Gallery</a>
+      <a href="/contact/" class="mobile-link text-gray-400 hover:text-red-400 text-sm font-bold tracking-widest uppercase py-1 border-b border-white/5">Contact</a>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 text-red-500 text-sm font-bold tracking-widest uppercase">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        YouTube
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ MAIN ════ -->
+<main class="pt-28 pb-24 px-5">
+  <div class="max-w-3xl mx-auto">
+
+    <a href="/sr-lab/" class="breadcrumb">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Back to SR Lab
+    </a>
+
+    <!-- Header -->
+    <div class="mb-10 animate-fade-slide-up" style="position:relative;">
+      <div class="noise-overlay"></div>
+      <div class="flex items-center gap-3 mb-5">
+        <span class="log-badge">
+          <span class="inline-block w-1.5 h-1.5 rounded-full" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+          Log #007
+        </span>
+        <div class="diff-pips">
+          <div class="diff-pip on"></div><div class="diff-pip"></div><div class="diff-pip"></div><div class="diff-pip"></div><div class="diff-pip"></div>
+        </div>
+        <span class="font-mono-tech text-xs" style="color:rgba(220,38,38,0.4);letter-spacing:1px;">DIFFICULTY // EASY</span>
+      </div>
+      <p class="font-mono-tech text-xs tracking-[0.4em] uppercase mb-4" style="color:rgba(220,38,38,0.5);">// SR-LAB-007 // Engineering // Vibration Control</p>
+      <h1 class="font-black uppercase leading-none tracking-tight text-white mb-5 decrypt-text" style="font-size:clamp(2.6rem,8vw,4.6rem);">
+        <span class="glitch-wrap" data-text="VIBRATION DAMPING">VIBRATION DAMPING</span>
+      </h1>
+      <p class="mt-2 text-gray-500 text-lg leading-relaxed max-w-2xl" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">
+        Heat kills electronics fast, so everyone talks about it. Water kills them fast too, so everyone waterproofs. Almost nobody talks about the slow one — thousands of engine pulses a minute, day after day, quietly fatiguing every solder joint and connector on the bike. This log is about the cheap, boring fix for that.
+      </p>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-widest mt-6">
+        <span class="inline-block w-2 h-2 rounded-full mr-2 align-middle" style="background:#dc2626;animation:pulse-dot 2s infinite;"></span>
+        MATERIALS: FOAM / SILICONE / RUBBER // COST: UNDER $10 // TIME: 15–30 MIN PER ITEM
+      </p>
+    </div>
+
+    <hr class="section-rule" />
+
+    <!-- Intro -->
+    <div class="space-y-5 mb-2" style="font-family:'IBM Plex Sans',sans-serif;font-size:1.02rem;color:#c9c9c9;">
+      <p>Most riders assume an accessory dies because of one big failure — a drop, a soaking, a short. In my experience it's usually smaller and dumber than that. A single-cylinder or parallel-twin engine is basically a small jackhammer bolted to the frame, and everything mounted near it takes the hit thousands of times per minute, every ride, for years. Solder joints crack. Battery terminals loosen. Plastic clips fatigue and let boards rattle inside their housings. None of it looks dramatic until the device just stops working one day for "no reason."</p>
+      <p>The fix doesn't need to be clever. It needs a soft material between the vibrating surface and the sensitive thing, so the energy gets absorbed instead of transmitted. That's it. I didn't invent vibration isolation — engineers have used foam, rubber, and gel mounts for this exact problem in everything from car dashboards to drone flight controllers. What I did was apply the same logic, cheaply, to a $15 alarm that kept dying on me.</p>
+    </div>
+
+    <!-- Case study intel panel -->
+    <div class="intel-panel animate-fade-slide-up delay-1">
+      <div class="intel-tag">Case Study // Portable Alarm // Log Origin</div>
+      <div class="intel-body">
+        <p>My old setup: a clip-on portable motion alarm sitting bare against the bike's bodywork, no isolation, straight metal-to-plastic contact. It died on me roughly every 3 months — sometimes the internal speaker would rattle loose, sometimes it would just stop triggering reliably. I chalked it up to "cheap alarm, what do you expect" and kept replacing it.</p>
+        <p>On the last one I tried something different before writing it off: pasted thin strips of closed-cell foam and a few dabs of silicone sealant between the alarm housing and its mounting point, plus a small foam pad inside the clip itself where it contacted the bike. Same alarm, same riding, same routes. That was over two years ago. It's still on the bike, still triggering properly, still running on its original internals.</p>
+      </div>
+      <div class="intel-stat-row">
+        <div class="intel-stat"><span class="num">3 MO</span><span class="lbl">Old Lifespan</span></div>
+        <div class="intel-stat"><span class="num">2+ YR</span><span class="lbl">After Damping</span></div>
+        <div class="intel-stat"><span class="num">$0</span><span class="lbl">Extra Cost (Scrap Foam)</span></div>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      <span class="warn-label">Honest Caveat</span>
+      <div class="warn-body">This is one unit, one rider, one set of routes — not a lab test. I'm not claiming a guaranteed 8x lifespan for every device. What I am saying is the difference was big enough, and repeatable enough across a few smaller accessories since, that I don't mount anything bare against the bike anymore.</div>
+    </div>
+
+    <hr class="section-rule" />
+
+    <!-- Materials spec table -->
+    <h2 class="text-2xl font-black uppercase text-white tracking-tight mb-2">Materials On Hand</h2>
+    <p class="text-gray-500 text-sm mb-6" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">Nothing here needs a hardware store trip. Most of it you already have lying around from packaging or old projects.</p>
+    <div class="overflow-x-auto mb-4">
+      <table class="spec-table">
+        <thead>
+          <tr><th>Material</th><th>Best For</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mat-name">Closed-cell foam<br/><span style="color:#666;font-weight:400;">(old packaging, mousepad offcuts)</span></td>
+            <td>Flat contact surfaces — under alarms, GPS cradles, fuse box lids</td>
+            <td>Doesn't absorb water, holds shape under load. My go-to.</td>
+          </tr>
+          <tr>
+            <td class="mat-name">Open-cell foam<br/><span style="color:#666;font-weight:400;">(earplug foam, upholstery scrap)</span></td>
+            <td>Small gaps, tight housings, corner padding</td>
+            <td>Softer and compresses more — good where clearance is tight.</td>
+          </tr>
+          <tr>
+            <td class="mat-name">Neutral-cure silicone sealant</td>
+            <td>Bonding foam pads in place, sealing edges</td>
+            <td>Use neutral-cure, not acetic — acetic cure can corrode bare metal contacts over time.</td>
+          </tr>
+          <tr>
+            <td class="mat-name">Rubber grommets / washers</td>
+            <td>Bolted mounts — camera brackets, mirror stems</td>
+            <td>Isolates the fastener itself, not just the housing.</td>
+          </tr>
+          <tr>
+            <td class="mat-name">Double-sided foam tape (3M-type)</td>
+            <td>Quick flat mounts where you don't want silicone mess</td>
+            <td>Weaker long-term hold than silicone + foam combo, but fully reversible.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="section-rule" />
+
+    <!-- Steps -->
+    <h2 class="text-2xl font-black uppercase text-white tracking-tight mb-2">The Method</h2>
+    <p class="text-gray-500 text-sm mb-4" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">Same four steps regardless of which accessory you're isolating.</p>
+    <div class="mb-2">
+      <div class="step-row">
+        <div class="step-num">01</div>
+        <div>
+          <div class="step-title">Identify every hard contact point</div>
+          <div class="step-body">Check where the device actually touches the bike — the base of the housing, the clip, the mounting bracket, even a zip-tie pulled too tight. Any point where hard plastic or metal meets hard plastic or metal is a vibration path straight into the electronics.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">02</div>
+        <div>
+          <div class="step-title">Cut foam to size, oversized by a hair</div>
+          <div class="step-body">Cut closed-cell foam strips slightly larger than the contact area — you want gentle compression when everything's clamped down, not a loose pad rattling around on its own. A few millimetres of foam is usually enough; you're not trying to build a suspension system.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">03</div>
+        <div>
+          <div class="step-title">Bed it in with silicone, not just tape</div>
+          <div class="step-body">A dab of neutral-cure silicone under the foam keeps it from creeping or squeezing out sideways over months of engine buzz. Tape alone tends to lose its grip after enough heat cycles — silicone stays put and adds a second layer of damping on its own.</div>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">04</div>
+        <div>
+          <div class="step-title">Let it cure before you ride</div>
+          <div class="step-body">Give the silicone its full cure time — usually 24 hours — before the bike goes back on the road. Riding on it too early lets vibration disturb the bond before it's actually set, and you'll be redoing this in a week.</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-rule" />
+
+    <!-- Intel report toggles: other applications -->
+    <h2 class="text-2xl font-black uppercase text-white tracking-tight mb-2">Where Else This Applies</h2>
+    <p class="text-gray-500 text-sm mb-5" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">This isn't an alarm-specific trick. It's a principle. Tap to expand each file.</p>
+
+    <div id="toggle-list">
+      <div class="toggle-item">
+        <div class="toggle-header" onclick="toggleItem(this)">
+          <span class="toggle-title">Bike Camera Housing</span>
+          <span class="toggle-plus">+</span>
+        </div>
+        <div class="toggle-content">
+          <div class="toggle-content-inner">Camera bodies are usually bolted rigid to a bracket. A thin rubber washer between the bracket and the clamp, plus foam behind the housing itself, cuts down on footage micro-jitter and protects the internal sensor mount over the long run.</div>
+        </div>
+      </div>
+      <div class="toggle-item">
+        <div class="toggle-header" onclick="toggleItem(this)">
+          <span class="toggle-title">GPS / CarPlay Mount</span>
+          <span class="toggle-plus">+</span>
+        </div>
+        <div class="toggle-content">
+          <div class="toggle-content-inner">Screen mounts on a stiff RAM-ball or bar clamp transmit handlebar buzz directly into the device. Foam-lined clamp jaws and a rubber-isolated ball joint noticeably calm down screen blur at speed, and take stress off the charging port over time.</div>
+        </div>
+      </div>
+      <div class="toggle-item">
+        <div class="toggle-header" onclick="toggleItem(this)">
+          <span class="toggle-title">Auxiliary Fuse Box (see Log #008)</span>
+          <span class="toggle-plus">+</span>
+        </div>
+        <div class="toggle-content">
+          <div class="toggle-content-inner">Fuse boxes get mounted to the frame or under the seat, often with zip ties straight onto metal. A foam-backed mounting plate stops the fuses themselves from working loose in their slots after enough vibration cycles — a quiet failure mode that's easy to miss until something stops getting power.</div>
+        </div>
+      </div>
+      <div class="toggle-item">
+        <div class="toggle-header" onclick="toggleItem(this)">
+          <span class="toggle-title">USB Charger / Volt Meter</span>
+          <span class="toggle-plus">+</span>
+        </div>
+        <div class="toggle-content">
+          <div class="toggle-content-inner">Small dash-mounted units usually screw straight into plastic panelling. A foam gasket under the flange keeps the solder joints on the internal board from fatiguing where the wiring enters — the same failure mode that killed my old alarm.</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-rule" />
+
+    <!-- Mistakes -->
+    <h2 class="text-2xl font-black uppercase text-white tracking-tight mb-4">Where People (Including Me) Get It Wrong</h2>
+    <div class="space-y-0 mb-2">
+      <div class="log-preview" style="border-bottom:1px solid rgba(255,255,255,0.04);padding:14px 0;">
+        <p style="font-size:1rem;font-weight:700;color:#e0e0e0;text-transform:uppercase;letter-spacing:0.03em;margin:0 0 5px 0;">Over-Insulating Anything That Generates Heat</p>
+        <p class="text-gray-500 text-sm" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">Foam traps heat as well as it absorbs shock. Fine for an alarm or GPS mount. Not fine for anything that runs warm — a voltage regulator, a charging module. Leave airflow paths open on those.</p>
+      </div>
+      <div class="log-preview" style="border-bottom:1px solid rgba(255,255,255,0.04);padding:14px 0;">
+        <p style="font-size:1rem;font-weight:700;color:#e0e0e0;text-transform:uppercase;letter-spacing:0.03em;margin:0 0 5px 0;">Using Acetic-Cure Silicone Near Bare Metal Contacts</p>
+        <p class="text-gray-500 text-sm" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">The vinegar-smelling stuff from the hardware store releases acetic acid as it cures, which can corrode exposed metal terminals nearby. Neutral-cure costs a little more and doesn't do that.</p>
+      </div>
+      <div class="log-preview" style="padding:14px 0;">
+        <p style="font-size:1rem;font-weight:700;color:#e0e0e0;text-transform:uppercase;letter-spacing:0.03em;margin:0 0 5px 0;">Clamping Foam Down So Hard It Stops Being Foam</p>
+        <p class="text-gray-500 text-sm" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">If you crush the foam flat under the mount, it can't compress anymore and stops damping anything. Snug, not vice-grip tight.</p>
+      </div>
+    </div>
+
+    <hr class="section-rule" />
+
+    <!-- Prev/Next -->
+    <div class="flex flex-col sm:flex-row gap-4 mb-6">
+      <a href="/sr-lab/hazard/" class="prevnext-card">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:#dc2626;flex-shrink:0;"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        <div><div class="prevnext-label">// Log #006</div><div class="prevnext-title">Hazard Light Mod</div></div>
+      </a>
+      <a href="/sr-lab/fuse-box/" class="prevnext-card" style="text-align:right;flex-direction:row-reverse;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:#dc2626;flex-shrink:0;"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <div><div class="prevnext-label">// Log #008</div><div class="prevnext-title">Auxiliary Fuse Box</div></div>
+      </a>
+    </div>
+
+    <div class="text-center space-y-3 mt-10">
+      <p class="font-mono-tech text-gray-700 text-xs tracking-widest uppercase">// End of Log #007</p>
+      <p class="text-gray-600 text-sm" style="font-family:'IBM Plex Sans',sans-serif;font-style:italic;">
+        Tested on a real MT-03, not a bench. If you try this on your own accessories, it's cheap enough to be worth the 30 minutes.
+      </p>
+    </div>
+
+  </div>
+</main>
+
+<!-- ════ FOOTER ════ -->
+<footer class="py-16 px-5 border-t border-white/5 mt-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex flex-col items-center gap-6">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-8 h-8 border border-red-600/50 flex items-center justify-center hover:bg-red-600/10 hover:scale-105 transition-all duration-300">
+          <span class="font-mono-tech text-red-600 text-sm font-bold">SR</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-widest uppercase">Secret Reviewer</span>
+      </a>
+      <p class="font-mono-tech text-gray-600 text-xs tracking-[0.35em] uppercase text-center">Motorcycle Blogger / Ride Safe</p>
+      <a href="https://www.youtube.com/@Secretreviewer2" target="_blank" rel="noopener noreferrer"
+         class="group flex items-center gap-2 text-gray-500 hover:text-red-500 transition-colors duration-300">
+        <div class="w-7 h-7 border border-gray-700 group-hover:border-red-600/50 flex items-center justify-center transition-colors">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="font-mono-tech text-sm tracking-widest uppercase">Watch on YouTube</span>
+      </a>
+      <div class="w-full max-w-s h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <p class="font-mono-tech text-gray-700 text-xs tracking-wider text-center">&copy; 2026 Secret Reviewer. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  (function(){
+    var cursor=document.getElementById('cursor'), ring=document.getElementById('cursor-ring');
+    var mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+    (function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+    document.querySelectorAll('a,button').forEach(function(el){
+      el.addEventListener('mouseenter',function(){ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(220,38,38,0.8)';});
+      el.addEventListener('mouseleave',function(){ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(220,38,38,0.5)';});
+    });
+  })();
+
+  // Progress bar
+  window.addEventListener('scroll',function(){
+    var st=document.documentElement.scrollTop||document.body.scrollTop;
+    var sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+    document.getElementById('progress-bar').style.width=(sh>0?(st/sh)*100:0)+'%';
+  },{passive:true});
+
+  // Navbar scroll
+  window.addEventListener('scroll',function(){
+    var nav=document.getElementById('navbar');
+    if(window.scrollY>20)nav.classList.add('nav-scrolled');
+    else nav.classList.remove('nav-scrolled');
+  },{passive:true});
+
+  // Mobile menu
+  document.getElementById('menu-toggle').addEventListener('click',function(){
+    var menu=document.getElementById('mobile-menu');
+    var openIcon=document.getElementById('menu-icon-open');
+    var closeIcon=document.getElementById('menu-icon-close');
+    var isOpen=menu.style.maxHeight==='320px';
+    menu.style.maxHeight=isOpen?'0':'320px';
+    menu.style.borderBottom=isOpen?'':'1px solid rgba(127,29,29,0.3)';
+    openIcon.style.display=isOpen?'':'none';
+    closeIcon.style.display=isOpen?'none':'';
+  });
+  document.querySelectorAll('.mobile-link').forEach(function(link){
+    link.addEventListener('click',function(){
+      document.getElementById('mobile-menu').style.maxHeight='0';
+      document.getElementById('menu-icon-open').style.display='';
+      document.getElementById('menu-icon-close').style.display='none';
+    });
+  });
+
+  // Intel report toggles
+  function toggleItem(header){
+    var item = header.parentElement;
+    var wasOpen = item.classList.contains('open');
+    document.querySelectorAll('#toggle-list .toggle-item.open').forEach(function(el){ el.classList.remove('open'); });
+    if(!wasOpen){ item.classList.add('open'); }
+  }
+</script>
+</body>
+</html>
